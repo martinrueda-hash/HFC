@@ -33,7 +33,9 @@ window.HFC_CONFIG = {
   weights: {
     attractiveness: { market_size: 30, market_growth: 30, profitability: 20, competitive_intensity: 20 },
     ability: { market_share: 35, brand_strength: 20, channel_access: 25, product_fit: 20 }
-  }
+  },
+  // Diagonal zone lines on the matrix: a country's zone is set by attractiveness + ability to win (each 1-5, so 2-10).
+  zones: { leadership: 7, priority_growth: 5.5 }
 };
 
 window.HFC_DATA = [

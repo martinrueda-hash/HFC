@@ -1,16 +1,15 @@
 # HFC Market Intelligence Dashboard
 
-A self-contained dashboard for HFC's country portfolio. Open `dashboard/index.html` in a browser; no build step, server or internet connection is needed (only the fonts load from Google Fonts, with a system-font fallback).
+A self-contained dashboard for HFC's country portfolio, styled after the EU WT strategy deck (red/grey palette, "topic | subject" titles, red takeaway banners). Open `dashboard/index.html` in a browser; no build step, server or internet connection is needed (only the Montserrat font, a stand-in for Gotham, loads from Google Fonts, with a system-font fallback).
 
 > The figures in `dashboard/data.js` are **illustrative sample data**. Replace them with your own before using the dashboard for decisions.
 
 ## What it shows
 
-1. **Portfolio matrix: market attractiveness vs. ability to win**, one bubble per country (bubble size = market size), split into four quadrants:
-   - **Leadership position**: attractive market, strong HFC position. Defend and extend.
-   - **Priority growth**: attractive market, weak position. Invest to build share.
-   - **Selective investment**: less attractive market, strong position. Invest selectively, protect margin.
-   - **Monitor**: less attractive market, weak position.
+1. **Portfolio matrix: market attractiveness vs. ability to win**, one bubble per country (bubble size = market size). Two diagonal lines split it into three zones, following the country prioritization slide of the EU WT strategy deck:
+   - **Leadership position**: attractive market and strong position. Accelerate and defend the lead.
+   - **Priority growth**: good potential, position still to build. Invest to gain share.
+   - **Selective investment**: lower attractiveness or weak position. Invest selectively, protect margin.
 2. **Country dashboard**, per country and per end market (Residential / Non-residential, which includes multi-residential):
    - **Market**: size, CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years.
    - **HFC**: CAGR over the last 5 years, projected growth this year, business-plan CAGR over the next 5 years, each with the gap to the market in percentage points.
@@ -20,7 +19,7 @@ The end-market toggle (Total / Residential / Non-residential) drives the headlin
 
 ## How the matrix is scored
 
-Both axes run from 1 to 5, and the quadrant split is at 3.
+Both axes run from 1 to 5. A country's zone is set by attractiveness + ability to win (2 to 10): 7 or more is leadership position, 5.5 or more is priority growth, below that is selective investment. The thresholds are in `HFC_CONFIG.zones`.
 
 | Axis | Criterion | Source | Default weight |
 |---|---|---|---|
@@ -33,7 +32,7 @@ Both axes run from 1 to 5, and the quadrant split is at 3.
 | | Channel access | 1–5 score | 25 |
 | | Product fit | 1–5 score | 20 |
 
-Default weights are set in `HFC_CONFIG.weights` in `dashboard/data.js`. They can also be adjusted on the page under "Scoring method and weights"; on-page changes are stored in that browser only.
+Default weights are set in `HFC_CONFIG.weights` in `dashboard/data.js`. Weights and zone thresholds can also be adjusted on the page under "Scoring method and weights"; on-page changes are stored in that browser only.
 
 Country totals weight market figures by market size and HFC figures by HFC sales (market size × share).
 
