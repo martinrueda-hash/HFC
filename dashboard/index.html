@@ -145,11 +145,12 @@ details.method summary { cursor: pointer; font-weight: 700; font-size: 12px; col
 table.mi { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1000px; font-size: 11.5px; }
 table.mi th, table.mi td { padding: 6px 5px; white-space: nowrap; }
 table.mi thead th { background: var(--bg); font-weight: 700; font-size: 11.5px; color: var(--red); text-align: right; vertical-align: bottom; position: sticky; top: 0; border-bottom: 1px solid var(--red); }
-table.mi thead tr:not(.grp) th { white-space: normal; line-height: 1.25; }
 table.mi thead th .u { display: block; font-weight: 400; color: var(--ink); font-size: 10.5px; }
 table.mi thead tr.grp th { text-align: center; font-size: 12px; color: #fff; background: var(--red); border-bottom: 0; padding: 6px 8px; }
 table.mi thead tr.grp th.blank { background: var(--bg); }
-table.mi thead tr.grp th.g-hfc { background: var(--ink); }
+table.mi thead tr.grp th.g-mkt { background: var(--ink); }
+table.mi thead tr.grp th.g-hfc { background: var(--red); }
+table.mi thead th.m { color: var(--ink); border-bottom-color: var(--ink); }
 table.mi th.l, table.mi td.l { text-align: left; }
 table.mi td { text-align: right; background: var(--bg); color: var(--ink-strong); border-bottom: 1px solid var(--line); }
 table.mi .sticky { position: sticky; left: 0; z-index: 1; }
@@ -705,21 +706,19 @@ sup { font-size: .7em; line-height: 0; }
       <td class="gap"></td>
       <td>${money(r.hfc_sales)}</td>
       <td>${hcell(r.hfc_cagr_hist, r.mkt_cagr_hist)}</td><td>${hcell(r.hfc_growth_cy, r.mkt_growth_cy)}</td><td>${hcell(r.hfc_cagr_bp, r.mkt_cagr_fwd)}</td>
-      <td class="gap"></td>
       <td>${ms[0]}</td><td>${ms[1]}</td>
     </tr>`;
   }
 
   function renderTable(units) {
-    const h = (a, b) => `<th>${a}<span class="u">${b}</span></th>`;
+    const h = (a, b, cls) => `<th${cls ? ` class="${cls}"` : ""}>${a}<span class="u">${b}</span></th>`;
     const head = `<thead>
-      <tr class="grp"><th class="l sticky blank"></th><th colspan="4">Market growth<sup>1</sup></th><th class="gap"></th><th class="g-hfc" colspan="4">${CO}</th><th class="gap"></th><th colspan="2">${CO} market share</th></tr>
-      <tr><th class="l sticky">Country / end market</th>${h("Size " + (CY - 1), CFG.currency)}
-        ${h("CAGR last 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + "E", "vs. " + (CY - 1))}${h("CAGR next 5 yrs", CY + "–" + (CY + 5))}
+      <tr class="grp"><th class="l sticky blank"></th><th class="g-mkt" colspan="4">Market growth<sup>1</sup></th><th class="gap"></th><th class="g-hfc" colspan="6">${CO}</th></tr>
+      <tr><th class="l sticky">Country / end market</th>${h("Size " + (CY - 1), CFG.currency, "m")}
+        ${h("CAGR 5 yrs", (CY - 6) + "–" + (CY - 1), "m")}${h("Growth " + CY + "E", "vs. " + (CY - 1), "m")}${h("CAGR 5 yrs", CY + "–" + (CY + 5), "m")}
         <th class="gap"></th>
-        ${h("Sales " + (CY - 1), CFG.currency)}${h("CAGR last 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + " fcst", "vs. " + (CY - 1))}${h("BP CAGR next 5 yrs", CY + "–" + (CY + 5))}
-        <th class="gap"></th>
-        ${h("Share " + CY, "% of market")}${h("Change", "vs. " + (CY - 1))}</tr></thead>`;
+        ${h("Sales " + (CY - 1), CFG.currency)}${h("CAGR 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + "F", "vs. " + (CY - 1))}${h("BP CAGR 5 yrs", CY + "–" + (CY + 5))}
+        ${h("Share " + CY, "% of market")}${h("Share change", "vs. " + (CY - 1))}</tr></thead>`;
     const grand = aggregate(units.map(u => u.r), { country: "All", code: "", segment: seg });
     let body = rowHtml(grand, "grand", null, null);
     // cluster countries by matrix zone; largest market first inside each zone

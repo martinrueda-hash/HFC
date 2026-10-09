@@ -13,7 +13,7 @@ A self-contained dashboard for HFC's country portfolio, styled after the EU WT s
 2. **Market vs. HFC positioning**: countries grouped by matrix zone (with a subtotal per zone, largest market first), each split by end market (Residential / Non-residential, which includes multi-residential):
    - **Market**: size (last year, e.g. 2025), CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years. Market growth is construction work done (Oxford Economics); each figure shows the combined rate with the renovation (R) and new build (NB) rates underneath.
    - **HFC**: sales (last year, e.g. 2025), CAGR over the last 5 years, projected growth this year, business-plan CAGR over the next 5 years, each with the gap to the market in percentage points.
-   - **HFC market share** this year and its change versus last year.
+   - **HFC market share** this year and its change versus last year, shown inside the HFC block.
 
 The end-market toggle (Total / Residential / Non-residential) drives the headline figures, the matrix and the table together. Clicking a bubble or a country chip highlights that country in the table.
 
