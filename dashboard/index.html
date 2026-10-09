@@ -37,7 +37,7 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--page); color: var(--ink); font: 13px/1.45 var(--font); }
-.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 40px; display: grid; gap: 18px; }
+.wrap { max-width: 1400px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 40px; display: grid; gap: 18px; }
 @media (min-width: 720px) { .wrap { padding-inline: 28px; } }
 h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 400; color: var(--red); }
 .num, .v, td { font-variant-numeric: tabular-nums; }
@@ -142,9 +142,10 @@ details.method summary { cursor: pointer; font-weight: 700; font-size: 12px; col
 
 /* Table, styled like the deck's red-header tables with blush rows */
 .table-scroll { overflow-x: auto; }
-table.mi { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 980px; font-size: 12px; }
-table.mi th, table.mi td { padding: 6px 6px; white-space: nowrap; }
+table.mi { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1000px; font-size: 11.5px; }
+table.mi th, table.mi td { padding: 6px 5px; white-space: nowrap; }
 table.mi thead th { background: var(--bg); font-weight: 700; font-size: 11.5px; color: var(--red); text-align: right; vertical-align: bottom; position: sticky; top: 0; border-bottom: 1px solid var(--red); }
+table.mi thead tr:not(.grp) th { white-space: normal; line-height: 1.25; }
 table.mi thead th .u { display: block; font-weight: 400; color: var(--ink); font-size: 10.5px; }
 table.mi thead tr.grp th { text-align: center; font-size: 12px; color: #fff; background: var(--red); border-bottom: 0; padding: 6px 8px; }
 table.mi thead tr.grp th.blank { background: var(--bg); }
@@ -153,7 +154,7 @@ table.mi th.l, table.mi td.l { text-align: left; }
 table.mi td { text-align: right; background: var(--bg); color: var(--ink-strong); border-bottom: 1px solid var(--line); }
 table.mi .sticky { position: sticky; left: 0; z-index: 1; }
 table.mi thead .sticky { z-index: 3; }
-table.mi td.gap, table.mi th.gap { width: 10px; padding: 0; background: var(--bg) !important; border-bottom: 0; }
+table.mi td.gap, table.mi th.gap { width: 6px; padding: 0; background: var(--bg) !important; border-bottom: 0; }
 tr.total td { background: var(--tint); font-weight: 700; border-bottom-color: var(--blush); }
 tr.grand td { background: var(--blush); font-weight: 700; color: var(--red); }
 tr.grand td .v:not(.up):not(.down):not(.flat) { color: var(--red); }
@@ -170,15 +171,15 @@ tr.zone-row td .v.up, tr.zone-row td .delta.up { color: var(--good); }
 tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
 .zcount { font-weight: 500; color: var(--ink); font-size: 11px; margin-left: 8px; }
 .cell { display: inline-flex; align-items: center; gap: 6px; justify-content: flex-end; }
-.bar { position: relative; width: 30px; height: 8px; flex: none; }
+.bar { position: relative; width: 24px; height: 8px; flex: none; }
 .bar::before { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--axis); }
 .bar span { position: absolute; top: 0; height: 8px; border-radius: 1px; }
-.v { min-width: 44px; display: inline-block; text-align: right; }
+.v { min-width: 40px; display: inline-block; text-align: right; }
 .delta { display: block; font-size: 10.5px; margin-top: 1px; font-weight: 600; }
 .up { color: var(--good); }
 .down { color: var(--bad); }
 .flat { color: var(--muted); }
-.split { display: flex; justify-content: flex-end; gap: 8px; font-size: 10.5px; font-weight: 500; color: var(--ink); margin-top: 2px; }
+.split { display: flex; justify-content: flex-end; gap: 6px; font-size: 10px; font-weight: 500; color: var(--ink); margin-top: 2px; }
 .split span { white-space: nowrap; }
 sup { font-size: .7em; line-height: 0; }
 .ask { position: relative; display: flex; align-items: center; gap: 8px; background: var(--tint); border: 1px solid var(--rose); border-radius: 10px; padding: 6px 12px 6px 6px; font-size: 12px; color: var(--ink-strong); max-width: 100%; }
@@ -272,7 +273,7 @@ sup { font-size: .7em; line-height: 0; }
     <div class="takeaway" id="tblTake"></div>
     <div class="source">
       <span>Source: Oxford Economics; HFC market intelligence data file; HFC business plan</span>
-      <span>Notes: 1. Market growth = construction work done. R = renovation, NB = new build; the top figure combines both. Non-residential includes multi-residential. Totals weight market figures by market size and HFC figures by HFC sales (market size × share). Growth bars share one scale, clipped at ±10%.</span>
+      <span>Notes: 1. Market growth = construction work done. R = renovation, NB = new build; the top figure combines both. Non-residential includes multi-residential. Market size and HFC sales are <span class="yr-prev"></span> values. Totals weight market figures by market size and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
     </div>
   </section>
 
@@ -304,11 +305,11 @@ sup { font-size: .7em; line-height: 0; }
   const CFG = window.HFC_CONFIG || { company: "HFC", currentYear: new Date().getFullYear(), currency: "EUR m", weights: {} };
   const CY = CFG.currentYear;
   const CO = CFG.company;
-  const FIELDS = ["country", "code", "segment", "market_size", "mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd",
+  const FIELDS = ["country", "code", "segment", "market_size", "hfc_sales", "mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd",
     "hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp", "ms_cy", "ms_py",
     "profitability", "competitive_intensity", "channel_access", "product_fit",
     "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
-  const OPTIONAL = ["code", "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
+  const OPTIONAL = ["code", "hfc_sales", "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
   const NUMERIC = FIELDS.slice(3);
   const SCORES = ["profitability", "competitive_intensity", "channel_access", "product_fit"];
   const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v3";
@@ -346,6 +347,8 @@ sup { font-size: .7em; line-height: 0; }
     const o = { country: String(r.country || "").trim(), code: String(r.code || "").trim(), segment: normSegment(r.segment) };
     if (!o.code) o.code = o.country.slice(0, 3).toUpperCase();
     NUMERIC.forEach(f => { o[f] = toNum(r[f]); });
+    // HFC sales in the base year default to market size x last year's share when not given
+    if (o.hfc_sales === null && o.market_size !== null && o.ms_py !== null) o.hfc_sales = o.market_size * o.ms_py / 100;
     return o;
   }
 
@@ -369,7 +372,7 @@ sup { font-size: .7em; line-height: 0; }
     return w > 0 ? s / w : null;
   }
   const sizeW = r => r.market_size || 0;
-  const salesW = r => (r.market_size || 0) * (r.ms_cy || 0) / 100;
+  const salesW = r => r.hfc_sales || 0;
 
   function aggregate(rows, label) {
     const o = { country: label.country, code: label.code, segment: label.segment };
@@ -379,15 +382,10 @@ sup { font-size: .7em; line-height: 0; }
     ["mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd"].forEach(f => { o[f] = wavg(rows, f, renoW); });
     ["mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"].forEach(f => { o[f] = wavg(rows, f, nbW); });
     ["hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp"].forEach(f => { o[f] = wavg(rows, f, salesW); });
-    const sales = rows.reduce((s, r) => s + salesW(r), 0);
-    o.ms_cy = o.market_size > 0 ? sales / o.market_size * 100 : null;
-    let sizePy = 0, salesPy = 0, ok = true;
-    rows.forEach(r => {
-      if (r.ms_py === null || r.market_size === null) { ok = false; return; }
-      const sp = r.market_size / (1 + (r.mkt_growth_cy || 0) / 100);
-      sizePy += sp; salesPy += sp * r.ms_py / 100;
-    });
-    o.ms_py = ok && sizePy > 0 ? salesPy / sizePy * 100 : null;
+    o.hfc_sales = rows.reduce((s, r) => s + salesW(r), 0);
+    // market_size is last year's (base year) size; this year's size grows it by the current-year market growth
+    o.ms_py = rows.every(r => r.ms_py !== null) ? wavg(rows, "ms_py", sizeW) : null;
+    o.ms_cy = rows.every(r => r.ms_cy !== null) ? wavg(rows, "ms_cy", r => sizeW(r) * (1 + (r.mkt_growth_cy || 0) / 100)) : null;
     return o;
   }
 
@@ -464,6 +462,7 @@ sup { font-size: .7em; line-height: 0; }
   const monthYear = new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" });
   document.getElementById("monthLbl").textContent = monthYear;
   document.getElementById("footDate").textContent = monthYear;
+  document.querySelectorAll(".yr-prev").forEach(e => { e.textContent = CY - 1; });
   document.getElementById("ccyLbl").textContent = "Figures in " + CFG.currency;
 
   function view() {
@@ -485,7 +484,7 @@ sup { font-size: .7em; line-height: 0; }
     const gap = (tot.hfc_growth_cy ?? NaN) - (tot.mkt_growth_cy ?? NaN);
     const dms = (tot.ms_cy ?? NaN) - (tot.ms_py ?? NaN);
     const kp = [
-      { lbl: `Addressable market ${CY}`, val: "€" + money(tot.market_size) + "M", cmp: `${units.length} countries · ${segName()}` },
+      { lbl: `Addressable market ${CY - 1}`, val: "€" + money(tot.market_size) + "M", cmp: `${units.length} countries · ${segName()}` },
       { lbl: `Market growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Next 5 yrs ${pct(tot.mkt_cagr_fwd)} p.a. · last 5 yrs ${pct(tot.mkt_cagr_hist)}` },
       { lbl: `${CO} growth ${CY} forecast`, val: pct(tot.hfc_growth_cy), cmp: `<span class="${dir(gap)}">${arrow(gap)} ${pp(gap)}</span> vs. market · BP ${pct(tot.hfc_cagr_bp)} p.a.` },
       { lbl: `${CO} market share ${CY}`, val: f1(tot.ms_cy) + "%", cmp: `<span class="${dir(dms)}">${arrow(dms)} ${pp(dms)}</span> vs. ${CY - 1}` },
@@ -618,7 +617,7 @@ sup { font-size: .7em; line-height: 0; }
   function showTip(u, ev, anchor) {
     const rows = (parts, ws) => Object.keys(parts).map(k => `<tr><td>${LBL[k]} <span style="color:var(--muted)">×${Number(ws[k]) || 0}</span></td><td>${f1(parts[k])}</td></tr>`).join("");
     tip.innerHTML = `<h4>${esc(u.c.country)} · <span style="color:${ZONES[u.zone].color}">●</span> ${ZONES[u.zone].name}</h4>
-      <div style="margin-bottom:6px">${seg === "All" ? "All end markets" : seg} · €${money(u.r.market_size)}M · MS ${f1(u.r.ms_cy)}%</div>
+      <div style="margin-bottom:6px">${seg === "All" ? "All end markets" : seg} · market ${CY - 1} €${money(u.r.market_size)}M · MS ${f1(u.r.ms_cy)}%</div>
       <table><tr class="sep"><td>Attractiveness</td><td>${f1(u.attr)}</td></tr>${rows(u.attrParts, W.attractiveness || {})}
       <tr class="sep"><td>Ability to win</td><td>${f1(u.abil)}</td></tr>${rows(u.abilParts, W.ability || {})}</table>`;
     tip.hidden = false;
@@ -653,7 +652,7 @@ sup { font-size: .7em; line-height: 0; }
     }).join("");
     document.querySelectorAll("#zones .chip[data-country]").forEach(b => b.addEventListener("click", () => select(b.dataset.country, true)));
     document.getElementById("mxLegend").innerHTML =
-      `<span><i style="width:10px;height:10px;background:var(--axis)"></i><i style="width:18px;height:18px;background:var(--axis)"></i>Bubble size = market size ${CY}</span>`;
+      `<span><i style="width:10px;height:10px;background:var(--axis)"></i><i style="width:18px;height:18px;background:var(--axis)"></i>Bubble size = market size ${CY - 1}</span>`;
     document.getElementById("mxScope").textContent = `${CY} market, ${segName()}, ${units.length} countries`;
 
     const lead = by.lead.map(u => u.c.country), grow = by.grow;
@@ -669,7 +668,7 @@ sup { font-size: .7em; line-height: 0; }
   // ---------- table ----------
   function bar(v) {
     if (v === null || !Number.isFinite(v)) return `<span class="bar"></span>`;
-    const w = Math.min(Math.abs(v), 10) / 10 * 15;
+    const w = Math.min(Math.abs(v), 10) / 10 * 12;
     const s = v >= 0 ? `left:50%;width:${w}px;background:var(--ink)` : `right:50%;width:${w}px;background:var(--red)`;
     return `<span class="bar" aria-hidden="true"><span style="${s}"></span></span>`;
   }
@@ -704,6 +703,7 @@ sup { font-size: .7em; line-height: 0; }
       <td>${money(r.market_size)}</td>
       <td>${mcell(r.mkt_cagr_hist, r.mkt_reno_cagr_hist, r.mkt_nb_cagr_hist)}</td><td>${mcell(r.mkt_growth_cy, r.mkt_reno_growth_cy, r.mkt_nb_growth_cy)}</td><td>${mcell(r.mkt_cagr_fwd, r.mkt_reno_cagr_fwd, r.mkt_nb_cagr_fwd)}</td>
       <td class="gap"></td>
+      <td>${money(r.hfc_sales)}</td>
       <td>${hcell(r.hfc_cagr_hist, r.mkt_cagr_hist)}</td><td>${hcell(r.hfc_growth_cy, r.mkt_growth_cy)}</td><td>${hcell(r.hfc_cagr_bp, r.mkt_cagr_fwd)}</td>
       <td class="gap"></td>
       <td>${ms[0]}</td><td>${ms[1]}</td>
@@ -713,11 +713,11 @@ sup { font-size: .7em; line-height: 0; }
   function renderTable(units) {
     const h = (a, b) => `<th>${a}<span class="u">${b}</span></th>`;
     const head = `<thead>
-      <tr class="grp"><th class="l sticky blank"></th><th colspan="4">Market growth<sup>1</sup></th><th class="gap"></th><th class="g-hfc" colspan="3">${CO}</th><th class="gap"></th><th colspan="2">${CO} market share</th></tr>
-      <tr><th class="l sticky">Country / end market</th>${h("Size " + CY, CFG.currency)}
+      <tr class="grp"><th class="l sticky blank"></th><th colspan="4">Market growth<sup>1</sup></th><th class="gap"></th><th class="g-hfc" colspan="4">${CO}</th><th class="gap"></th><th colspan="2">${CO} market share</th></tr>
+      <tr><th class="l sticky">Country / end market</th>${h("Size " + (CY - 1), CFG.currency)}
         ${h("CAGR last 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + "E", "vs. " + (CY - 1))}${h("CAGR next 5 yrs", CY + "–" + (CY + 5))}
         <th class="gap"></th>
-        ${h("CAGR last 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + " fcst", "vs. " + (CY - 1))}${h("BP CAGR next 5 yrs", CY + "–" + (CY + 5))}
+        ${h("Sales " + (CY - 1), CFG.currency)}${h("CAGR last 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + " fcst", "vs. " + (CY - 1))}${h("BP CAGR next 5 yrs", CY + "–" + (CY + 5))}
         <th class="gap"></th>
         ${h("Share " + CY, "% of market")}${h("Change", "vs. " + (CY - 1))}</tr></thead>`;
     const grand = aggregate(units.map(u => u.r), { country: "All", code: "", segment: seg });
