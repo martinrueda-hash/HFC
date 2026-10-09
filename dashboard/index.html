@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HFC Market Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: control bar, then strategy matrix with quadrant roll-call beside it, then the full-width country × end-market grid. */
+:root {
+  --bg: #f5f6f4;
+  --surface: #fcfcfb;
+  --ink: #12181c;
+  --ink-2: #4a5359;
+  --muted: #7d868b;
+  --line: #e0e3e1;
+  --axis: #c3c8c6;
+  --accent: #0f5c6e;
+  --accent-wash: #e3eff1;
+  /* quadrants (categorical slots 1–3 + neutral) */
+  --q-lead: #2a78d6;
+  --q-grow: #eb6834;
+  --q-sel: #1baf7a;
+  --q-mon: #9a9f9c;
+  --q-lead-wash: rgba(42,120,214,.07);
+  --q-grow-wash: rgba(235,104,52,.07);
+  --q-sel-wash: rgba(27,175,122,.07);
+  --q-mon-wash: rgba(125,134,139,.05);
+  /* diverging growth bars */
+  --pos: #2a78d6;
+  --neg: #e34948;
+  --good: #006300;
+  --bad: #c03030;
+  --row-total: #eef1ef;
+  --row-hl: #fff3d6;
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1214; --surface: #172024; --ink: #f1f4f3; --ink-2: #c0c8c9; --muted: #8a9497;
+    --line: #26323a; --axis: #3a464d; --accent: #5fb3c4; --accent-wash: #173038;
+    --q-lead: #3987e5; --q-grow: #d95926; --q-sel: #199e70; --q-mon: #6f7778;
+    --q-lead-wash: rgba(57,135,229,.10); --q-grow-wash: rgba(217,89,38,.10); --q-sel-wash: rgba(25,158,112,.10); --q-mon-wash: rgba(140,150,150,.06);
+    --pos: #3987e5; --neg: #e66767; --good: #3cc23c; --bad: #ff7b7b;
+    --row-total: #1d282d; --row-hl: #3a3218;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1214; --surface: #172024; --ink: #f1f4f3; --ink-2: #c0c8c9; --muted: #8a9497;
+  --line: #26323a; --axis: #3a464d; --accent: #5fb3c4; --accent-wash: #173038;
+  --q-lead: #3987e5; --q-grow: #d95926; --q-sel: #199e70; --q-mon: #6f7778;
+  --q-lead-wash: rgba(57,135,229,.10); --q-grow-wash: rgba(217,89,38,.10); --q-sel-wash: rgba(25,158,112,.10); --q-mon-wash: rgba(140,150,150,.06);
+  --pos: #3987e5; --neg: #e66767; --good: #3cc23c; --bad: #ff7b7b;
+  --row-total: #1d282d; --row-hl: #3a3218;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 var(--font-ui); }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; display: grid; gap: 20px; }
+@media (min-width: 720px) { .wrap { padding-inline: 28px; } }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+h1 { font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+h2 { font-size: 16px; font-weight: 600; }
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.sub { color: var(--ink-2); max-width: 70ch; }
+.num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+header.top { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: end; justify-content: space-between; }
+header.top > div { display: grid; gap: 4px; min-width: 0; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 3px 10px; border-radius: 999px; background: var(--accent-wash); color: var(--accent); font-weight: 500; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 10px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; z-index: 5; }
+@media (min-width: 720px) { .controls { position: sticky; top: env(safe-area-inset-top, 0px); } }
+.ctl { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-2); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { font: inherit; font-size: 13px; border: 0; background: transparent; color: var(--ink-2); padding: 6px 12px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--surface); font-weight: 600; }
+select, .btn { font: inherit; font-size: 13px; color: var(--ink); background: var(--surface); border: 1px solid var(--axis); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+.btn:hover, select:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); font-weight: 600; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.spacer { flex: 1; }
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 2px; }
+.kpi .lbl { font-size: 12px; color: var(--ink-2); }
+.kpi .val { font-size: 24px; font-weight: 600; font-family: var(--font-num); }
+.kpi .cmp { font-size: 12px; color: var(--muted); }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 14px; min-width: 0; }
+.panel-head { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; align-items: baseline; }
+.panel-head > div { display: grid; gap: 2px; min-width: 0; }
+
+/* Matrix */
+.matrix-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+@media (min-width: 980px) { .matrix-grid { grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr); } }
+.chart-box { position: relative; min-width: 0; }
+svg.matrix { width: 100%; height: auto; display: block; overflow: visible; }
+svg.matrix text { font-family: var(--font-ui); }
+.bubble { cursor: pointer; transition: opacity .15s; }
+.bubble circle.dot { stroke: var(--surface); stroke-width: 2; fill-opacity: .85; }
+.bubble circle.hit { fill: transparent; stroke: none; }
+.blabel { pointer-events: none; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.blabel.dim { opacity: .25; }
+.bubble.dim { opacity: .25; }
+.bubble.hl circle.dot { stroke: var(--ink); stroke-width: 2.5; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--axis); border-radius: 8px; padding: 10px 12px; font-size: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.14); min-width: 210px; z-index: 4; }
+.tip h4 { margin: 0 0 4px; font-size: 13px; }
+.tip table { border-collapse: collapse; width: 100%; }
+.tip td { padding: 1px 0; color: var(--ink-2); }
+.tip td:last-child { text-align: right; font-family: var(--font-num); color: var(--ink); padding-left: 12px; }
+.tip tr.sep td { border-top: 1px solid var(--line); padding-top: 4px; font-weight: 600; color: var(--ink); }
+
+.quads { display: grid; gap: 10px; align-content: start; }
+.quad { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: grid; gap: 6px; }
+.quad-h { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.quad-h .sw { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+.quad-h .cnt { margin-left: auto; font-family: var(--font-num); font-size: 12px; color: var(--muted); font-weight: 400; }
+.quad p { margin: 0; font-size: 12px; color: var(--ink-2); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: inherit; font-size: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 999px; padding: 2px 10px; cursor: pointer; }
+.chip:hover { border-color: var(--accent); }
+.chip.none { cursor: default; color: var(--muted); border-style: dashed; background: transparent; }
+
+details.method { border-top: 1px solid var(--line); padding-top: 10px; }
+details.method summary { cursor: pointer; font-weight: 600; font-size: 13px; color: var(--accent); }
+.weights { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 12px; }
+.weights fieldset { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 0; display: grid; gap: 6px; }
+.weights legend { font-weight: 600; font-size: 12px; padding: 0 4px; }
+.wrow { display: grid; grid-template-columns: 1fr 64px; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-2); }
+.wrow input { font: inherit; font-family: var(--font-num); width: 64px; padding: 3px 6px; border: 1px solid var(--axis); border-radius: 6px; background: var(--surface); color: var(--ink); text-align: right; }
+.note { font-size: 12px; color: var(--muted); margin: 0; max-width: 90ch; }
+
+/* Table */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+table.mi { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1040px; font-size: 13px; }
+table.mi th, table.mi td { padding: 7px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.mi thead th { background: var(--surface); font-weight: 600; font-size: 12px; color: var(--ink-2); text-align: right; vertical-align: bottom; position: sticky; top: 0; }
+table.mi thead tr.grp th { text-align: center; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); border-bottom: 2px solid var(--axis); }
+table.mi thead tr.grp th.g-mkt { border-bottom-color: var(--muted); }
+table.mi thead tr.grp th.g-hfc { border-bottom-color: var(--accent); color: var(--accent); }
+table.mi th.l, table.mi td.l { text-align: left; }
+table.mi td { text-align: right; background: var(--surface); }
+table.mi .sticky { position: sticky; left: 0; z-index: 1; }
+table.mi thead .sticky { z-index: 3; }
+table.mi td.gap, table.mi th.gap { width: 14px; padding: 0; background: var(--bg); border-bottom-color: var(--bg); }
+tr.total td { background: var(--row-total); font-weight: 600; }
+tr.grand td { background: var(--accent-wash); font-weight: 700; }
+tr.hl td { background: var(--row-hl); }
+tr.country-row { cursor: pointer; }
+td .country { font-weight: 600; }
+td .code { font-family: var(--font-num); font-size: 11px; color: var(--muted); margin-left: 6px; }
+td .segl { color: var(--ink-2); padding-left: 14px; }
+.qpill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; color: var(--ink-2); margin-left: 8px; }
+.qpill i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.cell { display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.bar { position: relative; width: 36px; height: 8px; flex: none; }
+.bar::before { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--axis); }
+.bar span { position: absolute; top: 0; height: 8px; border-radius: 2px; }
+.v { font-family: var(--font-num); font-variant-numeric: tabular-nums; min-width: 48px; display: inline-block; text-align: right; }
+.delta { display: block; font-size: 11px; font-family: var(--font-num); margin-top: 1px; }
+.up { color: var(--good); }
+.down { color: var(--bad); }
+.flat { color: var(--muted); }
+.legend { width: 100%; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--ink-2); align-items: center; }
+.legend .bar { display: inline-block; vertical-align: middle; }
+
+.data-panel { display: grid; gap: 10px; }
+.data-panel textarea { width: 100%; min-height: 140px; font: 12px/1.4 var(--font-num); padding: 8px; border: 1px solid var(--axis); border-radius: 8px; background: var(--bg); color: var(--ink); resize: vertical; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.msg { font-size: 12px; color: var(--ink-2); }
+.msg.err { color: var(--bad); }
+footer { font-size: 12px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <span class="eyebrow">Market intelligence · <span id="yearLbl"></span></span>
+      <h1>Country portfolio: where we play and how we win</h1>
+      <p class="sub">Market attractiveness against HFC's ability to win, then market and HFC growth by country and end market.</p>
+    </div>
+    <span class="badge" id="dataBadge">Illustrative sample data</span>
+  </header>
+
+  <div class="controls" role="toolbar" aria-label="Filters">
+    <div class="ctl">End market
+      <div class="seg" id="segCtl">
+        <button type="button" data-seg="All" aria-pressed="true">Total</button>
+        <button type="button" data-seg="Residential" aria-pressed="false">Residential</button>
+        <button type="button" data-seg="Non-residential" aria-pressed="false">Non-residential</button>
+      </div>
+    </div>
+    <label class="ctl" for="sortSel">Sort countries by
+      <select id="sortSel">
+        <option value="size">Market size</option>
+        <option value="quadrant">Matrix position</option>
+        <option value="mktFwd">Market growth, next 5 yrs</option>
+        <option value="hfcBp">HFC BP growth, next 5 yrs</option>
+        <option value="ms">HFC market share</option>
+        <option value="msDelta">Market share change</option>
+        <option value="name">Country name</option>
+      </select>
+    </label>
+    <span class="spacer"></span>
+    <button type="button" class="btn" id="clearHl" hidden>Clear selection</button>
+  </div>
+
+  <section class="kpis" id="kpis" aria-label="Headline figures"></section>
+
+  <section class="panel" aria-labelledby="mxTitle">
+    <div class="panel-head">
+      <div>
+        <span class="eyebrow">1 · Portfolio matrix</span>
+        <h2 id="mxTitle">Market attractiveness vs. ability to win</h2>
+      </div>
+      <span class="note" id="mxScope"></span>
+    </div>
+    <div class="matrix-grid">
+      <div class="chart-box" id="chartBox">
+        <svg class="matrix" id="matrix" viewBox="0 0 640 500" role="img" aria-label="Bubble matrix of countries by market attractiveness and ability to win"></svg>
+        <div class="tip" id="tip" hidden></div>
+      </div>
+      <div class="quads" id="quads"></div>
+    </div>
+    <p class="note">Bubble size = market size. Scores run from 1 to 5; the quadrant split is at 3. Market size, market growth and market share are scored relative to the other countries in view, so a "5" means best of the portfolio. Click a bubble or a chip to find the country in the table below.</p>
+    <details class="method">
+      <summary>Scoring method and weights</summary>
+      <div class="weights" id="weights"></div>
+      <p class="note" style="margin-top:10px">Market size is scored on a log scale. Profitability, competitive intensity, brand strength, channel access and product fit are qualitative 1–5 scores from the data file (5 = most favourable for HFC). Weight changes apply immediately and are kept in this browser only.</p>
+    </details>
+  </section>
+
+  <section class="panel" aria-labelledby="tblTitle">
+    <div class="panel-head">
+      <div>
+        <span class="eyebrow">2 · Country dashboard</span>
+        <h2 id="tblTitle">Market growth vs. HFC growth and share, by end market</h2>
+      </div>
+      <div class="legend" aria-label="How to read the table">
+        <span><span class="bar"><span style="left:50%;width:14px;background:var(--pos)"></span></span> growth</span>
+        <span><span class="bar"><span style="right:50%;width:14px;background:var(--neg)"></span></span> decline</span>
+        <span><span class="up">▲</span>/<span class="down">▼</span> HFC vs. market (pp)</span>
+      </div>
+    </div>
+    <div class="table-scroll" id="tableScroll">
+      <table class="mi" id="tbl"></table>
+    </div>
+    <p class="note">Non-residential includes multi-residential. Country and portfolio totals weight market figures by market size and HFC figures by HFC sales (market size × share). Growth bars use one scale for every column, clipped at ±10 %.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="dataTitle">
+    <div class="panel-head">
+      <div>
+        <span class="eyebrow">Data</span>
+        <h2 id="dataTitle">Update the figures</h2>
+      </div>
+    </div>
+    <div class="data-panel">
+      <p class="note">Paste or load a CSV with one row per country and end market. The first line must be the header below; percentages are plain numbers (3.2 = 3.2 %). Imported data stays in this browser. To change the figures for everyone, edit <code>data.js</code> in the repository.</p>
+      <textarea id="csvBox" spellcheck="false" aria-label="CSV data"></textarea>
+      <div class="row">
+        <button type="button" class="btn primary" id="applyCsv">Apply CSV</button>
+        <label class="btn" for="csvFile">Load CSV file…</label>
+        <input type="file" id="csvFile" accept=".csv,text/csv,text/plain" hidden>
+        <button type="button" class="btn" id="copyCsv">Copy current data as CSV</button>
+        <button type="button" class="btn" id="resetData">Restore default data</button>
+        <span class="msg" id="dataMsg" role="status"></span>
+      </div>
+    </div>
+  </section>
+
+  <footer>HFC Market Intelligence · figures in <span id="ccyLbl"></span> unless stated · pp = percentage points</footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  const CFG = window.HFC_CONFIG || { company: "HFC", currentYear: new Date().getFullYear(), currency: "EUR m", weights: {} };
+  const CY = CFG.currentYear;
+  const CO = CFG.company;
+  const FIELDS = ["country", "code", "segment", "market_size", "mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd",
+    "hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp", "ms_cy", "ms_py",
+    "profitability", "competitive_intensity", "brand_strength", "channel_access", "product_fit"];
+  const NUMERIC = FIELDS.slice(3);
+  const SCORES = ["profitability", "competitive_intensity", "brand_strength", "channel_access", "product_fit"];
+  const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v1";
+
+  const QUADS = {
+    lead: { name: "Leadership position", color: "var(--q-lead)", wash: "var(--q-lead-wash)", order: 0,
+      text: "Attractive market where we are strong. Defend share and extend the lead." },
+    grow: { name: "Priority growth", color: "var(--q-grow)", wash: "var(--q-grow-wash)", order: 1,
+      text: "Attractive market where our position is weak. Invest to build share." },
+    sel:  { name: "Selective investment", color: "var(--q-sel)", wash: "var(--q-sel-wash)", order: 2,
+      text: "Strong position in a less attractive market. Invest selectively and protect margin." },
+    mon:  { name: "Monitor", color: "var(--q-mon)", wash: "var(--q-mon-wash)", order: 3,
+      text: "Less attractive market and weak position. Run for cash, watch for change." }
+  };
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* storage unavailable */ } },
+    del(k) { try { localStorage.removeItem(k); } catch (e) { /* storage unavailable */ } }
+  };
+
+  // ---------- data ----------
+  function normSegment(s) { return /^\s*res/i.test(String(s)) ? "Residential" : "Non-residential"; }
+  function toNum(v) {
+    if (v === null || v === undefined) return null;
+    const s = String(v).trim().replace(/%$/, "").replace(",", ".");
+    if (s === "" || s === "-" || s === "–" || /^n\/?a$/i.test(s)) return null;
+    const n = Number(s);
+    return Number.isFinite(n) ? n : null;
+  }
+  function fromArray(a) {
+    const r = {};
+    FIELDS.forEach((f, i) => { r[f] = a[i]; });
+    return clean(r);
+  }
+  function clean(r) {
+    const o = { country: String(r.country || "").trim(), code: String(r.code || "").trim(), segment: normSegment(r.segment) };
+    if (!o.code) o.code = o.country.slice(0, 3).toUpperCase();
+    NUMERIC.forEach(f => { o[f] = toNum(r[f]); });
+    return o;
+  }
+
+  const DEFAULT_ROWS = (window.HFC_DATA || []).map(fromArray);
+  let usingImported = false;
+  let ROWS = DEFAULT_ROWS;
+  const saved = store.get(LS_DATA);
+  if (saved) {
+    try { const p = JSON.parse(saved); if (Array.isArray(p) && p.length) { ROWS = p.map(clean); usingImported = true; } } catch (e) { /* ignore bad cache */ }
+  }
+
+  const DEFAULT_W = JSON.parse(JSON.stringify(CFG.weights || {}));
+  let W = JSON.parse(JSON.stringify(DEFAULT_W));
+  const savedW = store.get(LS_W);
+  if (savedW) { try { W = Object.assign(W, JSON.parse(savedW)); } catch (e) { /* ignore */ } }
+
+  // ---------- aggregation ----------
+  function wavg(rows, field, wfn) {
+    let s = 0, w = 0;
+    rows.forEach(r => { const v = r[field], ww = wfn(r); if (v !== null && ww > 0) { s += v * ww; w += ww; } });
+    return w > 0 ? s / w : null;
+  }
+  const sizeW = r => r.market_size || 0;
+  const salesW = r => (r.market_size || 0) * (r.ms_cy || 0) / 100;
+
+  function aggregate(rows, label) {
+    const o = { country: label.country, code: label.code, segment: label.segment };
+    o.market_size = rows.reduce((s, r) => s + (r.market_size || 0), 0);
+    ["mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd"].concat(SCORES).forEach(f => { o[f] = wavg(rows, f, sizeW); });
+    ["hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp"].forEach(f => { o[f] = wavg(rows, f, salesW); });
+    const sales = rows.reduce((s, r) => s + salesW(r), 0);
+    o.ms_cy = o.market_size > 0 ? sales / o.market_size * 100 : null;
+    let sizePy = 0, salesPy = 0, ok = true;
+    rows.forEach(r => {
+      if (r.ms_py === null || r.market_size === null) { ok = false; return; }
+      const sp = r.market_size / (1 + (r.mkt_growth_cy || 0) / 100);
+      sizePy += sp; salesPy += sp * r.ms_py / 100;
+    });
+    o.ms_py = ok && sizePy > 0 ? salesPy / sizePy * 100 : null;
+    return o;
+  }
+
+  function countries() {
+    const map = new Map();
+    ROWS.forEach(r => {
+      if (!map.has(r.country)) map.set(r.country, { country: r.country, code: r.code, rows: [] });
+      map.get(r.country).rows.push(r);
+    });
+    const SEG_ORDER = { "Residential": 0, "Non-residential": 1 };
+    return [...map.values()].map(c => {
+      c.rows.sort((a, b) => SEG_ORDER[a.segment] - SEG_ORDER[b.segment]);
+      c.total = aggregate(c.rows, { country: c.country, code: c.code, segment: "Total" });
+      return c;
+    });
+  }
+
+  // ---------- scoring ----------
+  function minmax(vals) {
+    const v = vals.filter(x => x !== null && Number.isFinite(x));
+    return { lo: Math.min(...v), hi: Math.max(...v) };
+  }
+  function scale(v, mm) {
+    if (v === null || !Number.isFinite(v)) return null;
+    if (!(mm.hi > mm.lo)) return 3;
+    return 1 + 4 * (v - mm.lo) / (mm.hi - mm.lo);
+  }
+  function weighted(parts, weights) {
+    let s = 0, w = 0;
+    Object.keys(parts).forEach(k => { const v = parts[k], ww = Number(weights[k]) || 0; if (v !== null && ww > 0) { s += v * ww; w += ww; } });
+    return w > 0 ? s / w : null;
+  }
+  function score(units) {
+    const mmSize = minmax(units.map(u => u.r.market_size > 0 ? Math.log(u.r.market_size) : null));
+    const mmGrowth = minmax(units.map(u => u.r.mkt_cagr_fwd));
+    const mmMs = minmax(units.map(u => u.r.ms_cy));
+    units.forEach(u => {
+      const r = u.r;
+      u.attrParts = {
+        market_size: scale(r.market_size > 0 ? Math.log(r.market_size) : null, mmSize),
+        market_growth: scale(r.mkt_cagr_fwd, mmGrowth),
+        profitability: r.profitability,
+        competitive_intensity: r.competitive_intensity
+      };
+      u.abilParts = {
+        market_share: scale(r.ms_cy, mmMs),
+        brand_strength: r.brand_strength,
+        channel_access: r.channel_access,
+        product_fit: r.product_fit
+      };
+      u.attr = weighted(u.attrParts, W.attractiveness || {});
+      u.abil = weighted(u.abilParts, W.ability || {});
+      const hiA = u.attr >= 3, hiB = u.abil >= 3;
+      u.quad = hiA && hiB ? "lead" : hiA ? "grow" : hiB ? "sel" : "mon";
+    });
+    return units;
+  }
+
+  // ---------- formatting ----------
+  const f1 = v => v === null || !Number.isFinite(v) ? "–" : v.toFixed(1);
+  const pct = v => v === null || !Number.isFinite(v) ? "–" : (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(1) + "%";
+  const pp = v => v === null || !Number.isFinite(v) ? "–" : (v > 0 ? "+" : v < 0 ? "−" : "±") + Math.abs(v).toFixed(1) + " pp";
+  const money = v => v === null ? "–" : Math.round(v).toLocaleString("en-GB");
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const dir = v => v === null || !Number.isFinite(v) || Math.abs(v) < 0.05 ? "flat" : v > 0 ? "up" : "down";
+  const arrow = v => ({ up: "▲", down: "▼", flat: "■" })[dir(v)];
+
+  // ---------- state ----------
+  let seg = "All";
+  let sortKey = store.get("hfc-mi-sort") || "size";
+  let selected = null;
+  document.getElementById("sortSel").value = sortKey;
+  document.getElementById("yearLbl").textContent = CY;
+  document.getElementById("ccyLbl").textContent = CFG.currency;
+
+  function view() {
+    const cs = countries();
+    const units = cs.map(c => ({
+      c,
+      r: seg === "All" ? c.total : c.rows.find(r => r.segment === seg) || null
+    })).filter(u => u.r && u.r.market_size !== null);
+    score(units);
+    return { cs, units };
+  }
+
+  // ---------- KPIs ----------
+  function renderKpis(units) {
+    const rows = units.map(u => u.r);
+    const tot = aggregate(rows, { country: "All", code: "", segment: seg });
+    const counts = { lead: 0, grow: 0, sel: 0, mon: 0 };
+    units.forEach(u => counts[u.quad]++);
+    const segName = seg === "All" ? "all end markets" : seg.toLowerCase();
+    const gap = (tot.hfc_growth_cy ?? NaN) - (tot.mkt_growth_cy ?? NaN);
+    const kp = [
+      { lbl: `Addressable market ${CY}`, val: money(tot.market_size), cmp: `${CFG.currency} · ${units.length} countries · ${segName}` },
+      { lbl: `Market growth ${CY}E`, val: pct(tot.mkt_growth_cy), cmp: `Next 5 yrs ${pct(tot.mkt_cagr_fwd)} p.a. · last 5 yrs ${pct(tot.mkt_cagr_hist)}` },
+      { lbl: `${CO} growth ${CY} forecast`, val: pct(tot.hfc_growth_cy), cmp: `<span class="${dir(gap)}">${arrow(gap)} ${pp(gap)} vs. market</span> · BP ${pct(tot.hfc_cagr_bp)} p.a.` },
+      { lbl: `${CO} market share ${CY}`, val: f1(tot.ms_cy) + "%", cmp: `<span class="${dir(tot.ms_cy - tot.ms_py)}">${arrow(tot.ms_cy - tot.ms_py)} ${pp(tot.ms_cy - tot.ms_py)}</span> vs. ${CY - 1}` },
+      { lbl: "Matrix positions", val: `${counts.lead} · ${counts.grow} · ${counts.sel} · ${counts.mon}`, cmp: "Leadership · Priority growth · Selective · Monitor" }
+    ];
+    document.getElementById("kpis").innerHTML = kp.map(k =>
+      `<div class="kpi"><span class="lbl">${k.lbl}</span><span class="val">${k.val}</span><span class="cmp">${k.cmp}</span></div>`).join("");
+  }
+
+  // ---------- matrix ----------
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const M = { w: 640, h: 500, l: 56, r: 20, t: 20, b: 52 };
+  const xS = v => M.l + (v - 1) / 4 * (M.w - M.l - M.r);
+  const yS = v => M.h - M.b - (v - 1) / 4 * (M.h - M.t - M.b);
+
+  function el(name, attrs, text) {
+    const n = document.createElementNS(SVGNS, name);
+    Object.entries(attrs || {}).forEach(([k, v]) => n.setAttribute(k, v));
+    if (text !== undefined) n.textContent = text;
+    return n;
+  }
+
+  function renderMatrix(units) {
+    const svg = document.getElementById("matrix");
+    svg.innerHTML = "";
+    const midX = xS(3), midY = yS(3), x0 = xS(1), x1 = xS(5), y0 = yS(5), y1 = yS(1);
+    // quadrant washes
+    [["grow", x0, y0, midX - x0, midY - y0], ["lead", midX, y0, x1 - midX, midY - y0],
+     ["mon", x0, midY, midX - x0, y1 - midY], ["sel", midX, midY, x1 - midX, y1 - midY]].forEach(([q, x, y, w, h]) => {
+      svg.appendChild(el("rect", { x, y, width: w, height: h, fill: QUADS[q].wash }));
+    });
+    // grid + ticks
+    for (let v = 1; v <= 5; v++) {
+      svg.appendChild(el("line", { x1: xS(v), x2: xS(v), y1: y0, y2: y1, stroke: "var(--line)", "stroke-width": 1 }));
+      svg.appendChild(el("line", { x1: x0, x2: x1, y1: yS(v), y2: yS(v), stroke: "var(--line)", "stroke-width": 1 }));
+      svg.appendChild(el("text", { x: xS(v), y: y1 + 16, "text-anchor": "middle", "font-size": 11, fill: "var(--muted)" }, v));
+      svg.appendChild(el("text", { x: x0 - 8, y: yS(v) + 4, "text-anchor": "end", "font-size": 11, fill: "var(--muted)" }, v));
+    }
+    svg.appendChild(el("line", { x1: midX, x2: midX, y1: y0, y2: y1, stroke: "var(--axis)", "stroke-width": 1.5, "stroke-dasharray": "4 3" }));
+    svg.appendChild(el("line", { x1: x0, x2: x1, y1: midY, y2: midY, stroke: "var(--axis)", "stroke-width": 1.5, "stroke-dasharray": "4 3" }));
+    svg.appendChild(el("line", { x1: x0, x2: x1, y1: y1, y2: y1, stroke: "var(--axis)", "stroke-width": 1 }));
+    svg.appendChild(el("line", { x1: x0, x2: x0, y1: y0, y2: y1, stroke: "var(--axis)", "stroke-width": 1 }));
+    // axis titles
+    svg.appendChild(el("text", { x: (x0 + x1) / 2, y: M.h - 10, "text-anchor": "middle", "font-size": 12, "font-weight": 600, fill: "var(--ink-2)" }, `Ability to win (${CO}) →`));
+    const yt = el("text", { x: 0, y: 0, "text-anchor": "middle", "font-size": 12, "font-weight": 600, fill: "var(--ink-2)", transform: `translate(16 ${(y0 + y1) / 2}) rotate(-90)` }, "Market attractiveness →");
+    svg.appendChild(yt);
+    // quadrant labels
+    [["grow", x0 + 10, y0 + 18, "start"], ["lead", x1 - 10, y0 + 18, "end"], ["mon", x0 + 10, y1 - 10, "start"], ["sel", x1 - 10, y1 - 10, "end"]].forEach(([q, x, y, a]) => {
+      svg.appendChild(el("text", { x, y, "text-anchor": a, "font-size": 11, "font-weight": 700, "letter-spacing": ".06em", fill: QUADS[q].color }, QUADS[q].name.toUpperCase()));
+    });
+    // bubbles (largest first so small ones stay on top)
+    const maxSize = Math.max(...units.map(u => u.r.market_size || 0), 1);
+    const rad = s => 6 + 16 * Math.sqrt((s || 0) / maxSize);
+    const labels = [];
+    [...units].sort((a, b) => b.r.market_size - a.r.market_size).forEach(u => {
+      if (u.attr === null || u.abil === null) return;
+      const cx = xS(Math.min(5, Math.max(1, u.abil))), cy = yS(Math.min(5, Math.max(1, u.attr))), r = rad(u.r.market_size);
+      const g = el("g", { class: "bubble", tabindex: 0, role: "button", "data-country": u.c.country,
+        "aria-label": `${u.c.country}: attractiveness ${f1(u.attr)}, ability to win ${f1(u.abil)}, ${QUADS[u.quad].name}` });
+      g.appendChild(el("circle", { class: "hit", cx, cy, r: Math.max(r + 4, 12) }));
+      g.appendChild(el("circle", { class: "dot", cx, cy, r, fill: QUADS[u.quad].color }));
+      const right = cx + r + 4 + 30 < x1;
+      labels.push(el("text", { class: "blabel", "data-country": u.c.country, x: right ? cx + r + 4 : cx - r - 4, y: cy + 4, "text-anchor": right ? "start" : "end", "font-size": 12, "font-weight": 600, fill: "var(--ink)" }, u.c.code));
+      g.addEventListener("mouseenter", ev => showTip(u, ev));
+      g.addEventListener("mousemove", ev => moveTip(ev));
+      g.addEventListener("mouseleave", hideTip);
+      g.addEventListener("focus", () => showTip(u, null, g));
+      g.addEventListener("blur", hideTip);
+      g.addEventListener("click", () => select(u.c.country, true));
+      g.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(u.c.country, true); } });
+      svg.appendChild(g);
+    });
+    labels.forEach(t => svg.appendChild(t));
+    applyHighlight();
+  }
+
+  const tip = document.getElementById("tip"), box = document.getElementById("chartBox");
+  const LBL = { market_size: "Market size", market_growth: "Market growth (5 yr)", profitability: "Profitability", competitive_intensity: "Competitive intensity",
+    market_share: "Market share", brand_strength: "Brand strength", channel_access: "Channel access", product_fit: "Product fit" };
+  function showTip(u, ev, anchor) {
+    const rows = (parts, ws) => Object.keys(parts).map(k => `<tr><td>${LBL[k]} <span style="color:var(--muted)">×${Number(ws[k]) || 0}</span></td><td>${f1(parts[k])}</td></tr>`).join("");
+    tip.innerHTML = `<h4>${esc(u.c.country)} · <span style="color:${QUADS[u.quad].color}">●</span> ${QUADS[u.quad].name}</h4>
+      <div style="color:var(--ink-2);margin-bottom:6px">${seg === "All" ? "All end markets" : seg} · ${money(u.r.market_size)} ${CFG.currency} · MS ${f1(u.r.ms_cy)}%</div>
+      <table><tr class="sep"><td>Attractiveness</td><td>${f1(u.attr)}</td></tr>${rows(u.attrParts, W.attractiveness || {})}
+      <tr class="sep"><td>Ability to win</td><td>${f1(u.abil)}</td></tr>${rows(u.abilParts, W.ability || {})}</table>`;
+    tip.hidden = false;
+    if (ev) moveTip(ev);
+    else if (anchor) {
+      const b = anchor.getBoundingClientRect(), bb = box.getBoundingClientRect();
+      place(b.right - bb.left, b.top - bb.top);
+    }
+  }
+  function moveTip(ev) { const bb = box.getBoundingClientRect(); place(ev.clientX - bb.left, ev.clientY - bb.top); }
+  function place(x, y) {
+    const bw = box.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+    let left = x + 14, top = y + 14;
+    if (left + tw > bw) left = Math.max(0, x - tw - 14);
+    if (top + th > box.clientHeight) top = Math.max(0, y - th - 14);
+    tip.style.left = left + "px"; tip.style.top = top + "px";
+  }
+  function hideTip() { tip.hidden = true; }
+
+  function renderQuads(units) {
+    const by = { lead: [], grow: [], sel: [], mon: [] };
+    units.forEach(u => by[u.quad].push(u));
+    document.getElementById("quads").innerHTML = Object.keys(QUADS).map(q => {
+      const list = by[q].sort((a, b) => b.r.market_size - a.r.market_size);
+      return `<div class="quad" style="background:${QUADS[q].wash}">
+        <div class="quad-h"><span class="sw" style="background:${QUADS[q].color}"></span>${QUADS[q].name}<span class="cnt">${list.length} · ${money(list.reduce((s, u) => s + u.r.market_size, 0))} ${CFG.currency}</span></div>
+        <p>${QUADS[q].text}</p>
+        <div class="chips">${list.length ? list.map(u => `<button type="button" class="chip" data-country="${esc(u.c.country)}">${esc(u.c.country)}</button>`).join("") : `<span class="chip none">No country</span>`}</div>
+      </div>`;
+    }).join("");
+    document.querySelectorAll("#quads .chip[data-country]").forEach(b => b.addEventListener("click", () => select(b.dataset.country, true)));
+    document.getElementById("mxScope").textContent = seg === "All" ? "Scored on all end markets combined" : `Scored on ${seg.toLowerCase()} only`;
+  }
+
+  // ---------- table ----------
+  function bar(v) {
+    if (v === null || !Number.isFinite(v)) return `<span class="bar"></span>`;
+    const w = Math.min(Math.abs(v), 10) / 10 * 18;
+    const s = v >= 0 ? `left:50%;width:${w}px;background:var(--pos)` : `right:50%;width:${w}px;background:var(--neg)`;
+    return `<span class="bar" aria-hidden="true"><span style="${s}"></span></span>`;
+  }
+  function gcell(v) { return `<span class="cell">${bar(v)}<span class="v">${pct(v)}</span></span>`; }
+  function hcell(v, mkt) {
+    const g = v !== null && mkt !== null ? v - mkt : null;
+    return `<span class="cell">${bar(v)}<span class="v">${pct(v)}</span></span><span class="delta ${dir(g)}">${g === null ? "" : arrow(g) + " " + pp(g)}</span>`;
+  }
+  function mscell(r) {
+    const d = r.ms_cy !== null && r.ms_py !== null ? r.ms_cy - r.ms_py : null;
+    return [`<span class="v">${r.ms_cy === null ? "–" : f1(r.ms_cy) + "%"}</span>`,
+            `<span class="v ${dir(d)}">${d === null ? "–" : arrow(d) + " " + pp(d)}</span>`];
+  }
+
+  function rowHtml(r, kind, c, quad) {
+    const ms = mscell(r);
+    const first = kind === "seg"
+      ? `<span class="segl">${esc(r.segment)}</span>`
+      : kind === "grand"
+        ? `<span class="country">All countries</span>`
+        : `<span class="country">${esc(c.country)}</span><span class="code">${esc(c.code)}</span>${quad ? `<span class="qpill"><i style="background:${QUADS[quad].color}"></i>${QUADS[quad].name}</span>` : ""}`;
+    const cls = kind === "grand" ? "grand" : kind === "total" ? "total country-row" : "country-row";
+    return `<tr class="${cls}" data-country="${c ? esc(c.country) : ""}">
+      <td class="l sticky">${first}</td>
+      <td class="num">${money(r.market_size)}</td>
+      <td>${gcell(r.mkt_cagr_hist)}</td><td>${gcell(r.mkt_growth_cy)}</td><td>${gcell(r.mkt_cagr_fwd)}</td>
+      <td class="gap"></td>
+      <td>${hcell(r.hfc_cagr_hist, r.mkt_cagr_hist)}</td><td>${hcell(r.hfc_growth_cy, r.mkt_growth_cy)}</td><td>${hcell(r.hfc_cagr_bp, r.mkt_cagr_fwd)}</td>
+      <td class="gap"></td>
+      <td>${ms[0]}</td><td>${ms[1]}</td>
+    </tr>`;
+  }
+
+  function sortUnits(units) {
+    const k = sortKey, list = [...units];
+    const by = fn => list.sort((a, b) => (fn(b) ?? -Infinity) - (fn(a) ?? -Infinity));
+    switch (k) {
+      case "name": return list.sort((a, b) => a.c.country.localeCompare(b.c.country));
+      case "quadrant": return list.sort((a, b) => QUADS[a.quad].order - QUADS[b.quad].order || b.r.market_size - a.r.market_size);
+      case "mktFwd": return by(u => u.r.mkt_cagr_fwd);
+      case "hfcBp": return by(u => u.r.hfc_cagr_bp);
+      case "ms": return by(u => u.r.ms_cy);
+      case "msDelta": return by(u => u.r.ms_cy !== null && u.r.ms_py !== null ? u.r.ms_cy - u.r.ms_py : null);
+      default: return by(u => u.r.market_size);
+    }
+  }
+
+  function renderTable(units) {
+    const h = (a, b) => `<th>${a}<br><span style="font-weight:400;color:var(--muted)">${b}</span></th>`;
+    const head = `<thead>
+      <tr class="grp"><th class="l sticky"></th><th class="g-mkt" colspan="4">Market</th><th class="gap"></th><th class="g-hfc" colspan="3">${CO}</th><th class="gap"></th><th colspan="2">${CO} market share</th></tr>
+      <tr><th class="l sticky">Country / end market</th>${h("Size " + CY, CFG.currency)}
+        ${h("CAGR last 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + "E", "vs. " + (CY - 1))}${h("CAGR next 5 yrs", CY + "–" + (CY + 5))}
+        <th class="gap"></th>
+        ${h("CAGR last 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + " fcst", "vs. " + (CY - 1))}${h("BP CAGR next 5 yrs", CY + "–" + (CY + 5))}
+        <th class="gap"></th>
+        ${h("Share " + CY, "% of market")}${h("Change", "vs. " + (CY - 1))}</tr></thead>`;
+    let body = "";
+    const grand = aggregate(units.map(u => u.r), { country: "All", code: "", segment: seg });
+    body += rowHtml(grand, "grand", null, null);
+    sortUnits(units).forEach(u => {
+      body += rowHtml(seg === "All" ? u.c.total : u.r, "total", u.c, u.quad);
+      if (seg === "All") u.c.rows.forEach(r => { body += rowHtml(r, "seg", u.c, null); });
+    });
+    const t = document.getElementById("tbl");
+    t.innerHTML = head + `<tbody>${body}</tbody>`;
+    t.querySelectorAll("tr.country-row").forEach(tr => tr.addEventListener("click", () => select(tr.dataset.country, false)));
+    applyHighlight();
+  }
+
+  // ---------- selection ----------
+  function select(country, scroll) {
+    selected = selected === country && !scroll ? null : country;
+    applyHighlight();
+    if (selected && scroll) {
+      const tr = document.querySelector(`#tbl tr.total[data-country="${CSS.escape(selected)}"]`);
+      if (tr) tr.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
+    }
+  }
+  function applyHighlight() {
+    document.querySelectorAll("#matrix .bubble").forEach(g => {
+      g.classList.toggle("hl", !!selected && g.dataset.country === selected);
+      g.classList.toggle("dim", !!selected && g.dataset.country !== selected);
+    });
+    document.querySelectorAll("#matrix .blabel").forEach(t => t.classList.toggle("dim", !!selected && t.dataset.country !== selected));
+    document.querySelectorAll("#tbl tr[data-country]").forEach(tr => tr.classList.toggle("hl", !!selected && tr.dataset.country === selected));
+    document.getElementById("clearHl").hidden = !selected;
+  }
+  document.getElementById("clearHl").addEventListener("click", () => { selected = null; applyHighlight(); });
+
+  // ---------- weights ----------
+  function renderWeights() {
+    const grp = (key, title, labels) => `<fieldset><legend>${title}</legend>${Object.keys(labels).map(k =>
+      `<label class="wrow" for="w-${key}-${k}">${labels[k]}<input id="w-${key}-${k}" type="number" min="0" max="100" step="5" data-g="${key}" data-k="${k}" value="${(W[key] || {})[k] ?? 0}"></label>`).join("")}</fieldset>`;
+    document.getElementById("weights").innerHTML =
+      grp("attractiveness", "Market attractiveness", { market_size: "Market size", market_growth: "Market growth, next 5 yrs", profitability: "Profitability", competitive_intensity: "Competitive intensity" }) +
+      grp("ability", "Ability to win", { market_share: `${CO} market share`, brand_strength: "Brand strength", channel_access: "Channel access", product_fit: "Product fit" }) +
+      `<div style="display:flex;align-items:end"><button type="button" class="btn" id="resetW">Restore default weights</button></div>`;
+    document.querySelectorAll("#weights input").forEach(inp => inp.addEventListener("input", () => {
+      W[inp.dataset.g] = W[inp.dataset.g] || {};
+      W[inp.dataset.g][inp.dataset.k] = Math.max(0, Number(inp.value) || 0);
+      store.set(LS_W, JSON.stringify(W));
+      render();
+    }));
+    document.getElementById("resetW").addEventListener("click", () => { W = JSON.parse(JSON.stringify(DEFAULT_W)); store.del(LS_W); renderWeights(); render(); });
+  }
+
+  // ---------- CSV ----------
+  function parseCsv(text) {
+    const delim = (text.split(/\r?\n/)[0].match(/;/g) || []).length > (text.split(/\r?\n/)[0].match(/,/g) || []).length ? ";" : (text.indexOf("\t") > -1 && text.indexOf(",") === -1 ? "\t" : ",");
+    const out = []; let row = [], cur = "", q = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (q) {
+        if (ch === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; }
+        else cur += ch;
+      } else if (ch === '"') q = true;
+      else if (ch === delim) { row.push(cur); cur = ""; }
+      else if (ch === "\n" || ch === "\r") {
+        if (ch === "\r" && text[i + 1] === "\n") i++;
+        row.push(cur); cur = ""; if (row.some(c => c.trim() !== "")) out.push(row); row = [];
+      } else cur += ch;
+    }
+    row.push(cur); if (row.some(c => c.trim() !== "")) out.push(row);
+    return out;
+  }
+  function toCsv(rows) {
+    const q = v => { const s = v === null || v === undefined ? "" : String(v); return /[",;\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+    return [FIELDS.join(",")].concat(rows.map(r => FIELDS.map(f => q(r[f])).join(","))).join("\n");
+  }
+  const msg = document.getElementById("dataMsg");
+  function say(t, err) { msg.textContent = t; msg.classList.toggle("err", !!err); }
+
+  function applyCsv(text) {
+    const grid = parseCsv(text.trim());
+    if (grid.length < 2) return say("Add a header line and at least one data row.", true);
+    const header = grid[0].map(h => h.trim().toLowerCase().replace(/\s+/g, "_"));
+    const missing = FIELDS.filter(f => !header.includes(f) && f !== "code");
+    if (missing.length) return say("Missing column(s): " + missing.join(", ") + ". Use the header shown in the box.", true);
+    const rows = grid.slice(1).map(cells => { const o = {}; header.forEach((h, i) => { o[h] = cells[i]; }); return clean(o); }).filter(r => r.country);
+    const bad = rows.filter(r => r.market_size === null);
+    if (bad.length) return say(`Market size is missing or not a number for: ${bad.map(r => r.country + " " + r.segment).join(", ")}.`, true);
+    ROWS = rows; usingImported = true;
+    store.set(LS_DATA, JSON.stringify(rows));
+    selected = null;
+    render();
+    say(`Applied ${rows.length} rows from ${new Set(rows.map(r => r.country)).size} countries.`);
+  }
+  document.getElementById("applyCsv").addEventListener("click", () => applyCsv(document.getElementById("csvBox").value));
+  document.getElementById("csvFile").addEventListener("change", ev => {
+    const f = ev.target.files && ev.target.files[0]; if (!f) return;
+    const rd = new FileReader();
+    rd.onload = () => { document.getElementById("csvBox").value = rd.result; applyCsv(String(rd.result)); };
+    rd.onerror = () => say("Could not read that file. Try pasting its contents instead.", true);
+    rd.readAsText(f);
+    ev.target.value = "";
+  });
+  document.getElementById("copyCsv").addEventListener("click", () => {
+    const text = toCsv(ROWS), ta = document.getElementById("csvBox");
+    ta.value = text;
+    const fallback = () => { ta.focus(); ta.select(); say("Copy blocked by the browser. The CSV is selected in the box; press Ctrl+C / Cmd+C."); };
+    try { navigator.clipboard.writeText(text).then(() => say("Copied. Paste into Excel or a text editor."), fallback); } catch (e) { fallback(); }
+  });
+  document.getElementById("resetData").addEventListener("click", () => {
+    ROWS = DEFAULT_ROWS; usingImported = false; store.del(LS_DATA); selected = null;
+    document.getElementById("csvBox").value = toCsv(ROWS);
+    render(); say("Default data restored.");
+  });
+
+  // ---------- controls ----------
+  document.querySelectorAll("#segCtl button").forEach(b => b.addEventListener("click", () => {
+    seg = b.dataset.seg;
+    document.querySelectorAll("#segCtl button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    render();
+  }));
+  document.getElementById("sortSel").addEventListener("change", ev => { sortKey = ev.target.value; store.set("hfc-mi-sort", sortKey); render(); });
+
+  function render() {
+    const { units } = view();
+    document.getElementById("dataBadge").textContent = usingImported ? "Imported data (this browser)" : "Illustrative sample data";
+    renderKpis(units);
+    renderMatrix(units);
+    renderQuads(units);
+    renderTable(units);
+  }
+
+  document.getElementById("csvBox").value = toCsv(ROWS);
+  renderWeights();
+  render();
+})();
+</script>
+</body>
+</html>
