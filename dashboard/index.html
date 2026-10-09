@@ -228,7 +228,7 @@ sup { font-size: .7em; line-height: 0; }
       <div class="seg" id="segCtl">
         <button type="button" data-seg="All" aria-pressed="true">Total</button>
         <button type="button" data-seg="Residential" aria-pressed="false">Residential</button>
-        <button type="button" data-seg="Non-residential" aria-pressed="false">Non-residential</button>
+        <button type="button" data-seg="Commercial" aria-pressed="false">Commercial<sup>2</sup></button>
       </div>
     </div>
     <div class="ask" role="note"><span class="ask-q" aria-hidden="true">?</span><span><b>Open question:</b> should we also filter by application or by technology group?</span></div>
@@ -262,7 +262,7 @@ sup { font-size: .7em; line-height: 0; }
     <div class="takeaway" id="mxTake"></div>
     <div class="source">
       <span>Source: Oxford Economics; HFC market intelligence data file (<span id="srcData">illustrative sample</span>)</span>
-      <span>Notes: scores from 1 to 5; market size, renovation and new build growth and market share are scored relative to the other countries in view, so 5 = best of the portfolio. Click a bubble or a country to find it in the table below.</span>
+      <span>Notes: scores from 1 to 5; market size, renovation and new build growth and market share are scored relative to the other countries in view, so 5 = best of the portfolio. Commercial = commercial (offices, retail, hotels) + multi-family residential. Click a bubble or a country to find it in the table below.</span>
     </div>
   </section>
 
@@ -284,7 +284,7 @@ sup { font-size: .7em; line-height: 0; }
     <div class="takeaway" id="tblTake"></div>
     <div class="source">
       <span>Source: Oxford Economics; HFC market intelligence data file; HFC business plan</span>
-      <span>Notes: 1. Market growth = construction work done. R = renovation, NB = new build; the top figure combines both. Non-residential includes multi-residential. Market size and HFC sales are <span class="yr-prev"></span> values. Totals weight market figures by market size and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
+      <span>Notes: 1. Market growth = construction work done. R = renovation, NB = new build; the top figure combines both. 2. Commercial = commercial (offices, retail, hotels) + multi-family residential. Market size and HFC sales are <span class="yr-prev"></span> values. Totals weight market figures by market size and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
     </div>
   </section>
 
@@ -357,7 +357,7 @@ sup { font-size: .7em; line-height: 0; }
   };
 
   // ---------- data ----------
-  function normSegment(s) { return /^\s*res/i.test(String(s)) ? "Residential" : "Non-residential"; }
+  function normSegment(s) { return /^\s*res/i.test(String(s)) ? "Residential" : "Commercial"; }
   function toNum(v) {
     if (v === null || v === undefined) return null;
     const s = String(v).trim().replace(/%$/, "").replace(",", ".");
@@ -432,7 +432,7 @@ sup { font-size: .7em; line-height: 0; }
       if (!map.has(r.country)) map.set(r.country, { country: r.country, code: r.code, rows: [] });
       map.get(r.country).rows.push(r);
     });
-    const SEG_ORDER = { "Residential": 0, "Non-residential": 1 };
+    const SEG_ORDER = { "Residential": 0, "Commercial": 1 };
     return [...map.values()].map(c => {
       c.rows.sort((a, b) => SEG_ORDER[a.segment] - SEG_ORDER[b.segment]);
       c.total = aggregate(c.rows, { country: c.country, code: c.code, segment: "Total" });
@@ -499,8 +499,8 @@ sup { font-size: .7em; line-height: 0; }
 
   // ---------- formatting ----------
   const f1 = v => v === null || !Number.isFinite(v) ? "–" : v.toFixed(1);
-  const pct = v => v === null || !Number.isFinite(v) ? "–" : (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(1) + "%";
-  const pp = v => v === null || !Number.isFinite(v) ? "–" : (v > 0 ? "+" : v < 0 ? "−" : "±") + Math.abs(v).toFixed(1) + " pp";
+  const pct = v => v === null || !Number.isFinite(v) ? "–" : Math.abs(v) < 0.05 ? "0.0%" : (v > 0 ? "+" : "−") + Math.abs(v).toFixed(1) + "%";
+  const pp = v => v === null || !Number.isFinite(v) ? "–" : Math.abs(v) < 0.05 ? "±0.0 pp" : (v > 0 ? "+" : "−") + Math.abs(v).toFixed(1) + " pp";
   const money = v => v === null ? "–" : Math.round(v).toLocaleString("en-GB");
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const dir = v => v === null || !Number.isFinite(v) || Math.abs(v) < 0.05 ? "flat" : v > 0 ? "up" : "down";
@@ -772,7 +772,7 @@ sup { font-size: .7em; line-height: 0; }
   function rowHtml(r, kind, c, zone) {
     const ms = mscell(r);
     const first = kind === "seg"
-      ? `<span class="segl">${esc(r.segment)}</span>`
+      ? `<span class="segl">${esc(r.segment)}${r.segment === "Commercial" ? "<sup>2</sup>" : ""}</span>`
       : kind === "grand"
         ? `<span>All countries</span>`
         : kind === "zone"

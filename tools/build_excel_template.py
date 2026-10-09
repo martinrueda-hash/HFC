@@ -12,7 +12,7 @@ Sheets
   Raw data          one row per country x end market; market growth is calculated from Market levels
   Dashboard data    formulas only: the table the dashboard reads on upload
 
-End markets: Residential = Residential total - Multi family; Non-residential = Multi family + Commercial.
+End markets: Residential = Residential total - Multi family; Commercial = Commercial + Multi family.
 """
 import csv
 import json
@@ -30,7 +30,7 @@ from openpyxl.worksheet.datavalidation import DataValidation
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "templates" / "HFC_market_intelligence_template.xlsx"
-OE_CSV = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "data" / "oxford-economics" / "Oxecon_download_-_9_October_2026.csv"
+OE_SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "data" / "oxford-economics" / "Oxecon_download_-_9_October_2026_split.xlsx"
 
 # Palette from the EU WT strategy deck
 RED, RED_SOFT, SALMON, BLUSH, TINT = "CE0E2D", "DD6556", "E49587", "F4E4DC", "FCF1F1"
@@ -41,12 +41,19 @@ N_ROWS = 60          # rows available in Raw data
 OE_LAST_ROW = 1000   # paste area depth on the Oxford Economics sheet
 OE_LAST_COL = "AZ"
 
-IND_TOTAL = "Work Done - Residential - Total"
-IND_MF = "Work Done - Residential - Multi Family"
-IND_COM = "Work Done - Non-Residential Building - Commercial"
+# Oxford Economics series (New / Renovation for each). Commercial already includes offices, retail and hotels.
+SERIES = [
+    ("oe.res_total_new", "Residential total - new", "Work Done - Residential - Total - New"),
+    ("oe.res_total_reno", "Residential total - renovation", "Work Done - Residential - Total - Renovation"),
+    ("oe.res_mf_new", "Multi family - new", "Work Done - Residential - Multi Family - New"),
+    ("oe.res_mf_reno", "Multi family - renovation", "Work Done - Residential - Multi Family - Renovation"),
+    ("oe.com_new", "Commercial - new", "Work Done - Non-Residential Building - Commercial - New"),
+    ("oe.com_reno", "Commercial - renovation", "Work Done - Non-Residential Building - Commercial - Renovation"),
+]
+SERIES_NAME = {k: name for k, _, name in SERIES}
 
 # Countries: display name, code, Oxford Economics location, and ILLUSTRATIVE HFC inputs
-# (market share 2025 res / non-res %, HFC CAGR hist / growth CY / BP CAGR %, scores prof / comp / channel / fit)
+# (market share 2025 residential / commercial %, HFC CAGR hist / growth CY / BP CAGR %, scores prof / comp / channel / fit)
 COUNTRIES = [
     ("Poland", "PL", "Poland", (5.0, 3.8), (9.0, 8.5, 10.0), (3, 3, 2, 4)),
     ("Czech Republic", "CZ", "Czech Republic", (6.0, 4.0), (6.0, 5.0, 7.0), (3, 3, 3, 3)),
@@ -118,24 +125,36 @@ def year_formula(head, year_ref):
     return "=" + "&".join(expr[p] if p in expr else json.dumps(p) for p in parts if p != "")
 
 # ---------------------------------------------------------------- Oxford Economics export
-with open(OE_CSV, encoding="utf-8-sig", newline="") as fh:
-    oe_rows = list(csv.reader(fh))
-oe_head = oe_rows[0]
+if OE_SRC.suffix.lower() == ".csv":
+    with open(OE_SRC, encoding="utf-8-sig", newline="") as fh:
+        oe_rows = list(csv.reader(fh))
+else:
+    from openpyxl import load_workbook
+    _wb = load_workbook(OE_SRC, data_only=True)
+    _ws = next(w for w in _wb.worksheets if w.cell(row=1, column=1).value == "Location")
+    oe_rows = [["" if v is None else v for v in r] for r in _ws.iter_rows(values_only=True)]
+oe_rows = [r for r in oe_rows if any(str(v).strip() for v in r)]
+oe_head = [str(h) for h in oe_rows[0]]
 
 def to_cell(v, col_name):
     if re.fullmatch(r"\d{4}", col_name.strip()):
         try:
             return float(v)
-        except ValueError:
+        except (TypeError, ValueError):
             return None
     return v
 
-def oe_level(location, indicator, year):
+def oe_level(location, key, year):
     yi = oe_head.index(str(year))
     for r in oe_rows[1:]:
-        if r[0] == location and r[1] == indicator:
+        if r[0] == location and r[1] == SERIES_NAME[key]:
             return float(r[yi])
     return 0.0
+
+def segment_level(location, segment, year, kind):
+    """Construction work done for an end market; kind is 'new' or 'reno'."""
+    t, mf, com = (oe_level(location, f"oe.{x}_{kind}", year) for x in ("res_total", "res_mf", "com"))
+    return t - mf if segment == "Residential" else mf + com
 
 wb = Workbook()
 
@@ -160,9 +179,10 @@ SETTINGS = [
     ("Current year", 2026, "currentYear", "0", "Base year = current year - 1 (sizes and sales); history = 5 years to the base year; outlook = current year + 5"),
     ("Currency label", "EUR m", "currency", "@", "Unit of addressable market size and HFC sales"),
     ("Oxford Economics series (Indicator column of the export)", None, None, None, None),
-    ("Residential - total", IND_TOTAL, "oe.res_total", "@", "Residential end market = Residential total - Multi family"),
-    ("Residential - multi family", IND_MF, "oe.res_mf", "@", "Counted in Non-residential, as agreed"),
-    ("Non-residential - commercial", IND_COM, "oe.nonres_com", "@", "Non-residential end market = Multi family + Commercial"),
+    *[(label, name, key, "@", note) for (key, label, name), note in zip(SERIES, [
+        "Residential = Residential total - Multi family (new and renovation separately)", "",
+        "Multi family is counted in Commercial", "",
+        "Commercial end market = Commercial + Multi family (commercial already includes offices, retail and hotels)", ""])],
 ]
 r = 5
 group_rows = []
@@ -193,7 +213,7 @@ for label, value, key, fmt, note in SETTINGS:
     st.cell(row=r, column=4).alignment = WRAP
     r += 1
 YEAR = f"Settings!$B${SET_ROW['currentYear']}"
-IND = {k: f"Settings!$B${SET_ROW[k]}" for k in ("oe.res_total", "oe.res_mf", "oe.nonres_com")}
+IND = {k: f"Settings!$B${SET_ROW[k]}" for k, _, _ in SERIES}
 st.freeze_panes = "A5"
 
 # ================================================================ Oxford Economics (paste area)
@@ -202,10 +222,10 @@ oe.sheet_properties.tabColor = GREY_BAND
 band(oe, 1, 16, "Oxford Economics", "Paste the full Oxford Economics download here, header row in row 6 (cell A6). Level values, any years.")
 oe.cell(row=3, column=1, value=("To update: select A6, paste the new export (all columns, header row included) over the old one, and delete any leftover rows below. "
                                 "Columns needed: Location, Indicator and one column per year. Nothing else to change.")).font = font(9, color=RED, italic=True)
-oe.cell(row=4, column=1, value=f"Current data: {OE_CSV.name}").font = font(9, color=INK, italic=True)
+oe.cell(row=4, column=1, value=f"Current data: {OE_SRC.name}").font = font(9, color=INK, italic=True)
 OE_HEAD = 6
 for j, h in enumerate(oe_head, 1):
-    c = oe.cell(row=OE_HEAD, column=j, value=int(h) if re.fullmatch(r"\d{4}", h) else h)
+    c = oe.cell(row=OE_HEAD, column=j, value=h)
     c.font = font(9, True, WHITE)
     c.fill = fill(INK)
     c.alignment = CENTER
@@ -233,20 +253,20 @@ COLS = [
     # key, header, number format, group, width, comment, kind ("in" input / "calc" formula)
     ("country", "Country", "@", "Country", 17, None, "in"),
     ("code", "Code", "@", "Country", 7, "Short code (optional)", "in"),
-    ("segment", "End market", "@", "Country", 15, "Residential, or Non-residential (multi family + commercial)", "in"),
+    ("segment", "End market", "@", "Country", 15, "Residential, or Commercial (commercial + multi family)", "in"),
     ("oe_location", "Oxford Economics\nlocation", "@", "Country", 16, "Location name exactly as in the Oxford Economics export", "in"),
     ("market_size", "Addressable market\n{py} (EUR m)", "#,##0", "Market", 13, "HFC addressable market in the base year (your estimate, not total construction output)", "in"),
     ("oe_level_py", "Construction work\ndone {py} (US$ m)", "#,##0", "Market", 14, "From Market levels (Oxford Economics, 2023 prices)", "calc"),
     ("mkt_cagr_hist", "Market CAGR\n{hy}-{py}", "0.0%", "Market", 12, "From Market levels: needs the export to include the start year", "calc"),
     ("mkt_growth_cy", "Market growth\n{cy}E", "0.0%", "Market", 12, "From Market levels", "calc"),
     ("mkt_cagr_fwd", "Market CAGR\n{cy}-{fy}", "0.0%", "Market", 12, "From Market levels", "calc"),
-    ("reno_share", "Renovation share\nof market", "0%", "Split", 12, "Optional. Renovation as % of the market; new build is the rest", "in"),
-    ("mkt_reno_cagr_hist", "Renovation CAGR\n{hy}-{py}", "0.0%", "Split", 12, "Optional", "in"),
-    ("mkt_reno_growth_cy", "Renovation growth\n{cy}E", "0.0%", "Split", 12, "Optional", "in"),
-    ("mkt_reno_cagr_fwd", "Renovation CAGR\n{cy}-{fy}", "0.0%", "Split", 12, "Optional", "in"),
-    ("mkt_nb_cagr_hist", "New build CAGR\n{hy}-{py}", "0.0%", "Split", 12, "Optional", "in"),
-    ("mkt_nb_growth_cy", "New build growth\n{cy}E", "0.0%", "Split", 12, "Optional", "in"),
-    ("mkt_nb_cagr_fwd", "New build CAGR\n{cy}-{fy}", "0.0%", "Split", 12, "Optional", "in"),
+    ("reno_share", "Renovation share\nof market", "0%", "Split", 12, "From Market levels (Oxford Economics)", "calc"),
+    ("mkt_reno_cagr_hist", "Renovation CAGR\n{hy}-{py}", "0.0%", "Split", 12, "From Market levels (Oxford Economics)", "calc"),
+    ("mkt_reno_growth_cy", "Renovation growth\n{cy}E", "0.0%", "Split", 12, "From Market levels (Oxford Economics)", "calc"),
+    ("mkt_reno_cagr_fwd", "Renovation CAGR\n{cy}-{fy}", "0.0%", "Split", 12, "From Market levels (Oxford Economics)", "calc"),
+    ("mkt_nb_cagr_hist", "New build CAGR\n{hy}-{py}", "0.0%", "Split", 12, "From Market levels (Oxford Economics)", "calc"),
+    ("mkt_nb_growth_cy", "New build growth\n{cy}E", "0.0%", "Split", 12, "From Market levels (Oxford Economics)", "calc"),
+    ("mkt_nb_cagr_fwd", "New build CAGR\n{cy}-{fy}", "0.0%", "Split", 12, "From Market levels (Oxford Economics)", "calc"),
     ("hfc_sales", "HFC sales {py}\n(EUR m)", "#,##0", "HFC", 12, "Actual sales in the base year", "in"),
     ("hfc_cagr_hist", "HFC sales CAGR\n{hy}-{py}", "0.0%", "HFC", 12, None, "in"),
     ("hfc_growth_cy", "HFC growth\n{cy} forecast", "0.0%", "HFC", 12, None, "in"),
@@ -261,7 +281,7 @@ COLS = [
 GROUPS = {
     "Country": ("Country / end market", INK_STRONG),
     "Market": ("Market (construction work done, Oxford Economics)", INK),
-    "Split": ("Renovation / new build split (optional)", GREY_BAND),
+    "Split": ("Renovation / new build split (Oxford Economics)", GREY_BAND),
     "HFC": ("HFC", RED),
     "Score": ("Qualitative scores (1-5, 5 = most favourable)", RED_SOFT),
 }
@@ -299,8 +319,8 @@ rd.row_dimensions[HEAD_ROW].height = 42
 # ================================================================ Market levels (formulas)
 ml = wb.create_sheet("Market levels")
 ml.sheet_properties.tabColor = GREY_BAND
-band(ml, 1, 16, "Market levels", "Construction work done per country and end market (US$ m, 2023 prices), calculated from the Oxford Economics sheet. Do not type here.")
-ml.cell(row=3, column=1, value="Residential = Residential total - Multi family. Non-residential = Multi family + Commercial. Empty = year or series not in the export.").font = font(9, color=INK, italic=True)
+band(ml, 1, 39, "Market levels", "Construction work done per country and end market (US$ m, 2023 prices), calculated from the Oxford Economics sheet. Do not type here.")
+ml.cell(row=3, column=1, value="Residential = Residential total - Multi family. Commercial = Commercial + Multi family. Each for renovation and new build; total = both. Empty = year or series not in the export.").font = font(9, color=INK, italic=True)
 ML_HEAD = 5
 for j, h in enumerate(["Country", "End market", "Oxford Economics location"], 1):
     c = ml.cell(row=ML_HEAD, column=j, value=h)
@@ -311,15 +331,25 @@ ml.column_dimensions["A"].width = 17
 ml.column_dimensions["B"].width = 15
 ml.column_dimensions["C"].width = 20
 YEAR_OFFSETS = list(range(-6, 6))   # current year - 6 ... current year + 5
-for k, off in enumerate(YEAR_OFFSETS):
-    col = 4 + k
-    c = ml.cell(row=ML_HEAD, column=col, value=f"={YEAR}{off:+d}" if off else f"={YEAR}")
-    c.font = font(9, True, WHITE)
-    c.fill = fill(RED if off >= 0 else INK)
+BLOCKS = [("total", "Total (renovation + new build)", INK_STRONG), ("reno", "Renovation", INK), ("new", "New build", GREY_BAND)]
+BCOL = {}
+for bi, (bkey, btitle, bcolor) in enumerate(BLOCKS):
+    first_col = 4 + bi * len(YEAR_OFFSETS)
+    ml.merge_cells(start_row=ML_HEAD - 1, start_column=first_col, end_row=ML_HEAD - 1, end_column=first_col + len(YEAR_OFFSETS) - 1)
+    c = ml.cell(row=ML_HEAD - 1, column=first_col, value=btitle)
+    c.font = font(10, True, WHITE)
     c.alignment = CENTER
-    c.number_format = "0"
-    ml.column_dimensions[get_column_letter(col)].width = 11
-YCOL = {off: get_column_letter(4 + k) for k, off in enumerate(YEAR_OFFSETS)}
+    for k, off in enumerate(YEAR_OFFSETS):
+        col = first_col + k
+        ml.cell(row=ML_HEAD - 1, column=col).fill = fill(bcolor)
+        c = ml.cell(row=ML_HEAD, column=col, value=f"={YEAR}{off:+d}" if off else f"={YEAR}")
+        c.font = font(9, True, WHITE)
+        c.fill = fill(RED if off >= 0 else INK)
+        c.alignment = CENTER
+        c.number_format = "0"
+        ml.column_dimensions[get_column_letter(col)].width = 10
+        BCOL[(bkey, off)] = get_column_letter(col)
+YCOL = {off: BCOL[("total", off)] for off in YEAR_OFFSETS}
 
 def comp(ind_ref, year_cell, loc_cell):
     idx = f"IFERROR(MATCH({year_cell},{OE_HDR},0),MATCH({year_cell}&\"\",{OE_HDR},0))"
@@ -331,26 +361,28 @@ for n in range(N_ROWS):
     calc_cell(ml.cell(row=mr, column=2, value=f"=IF($A{mr}=\"\",\"\",'Raw data'!$C{rr})"), "@", 9)
     calc_cell(ml.cell(row=mr, column=3, value=f"=IF($A{mr}=\"\",\"\",IF('Raw data'!$D{rr}=\"\",$A{mr},'Raw data'!$D{rr}))"), "@", 9)
     for off in YEAR_OFFSETS:
-        yc = f"{YCOL[off]}${ML_HEAD}"
-        res = f"({comp(IND['oe.res_total'], yc, f'$C{mr}')}-{comp(IND['oe.res_mf'], yc, f'$C{mr}')})"
-        non = f"({comp(IND['oe.res_mf'], yc, f'$C{mr}')}+{comp(IND['oe.nonres_com'], yc, f'$C{mr}')})"
-        lvl = f'IF($B{mr}="Residential",{res},{non})'
-        f = f'=IF($A{mr}="","",IFERROR(1/(1/{lvl}),""))'
-        calc_cell(ml.cell(row=mr, column=4 + YEAR_OFFSETS.index(off), value=f), "#,##0", 9)
+        for kind in ("reno", "new"):
+            yc = f"{BCOL[(kind, off)]}${ML_HEAD}"
+            loc = f"$C{mr}"
+            t, mf, com = (comp(IND[f"oe.{x}_{kind}"], yc, loc) for x in ("res_total", "res_mf", "com"))
+            lvl = f'IF($B{mr}="Residential",{t}-{mf},{mf}+{com})'
+            cell = ml[f"{BCOL[(kind, off)]}{mr}"]
+            cell.value = f'=IF($A{mr}="","",IFERROR(1/(1/{lvl}),""))'
+            calc_cell(cell, "#,##0", 9)
+        rc, nc = f"{BCOL[('reno', off)]}{mr}", f"{BCOL[('new', off)]}{mr}"
+        calc_cell(ml[f"{BCOL[('total', off)]}{mr}"], "#,##0", 9)
+        ml[f"{BCOL[('total', off)]}{mr}"].value = f'=IF($A{mr}="","",IF(AND(ISNUMBER({rc}),ISNUMBER({nc})),{rc}+{nc},""))'
 ml.freeze_panes = ml[f"D{ML_HEAD + 1}"]
 ML = "'Market levels'!"
 
 # ---------------------------------------------------------------- Raw data rows
 sample = []
 for name, code, loc, ms, hfc, scores in COUNTRIES:
-    for s_i, seg in enumerate(("Residential", "Non-residential")):
-        if seg == "Residential":
-            lvl = oe_level(loc, IND_TOTAL, 2025) - oe_level(loc, IND_MF, 2025)
-        else:
-            lvl = oe_level(loc, IND_MF, 2025) + oe_level(loc, IND_COM, 2025)
+    for s_i, seg in enumerate(("Residential", "Commercial")):
+        lvl = segment_level(loc, seg, 2025, "new") + segment_level(loc, seg, 2025, "reno")
         size = round(lvl * USD_EUR * ADDRESSABLE_RATIO / 5) * 5
         sales = round(size * ms[s_i] / 100, 1)
-        bump = 0.5 if seg == "Non-residential" else 0.0
+        bump = 0.5 if seg == "Commercial" else 0.0
         sample.append({
             "country": name, "code": code, "segment": seg, "oe_location": loc,
             "market_size": size, "hfc_sales": sales,
@@ -362,7 +394,16 @@ for name, code, loc, ms, hfc, scores in COUNTRIES:
 for n in range(N_ROWS):
     rr, mr = FIRST + n, ML_HEAD + 1 + n
     lv = lambda off: f"{ML}{YCOL[off]}{mr}"
+    rv = lambda off: f"{ML}{BCOL[('reno', off)]}{mr}"
+    nv = lambda off: f"{ML}{BCOL[('new', off)]}{mr}"
     calc = {
+        "reno_share": f'=IF($A{rr}="","",IFERROR({rv(-1)}/{lv(-1)},""))',
+        "mkt_reno_cagr_hist": f'=IF($A{rr}="","",IFERROR(({rv(-1)}/{rv(-6)})^(1/5)-1,""))',
+        "mkt_reno_growth_cy": f'=IF($A{rr}="","",IFERROR({rv(0)}/{rv(-1)}-1,""))',
+        "mkt_reno_cagr_fwd": f'=IF($A{rr}="","",IFERROR(({rv(5)}/{rv(0)})^(1/5)-1,""))',
+        "mkt_nb_cagr_hist": f'=IF($A{rr}="","",IFERROR(({nv(-1)}/{nv(-6)})^(1/5)-1,""))',
+        "mkt_nb_growth_cy": f'=IF($A{rr}="","",IFERROR({nv(0)}/{nv(-1)}-1,""))',
+        "mkt_nb_cagr_fwd": f'=IF($A{rr}="","",IFERROR(({nv(5)}/{nv(0)})^(1/5)-1,""))',
         "oe_level_py": f'=IF($A{rr}="","",{lv(-1)})',
         "mkt_cagr_hist": f'=IF($A{rr}="","",IFERROR(({lv(-1)}/{lv(-6)})^(1/5)-1,""))',
         "mkt_growth_cy": f'=IF($A{rr}="","",IFERROR({lv(0)}/{lv(-1)}-1,""))',
@@ -378,7 +419,7 @@ for n in range(N_ROWS):
     if n < len(sample):
         for key, v in sample[n].items():
             rd[f"{COL[key]}{rr}"].value = v
-dv_seg = DataValidation(type="list", formula1='"Residential,Non-residential"', allow_blank=True)
+dv_seg = DataValidation(type="list", formula1='"Residential,Commercial"', allow_blank=True)
 dv_score = DataValidation(type="whole", operator="between", formula1="1", formula2="5", allow_blank=True,
                           error="Enter a whole score from 1 to 5", errorTitle="Score 1-5")
 dv_pct = DataValidation(type="decimal", operator="between", formula1="0", formula2="1", allow_blank=True,
@@ -387,7 +428,7 @@ for dv in (dv_seg, dv_score, dv_pct):
     rd.add_data_validation(dv)
 dv_seg.add(f"{COL['segment']}{FIRST}:{COL['segment']}{LAST_ROW}")
 dv_score.add(f"{COL['profitability']}{FIRST}:{COL['product_fit']}{LAST_ROW}")
-for key in ("reno_share", "ms_py_override", "ms_cy_override"):
+for key in ("ms_py_override", "ms_cy_override"):
     dv_pct.add(f"{COL[key]}{FIRST}:{COL[key]}{LAST_ROW}")
 rd.freeze_panes = rd[f"E{FIRST}"]
 rd.cell(row=3, column=1, value=("Market growth comes from Oxford Economics (green). Addressable market, HFC figures and scores in the sample rows are ILLUSTRATIVE: "
@@ -479,12 +520,13 @@ lines = [
     ("4", "Dashboard data: nothing to type. Check that every country appears and that the check column shows no red cells."),
     ("5", "Save the file (.xlsx), open the dashboard, go to 'Update the figures' and click 'Upload Excel'."),
     ("How the market figures are built", None),
-    ("End markets", "Residential = Oxford Economics 'Residential - Total' minus 'Multi Family'. Non-residential = 'Multi Family' plus 'Non-Residential Building - Commercial'."),
+    ("End markets", "Residential = Oxford Economics 'Residential - Total' minus 'Multi Family'. Commercial = 'Non-Residential Building - Commercial' plus 'Multi Family'. Each is built for New and Renovation; total = both."),
     ("Market levels", "Shows the resulting construction work done per country, end market and year (US$ m, 2023 prices)."),
     ("Growth rates", "CAGR last 5 years = (base year / base year - 5)^(1/5) - 1. Growth this year = current year / base year - 1. CAGR next 5 years = (current year + 5 / current year)^(1/5) - 1."),
     ("History", "The 5-year history needs the export to start 6 years before the current year (e.g. 2020 for 2026). With a shorter export it stays empty."),
+    ("Series names", "If Oxford Economics renames a series, update its name in Settings; everything else follows."),
     ("Addressable market", "Your estimate of the HFC addressable market in EUR m (not total construction output). Used for market size and market share."),
-    ("Renovation / new build", "Optional inputs. When empty, the dashboard uses total market growth in the matrix and hides the split."),
+    ("Renovation / new build", "Calculated from the New and Renovation series: renovation share of the base year and the same three growth rates for each."),
     ("Qualitative scores", "Profitability, competitive intensity, channel access and product fit: type a whole score from 1 to 5 (5 = most favourable for HFC)."),
     ("Conventions", None),
     ("Blue cells", "Inputs: type or paste your figures here."),
