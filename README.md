@@ -38,5 +38,15 @@ Country totals weight market figures by market size and HFC figures by HFC sales
 
 ## Updating the data
 
-- **For everyone:** edit `dashboard/data.js`. One row per country and end market; the column meanings are documented at the top of the file. Set `currentYear` there; all column headers (e.g. "CAGR 2020–2025", "2026E", "2026–2031") follow from it.
-- **Quick test in your own browser:** in the "Update the figures" section, paste a CSV or load a `.csv` file (comma, semicolon or tab separated; the header line must match the one shown). "Copy current data as CSV" gives you a template you can fill in Excel.
+Use the Excel template `templates/HFC_market_intelligence_template.xlsx`:
+
+1. **Oxford Economics** sheet: paste the latest download (level values, header row in cell A6). Market growth for every country updates automatically. Residential = Residential total − Multi family; Non-residential = Multi family + Commercial.
+2. **Raw data** sheet: one row per country and end market. Fill in the addressable market (EUR m), HFC sales and growth, qualitative KPIs and, optionally, the renovation / new build split.
+3. **Settings** and **Scoring rules**: current year, matrix weights, zone lines, Oxford Economics series names and the cut-offs that turn KPIs into 1–5 scores.
+4. Save, then click **Upload Excel** in the dashboard's "Update the figures" section. The dashboard reads the calculated **Dashboard data** sheet and the Settings sheet. Uploaded data is kept in that browser only.
+
+To change the default data for everyone: recalculate the workbook, run `python3 tools/sync_data_js.py` to regenerate `dashboard/data.js`, and commit. `tools/build_excel_template.py` rebuilds the template from scratch (sample rows and the Oxford Economics export in `data/oxford-economics/`).
+
+The 5-year history (e.g. 2020–2025) needs the Oxford Economics export to include the start year; the current export starts in 2024, so that column is empty. Without a renovation / new build split, the matrix uses total market growth and the table hides the split.
+
+A CSV option is still available under "CSV option" on the page.

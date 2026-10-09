@@ -201,6 +201,8 @@ sup { font-size: .7em; line-height: 0; }
 
 .data-panel { display: grid; gap: 10px; }
 .data-panel textarea { width: 100%; min-height: 130px; font: 11.5px/1.4 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; padding: 8px; border: 1px solid var(--axis); border-radius: 3px; background: var(--tint); color: var(--ink-strong); resize: vertical; }
+.steps { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 12.5px; color: var(--ink-strong); }
+.steps b { color: var(--red); }
 .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .msg { font-size: 12px; color: var(--ink); }
 .msg.err { color: var(--bad); font-weight: 600; }
@@ -290,16 +292,31 @@ sup { font-size: .7em; line-height: 0; }
     <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
     <h2 class="stitle" id="dataTitle">Update the figures</h2>
     <div class="data-panel">
-      <p class="note">Paste or load a CSV with one row per country and end market. The first line must be the header below; percentages are plain numbers (3.2 = 3.2%). Imported data stays in this browser. To change the figures for everyone, edit <code>data.js</code> in the repository.</p>
-      <textarea id="csvBox" spellcheck="false" aria-label="CSV data"></textarea>
+      <ol class="steps">
+        <li>Fill in the <b>HFC market intelligence Excel template</b>: raw data in <i>Raw data</i>, score cut-offs in <i>Scoring rules</i>, year and weights in <i>Settings</i>.</li>
+        <li>Save it as .xlsx.</li>
+        <li>Upload it here. The dashboard reads the <i>Dashboard data</i> sheet, which the template calculates for you.</li>
+      </ol>
       <div class="row">
-        <button type="button" class="btn primary" id="applyCsv">Apply CSV</button>
-        <label class="btn" for="csvFile">Load CSV file…</label>
-        <input type="file" id="csvFile" accept=".csv,text/csv,text/plain" hidden>
-        <button type="button" class="btn" id="copyCsv">Copy current data as CSV</button>
+        <label class="btn primary" for="xlsxFile">Upload Excel…</label>
+        <input type="file" id="xlsxFile" accept=".xlsx,.xlsm,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
         <button type="button" class="btn" id="resetData">Restore default data</button>
         <span class="msg" id="dataMsg" role="status"></span>
       </div>
+      <p class="note">Uploaded data stays in this browser only. To change the figures for everyone, update <code>data.js</code> in the repository.</p>
+      <details class="method">
+        <summary>CSV option</summary>
+        <div class="data-panel" style="margin-top:10px">
+          <p class="note">Paste or load a CSV with one row per country and end market. The first line must be the header below; percentages are plain numbers (3.2 = 3.2%).</p>
+          <textarea id="csvBox" spellcheck="false" aria-label="CSV data"></textarea>
+          <div class="row">
+            <button type="button" class="btn" id="applyCsv">Apply CSV</button>
+            <label class="btn" for="csvFile">Load CSV file…</label>
+            <input type="file" id="csvFile" accept=".csv,text/csv,text/plain" hidden>
+            <button type="button" class="btn" id="copyCsv">Copy current data as CSV</button>
+          </div>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -311,9 +328,10 @@ sup { font-size: .7em; line-height: 0; }
 (function () {
   "use strict";
 
-  const CFG = window.HFC_CONFIG || { company: "HFC", currentYear: new Date().getFullYear(), currency: "EUR m", weights: {} };
-  const CY = CFG.currentYear;
-  const CO = CFG.company;
+  const BASE_CFG = window.HFC_CONFIG || { company: "HFC", currentYear: new Date().getFullYear(), currency: "EUR m", weights: {} };
+  const CFG = Object.assign({}, BASE_CFG);
+  let CY = CFG.currentYear;
+  let CO = CFG.company;
   const FIELDS = ["country", "code", "segment", "market_size", "hfc_sales", "mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd",
     "hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp", "ms_cy", "ms_py",
     "profitability", "competitive_intensity", "channel_access", "product_fit",
@@ -321,7 +339,7 @@ sup { font-size: .7em; line-height: 0; }
   const OPTIONAL = ["code", "hfc_sales", "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
   const NUMERIC = FIELDS.slice(3);
   const SCORES = ["profitability", "competitive_intensity", "channel_access", "product_fit"];
-  const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v4";
+  const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v4", LS_SET = "hfc-mi-settings-v1", LS_SRC = "hfc-mi-source-v1";
 
   const ZONES = {
     lead: { name: "Leadership position", color: "var(--z-lead)", order: 0,
@@ -363,11 +381,21 @@ sup { font-size: .7em; line-height: 0; }
 
   const DEFAULT_ROWS = (window.HFC_DATA || []).map(fromArray);
   let usingImported = false;
+  let importSource = store.get(LS_SRC) || "imported CSV";
   let ROWS = DEFAULT_ROWS;
   const saved = store.get(LS_DATA);
   if (saved) {
     try { const p = JSON.parse(saved); if (Array.isArray(p) && p.length) { ROWS = p.map(clean); usingImported = true; } } catch (e) { /* ignore bad cache */ }
   }
+  // general settings (company, year, currency) that came with an Excel upload
+  function applyGeneral(g) {
+    CFG.company = g && g.company ? String(g.company) : BASE_CFG.company;
+    CFG.currency = g && g.currency ? String(g.currency) : BASE_CFG.currency;
+    const y = g ? parseInt(g.currentYear, 10) : NaN;
+    CFG.currentYear = y > 1990 && y < 2200 ? y : BASE_CFG.currentYear;
+    CY = CFG.currentYear; CO = CFG.company;
+  }
+  if (usingImported) { try { applyGeneral(JSON.parse(store.get(LS_SET) || "null")); } catch (e) { /* ignore */ } }
 
   const DEFAULT_W = JSON.parse(JSON.stringify(Object.assign({ zones: { leadership: 7, priority_growth: 5.5 } }, CFG.weights || {}, CFG.zones ? { zones: CFG.zones } : {})));
   let W = JSON.parse(JSON.stringify(DEFAULT_W));
@@ -436,9 +464,21 @@ sup { font-size: .7em; line-height: 0; }
     const mmReno = minmax(units.map(u => u.r.mkt_reno_cagr_fwd));
     const mmNb = minmax(units.map(u => u.r.mkt_nb_cagr_fwd));
     const mmMs = minmax(units.map(u => u.r.ms_cy));
+    const mmGrowth = minmax(units.map(u => u.r.mkt_cagr_fwd));
     units.forEach(u => {
       const r = u.r;
-      u.attrParts = {
+      const noSplit = r.mkt_reno_cagr_fwd === null && r.mkt_nb_cagr_fwd === null;
+      u.attrW = Object.assign({}, W.attractiveness || {});
+      if (noSplit) {
+        // no renovation / new build split: the two growth weights apply to total market growth
+        u.attrW.market_growth = (Number(u.attrW.reno_growth) || 0) + (Number(u.attrW.nb_growth) || 0);
+        u.attrParts = {
+          market_size: scale(r.market_size > 0 ? Math.log(r.market_size) : null, mmSize),
+          market_growth: scale(r.mkt_cagr_fwd, mmGrowth),
+          profitability: r.profitability,
+          competitive_intensity: r.competitive_intensity
+        };
+      } else u.attrParts = {
         market_size: scale(r.market_size > 0 ? Math.log(r.market_size) : null, mmSize),
         reno_growth: scale(r.mkt_reno_cagr_fwd, mmReno),
         nb_growth: scale(r.mkt_nb_cagr_fwd, mmNb),
@@ -450,7 +490,7 @@ sup { font-size: .7em; line-height: 0; }
         channel_access: r.channel_access,
         product_fit: r.product_fit
       };
-      u.attr = weighted(u.attrParts, W.attractiveness || {});
+      u.attr = weighted(u.attrParts, u.attrW);
       u.abil = weighted(u.abilParts, W.ability || {});
       u.zone = zoneOf((u.attr ?? 0) + (u.abil ?? 0));
     });
@@ -473,8 +513,11 @@ sup { font-size: .7em; line-height: 0; }
   const monthYear = new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" });
   document.getElementById("monthLbl").textContent = monthYear;
   document.getElementById("footDate").textContent = monthYear;
-  document.querySelectorAll(".yr-prev").forEach(e => { e.textContent = CY - 1; });
-  document.getElementById("ccyLbl").textContent = "Figures in " + CFG.currency;
+  function refreshStatic() {
+    document.querySelectorAll(".yr-prev").forEach(e => { e.textContent = CY - 1; });
+    document.getElementById("ccyLbl").textContent = "Figures in " + CFG.currency;
+  }
+  refreshStatic();
 
   function view() {
     const cs = countries();
@@ -561,7 +604,7 @@ sup { font-size: .7em; line-height: 0; }
     svg.appendChild(el("text", { x: x0, y: yS(1) + 51, "font-size": 9.5, fill: "var(--ink)" }, "Market share, channel access, product fit"));
     const yt = el("g", { transform: `translate(14 ${y1}) rotate(-90)` });
     yt.appendChild(el("text", { x: 0, y: 0, "font-size": 12.5, "font-weight": 700, fill: "var(--ink)" }, "Market attractiveness"));
-    yt.appendChild(el("text", { x: 0, y: 13, "font-size": 9.5, fill: "var(--ink)" }, "Size, reno & new build growth, profitability, competition"));
+    yt.appendChild(el("text", { x: 0, y: 13, "font-size": 9.5, fill: "var(--ink)" }, "Size, market growth, profitability, competition"));
     svg.appendChild(yt);
 
     // zone labels in bold red, placed in the corner each zone owns
@@ -652,13 +695,13 @@ sup { font-size: .7em; line-height: 0; }
   }
 
   const tip = document.getElementById("tip"), box = document.getElementById("chartBox");
-  const LBL = { market_size: "Market size", reno_growth: "Renovation growth (5 yr)", nb_growth: "New build growth (5 yr)", profitability: "Profitability", competitive_intensity: "Competitive intensity",
+  const LBL = { market_size: "Market size", market_growth: "Market growth (5 yr)", reno_growth: "Renovation growth (5 yr)", nb_growth: "New build growth (5 yr)", profitability: "Profitability", competitive_intensity: "Competitive intensity",
     market_share: "Market share", channel_access: "Channel access", product_fit: "Product fit" };
   function showTip(u, ev, anchor) {
     const rows = (parts, ws) => Object.keys(parts).map(k => `<tr><td>${LBL[k]} <span style="color:var(--muted)">×${Number(ws[k]) || 0}</span></td><td>${f1(parts[k])}</td></tr>`).join("");
     tip.innerHTML = `<h4>${esc(u.c.country)} · <span style="color:${ZONES[u.zone].color}">●</span> ${ZONES[u.zone].name}</h4>
       <div style="margin-bottom:6px">${seg === "All" ? "All end markets" : seg} · market ${CY - 1} €${money(u.r.market_size)}M · MS ${f1(u.r.ms_cy)}%</div>
-      <table><tr class="sep"><td>Attractiveness</td><td>${f1(u.attr)}</td></tr>${rows(u.attrParts, W.attractiveness || {})}
+      <table><tr class="sep"><td>Attractiveness</td><td>${f1(u.attr)}</td></tr>${rows(u.attrParts, u.attrW)}
       <tr class="sep"><td>Ability to win</td><td>${f1(u.abil)}</td></tr>${rows(u.abilParts, W.ability || {})}</table>`;
     tip.hidden = false;
     if (ev) moveTip(ev);
@@ -855,8 +898,8 @@ sup { font-size: .7em; line-height: 0; }
     const rows = grid.slice(1).map(cells => { const o = {}; header.forEach((h, i) => { o[h] = cells[i]; }); return clean(o); }).filter(r => r.country);
     const bad = rows.filter(r => r.market_size === null);
     if (bad.length) return say(`Market size is missing or not a number for: ${bad.map(r => r.country + " " + r.segment).join(", ")}.`, true);
-    ROWS = rows; usingImported = true;
-    store.set(LS_DATA, JSON.stringify(rows));
+    ROWS = rows; usingImported = true; importSource = "imported CSV";
+    store.set(LS_DATA, JSON.stringify(rows)); store.set(LS_SRC, importSource);
     selected = null;
     render();
     say(`Applied ${rows.length} rows from ${new Set(rows.map(r => r.country)).size} countries.`);
@@ -877,9 +920,129 @@ sup { font-size: .7em; line-height: 0; }
     try { navigator.clipboard.writeText(text).then(() => say("Copied. Paste into Excel or a text editor."), fallback); } catch (e) { fallback(); }
   });
   document.getElementById("resetData").addEventListener("click", () => {
-    ROWS = DEFAULT_ROWS; usingImported = false; store.del(LS_DATA); selected = null;
+    ROWS = DEFAULT_ROWS; usingImported = false; selected = null;
+    [LS_DATA, LS_SET, LS_SRC, LS_W].forEach(k => store.del(k));
+    applyGeneral(null); W = JSON.parse(JSON.stringify(DEFAULT_W));
     document.getElementById("csvBox").value = toCsv(ROWS);
-    render(); say("Default data restored.");
+    refreshStatic(); renderWeights(); render(); say("Default data and settings restored.");
+  });
+
+  // ---------- Excel template upload ----------
+  // Minimal .xlsx reader (zip + sheet XML) using the browser's own DecompressionStream: no library, works offline.
+  // Reads cached cell values, so the workbook must have been calculated (Excel does this on save).
+  function unzip(buf) {
+    const dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+    let eocd = -1;
+    for (let i = buf.length - 22; i >= Math.max(0, buf.length - 65557); i--) if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+    if (eocd < 0) throw new Error("not a zip file");
+    const entries = {}, dec = new TextDecoder();
+    let p = dv.getUint32(eocd + 16, true);
+    for (let k = 0, n = dv.getUint16(eocd + 10, true); k < n; k++) {
+      if (dv.getUint32(p, true) !== 0x02014b50) throw new Error("damaged zip directory");
+      const nlen = dv.getUint16(p + 28, true), elen = dv.getUint16(p + 30, true), clen = dv.getUint16(p + 32, true);
+      entries[dec.decode(buf.subarray(p + 46, p + 46 + nlen))] = { method: dv.getUint16(p + 10, true), size: dv.getUint32(p + 20, true), off: dv.getUint32(p + 42, true) };
+      p += 46 + nlen + elen + clen;
+    }
+    return async name => {
+      const e = entries[name.replace(/^\//, "")];
+      if (!e) return null;
+      const start = e.off + 30 + dv.getUint16(e.off + 26, true) + dv.getUint16(e.off + 28, true);
+      const data = buf.subarray(start, start + e.size);
+      if (e.method === 0) return dec.decode(data);
+      if (e.method !== 8) throw new Error("unsupported compression");
+      const out = await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer();
+      return dec.decode(out);
+    };
+  }
+  const xml = t => new DOMParser().parseFromString(t, "application/xml");
+  const tags = (node, name) => Array.from(node.getElementsByTagNameNS("*", name));
+  const colIndex = ref => { let n = 0; for (const ch of ref.replace(/\d+$/, "")) n = n * 26 + ch.charCodeAt(0) - 64; return n - 1; };
+  async function readXlsx(buf) {
+    const file = unzip(buf);
+    const wbXml = await file("xl/workbook.xml");
+    if (!wbXml) throw new Error("not an Excel workbook");
+    const rels = {};
+    tags(xml(await file("xl/_rels/workbook.xml.rels") || "<r/>"), "Relationship").forEach(r => { rels[r.getAttribute("Id")] = r.getAttribute("Target"); });
+    const shared = tags(xml(await file("xl/sharedStrings.xml") || "<r/>"), "si").map(si => tags(si, "t").map(t => t.textContent).join(""));
+    const sheets = {};
+    tags(xml(wbXml), "sheet").forEach(sh => {
+      const rid = sh.getAttribute("r:id") || sh.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships", "id");
+      const target = rels[rid] || "";
+      sheets[sh.getAttribute("name")] = target.startsWith("/") ? target.slice(1) : "xl/" + target.replace(/^\.\//, "");
+    });
+    return async name => {
+      if (!sheets[name]) return null;
+      const doc = xml(await file(sheets[name]) || "<r/>");
+      const grid = []; let uncalculated = false;
+      tags(doc, "c").forEach(c => {
+        const ref = c.getAttribute("r"); if (!ref) return;
+        const row = parseInt(ref.replace(/^[A-Z]+/, ""), 10) - 1, col = colIndex(ref), t = c.getAttribute("t");
+        const v = tags(c, "v")[0], f = tags(c, "f")[0];
+        let val = null;
+        if (t === "inlineStr") val = tags(c, "t").map(x => x.textContent).join("");
+        else if (v && (v.textContent !== "" || t === "str")) {
+          const raw = v.textContent;
+          val = t === "s" ? shared[+raw] : t === "str" ? raw : t === "b" ? raw === "1" : t === "e" ? null : Number(raw);
+        } else if (f) uncalculated = true;
+        (grid[row] = grid[row] || [])[col] = val;
+      });
+      for (let i = 0; i < grid.length; i++) grid[i] = grid[i] || [];
+      return { grid, uncalculated };
+    };
+  }
+  function readSettings(grid) {
+    if (!grid) return null;
+    const out = { general: {}, weights: {} };
+    grid.forEach(r => {
+      const key = r && r[2] != null ? String(r[2]).trim() : "", val = r ? r[1] : null;
+      if (!key || val === null || val === undefined || val === "") return;
+      if (key.startsWith("weights.")) {
+        const [, grp, k] = key.split(".");
+        const n = toNum(val);
+        if (grp && k && n !== null) { out.weights[grp] = out.weights[grp] || {}; out.weights[grp][k] = n; }
+      } else out.general[key] = val;
+    });
+    return out;
+  }
+  async function applyWorkbook(buf, name) {
+    let sheet;
+    try { sheet = await readXlsx(buf); } catch (e) { return say("This file could not be read as an Excel workbook (.xlsx). Save it as .xlsx and try again.", true); }
+    const data = await sheet("Dashboard data");
+    if (!data) return say('No "Dashboard data" sheet in this file. Use the HFC market intelligence Excel template.', true);
+    const grid = data.grid;
+    const hi = grid.findIndex(r => r && r.includes("country") && r.includes("market_size"));
+    if (hi < 0) return say('The "Dashboard data" sheet has lost its key row (country, code, market_size…). Start again from the template.', true);
+    const keys = Array.from(grid[hi], k => k == null ? "" : String(k).trim());
+    const rows = grid.slice(hi + 1).map(cells => {
+      const o = {};
+      keys.forEach((k, i) => { if (FIELDS.includes(k)) o[k] = cells[i] === undefined ? null : cells[i]; });
+      return o;
+    }).filter(o => typeof o.country === "string" && o.country.trim() !== "").map(clean);
+    if (!rows.length) return say(data.uncalculated
+      ? "The formulas in this file have not been calculated. Open it in Excel, save it, and upload it again."
+      : 'No countries found. Fill in the "Raw data" sheet, save, and upload again.', true);
+    const bad = rows.filter(r => r.market_size === null);
+    if (bad.length) return say(`Addressable market size is missing for: ${bad.map(r => r.country + " " + r.segment).join(", ")}. Add it in "Raw data" and upload again.`, true);
+    const settings = await sheet("Settings");
+    const set = readSettings(settings && settings.grid);
+    ROWS = rows; usingImported = true; selected = null; importSource = "Excel upload, " + name;
+    store.set(LS_DATA, JSON.stringify(rows)); store.set(LS_SRC, importSource);
+    if (set) {
+      applyGeneral(set.general); store.set(LS_SET, JSON.stringify(set.general));
+      W = JSON.parse(JSON.stringify(DEFAULT_W));
+      Object.keys(set.weights).forEach(g => { W[g] = Object.assign({}, W[g] || {}, set.weights[g]); });
+      store.set(LS_W, JSON.stringify(W));
+    }
+    document.getElementById("csvBox").value = toCsv(ROWS);
+    refreshStatic(); renderWeights(); render();
+    say(`Uploaded ${name}: ${rows.length} rows from ${new Set(rows.map(r => r.country)).size} countries${set ? ", settings and weights applied" : ""}.`);
+  }
+  document.getElementById("xlsxFile").addEventListener("change", ev => {
+    const f = ev.target.files && ev.target.files[0]; if (!f) return;
+    say("Reading " + f.name + "…");
+    f.arrayBuffer().then(b => applyWorkbook(new Uint8Array(b), f.name))
+      .catch(() => say("Could not read that file. Try saving it again in Excel.", true));
+    ev.target.value = "";
   });
 
   // ---------- controls ----------
@@ -891,8 +1054,8 @@ sup { font-size: .7em; line-height: 0; }
 
   function render() {
     const { units } = view();
-    document.getElementById("dataBadge").textContent = usingImported ? "Imported data (this browser)" : "Illustrative sample data";
-    document.getElementById("srcData").textContent = usingImported ? "imported CSV" : "illustrative sample";
+    document.getElementById("dataBadge").textContent = usingImported ? "Uploaded data (this browser)" : "Illustrative sample data";
+    document.getElementById("srcData").textContent = usingImported ? importSource : "illustrative sample";
     renderKpis(units);
     renderMatrix(units);
     renderZones(units);
