@@ -6,11 +6,10 @@ Then:   recalculate (LibreOffice) and run tools/sync_data_js.py to refresh dashb
 
 Sheets
   Read me           how to fill it in and upload it
-  Settings          company, year, currency, matrix weights, zone lines, Oxford Economics indicator names
+  Settings          company, year, currency, Oxford Economics indicator names
   Oxford Economics  paste area for the Oxford Economics export (level values, as downloaded)
   Market levels     formulas: construction work done per country / end market / year
   Raw data          one row per country x end market; market growth is calculated from Market levels
-  Scoring rules     cut-offs that turn each qualitative KPI into a 1-5 score
   Dashboard data    formulas only: the table the dashboard reads on upload
 
 End markets: Residential = Residential total - Multi family; Non-residential = Multi family + Commercial.
@@ -70,14 +69,6 @@ COUNTRIES = [
 # Illustrative addressable market: this share of construction work done (US$ m, 2023 prices) converted at 0.92 EUR/US$
 ADDRESSABLE_RATIO = 0.012
 USD_EUR = 0.92
-
-# raw qualitative KPI that lands mid-band for a given 1-5 score (matches the default cut-offs in Scoring rules)
-KPI_FOR_SCORE = {
-    "profitability":         {1: 0.22, 2: 0.27, 3: 0.32, 4: 0.37, 5: 0.43},
-    "competitive_intensity": {1: 0.75, 2: 0.65, 3: 0.55, 4: 0.45, 5: 0.35},
-    "channel_access":        {1: 0.12, 2: 0.30, 3: 0.50, 4: 0.70, 5: 0.88},
-    "product_fit":           {1: 0.12, 2: 0.30, 3: 0.50, 4: 0.70, 5: 0.88},
-}
 
 def font(size=10, bold=False, color=INK_STRONG, italic=False):
     return Font(name=FONT, size=size, bold=bold, color=color, italic=italic)
@@ -152,7 +143,7 @@ wb = Workbook()
 st = wb.active
 st.title = "Settings"
 st.sheet_properties.tabColor = INK
-band(st, 1, 4, "Settings", "Company, year, matrix parameters and Oxford Economics series")
+band(st, 1, 4, "Settings", "Company, year and Oxford Economics series. Matrix weights and zone lines are set in the dashboard.")
 st.column_dimensions["A"].width = 40
 st.column_dimensions["B"].width = 46
 st.column_dimensions["C"].width = 38
@@ -168,21 +159,6 @@ SETTINGS = [
     ("Company name", "HFC", "company", "@", "Shown in column headers and labels"),
     ("Current year", 2026, "currentYear", "0", "Base year = current year - 1 (sizes and sales); history = 5 years to the base year; outlook = current year + 5"),
     ("Currency label", "EUR m", "currency", "@", "Unit of addressable market size and HFC sales"),
-    ("Market attractiveness weights", None, None, None, None),
-    ("Market size", 30, "weights.attractiveness.market_size", "0", "Scored 1-5 relative to the countries in view (log scale)"),
-    ("Renovation market growth, next 5 yrs", 15, "weights.attractiveness.reno_growth", "0", "If no renovation / new build split is given, these two weights apply to total market growth"),
-    ("New build market growth, next 5 yrs", 15, "weights.attractiveness.nb_growth", "0", "If no renovation / new build split is given, these two weights apply to total market growth"),
-    ("Profitability", 20, "weights.attractiveness.profitability", "0", "Score from Scoring rules (or override in Raw data)"),
-    ("Competitive intensity", 20, "weights.attractiveness.competitive_intensity", "0", "Score from Scoring rules (or override in Raw data)"),
-    ("Total", "SUM", None, "0", "Weights are normalised, so the total does not need to be 100"),
-    ("Ability to win weights", None, None, None, None),
-    ("HFC market share", 45, "weights.ability.market_share", "0", "Scored 1-5 relative to the countries in view"),
-    ("Channel access", 30, "weights.ability.channel_access", "0", "Score from Scoring rules (or override in Raw data)"),
-    ("Product fit", 25, "weights.ability.product_fit", "0", "Score from Scoring rules (or override in Raw data)"),
-    ("Total", "SUM", None, "0", "Weights are normalised, so the total does not need to be 100"),
-    ("Matrix zones (attractiveness + ability to win, 2-10)", None, None, None, None),
-    ("Leadership position from", 7, "weights.zones.leadership", "0.00", "Countries at or above this sum are in leadership position"),
-    ("Priority growth from", 5.5, "weights.zones.priority_growth", "0.00", "Between this and the leadership line: priority growth; below: selective investment"),
     ("Oxford Economics series (Indicator column of the export)", None, None, None, None),
     ("Residential - total", IND_TOTAL, "oe.res_total", "@", "Residential end market = Residential total - Multi family"),
     ("Residential - multi family", IND_MF, "oe.res_mf", "@", "Counted in Non-residential, as agreed"),
@@ -277,22 +253,17 @@ COLS = [
     ("hfc_cagr_bp", "HFC BP CAGR\n{cy}-{fy}", "0.0%", "HFC", 12, "Business plan", "in"),
     ("ms_py_override", "Market share {py}\n(optional)", "0.0%", "HFC", 12, "Leave empty to use HFC sales / addressable market", "in"),
     ("ms_cy_override", "Market share {cy}\n(optional)", "0.0%", "HFC", 12, "Leave empty to grow sales and market by their current-year growth", "in"),
-    ("kpi_profitability", "Market gross\nmargin", "0%", "KPI", 12, "Raw KPI for profitability (see Scoring rules)", "in"),
-    ("kpi_competitive_intensity", "Top-3 competitors'\nshare", "0%", "KPI", 13, "Raw KPI for competitive intensity (see Scoring rules)", "in"),
-    ("kpi_channel_access", "Distributor\ncoverage", "0%", "KPI", 12, "Raw KPI for channel access (see Scoring rules)", "in"),
-    ("kpi_product_fit", "Range coverage\nof demand", "0%", "KPI", 12, "Raw KPI for product fit (see Scoring rules)", "in"),
-    ("ov_profitability", "Profitability", "0", "Override", 11, "Optional 1-5 score; replaces the score from the KPI", "in"),
-    ("ov_competitive_intensity", "Competitive\nintensity", "0", "Override", 11, "Optional 1-5 score; replaces the score from the KPI", "in"),
-    ("ov_channel_access", "Channel\naccess", "0", "Override", 11, "Optional 1-5 score; replaces the score from the KPI", "in"),
-    ("ov_product_fit", "Product\nfit", "0", "Override", 11, "Optional 1-5 score; replaces the score from the KPI", "in"),
+    ("profitability", "Profitability", "0", "Score", 12, "1-5 score: price level and margin potential of the market (5 = best)", "in"),
+    ("competitive_intensity", "Competitive\nintensity", "0", "Score", 12, "1-5 score: 5 = benign competition, 1 = very fierce", "in"),
+    ("channel_access", "Channel\naccess", "0", "Score", 12, "1-5 score: HFC access to distributors, installers, specifiers", "in"),
+    ("product_fit", "Product\nfit", "0", "Score", 12, "1-5 score: fit of the HFC range with local norms and demand", "in"),
 ]
 GROUPS = {
     "Country": ("Country / end market", INK_STRONG),
     "Market": ("Market (construction work done, Oxford Economics)", INK),
     "Split": ("Renovation / new build split (optional)", GREY_BAND),
     "HFC": ("HFC", RED),
-    "KPI": ("Qualitative KPIs (raw, see Scoring rules)", RED_SOFT),
-    "Override": ("Score overrides (optional, 1-5)", SALMON),
+    "Score": ("Qualitative scores (1-5, 5 = most favourable)", RED_SOFT),
 }
 COL = {c[0]: get_column_letter(i + 1) for i, c in enumerate(COLS)}
 last = len(COLS)
@@ -384,10 +355,8 @@ for name, code, loc, ms, hfc, scores in COUNTRIES:
             "country": name, "code": code, "segment": seg, "oe_location": loc,
             "market_size": size, "hfc_sales": sales,
             "hfc_cagr_hist": (hfc[0] + bump) / 100, "hfc_growth_cy": (hfc[1] + bump) / 100, "hfc_cagr_bp": (hfc[2] + bump) / 100,
-            "kpi_profitability": KPI_FOR_SCORE["profitability"][scores[0]],
-            "kpi_competitive_intensity": KPI_FOR_SCORE["competitive_intensity"][scores[1]],
-            "kpi_channel_access": KPI_FOR_SCORE["channel_access"][scores[2]],
-            "kpi_product_fit": KPI_FOR_SCORE["product_fit"][scores[3]],
+            "profitability": scores[0], "competitive_intensity": scores[1],
+            "channel_access": scores[2], "product_fit": scores[3],
         })
 
 for n in range(N_ROWS):
@@ -417,54 +386,12 @@ dv_pct = DataValidation(type="decimal", operator="between", formula1="0", formul
 for dv in (dv_seg, dv_score, dv_pct):
     rd.add_data_validation(dv)
 dv_seg.add(f"{COL['segment']}{FIRST}:{COL['segment']}{LAST_ROW}")
-dv_score.add(f"{COL['ov_profitability']}{FIRST}:{COL['ov_product_fit']}{LAST_ROW}")
-for key in ("reno_share", "ms_py_override", "ms_cy_override", "kpi_profitability", "kpi_competitive_intensity", "kpi_channel_access", "kpi_product_fit"):
+dv_score.add(f"{COL['profitability']}{FIRST}:{COL['product_fit']}{LAST_ROW}")
+for key in ("reno_share", "ms_py_override", "ms_cy_override"):
     dv_pct.add(f"{COL[key]}{FIRST}:{COL[key]}{LAST_ROW}")
 rd.freeze_panes = rd[f"E{FIRST}"]
-rd.cell(row=3, column=1, value=("Market growth comes from Oxford Economics (green). Addressable market, HFC figures and KPIs in the sample rows are ILLUSTRATIVE: "
+rd.cell(row=3, column=1, value=("Market growth comes from Oxford Economics (green). Addressable market, HFC figures and scores in the sample rows are ILLUSTRATIVE: "
                                 "replace them with your own. Add countries in the empty rows.")).font = font(9, color=RED, italic=True)
-
-# ================================================================ Scoring rules
-sr = wb.create_sheet("Scoring rules")
-sr.sheet_properties.tabColor = SALMON
-band(sr, 1, 8, "Scoring rules", "How each qualitative KPI in Raw data becomes a 1-5 score")
-for k, v in {"A": 24, "B": 46, "C": 18, "D": 11, "E": 11, "F": 11, "G": 11, "H": 52}.items():
-    sr.column_dimensions[k].width = v
-for i, h in enumerate(["Criterion", "Raw KPI (enter in Raw data)", "Direction", "Cut-off 1", "Cut-off 2", "Cut-off 3", "Cut-off 4", "How the score is set"], 1):
-    c = sr.cell(row=4, column=i, value=h)
-    c.font = font(10, True, WHITE)
-    c.fill = fill(RED)
-    c.alignment = CENTER
-sr.row_dimensions[4].height = 30
-RULES = [
-    ("Profitability", "Market gross margin, % (price level and margin potential)", "Higher is better", [0.25, 0.30, 0.35, 0.40]),
-    ("Competitive intensity", "Combined market share of the top-3 competitors, %", "Lower is better", [0.40, 0.50, 0.60, 0.70]),
-    ("Channel access", "Share of the top-20 distributors / wholesalers listing HFC, %", "Higher is better", [0.20, 0.40, 0.60, 0.80]),
-    ("Product fit", "Share of local demand covered by approved HFC products, %", "Higher is better", [0.20, 0.40, 0.60, 0.80]),
-]
-RULE_ROW = {}
-for i, (name, kpi, direction, cuts) in enumerate(RULES):
-    row = 5 + i
-    RULE_ROW[name] = row
-    sr.cell(row=row, column=1, value=name).font = font(10, True)
-    c = sr.cell(row=row, column=2, value=kpi)
-    c.font = font(10)
-    c.alignment = WRAP
-    input_cell(sr.cell(row=row, column=3, value=direction))
-    for j, cut in enumerate(cuts):
-        input_cell(sr.cell(row=row, column=4 + j, value=cut), "0%")
-    sr.cell(row=row, column=8, value=("Score = 1 + number of cut-offs at or below the KPI" if direction == "Higher is better"
-                                      else "Score = 5 - number of cut-offs at or below the KPI")).font = font(9, color=INK, italic=True)
-    sr.row_dimensions[row].height = 30
-dv_dir = DataValidation(type="list", formula1='"Higher is better,Lower is better"', allow_blank=False)
-sr.add_data_validation(dv_dir)
-dv_dir.add("C5:C8")
-section(sr, 10, "Example")
-sr.cell(row=11, column=1, value=("Channel access with cut-offs 20% / 40% / 60% / 80%: a KPI of 65% passes three cut-offs, so the score is 1 + 3 = 4. "
-                                 "Leave the KPI empty and type a score in the override columns of Raw data to set a score directly.")).font = font(10, color=INK)
-sr.merge_cells("A11:H12")
-sr["A11"].alignment = WRAP
-sr.cell(row=14, column=1, value="Market size, market growth and HFC market share are not scored here: the dashboard scores them 1-5 relative to the countries in view.").font = font(9, color=INK, italic=True)
 
 # ================================================================ Dashboard data
 dd = wb.create_sheet("Dashboard data")
@@ -481,7 +408,7 @@ OUT_FIELDS = [
     ("mkt_reno_cagr_hist", "Reno CAGR {hy}-{py} (%)", "0.0"), ("mkt_reno_growth_cy", "Reno growth {cy}E (%)", "0.0"), ("mkt_reno_cagr_fwd", "Reno CAGR {cy}-{fy} (%)", "0.0"),
     ("mkt_nb_cagr_hist", "NB CAGR {hy}-{py} (%)", "0.0"), ("mkt_nb_growth_cy", "NB growth {cy}E (%)", "0.0"), ("mkt_nb_cagr_fwd", "NB CAGR {cy}-{fy} (%)", "0.0"),
 ]
-band(dd, 1, len(OUT_FIELDS) + 1, "Dashboard data", "Calculated from Raw data, Scoring rules and Settings. Do not type here: this is the table the dashboard reads.")
+band(dd, 1, len(OUT_FIELDS) + 1, "Dashboard data", "Calculated from Raw data and Settings. Do not type here: this is the table the dashboard reads.")
 for i, (key, head, fmt) in enumerate(OUT_FIELDS, 1):
     dd.column_dimensions[get_column_letter(i)].width = 16 if i <= 3 else 13
     c = dd.cell(row=4, column=i, value=year_formula(head, YEAR))
@@ -502,14 +429,6 @@ c.alignment = CENTER
 dd.cell(row=5, column=chk_i, value="check").font = font(8, color=MUTED)
 
 R = "'Raw data'!"
-def rule_score(name, kpi_col, ov_col, rr):
-    row = RULE_ROW[name]
-    cuts = f"'Scoring rules'!$D${row}:$G${row}"
-    direction = f"'Scoring rules'!$C${row}"
-    kpi, ov = f"{R}{kpi_col}{rr}", f"{R}{ov_col}{rr}"
-    return (f'=IF($A{{r}}="","",IF({ov}<>"",{ov},IF({kpi}="","",'
-            f'IF({direction}="Lower is better",5-COUNTIF({cuts},"<="&{kpi}),1+COUNTIF({cuts},"<="&{kpi})))))')
-
 D0 = 6
 for n in range(N_ROWS):
     r_out, rr = D0 + n, FIRST + n
@@ -525,11 +444,9 @@ for n in range(N_ROWS):
         "ms_cy": (f'=IF($A{r_out}="","",IF({raw("ms_cy_override")}<>"",{raw("ms_cy_override")}*100,'
                   f'IF(AND(N({raw("market_size")})>0,{raw("hfc_sales")}<>""),'
                   f'{raw("hfc_sales")}*(1+N({raw("hfc_growth_cy")}))/({raw("market_size")}*(1+N({raw("mkt_growth_cy")})))*100,"")))'),
-        "profitability": rule_score("Profitability", COL["kpi_profitability"], COL["ov_profitability"], rr),
-        "competitive_intensity": rule_score("Competitive intensity", COL["kpi_competitive_intensity"], COL["ov_competitive_intensity"], rr),
-        "channel_access": rule_score("Channel access", COL["kpi_channel_access"], COL["ov_channel_access"], rr),
-        "product_fit": rule_score("Product fit", COL["kpi_product_fit"], COL["ov_product_fit"], rr),
     }
+    for key in ("profitability", "competitive_intensity", "channel_access", "product_fit"):
+        formulas[key] = f'=IF($A{r_out}="","",IF(ISNUMBER({raw(key)}),{raw(key)},""))'
     for key in ("mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd", "hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp", "reno_share",
                 "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"):
         formulas[key] = f'=IF($A{r_out}="","",IF(ISNUMBER({raw(key)}),{raw(key)}*100,""))'
@@ -557,8 +474,8 @@ for col in "CDEFGH":
 lines = [
     ("How to update the dashboard", None),
     ("1", "Oxford Economics: paste the latest download (level values) at cell A6, header row included. Market growth for every country updates automatically."),
-    ("2", "Raw data: one row per country and end market. Update the blue cells: addressable market, HFC sales and growth, qualitative KPIs."),
-    ("3", "Settings and Scoring rules: check the current year, weights, zone lines and score cut-offs."),
+    ("2", "Raw data: one row per country and end market. Update the blue cells: addressable market, HFC sales and growth, and the four 1-5 scores."),
+    ("3", "Settings: check the company name, the current year and the Oxford Economics series names. Weights and zone lines are set in the dashboard."),
     ("4", "Dashboard data: nothing to type. Check that every country appears and that the check column shows no red cells."),
     ("5", "Save the file (.xlsx), open the dashboard, go to 'Update the figures' and click 'Upload Excel'."),
     ("How the market figures are built", None),
@@ -568,6 +485,7 @@ lines = [
     ("History", "The 5-year history needs the export to start 6 years before the current year (e.g. 2020 for 2026). With a shorter export it stays empty."),
     ("Addressable market", "Your estimate of the HFC addressable market in EUR m (not total construction output). Used for market size and market share."),
     ("Renovation / new build", "Optional inputs. When empty, the dashboard uses total market growth in the matrix and hides the split."),
+    ("Qualitative scores", "Profitability, competitive intensity, channel access and product fit: type a whole score from 1 to 5 (5 = most favourable for HFC)."),
     ("Conventions", None),
     ("Blue cells", "Inputs: type or paste your figures here."),
     ("Green cells", "Formulas: do not overwrite."),
@@ -596,9 +514,9 @@ for a, b in lines:
     if a == "Green cells":
         ca.font = font(10, True, LINK_GREEN)
     row += 1
-rm.cell(row=row + 1, column=2, value=("Market growth is real Oxford Economics data. Addressable market, HFC figures and qualitative KPIs in the sample rows "
+rm.cell(row=row + 1, column=2, value=("Market growth is real Oxford Economics data. Addressable market, HFC figures and qualitative scores in the sample rows "
                                       "are illustrative, not HFC data.")).font = font(9, color=RED, italic=True)
-for ws in (rm, st, sr):
+for ws in (rm, st):
     ws.sheet_view.showGridLines = False
 for ws in wb.worksheets:
     ws.sheet_view.zoomScale = 90

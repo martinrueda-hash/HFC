@@ -257,7 +257,7 @@ sup { font-size: .7em; line-height: 0; }
     <details class="method">
       <summary>Scoring method and weights</summary>
       <div class="weights" id="weights"></div>
-      <p class="note" style="margin-top:10px">All criteria are scored from 1 to 5 based on the data.</p>
+      <p class="note" style="margin-top:10px">All criteria are scored from 1 to 5 based on the data. Weights and zone lines are set here, not in the Excel template.</p>
     </details>
     <div class="takeaway" id="mxTake"></div>
     <div class="source">
@@ -293,7 +293,7 @@ sup { font-size: .7em; line-height: 0; }
     <h2 class="stitle" id="dataTitle">Update the figures</h2>
     <div class="data-panel">
       <ol class="steps">
-        <li>Fill in the <b>HFC market intelligence Excel template</b>: raw data in <i>Raw data</i>, score cut-offs in <i>Scoring rules</i>, year and weights in <i>Settings</i>.</li>
+        <li>Fill in the <b>HFC market intelligence Excel template</b>: paste Oxford Economics in <i>Oxford Economics</i>, your figures and 1–5 scores in <i>Raw data</i>, the year in <i>Settings</i>.</li>
         <li>Save it as .xlsx.</li>
         <li>Upload it here. The dashboard reads the <i>Dashboard data</i> sheet, which the template calculates for you.</li>
       </ol>
@@ -1029,13 +1029,15 @@ sup { font-size: .7em; line-height: 0; }
     store.set(LS_DATA, JSON.stringify(rows)); store.set(LS_SRC, importSource);
     if (set) {
       applyGeneral(set.general); store.set(LS_SET, JSON.stringify(set.general));
-      W = JSON.parse(JSON.stringify(DEFAULT_W));
-      Object.keys(set.weights).forEach(g => { W[g] = Object.assign({}, W[g] || {}, set.weights[g]); });
-      store.set(LS_W, JSON.stringify(W));
+      // weights and zone lines are set on the page; only apply them if an (older) workbook still carries them
+      if (Object.keys(set.weights).length) {
+        Object.keys(set.weights).forEach(g => { W[g] = Object.assign({}, W[g] || {}, set.weights[g]); });
+        store.set(LS_W, JSON.stringify(W));
+      }
     }
     document.getElementById("csvBox").value = toCsv(ROWS);
     refreshStatic(); renderWeights(); render();
-    say(`Uploaded ${name}: ${rows.length} rows from ${new Set(rows.map(r => r.country)).size} countries${set ? ", settings and weights applied" : ""}.`);
+    say(`Uploaded ${name}: ${rows.length} rows from ${new Set(rows.map(r => r.country)).size} countries${set ? ", settings applied" : ""}.`);
   }
   document.getElementById("xlsxFile").addEventListener("change", ev => {
     const f = ev.target.files && ev.target.files[0]; if (!f) return;

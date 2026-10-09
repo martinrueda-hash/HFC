@@ -41,9 +41,11 @@ Country totals weight market figures by market size and HFC figures by HFC sales
 Use the Excel template `templates/HFC_market_intelligence_template.xlsx`:
 
 1. **Oxford Economics** sheet: paste the latest download (level values, header row in cell A6). Market growth for every country updates automatically. Residential = Residential total − Multi family; Non-residential = Multi family + Commercial.
-2. **Raw data** sheet: one row per country and end market. Fill in the addressable market (EUR m), HFC sales and growth, qualitative KPIs and, optionally, the renovation / new build split.
-3. **Settings** and **Scoring rules**: current year, matrix weights, zone lines, Oxford Economics series names and the cut-offs that turn KPIs into 1–5 scores.
+2. **Raw data** sheet: one row per country and end market. Fill in the addressable market (EUR m), HFC sales and growth, the four qualitative scores (1–5) and, optionally, the renovation / new build split.
+3. **Settings**: company name, current year and the Oxford Economics series names.
 4. Save, then click **Upload Excel** in the dashboard's "Update the figures" section. The dashboard reads the calculated **Dashboard data** sheet and the Settings sheet. Uploaded data is kept in that browser only.
+
+Matrix weights and zone lines are not in the workbook: set them in the dashboard under "Scoring method and weights".
 
 To change the default data for everyone: recalculate the workbook, run `python3 tools/sync_data_js.py` to regenerate `dashboard/data.js`, and commit. `tools/build_excel_template.py` rebuilds the template from scratch (sample rows and the Oxford Economics export in `data/oxford-economics/`).
 
