@@ -11,7 +11,7 @@ A self-contained dashboard for HFC's country portfolio, styled after the EU WT s
    - **Priority growth**: good potential, position still to build. Invest to gain share.
    - **Selective investment**: lower attractiveness or weak position. Invest selectively, protect margin.
 2. **Market vs. HFC positioning**: countries grouped by matrix zone (with a subtotal per zone, largest market first), each split by end market (Residential / Non-residential, which includes multi-residential):
-   - **Market**: size, CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years.
+   - **Market**: size, CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years. Market growth is construction work done (Oxford Economics); each figure shows the combined rate with the renovation (R) and new build (NB) rates underneath.
    - **HFC**: CAGR over the last 5 years, projected growth this year, business-plan CAGR over the next 5 years, each with the gap to the market in percentage points.
    - **HFC market share** this year and its change versus last year.
 
@@ -33,7 +33,7 @@ Both axes run from 1 to 5. A country's zone is set by attractiveness + ability t
 
 Default weights are set in `HFC_CONFIG.weights` in `dashboard/data.js`. Weights and zone thresholds can also be adjusted on the page under "Scoring method and weights"; on-page changes are stored in that browser only.
 
-Country totals weight market figures by market size and HFC figures by HFC sales (market size × share).
+Country totals weight market figures by market size and HFC figures by HFC sales (market size × share). Renovation and new build rates are weighted by their own market size (`reno_share`). The renovation / new build columns are optional in a CSV import.
 
 ## Updating the data
 

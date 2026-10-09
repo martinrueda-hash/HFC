@@ -178,6 +178,14 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
 .up { color: var(--good); }
 .down { color: var(--bad); }
 .flat { color: var(--muted); }
+.split { display: flex; justify-content: flex-end; gap: 8px; font-size: 10.5px; font-weight: 500; color: var(--ink); margin-top: 2px; }
+.split span { white-space: nowrap; }
+sup { font-size: .7em; line-height: 0; }
+.ask { position: relative; display: flex; align-items: center; gap: 8px; background: var(--tint); border: 1px solid var(--rose); border-radius: 10px; padding: 6px 12px 6px 6px; font-size: 12px; color: var(--ink-strong); max-width: 100%; }
+.ask::after { content: ""; position: absolute; left: -7px; top: 50%; margin-top: -6px; border: 6px solid transparent; border-right-color: var(--rose); border-left: 0; }
+.ask b { color: var(--red); }
+@media (max-width: 719px) { .ask::after { display: none; } }
+.ask-q { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: 13px; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11.5px; color: var(--ink); align-items: center; }
 .legend .bar { display: inline-block; vertical-align: middle; }
 
@@ -211,6 +219,7 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
         <button type="button" data-seg="Non-residential" aria-pressed="false">Non-residential</button>
       </div>
     </div>
+    <div class="ask" role="note"><span class="ask-q" aria-hidden="true">?</span><span><b>Open question:</b> should we also filter by application or by technology group?</span></div>
     <span class="spacer"></span>
     <button type="button" class="btn" id="clearHl" hidden>Clear selection</button>
   </div>
@@ -240,7 +249,7 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
     </details>
     <div class="takeaway" id="mxTake"></div>
     <div class="source">
-      <span>Source: HFC market intelligence data file (<span id="srcData">illustrative sample</span>)</span>
+      <span>Source: Oxford Economics; HFC market intelligence data file (<span id="srcData">illustrative sample</span>)</span>
       <span>Notes: scores from 1 to 5; market size, market growth and market share are scored relative to the other countries in view, so 5 = best of the portfolio. Click a bubble or a country to find it in the table below.</span>
     </div>
   </section>
@@ -253,6 +262,7 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
         <span><span class="bar"><span style="left:50%;width:14px;background:var(--ink)"></span></span> growth</span>
         <span><span class="bar"><span style="right:50%;width:14px;background:var(--red)"></span></span> decline</span>
         <span><span class="up">▲</span> / <span class="down">▼</span> HFC vs. market (pp)</span>
+        <span><b style="color:var(--ink-strong)">R</b> renovation · <b style="color:var(--ink-strong)">NB</b> new build</span>
       </div>
     </div>
     <div class="subhead" id="tblScope"></div>
@@ -261,8 +271,8 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
     </div>
     <div class="takeaway" id="tblTake"></div>
     <div class="source">
-      <span>Source: HFC market intelligence data file; HFC business plan</span>
-      <span>Notes: non-residential includes multi-residential. Totals weight market figures by market size and HFC figures by HFC sales (market size × share). Growth bars share one scale, clipped at ±10%.</span>
+      <span>Source: Oxford Economics; HFC market intelligence data file; HFC business plan</span>
+      <span>Notes: 1. Market growth = construction work done. R = renovation, NB = new build; the top figure combines both. Non-residential includes multi-residential. Totals weight market figures by market size and HFC figures by HFC sales (market size × share). Growth bars share one scale, clipped at ±10%.</span>
     </div>
   </section>
 
@@ -296,7 +306,9 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
   const CO = CFG.company;
   const FIELDS = ["country", "code", "segment", "market_size", "mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd",
     "hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp", "ms_cy", "ms_py",
-    "profitability", "competitive_intensity", "channel_access", "product_fit"];
+    "profitability", "competitive_intensity", "channel_access", "product_fit",
+    "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
+  const OPTIONAL = ["code", "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
   const NUMERIC = FIELDS.slice(3);
   const SCORES = ["profitability", "competitive_intensity", "channel_access", "product_fit"];
   const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v3";
@@ -362,7 +374,10 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
   function aggregate(rows, label) {
     const o = { country: label.country, code: label.code, segment: label.segment };
     o.market_size = rows.reduce((s, r) => s + (r.market_size || 0), 0);
-    ["mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd"].concat(SCORES).forEach(f => { o[f] = wavg(rows, f, sizeW); });
+    ["mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd", "reno_share"].concat(SCORES).forEach(f => { o[f] = wavg(rows, f, sizeW); });
+    const renoW = r => sizeW(r) * (r.reno_share ?? 50) / 100, nbW = r => sizeW(r) * (100 - (r.reno_share ?? 50)) / 100;
+    ["mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd"].forEach(f => { o[f] = wavg(rows, f, renoW); });
+    ["mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"].forEach(f => { o[f] = wavg(rows, f, nbW); });
     ["hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp"].forEach(f => { o[f] = wavg(rows, f, salesW); });
     const sales = rows.reduce((s, r) => s + salesW(r), 0);
     o.ms_cy = o.market_size > 0 ? sales / o.market_size * 100 : null;
@@ -471,7 +486,7 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
     const dms = (tot.ms_cy ?? NaN) - (tot.ms_py ?? NaN);
     const kp = [
       { lbl: `Addressable market ${CY}`, val: "€" + money(tot.market_size) + "M", cmp: `${units.length} countries · ${segName()}` },
-      { lbl: `Market growth ${CY}E`, val: pct(tot.mkt_growth_cy), cmp: `Next 5 yrs ${pct(tot.mkt_cagr_fwd)} p.a. · last 5 yrs ${pct(tot.mkt_cagr_hist)}` },
+      { lbl: `Market growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Next 5 yrs ${pct(tot.mkt_cagr_fwd)} p.a. · last 5 yrs ${pct(tot.mkt_cagr_hist)}` },
       { lbl: `${CO} growth ${CY} forecast`, val: pct(tot.hfc_growth_cy), cmp: `<span class="${dir(gap)}">${arrow(gap)} ${pp(gap)}</span> vs. market · BP ${pct(tot.hfc_cagr_bp)} p.a.` },
       { lbl: `${CO} market share ${CY}`, val: f1(tot.ms_cy) + "%", cmp: `<span class="${dir(dms)}">${arrow(dms)} ${pp(dms)}</span> vs. ${CY - 1}` },
       { lbl: "Matrix positions", val: `${counts.lead} · ${counts.grow} · ${counts.sel}`, cmp: "Leadership · Priority growth · Selective" }
@@ -659,6 +674,11 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
     return `<span class="bar" aria-hidden="true"><span style="${s}"></span></span>`;
   }
   function gcell(v) { return `<span class="cell">${bar(v)}<span class="v">${pct(v)}</span></span>`; }
+  function mcell(v, reno, nb) {
+    const split = reno === null && nb === null ? "" :
+      `<span class="split"><span title="Renovation">R ${pct(reno)}</span><span title="New build">NB ${pct(nb)}</span></span>`;
+    return gcell(v) + split;
+  }
   function hcell(v, mkt) {
     const g = v !== null && mkt !== null ? v - mkt : null;
     return `<span class="cell">${bar(v)}<span class="v">${pct(v)}</span></span><span class="delta ${dir(g)}">${g === null ? "" : arrow(g) + " " + pp(g)}</span>`;
@@ -682,7 +702,7 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
     return `<tr class="${cls}"${c && c.country ? ` data-country="${esc(c.country)}"` : ""}>
       <td class="l sticky">${first}</td>
       <td>${money(r.market_size)}</td>
-      <td>${gcell(r.mkt_cagr_hist)}</td><td>${gcell(r.mkt_growth_cy)}</td><td>${gcell(r.mkt_cagr_fwd)}</td>
+      <td>${mcell(r.mkt_cagr_hist, r.mkt_reno_cagr_hist, r.mkt_nb_cagr_hist)}</td><td>${mcell(r.mkt_growth_cy, r.mkt_reno_growth_cy, r.mkt_nb_growth_cy)}</td><td>${mcell(r.mkt_cagr_fwd, r.mkt_reno_cagr_fwd, r.mkt_nb_cagr_fwd)}</td>
       <td class="gap"></td>
       <td>${hcell(r.hfc_cagr_hist, r.mkt_cagr_hist)}</td><td>${hcell(r.hfc_growth_cy, r.mkt_growth_cy)}</td><td>${hcell(r.hfc_cagr_bp, r.mkt_cagr_fwd)}</td>
       <td class="gap"></td>
@@ -693,7 +713,7 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
   function renderTable(units) {
     const h = (a, b) => `<th>${a}<span class="u">${b}</span></th>`;
     const head = `<thead>
-      <tr class="grp"><th class="l sticky blank"></th><th colspan="4">Market</th><th class="gap"></th><th class="g-hfc" colspan="3">${CO}</th><th class="gap"></th><th colspan="2">${CO} market share</th></tr>
+      <tr class="grp"><th class="l sticky blank"></th><th colspan="4">Market growth<sup>1</sup></th><th class="gap"></th><th class="g-hfc" colspan="3">${CO}</th><th class="gap"></th><th colspan="2">${CO} market share</th></tr>
       <tr><th class="l sticky">Country / end market</th>${h("Size " + CY, CFG.currency)}
         ${h("CAGR last 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + "E", "vs. " + (CY - 1))}${h("CAGR next 5 yrs", CY + "–" + (CY + 5))}
         <th class="gap"></th>
@@ -715,7 +735,7 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
     const t = document.getElementById("tbl");
     t.innerHTML = head + `<tbody>${body}</tbody>`;
     t.querySelectorAll("tr.country-row").forEach(tr => tr.addEventListener("click", () => select(tr.dataset.country, false)));
-    document.getElementById("tblScope").textContent = `Market vs. ${CO} growth and market share, ${segName()}, ${CFG.currency}`;
+    document.getElementById("tblScope").textContent = `Market vs. ${CO} growth and market share, ${segName()}, ${CFG.currency}; market growth split into renovation (R) and new build (NB)`;
 
     const gapBp = (grand.hfc_cagr_bp ?? NaN) - (grand.mkt_cagr_fwd ?? NaN);
     const gained = units.filter(u => u.r.ms_cy !== null && u.r.ms_py !== null && u.r.ms_cy - u.r.ms_py >= 0.05).length;
@@ -794,7 +814,7 @@ tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
     const grid = parseCsv(text.trim());
     if (grid.length < 2) return say("Add a header line and at least one data row.", true);
     const header = grid[0].map(h => h.trim().toLowerCase().replace(/\s+/g, "_"));
-    const missing = FIELDS.filter(f => !header.includes(f) && f !== "code");
+    const missing = FIELDS.filter(f => !header.includes(f) && !OPTIONAL.includes(f));
     if (missing.length) return say("Missing column(s): " + missing.join(", ") + ". Use the header shown in the box.", true);
     const rows = grid.slice(1).map(cells => { const o = {}; header.forEach((h, i) => { o[h] = cells[i]; }); return clean(o); }).filter(r => r.country);
     const bad = rows.filter(r => r.market_size === null);
