@@ -132,13 +132,17 @@ svg.matrix text { font-family: var(--font); }
 .chip { font: inherit; font-size: 11.5px; border: 1px solid var(--rose); background: var(--bg); color: var(--ink-strong); border-radius: 3px; padding: 2px 9px; cursor: pointer; }
 .chip:hover { border-color: var(--red); color: var(--red); }
 .chip.none { cursor: default; color: var(--muted); border-style: dashed; }
+.size-key { display: grid; gap: 6px; padding: 4px 2px 0; }
+.size-key-t { font-size: 11.5px; font-weight: 700; color: var(--ink); }
+#sizeKey { display: block; height: auto; max-width: 100%; overflow: visible; }
+#sizeKey text { font-family: var(--font); }
 .mx-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11.5px; color: var(--ink); align-items: center; }
 .mx-legend i { display: inline-block; border-radius: 50%; vertical-align: middle; margin-right: 6px; }
 
 details.method { border-top: 1px solid var(--line); padding-top: 10px; }
 details.method summary { cursor: pointer; font-weight: 700; font-size: 12px; color: var(--red); }
 .weights { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 12px; }
-.weights fieldset { border: 1px solid var(--blush); background: var(--tint); border-radius: 4px; padding: 10px 12px; margin: 0; display: grid; gap: 6px; }
+.weights fieldset { border: 1px solid var(--blush); background: var(--tint); border-radius: 4px; padding: 10px 12px; margin: 0; display: grid; gap: 6px; align-content: start; }
 .weights legend { font-weight: 700; font-size: 12px; color: var(--red); padding: 0 4px; }
 .wrow { display: grid; grid-template-columns: 1fr 64px; align-items: center; gap: 8px; font-size: 12px; }
 .wrow input { font: inherit; width: 64px; padding: 3px 6px; border: 1px solid var(--axis); border-radius: 3px; background: var(--bg); color: var(--ink-strong); text-align: right; }
@@ -240,22 +244,23 @@ sup { font-size: .7em; line-height: 0; }
     <div class="subhead" id="mxScope"></div>
     <div class="matrix-grid">
       <div class="chart-box" id="chartBox">
-        <svg class="matrix" id="matrix" viewBox="0 0 660 548" role="img" aria-label="Bubble matrix of countries by market attractiveness and ability to win"></svg>
+        <svg class="matrix" id="matrix" viewBox="0 0 660 500" role="img" aria-label="Bubble matrix of countries by market attractiveness and ability to win"></svg>
         <div class="tip" id="tip" hidden></div>
       </div>
       <div class="zones">
         <div class="zones" id="zones"></div>
+        <div class="size-key"><span class="size-key-t">Bubble size = market size <span class="yr-prev"></span></span><svg id="sizeKey" role="img" aria-label="Bubble size key"></svg></div>
       </div>
     </div>
     <details class="method">
       <summary>Scoring method and weights</summary>
       <div class="weights" id="weights"></div>
-      <p class="note" style="margin-top:10px">Market size is scored on a log scale. Profitability, competitive intensity, channel access and product fit are qualitative 1–5 scores from the data file (5 = most favourable for HFC). The diagonal zone lines sit where attractiveness + ability to win equals the thresholds below. Changes apply immediately and are kept in this browser only.</p>
+      <p class="note" style="margin-top:10px">Market size is scored on a log scale. Profitability, competitive intensity, channel access and product fit are qualitative 1–5 scores from the data file (5 = most favourable for HFC). Renovation and new build growth use the market projections for the next 5 years. The diagonal zone lines sit where attractiveness + ability to win equals the thresholds below. Changes apply immediately and are kept in this browser only.</p>
     </details>
     <div class="takeaway" id="mxTake"></div>
     <div class="source">
       <span>Source: Oxford Economics; HFC market intelligence data file (<span id="srcData">illustrative sample</span>)</span>
-      <span>Notes: scores from 1 to 5; market size, market growth and market share are scored relative to the other countries in view, so 5 = best of the portfolio. Click a bubble or a country to find it in the table below.</span>
+      <span>Notes: scores from 1 to 5; market size, renovation and new build growth and market share are scored relative to the other countries in view, so 5 = best of the portfolio. Click a bubble or a country to find it in the table below.</span>
     </div>
   </section>
 
@@ -316,7 +321,7 @@ sup { font-size: .7em; line-height: 0; }
   const OPTIONAL = ["code", "hfc_sales", "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
   const NUMERIC = FIELDS.slice(3);
   const SCORES = ["profitability", "competitive_intensity", "channel_access", "product_fit"];
-  const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v3";
+  const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v4";
 
   const ZONES = {
     lead: { name: "Leadership position", color: "var(--z-lead)", order: 0,
@@ -428,13 +433,15 @@ sup { font-size: .7em; line-height: 0; }
 
   function score(units) {
     const mmSize = minmax(units.map(u => u.r.market_size > 0 ? Math.log(u.r.market_size) : null));
-    const mmGrowth = minmax(units.map(u => u.r.mkt_cagr_fwd));
+    const mmReno = minmax(units.map(u => u.r.mkt_reno_cagr_fwd));
+    const mmNb = minmax(units.map(u => u.r.mkt_nb_cagr_fwd));
     const mmMs = minmax(units.map(u => u.r.ms_cy));
     units.forEach(u => {
       const r = u.r;
       u.attrParts = {
         market_size: scale(r.market_size > 0 ? Math.log(r.market_size) : null, mmSize),
-        market_growth: scale(r.mkt_cagr_fwd, mmGrowth),
+        reno_growth: scale(r.mkt_reno_cagr_fwd, mmReno),
+        nb_growth: scale(r.mkt_nb_cagr_fwd, mmNb),
         profitability: r.profitability,
         competitive_intensity: r.competitive_intensity
       };
@@ -503,7 +510,7 @@ sup { font-size: .7em; line-height: 0; }
 
   // ---------- matrix ----------
   const SVGNS = "http://www.w3.org/2000/svg";
-  const M = { w: 660, h: 548, l: 58, r: 24, t: 40, b: 104 };
+  const M = { w: 660, h: 500, l: 58, r: 24, t: 40, b: 56 };
   const xS = v => M.l + (v - 1) / 4 * (M.w - M.l - M.r);
   const yS = v => M.h - M.b - (v - 1) / 4 * (M.h - M.t - M.b);
 
@@ -554,7 +561,7 @@ sup { font-size: .7em; line-height: 0; }
     svg.appendChild(el("text", { x: x0, y: yS(1) + 51, "font-size": 9.5, fill: "var(--ink)" }, "Market share, channel access, product fit"));
     const yt = el("g", { transform: `translate(14 ${y1}) rotate(-90)` });
     yt.appendChild(el("text", { x: 0, y: 0, "font-size": 12.5, "font-weight": 700, fill: "var(--ink)" }, "Market attractiveness"));
-    yt.appendChild(el("text", { x: 0, y: 13, "font-size": 9.5, fill: "var(--ink)" }, "Size, growth next 5 yrs, profitability, competition"));
+    yt.appendChild(el("text", { x: 0, y: 13, "font-size": 9.5, fill: "var(--ink)" }, "Size, reno & new build growth, profitability, competition"));
     svg.appendChild(yt);
 
     // zone labels in bold red, placed in the corner each zone owns
@@ -585,31 +592,35 @@ sup { font-size: .7em; line-height: 0; }
       svg.appendChild(g);
     });
     placeLabels(placed, x0, x1, y0, y1).forEach(t => svg.appendChild(t));
-    sizeKey(svg, maxSize, rad, x1, y1);
+    sizeKey(maxSize, rad);
     applyHighlight();
   }
 
   // Greedy label placement: try positions around each bubble, keep the one overlapping least with other labels and bubbles.
-  // Bubble size key under the plot: reference circles drawn with the same radius scale as the bubbles
-  function sizeKey(svg, maxSize, rad, x1, y1) {
+  // Bubble size key below the zone list: reference circles drawn with the bubbles' radius scale,
+  // and sized on screen with the matrix's own scale so a key circle matches a bubble of that size.
+  let keyArgs = null;
+  function sizeKey(maxSize, rad) {
+    keyArgs = { maxSize, rad };
     const NICE = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000];
     const pick = v => NICE.filter(n => n <= v).pop();
     const vals = [...new Set([pick(maxSize / 8), pick(maxSize / 2.5), pick(maxSize)].filter(Boolean))];
+    const key = document.getElementById("sizeKey");
+    key.innerHTML = "";
     if (!vals.length) return;
-    const radii = vals.map(rad), base = y1 + 28 + 2 * Math.max(...radii);
-    const xs = []; let x = x1;
-    for (let i = vals.length - 1; i >= 0; i--) {
-      x -= i === vals.length - 1 ? Math.max(radii[i], 24) : Math.max(radii[i] + radii[i + 1] + 14, 54);
-      xs[i] = x;
-    }
-    const g = el("g", { "aria-label": "Bubble size key" });
-    g.appendChild(el("text", { x: xs[0] - Math.max(radii[0], 24) - 6, y: base - 4, "text-anchor": "end", "font-size": 10.5, "font-weight": 700, fill: "var(--ink)" }, `Market size ${CY - 1}`));
+    const radii = vals.map(rad), maxR = Math.max(...radii), H = 2 * maxR + 18;
+    const xs = []; let x = 0;
+    vals.forEach((v, i) => { x += i === 0 ? Math.max(radii[0], 24) : Math.max(radii[i] + radii[i - 1] + 14, 54); xs[i] = x; });
+    const W = x + Math.max(radii[radii.length - 1], 24);
+    key.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const scaleF = (document.getElementById("matrix").getBoundingClientRect().width || M.w) / M.w;
+    key.style.width = (W * scaleF) + "px";
     vals.forEach((v, i) => {
-      g.appendChild(el("circle", { cx: xs[i], cy: base - radii[i], r: radii[i], fill: "var(--grey-bubble)", "fill-opacity": .18, stroke: "var(--grey-bubble)", "stroke-width": 1 }));
-      g.appendChild(el("text", { x: xs[i], y: base + 13, "text-anchor": "middle", "font-size": 10.5, fill: "var(--ink-strong)" }, `€${money(v)}M`));
+      key.appendChild(el("circle", { cx: xs[i], cy: 2 * maxR - radii[i] + 1, r: radii[i], fill: "var(--grey-bubble)", "fill-opacity": .18, stroke: "var(--grey-bubble)", "stroke-width": 1 }));
+      key.appendChild(el("text", { x: xs[i], y: 2 * maxR + 15, "text-anchor": "middle", "font-size": 10.5, fill: "var(--ink-strong)" }, `€${money(v)}M`));
     });
-    svg.appendChild(g);
   }
+  if (window.ResizeObserver) new ResizeObserver(() => { if (keyArgs) sizeKey(keyArgs.maxSize, keyArgs.rad); }).observe(document.getElementById("matrix"));
 
   function placeLabels(placed, x0, x1, y0, y1) {
     const FS = 11.5, H = 13, boxes = [];
@@ -641,7 +652,7 @@ sup { font-size: .7em; line-height: 0; }
   }
 
   const tip = document.getElementById("tip"), box = document.getElementById("chartBox");
-  const LBL = { market_size: "Market size", market_growth: "Market growth (5 yr)", profitability: "Profitability", competitive_intensity: "Competitive intensity",
+  const LBL = { market_size: "Market size", reno_growth: "Renovation growth (5 yr)", nb_growth: "New build growth (5 yr)", profitability: "Profitability", competitive_intensity: "Competitive intensity",
     market_share: "Market share", channel_access: "Channel access", product_fit: "Product fit" };
   function showTip(u, ev, anchor) {
     const rows = (parts, ws) => Object.keys(parts).map(k => `<tr><td>${LBL[k]} <span style="color:var(--muted)">×${Number(ws[k]) || 0}</span></td><td>${f1(parts[k])}</td></tr>`).join("");
@@ -680,7 +691,7 @@ sup { font-size: .7em; line-height: 0; }
       </div>`;
     }).join("");
     document.querySelectorAll("#zones .chip[data-country]").forEach(b => b.addEventListener("click", () => select(b.dataset.country, true)));
-    document.getElementById("mxScope").textContent = `${units.length} countries, ${segName()}; bubble size = market size ${CY - 1}`;
+    document.getElementById("mxScope").textContent = `${units.length} countries, ${segName()}`;
 
     const lead = by.lead.map(u => u.c.country), grow = by.grow;
     const growSize = grow.reduce((s, u) => s + u.r.market_size, 0);
@@ -795,7 +806,7 @@ sup { font-size: .7em; line-height: 0; }
     const grp = (key, title, labels, step) => `<fieldset><legend>${title}</legend>${Object.keys(labels).map(k =>
       `<label class="wrow" for="w-${key}-${k}">${labels[k]}<input id="w-${key}-${k}" type="number" min="0" max="100" step="${step}" data-g="${key}" data-k="${k}" value="${(W[key] || {})[k] ?? 0}"></label>`).join("")}</fieldset>`;
     document.getElementById("weights").innerHTML =
-      grp("attractiveness", "Market attractiveness weights", { market_size: "Market size", market_growth: "Market growth, next 5 yrs", profitability: "Profitability", competitive_intensity: "Competitive intensity" }, 5) +
+      grp("attractiveness", "Market attractiveness weights", { market_size: "Market size", reno_growth: "Renovation growth, 5 yrs", nb_growth: "New build growth, 5 yrs", profitability: "Profitability", competitive_intensity: "Competitive intensity" }, 5) +
       grp("ability", "Ability to win weights", { market_share: `${CO} market share`, channel_access: "Channel access", product_fit: "Product fit" }, 5) +
       grp("zones", "Zone lines (attractiveness + ability, 2–10)", { leadership: "Leadership position from", priority_growth: "Priority growth from" }, 0.25) +
       `<div style="display:flex;align-items:end"><button type="button" class="btn" id="resetW">Restore default settings</button></div>`;

@@ -24,7 +24,8 @@ Both axes run from 1 to 5. A country's zone is set by attractiveness + ability t
 | Axis | Criterion | Source | Default weight |
 |---|---|---|---|
 | Attractiveness | Market size | data, log scale, relative to the portfolio | 30 |
-| | Market growth, next 5 yrs | data, relative to the portfolio | 30 |
+| | Renovation market growth, next 5 yrs | data, relative to the portfolio | 15 |
+| | New build market growth, next 5 yrs | data, relative to the portfolio | 15 |
 | | Profitability | 1–5 score | 20 |
 | | Competitive intensity (5 = benign) | 1–5 score | 20 |
 | Ability to win | HFC market share | data, relative to the portfolio | 45 |

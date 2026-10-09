@@ -40,7 +40,7 @@ window.HFC_CONFIG = {
   currency: "EUR m",
   // Weights used to build the two matrix axes (they are normalised, so any scale works).
   weights: {
-    attractiveness: { market_size: 30, market_growth: 30, profitability: 20, competitive_intensity: 20 },
+    attractiveness: { market_size: 30, reno_growth: 15, nb_growth: 15, profitability: 20, competitive_intensity: 20 },
     ability: { market_share: 45, channel_access: 30, product_fit: 25 }
   },
   // Diagonal zone lines on the matrix: a country's zone is set by attractiveness + ability to win (each 1-5, so 2-10).
