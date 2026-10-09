@@ -88,6 +88,10 @@ select, .btn { font: inherit; font-size: 12px; color: var(--ink-strong); backgro
 .kpi .lbl { font-size: 11px; font-weight: 700; color: var(--red); }
 .kpi .val { font-size: 24px; font-weight: 700; color: var(--red); }
 .kpi .cmp { font-size: 11px; color: var(--ink); }
+.zlist { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 3px; }
+.zlist li { display: grid; grid-template-columns: 10px 1fr auto; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-strong); }
+.zlist i { width: 10px; height: 10px; border-radius: 50%; }
+.zlist b { color: var(--red); font-size: 15px; font-weight: 700; }
 
 /* Red slanted takeaway banner */
 .takeaway { position: relative; color: #fff; font-size: 15px; font-weight: 500; text-align: center; padding: 10px 34px; isolation: isolate; text-wrap: balance; margin-inline: 6px; }
@@ -489,10 +493,13 @@ sup { font-size: .7em; line-height: 0; }
       { lbl: `Market growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Next 5 yrs ${pct(tot.mkt_cagr_fwd)} p.a. · last 5 yrs ${pct(tot.mkt_cagr_hist)}` },
       { lbl: `${CO} growth ${CY} forecast`, val: pct(tot.hfc_growth_cy), cmp: `<span class="${dir(gap)}">${arrow(gap)} ${pp(gap)}</span> vs. market · BP ${pct(tot.hfc_cagr_bp)} p.a.` },
       { lbl: `${CO} market share ${CY}`, val: f1(tot.ms_cy) + "%", cmp: `<span class="${dir(dms)}">${arrow(dms)} ${pp(dms)}</span> vs. ${CY - 1}` },
-      { lbl: "Matrix positions", val: `${counts.lead} · ${counts.grow} · ${counts.sel}`, cmp: "Leadership · Priority growth · Selective" }
+      { lbl: "Countries by matrix position", list: Object.keys(ZONES).map(z => ({ name: ZONES[z].name, color: ZONES[z].color, n: counts[z] })) }
     ];
     document.getElementById("kpis").innerHTML = kp.map(k =>
-      `<div class="kpi"><span class="lbl">${k.lbl}</span><span class="val">${k.val}</span><span class="cmp">${k.cmp}</span></div>`).join("");
+      k.list
+        ? `<div class="kpi"><span class="lbl">${k.lbl}</span><ul class="zlist">${k.list.map(z =>
+            `<li><i style="background:${z.color}"></i><span>${z.name}</span><b>${z.n}</b></li>`).join("")}</ul></div>`
+        : `<div class="kpi"><span class="lbl">${k.lbl}</span><span class="val">${k.val}</span><span class="cmp">${k.cmp}</span></div>`).join("");
   }
 
   // ---------- matrix ----------
