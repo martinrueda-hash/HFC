@@ -156,7 +156,13 @@ tr.country-row { cursor: pointer; }
 td .country { font-weight: 700; color: var(--ink-strong); }
 td .code { font-size: 10.5px; color: var(--muted); margin-left: 6px; font-weight: 500; }
 td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
-.zpill { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-left: 8px; vertical-align: 1px; }
+.zpill { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: 0; }
+tr.zone-row td { background: var(--bg); color: var(--red); font-weight: 700; border-top: 14px solid var(--bg); border-bottom: 2px solid var(--red); padding-top: 8px; }
+tr.zone-row td.l { font-size: 13px; }
+tr.zone-row td .v { color: var(--red); }
+tr.zone-row td .v.up, tr.zone-row td .delta.up { color: var(--good); }
+tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
+.zcount { font-weight: 500; color: var(--ink); font-size: 11px; margin-left: 8px; }
 .cell { display: inline-flex; align-items: center; gap: 6px; justify-content: flex-end; }
 .bar { position: relative; width: 30px; height: 8px; flex: none; }
 .bar::before { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--axis); }
@@ -196,17 +202,6 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
         <button type="button" data-seg="Non-residential" aria-pressed="false">Non-residential</button>
       </div>
     </div>
-    <label class="ctl" for="sortSel">Sort countries by
-      <select id="sortSel">
-        <option value="size">Market size</option>
-        <option value="zone">Matrix position</option>
-        <option value="mktFwd">Market growth, next 5 yrs</option>
-        <option value="hfcBp">HFC BP growth, next 5 yrs</option>
-        <option value="ms">HFC market share</option>
-        <option value="msDelta">Market share change</option>
-        <option value="name">Country name</option>
-      </select>
-    </label>
     <span class="spacer"></span>
     <button type="button" class="btn" id="clearHl" hidden>Clear selection</button>
   </div>
@@ -215,7 +210,7 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
 
   <section class="slide" aria-labelledby="mxTitle">
     <div class="slide-head">
-      <h2 class="stitle" id="mxTitle"><b>portfolio</b><span class="pipe">|</span>country prioritization</h2>
+      <h2 class="stitle" id="mxTitle">Country prioritization</h2>
     </div>
     <div class="subhead" id="mxScope"></div>
     <div class="matrix-grid">
@@ -231,7 +226,7 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
     <details class="method">
       <summary>Scoring method and weights</summary>
       <div class="weights" id="weights"></div>
-      <p class="note" style="margin-top:10px">Market size is scored on a log scale. Profitability, competitive intensity, brand strength, channel access and product fit are qualitative 1–5 scores from the data file (5 = most favourable for HFC). The diagonal zone lines sit where attractiveness + ability to win equals the thresholds below. Changes apply immediately and are kept in this browser only.</p>
+      <p class="note" style="margin-top:10px">Market size is scored on a log scale. Profitability, competitive intensity, channel access and product fit are qualitative 1–5 scores from the data file (5 = most favourable for HFC). The diagonal zone lines sit where attractiveness + ability to win equals the thresholds below. Changes apply immediately and are kept in this browser only.</p>
     </details>
     <div class="takeaway" id="mxTake"></div>
     <div class="source">
@@ -242,12 +237,11 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
 
   <section class="slide" aria-labelledby="tblTitle">
     <div class="slide-head">
-      <h2 class="stitle" id="tblTitle"><b>growth</b><span class="pipe">|</span>market vs. HFC by end market</h2>
+      <h2 class="stitle" id="tblTitle">Market vs. HFC positioning</h2>
       <div class="legend" aria-label="How to read the table">
         <span><span class="bar"><span style="left:50%;width:14px;background:var(--ink)"></span></span> growth</span>
         <span><span class="bar"><span style="right:50%;width:14px;background:var(--red)"></span></span> decline</span>
         <span><span class="up">▲</span> / <span class="down">▼</span> HFC vs. market (pp)</span>
-        <span><span class="zpill" style="margin:0 4px 0 0;background:var(--z-lead)"></span><span class="zpill" style="margin:0 4px 0 0;background:var(--z-grow)"></span><span class="zpill" style="margin:0 6px 0 0;background:var(--z-sel)"></span>matrix zone</span>
       </div>
     </div>
     <div class="subhead" id="tblScope"></div>
@@ -262,7 +256,7 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
   </section>
 
   <section class="slide" aria-labelledby="dataTitle">
-    <h2 class="stitle" id="dataTitle"><b>data</b><span class="pipe">|</span>update the figures</h2>
+    <h2 class="stitle" id="dataTitle">Update the figures</h2>
     <div class="data-panel">
       <p class="note">Paste or load a CSV with one row per country and end market. The first line must be the header below; percentages are plain numbers (3.2 = 3.2%). Imported data stays in this browser. To change the figures for everyone, edit <code>data.js</code> in the repository.</p>
       <textarea id="csvBox" spellcheck="false" aria-label="CSV data"></textarea>
@@ -290,10 +284,10 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
   const CO = CFG.company;
   const FIELDS = ["country", "code", "segment", "market_size", "mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd",
     "hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp", "ms_cy", "ms_py",
-    "profitability", "competitive_intensity", "brand_strength", "channel_access", "product_fit"];
+    "profitability", "competitive_intensity", "channel_access", "product_fit"];
   const NUMERIC = FIELDS.slice(3);
-  const SCORES = ["profitability", "competitive_intensity", "brand_strength", "channel_access", "product_fit"];
-  const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v2";
+  const SCORES = ["profitability", "competitive_intensity", "channel_access", "product_fit"];
+  const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v3";
 
   const ZONES = {
     lead: { name: "Leadership position", color: "var(--z-lead)", order: 0,
@@ -417,7 +411,6 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
       };
       u.abilParts = {
         market_share: scale(r.ms_cy, mmMs),
-        brand_strength: r.brand_strength,
         channel_access: r.channel_access,
         product_fit: r.product_fit
       };
@@ -440,11 +433,7 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
 
   // ---------- state ----------
   let seg = "All";
-  let sortKey = store.get("hfc-mi-sort") || "size";
   let selected = null;
-  const sortSel = document.getElementById("sortSel");
-  sortSel.value = sortKey;
-  if (sortSel.value !== sortKey) { sortKey = "size"; sortSel.value = sortKey; }
   const monthYear = new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" });
   document.getElementById("monthLbl").textContent = monthYear;
   document.getElementById("footDate").textContent = monthYear;
@@ -529,7 +518,7 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
     svg.appendChild(el("line", { x1: x0, x2: x0, y1: y1, y2: y0 - 12, stroke: "var(--red)", "stroke-width": 1.2, "marker-end": "url(#arrowRed)" }));
     // axis titles, bold grey with a light caption like the deck
     svg.appendChild(el("text", { x: x0, y: M.h - 20, "font-size": 12.5, "font-weight": 700, fill: "var(--ink)" }, `Ability to win (${CO})`));
-    svg.appendChild(el("text", { x: x0, y: M.h - 7, "font-size": 9.5, fill: "var(--ink)" }, "Market share, brand strength, channel access, product fit"));
+    svg.appendChild(el("text", { x: x0, y: M.h - 7, "font-size": 9.5, fill: "var(--ink)" }, "Market share, channel access, product fit"));
     const yt = el("g", { transform: `translate(14 ${y1}) rotate(-90)` });
     yt.appendChild(el("text", { x: 0, y: 0, "font-size": 12.5, "font-weight": 700, fill: "var(--ink)" }, "Market attractiveness"));
     yt.appendChild(el("text", { x: 0, y: 13, "font-size": 9.5, fill: "var(--ink)" }, "Size, growth next 5 yrs, profitability, competition"));
@@ -598,7 +587,7 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
 
   const tip = document.getElementById("tip"), box = document.getElementById("chartBox");
   const LBL = { market_size: "Market size", market_growth: "Market growth (5 yr)", profitability: "Profitability", competitive_intensity: "Competitive intensity",
-    market_share: "Market share", brand_strength: "Brand strength", channel_access: "Channel access", product_fit: "Product fit" };
+    market_share: "Market share", channel_access: "Channel access", product_fit: "Product fit" };
   function showTip(u, ev, anchor) {
     const rows = (parts, ws) => Object.keys(parts).map(k => `<tr><td>${LBL[k]} <span style="color:var(--muted)">×${Number(ws[k]) || 0}</span></td><td>${f1(parts[k])}</td></tr>`).join("");
     tip.innerHTML = `<h4>${esc(u.c.country)} · <span style="color:${ZONES[u.zone].color}">●</span> ${ZONES[u.zone].name}</h4>
@@ -674,9 +663,11 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
       ? `<span class="segl">${esc(r.segment)}</span>`
       : kind === "grand"
         ? `<span>All countries</span>`
-        : `<span class="country">${esc(c.country)}</span><span class="code">${esc(c.code)}</span>${zone ? `<span class="zpill" style="background:${ZONES[zone].color}" title="${ZONES[zone].name}" role="img" aria-label="${ZONES[zone].name}"></span>` : ""}`;
-    const cls = kind === "grand" ? "grand" : kind === "total" ? "total country-row" : "country-row";
-    return `<tr class="${cls}" data-country="${c ? esc(c.country) : ""}">
+        : kind === "zone"
+          ? `<span class="zpill" style="background:${ZONES[zone].color}"></span>${ZONES[zone].name}<span class="zcount">${c} ${c === 1 ? "country" : "countries"}</span>`
+          : `<span class="country">${esc(c.country)}</span><span class="code">${esc(c.code)}</span>`;
+    const cls = kind === "grand" ? "grand" : kind === "zone" ? "zone-row" : kind === "total" ? "total country-row" : "country-row";
+    return `<tr class="${cls}"${c && c.country ? ` data-country="${esc(c.country)}"` : ""}>
       <td class="l sticky">${first}</td>
       <td>${money(r.market_size)}</td>
       <td>${gcell(r.mkt_cagr_hist)}</td><td>${gcell(r.mkt_growth_cy)}</td><td>${gcell(r.mkt_cagr_fwd)}</td>
@@ -685,20 +676,6 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
       <td class="gap"></td>
       <td>${ms[0]}</td><td>${ms[1]}</td>
     </tr>`;
-  }
-
-  function sortUnits(units) {
-    const l = [...units];
-    const by = fn => l.sort((a, b) => (fn(b) ?? -Infinity) - (fn(a) ?? -Infinity));
-    switch (sortKey) {
-      case "name": return l.sort((a, b) => a.c.country.localeCompare(b.c.country));
-      case "zone": return l.sort((a, b) => ZONES[a.zone].order - ZONES[b.zone].order || b.r.market_size - a.r.market_size);
-      case "mktFwd": return by(u => u.r.mkt_cagr_fwd);
-      case "hfcBp": return by(u => u.r.hfc_cagr_bp);
-      case "ms": return by(u => u.r.ms_cy);
-      case "msDelta": return by(u => u.r.ms_cy !== null && u.r.ms_py !== null ? u.r.ms_cy - u.r.ms_py : null);
-      default: return by(u => u.r.market_size);
-    }
   }
 
   function renderTable(units) {
@@ -713,9 +690,15 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
         ${h("Share " + CY, "% of market")}${h("Change", "vs. " + (CY - 1))}</tr></thead>`;
     const grand = aggregate(units.map(u => u.r), { country: "All", code: "", segment: seg });
     let body = rowHtml(grand, "grand", null, null);
-    sortUnits(units).forEach(u => {
-      body += rowHtml(seg === "All" ? u.c.total : u.r, "total", u.c, u.zone);
-      if (seg === "All") u.c.rows.forEach(r => { body += rowHtml(r, "seg", u.c, null); });
+    // cluster countries by matrix zone; largest market first inside each zone
+    Object.keys(ZONES).forEach(z => {
+      const members = units.filter(u => u.zone === z).sort((a, b) => b.r.market_size - a.r.market_size);
+      if (!members.length) return;
+      body += rowHtml(aggregate(members.map(u => u.r), { country: "", code: "", segment: seg }), "zone", members.length, z);
+      members.forEach(u => {
+        body += rowHtml(seg === "All" ? u.c.total : u.r, "total", u.c, null);
+        if (seg === "All") u.c.rows.forEach(r => { body += rowHtml(r, "seg", u.c, null); });
+      });
     });
     const t = document.getElementById("tbl");
     t.innerHTML = head + `<tbody>${body}</tbody>`;
@@ -756,7 +739,7 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
       `<label class="wrow" for="w-${key}-${k}">${labels[k]}<input id="w-${key}-${k}" type="number" min="0" max="100" step="${step}" data-g="${key}" data-k="${k}" value="${(W[key] || {})[k] ?? 0}"></label>`).join("")}</fieldset>`;
     document.getElementById("weights").innerHTML =
       grp("attractiveness", "Market attractiveness weights", { market_size: "Market size", market_growth: "Market growth, next 5 yrs", profitability: "Profitability", competitive_intensity: "Competitive intensity" }, 5) +
-      grp("ability", "Ability to win weights", { market_share: `${CO} market share`, brand_strength: "Brand strength", channel_access: "Channel access", product_fit: "Product fit" }, 5) +
+      grp("ability", "Ability to win weights", { market_share: `${CO} market share`, channel_access: "Channel access", product_fit: "Product fit" }, 5) +
       grp("zones", "Zone lines (attractiveness + ability, 2–10)", { leadership: "Leadership position from", priority_growth: "Priority growth from" }, 0.25) +
       `<div style="display:flex;align-items:end"><button type="button" class="btn" id="resetW">Restore default settings</button></div>`;
     document.querySelectorAll("#weights input").forEach(inp => inp.addEventListener("input", () => {
@@ -837,7 +820,6 @@ td .segl { color: var(--ink); padding-left: 14px; font-weight: 400; }
     document.querySelectorAll("#segCtl button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     render();
   }));
-  sortSel.addEventListener("change", ev => { sortKey = ev.target.value; store.set("hfc-mi-sort", sortKey); render(); });
 
   function render() {
     const { units } = view();
