@@ -340,8 +340,9 @@ sup { font-size: .7em; line-height: 0; }
   const OPTIONAL = ["code", "hfc_sales", "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
   const NUMERIC = FIELDS.slice(3);
   const SCORES = ["profitability", "competitive_intensity", "channel_access", "product_fit"];
-  // Takeaway messages in the red banners: left blank for now (set to true to show the generated text again)
+  // Takeaway messages in the red banners: placeholder for now (set to true to show the generated text again)
   const SHOW_TAKEAWAYS = false;
+  const TAKEAWAY_PLACEHOLDER = "[key message]";
   const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v4", LS_SET = "hfc-mi-settings-v1", LS_SRC = "hfc-mi-source-v1";
 
   const ZONES = {
@@ -746,7 +747,7 @@ sup { font-size: .7em; line-height: 0; }
     else if (lead.length) t = `<b>${esc(list(lead))}</b> in leadership position; no market in priority growth`;
     else if (grow.length) t = `No leadership position yet; <b>${esc(list(grow.map(u => u.c.country)))}</b> as priority growth, a €${money(growSize)}M market`;
     else t = "All countries in selective investment at current thresholds";
-    document.getElementById("mxTake").innerHTML = SHOW_TAKEAWAYS ? t : "";
+    document.getElementById("mxTake").innerHTML = SHOW_TAKEAWAYS ? t : TAKEAWAY_PLACEHOLDER;
   }
 
   // ---------- table ----------
@@ -821,7 +822,7 @@ sup { font-size: .7em; line-height: 0; }
     const gapBp = (grand.hfc_cagr_bp ?? NaN) - (grand.mkt_cagr_fwd ?? NaN);
     const gained = units.filter(u => u.r.ms_cy !== null && u.r.ms_py !== null && u.r.ms_cy - u.r.ms_py >= 0.05).length;
     const verb = gapBp >= 0.05 ? "outgrow" : gapBp <= -0.05 ? "grow slower than" : "grow in line with";
-    document.getElementById("tblTake").innerHTML = !SHOW_TAKEAWAYS ? "" :
+    document.getElementById("tblTake").innerHTML = !SHOW_TAKEAWAYS ? TAKEAWAY_PLACEHOLDER :
       `BP to ${verb} the market by <b>${pp(Math.abs(gapBp))}</b> p.a. (${pct(grand.hfc_cagr_bp)} vs. ${pct(grand.mkt_cagr_fwd)}); share gained in <b>${gained} of ${units.length}</b> countries in ${CY}`;
     applyHighlight();
   }
