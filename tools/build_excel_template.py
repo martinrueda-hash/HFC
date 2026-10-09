@@ -12,7 +12,7 @@ Sheets
   Raw data          one row per country x end market; market growth is calculated from Market levels
   Dashboard data    formulas only: the table the dashboard reads on upload
 
-End markets: Residential = Residential total - Multi family; Commercial = Commercial + Multi family.
+End markets: Residential = Residential total - Multi family; Commercial = Commercial + Healthcare (optional) + Multi family.
 """
 import csv
 import json
@@ -49,6 +49,9 @@ SERIES = [
     ("oe.res_mf_reno", "Multi family - renovation", "Work Done - Residential - Multi Family - Renovation"),
     ("oe.com_new", "Commercial - new", "Work Done - Non-Residential Building - Commercial - New"),
     ("oe.com_reno", "Commercial - renovation", "Work Done - Non-Residential Building - Commercial - Renovation"),
+    # Healthcare: not in the current export. Fill in the exact indicator names once the download includes them.
+    ("oe.health_new", "Healthcare - new (optional)", ""),
+    ("oe.health_reno", "Healthcare - renovation (optional)", ""),
 ]
 SERIES_NAME = {k: name for k, _, name in SERIES}
 
@@ -146,6 +149,8 @@ def to_cell(v, col_name):
 
 def oe_level(location, key, year):
     yi = oe_head.index(str(year))
+    if not SERIES_NAME[key]:
+        return 0.0
     for r in oe_rows[1:]:
         if r[0] == location and r[1] == SERIES_NAME[key]:
             return float(r[yi])
@@ -153,8 +158,8 @@ def oe_level(location, key, year):
 
 def segment_level(location, segment, year, kind):
     """Construction work done for an end market; kind is 'new' or 'reno'."""
-    t, mf, com = (oe_level(location, f"oe.{x}_{kind}", year) for x in ("res_total", "res_mf", "com"))
-    return t - mf if segment == "Residential" else mf + com
+    t, mf, com, hc = (oe_level(location, f"oe.{x}_{kind}", year) for x in ("res_total", "res_mf", "com", "health"))
+    return t - mf if segment == "Residential" else mf + com + hc
 
 wb = Workbook()
 
@@ -182,7 +187,8 @@ SETTINGS = [
     *[(label, name, key, "@", note) for (key, label, name), note in zip(SERIES, [
         "Residential = Residential total - Multi family (new and renovation separately)", "",
         "Multi family is counted in Commercial", "",
-        "Commercial end market = Commercial + Multi family (commercial already includes offices, retail and hotels)", ""])],
+        "Commercial end market = Commercial + Healthcare + Multi family (commercial already includes offices, retail and hotels)", "",
+        "Optional: type the exact Indicator name from the export; it is added to Commercial. Empty = not included", ""])],
 ]
 r = 5
 group_rows = []
@@ -253,7 +259,7 @@ COLS = [
     # key, header, number format, group, width, comment, kind ("in" input / "calc" formula)
     ("country", "Country", "@", "Country", 17, None, "in"),
     ("code", "Code", "@", "Country", 7, "Short code (optional)", "in"),
-    ("segment", "End market", "@", "Country", 15, "Residential, or Commercial (commercial + multi family)", "in"),
+    ("segment", "End market", "@", "Country", 15, "Residential, or Commercial (commercial + healthcare + multi family)", "in"),
     ("oe_location", "Oxford Economics\nlocation", "@", "Country", 16, "Location name exactly as in the Oxford Economics export", "in"),
     ("market_size", "Addressable market\n{py} (EUR m)", "#,##0", "Market", 13, "HFC addressable market in the base year (your estimate, not total construction output)", "in"),
     ("oe_level_py", "Construction work\ndone {py} (US$ m)", "#,##0", "Market", 14, "From Market levels (Oxford Economics, 2023 prices)", "calc"),
@@ -320,7 +326,7 @@ rd.row_dimensions[HEAD_ROW].height = 42
 ml = wb.create_sheet("Market levels")
 ml.sheet_properties.tabColor = GREY_BAND
 band(ml, 1, 39, "Market levels", "Construction work done per country and end market (US$ m, 2023 prices), calculated from the Oxford Economics sheet. Do not type here.")
-ml.cell(row=3, column=1, value="Residential = Residential total - Multi family. Commercial = Commercial + Multi family. Each for renovation and new build; total = both. Empty = year or series not in the export.").font = font(9, color=INK, italic=True)
+ml.cell(row=3, column=1, value="Residential = Residential total - Multi family. Commercial = Commercial + Healthcare (if set) + Multi family. Each for renovation and new build; total = both. Empty = year or series not in the export.").font = font(9, color=INK, italic=True)
 ML_HEAD = 5
 for j, h in enumerate(["Country", "End market", "Oxford Economics location"], 1):
     c = ml.cell(row=ML_HEAD, column=j, value=h)
@@ -351,9 +357,10 @@ for bi, (bkey, btitle, bcolor) in enumerate(BLOCKS):
         BCOL[(bkey, off)] = get_column_letter(col)
 YCOL = {off: BCOL[("total", off)] for off in YEAR_OFFSETS}
 
-def comp(ind_ref, year_cell, loc_cell):
+def comp(ind_ref, year_cell, loc_cell, optional=False):
     idx = f"IFERROR(MATCH({year_cell},{OE_HDR},0),MATCH({year_cell}&\"\",{OE_HDR},0))"
-    return f"SUMIFS(INDEX({OE_DATA},0,{idx}),{OE_LOC},{loc_cell},{OE_IND},{ind_ref})"
+    f = f"SUMIFS(INDEX({OE_DATA},0,{idx}),{OE_LOC},{loc_cell},{OE_IND},{ind_ref})"
+    return f'IF({ind_ref}="",0,{f})' if optional else f
 
 for n in range(N_ROWS):
     mr, rr = ML_HEAD + 1 + n, FIRST + n
@@ -365,7 +372,8 @@ for n in range(N_ROWS):
             yc = f"{BCOL[(kind, off)]}${ML_HEAD}"
             loc = f"$C{mr}"
             t, mf, com = (comp(IND[f"oe.{x}_{kind}"], yc, loc) for x in ("res_total", "res_mf", "com"))
-            lvl = f'IF($B{mr}="Residential",{t}-{mf},{mf}+{com})'
+            hc = comp(IND[f"oe.health_{kind}"], yc, loc, optional=True)
+            lvl = f'IF($B{mr}="Residential",{t}-{mf},{mf}+{com}+{hc})'
             cell = ml[f"{BCOL[(kind, off)]}{mr}"]
             cell.value = f'=IF($A{mr}="","",IFERROR(1/(1/{lvl}),""))'
             calc_cell(cell, "#,##0", 9)
@@ -520,7 +528,7 @@ lines = [
     ("4", "Dashboard data: nothing to type. Check that every country appears and that the check column shows no red cells."),
     ("5", "Save the file (.xlsx), open the dashboard, go to 'Update the figures' and click 'Upload Excel'."),
     ("How the market figures are built", None),
-    ("End markets", "Residential = Oxford Economics 'Residential - Total' minus 'Multi Family'. Commercial = 'Non-Residential Building - Commercial' plus 'Multi Family'. Each is built for New and Renovation; total = both."),
+    ("End markets", "Residential = Oxford Economics 'Residential - Total' minus 'Multi Family'. Commercial = 'Non-Residential Building - Commercial' plus healthcare (if set in Settings) plus 'Multi Family'. Each is built for New and Renovation; total = both."),
     ("Market levels", "Shows the resulting construction work done per country, end market and year (US$ m, 2023 prices)."),
     ("Growth rates", "CAGR last 5 years = (base year / base year - 5)^(1/5) - 1. Growth this year = current year / base year - 1. CAGR next 5 years = (current year + 5 / current year)^(1/5) - 1."),
     ("History", "The 5-year history needs the export to start 6 years before the current year (e.g. 2020 for 2026). With a shorter export it stays empty."),
