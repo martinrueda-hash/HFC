@@ -10,7 +10,7 @@ A self-contained dashboard for HFC's country portfolio, styled after the EU WT s
    - **Leadership position**: attractive market and strong position. Accelerate and defend the lead.
    - **Priority growth**: good potential, position still to build. Invest to gain share.
    - **Selective investment**: lower attractiveness or weak position. Invest selectively, protect margin.
-2. **Market vs. HFC positioning**: countries grouped by matrix zone (with a subtotal per zone, largest market first), each split by end market (Residential / Commercial, where Commercial = commercial + healthcare + multi-family):
+2. **Market vs. HFC positioning**: countries grouped by matrix zone (with a subtotal per zone, largest market first), one row per country in the Total view; the Residential and Commercial filters show each end market (Commercial = commercial + healthcare + multi-family):
    - **Market**: size (last year, e.g. 2025), CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years. Market growth is construction work done (Oxford Economics); each figure shows the combined rate with the renovation (R) and new build (NB) rates underneath.
    - **HFC**: sales (last year, e.g. 2025), CAGR over the last 5 years, projected growth this year, business-plan CAGR over the next 5 years, each with the gap to the market in percentage points.
    - **HFC market share** this year and its change versus last year, shown inside the HFC block.

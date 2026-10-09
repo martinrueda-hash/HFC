@@ -178,6 +178,7 @@ tr.zone-row td.l { font-size: 13px; }
 tr.zone-row td .v { color: var(--red); }
 tr.zone-row td .v.up, tr.zone-row td .delta.up { color: var(--good); }
 tr.zone-row td .v.down, tr.zone-row td .delta.down { color: var(--bad); }
+tr.zone-row td .v.flat, tr.grand td .v.flat { color: var(--muted); }
 .zcount { font-weight: 500; color: var(--ink); font-size: 11px; margin-left: 8px; }
 .cell { display: inline-flex; align-items: center; gap: 6px; justify-content: flex-end; }
 .bar { position: relative; width: 24px; height: 8px; flex: none; }
@@ -794,7 +795,7 @@ sup { font-size: .7em; line-height: 0; }
     const h = (a, b, cls) => `<th${cls ? ` class="${cls}"` : ""}>${a}<span class="u">${b}</span></th>`;
     const head = `<thead>
       <tr class="grp"><th class="l sticky blank"></th><th class="g-mkt" colspan="4">Market growth<sup>1</sup></th><th class="gap"></th><th class="g-hfc" colspan="6">${CO}</th></tr>
-      <tr><th class="l sticky">Country / end market</th>${h("Size " + (CY - 1), CFG.currency, "m")}
+      <tr><th class="l sticky">Country</th>${h("Size " + (CY - 1), CFG.currency, "m")}
         ${h("CAGR 5 yrs", (CY - 6) + "–" + (CY - 1), "m")}${h("Growth " + CY + "E", "vs. " + (CY - 1), "m")}${h("CAGR 5 yrs", CY + "–" + (CY + 5), "m")}
         <th class="gap"></th>
         ${h("Sales " + (CY - 1), CFG.currency)}${h("CAGR 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + "F", "vs. " + (CY - 1))}${h("BP CAGR 5 yrs", CY + "–" + (CY + 5))}
@@ -808,7 +809,6 @@ sup { font-size: .7em; line-height: 0; }
       body += rowHtml(aggregate(members.map(u => u.r), { country: "", code: "", segment: seg }), "zone", members.length, z);
       members.forEach(u => {
         body += rowHtml(seg === "All" ? u.c.total : u.r, "total", u.c, null);
-        if (seg === "All") u.c.rows.forEach(r => { body += rowHtml(r, "seg", u.c, null); });
       });
     });
     const t = document.getElementById("tbl");
