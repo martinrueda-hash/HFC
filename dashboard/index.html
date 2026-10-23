@@ -74,6 +74,8 @@ header.cover > .cover-side { display: flex; flex-direction: column; align-items:
 .seg { display: inline-flex; border: 1px solid var(--red); border-radius: 3px; overflow: hidden; }
 .seg button { font: inherit; font-size: 12px; font-weight: 500; border: 0; background: var(--bg); color: var(--red); padding: 6px 12px; cursor: pointer; }
 .seg button + button { border-left: 1px solid var(--red); }
+.seg button:disabled { color: var(--axis); cursor: not-allowed; }
+.app-note { font-size: 11px; font-weight: 500; color: var(--muted); max-width: 260px; }
 .seg button[aria-pressed="true"] { background: var(--red); color: #fff; font-weight: 700; }
 select, .btn { font: inherit; font-size: 12px; color: var(--ink-strong); background: var(--bg); border: 1px solid var(--axis); border-radius: 3px; padding: 6px 10px; cursor: pointer; }
 .btn:hover, select:hover { border-color: var(--red); }
@@ -234,6 +236,7 @@ sup { font-size: .7em; line-height: 0; }
         <button type="button" data-app="Cooling" aria-pressed="false">Cooling</button>
         <button type="button" data-app="Sanitary" aria-pressed="false">Sanitary</button>
       </div>
+      <span class="app-note" id="appNote" hidden>Not in the loaded data: upload the new Excel template or restore the default data</span>
     </div>
     <span class="spacer"></span>
     <button type="button" class="btn" id="clearHl" hidden>Clear selection</button>
@@ -287,7 +290,7 @@ sup { font-size: .7em; line-height: 0; }
     <div class="takeaway" id="tblTake"></div>
     <div class="source">
       <span>Source: Oxford Economics; HFC market intelligence data file; HFC business plan</span>
-      <span>Notes: 1. Market growth = construction work done. R = renovation, NB = new build; the top figure combines both. 2. Commercial = commercial (offices, retail, hotels) + healthcare + multi-family residential. 3. Total market = construction work done (Oxford Economics, US$, 2023 prices), all end markets and applications. 4. SAM = serviceable addressable market, HFC's actual addressable market (EUR m). SAM and HFC sales are <span class="yr-prev"></span> values. Totals weight market growth by SAM and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
+      <span>Notes: 1. SAM growth = growth of construction work done (Oxford Economics) for the end market. R = renovation, NB = new build; the top figure combines both. 2. Commercial = commercial (offices, retail, hotels) + healthcare + multi-family residential. 3. Total market = construction work done (Oxford Economics, US$, 2023 prices), all end markets and applications. 4. SAM = serviceable addressable market, HFC's actual addressable market (EUR m). SAM and HFC sales are <span class="yr-prev"></span> values. Totals weight SAM growth by SAM and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
     </div>
   </section>
 
@@ -562,7 +565,7 @@ sup { font-size: .7em; line-height: 0; }
     const kp = [
       { lbl: `Total market ${CY - 1}<sup>3</sup>`, val: tot.total_market ? "US$ " + money(tot.total_market / 1000) + "bn" : "–", cmp: `CAGR next 5 yrs ${pct(tot.tm_cagr_fwd)} · last 5 yrs ${pct(tot.tm_cagr_hist)}` },
       { lbl: `SAM ${CY - 1}<sup>4</sup>`, val: "€" + money(tot.market_size) + "M", cmp: `${units.length} countries · ${segName()}` },
-      { lbl: `Market growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Renovation ${pct(tot.mkt_reno_growth_cy)} · new build ${pct(tot.mkt_nb_growth_cy)}` },
+      { lbl: `SAM growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Renovation ${pct(tot.mkt_reno_growth_cy)} · new build ${pct(tot.mkt_nb_growth_cy)}` },
       { lbl: `${CO} growth ${CY} forecast`, val: pct(tot.hfc_growth_cy), cmp: `<span class="${dir(gap)}">${arrow(gap)} ${pp(gap)}</span> vs. market · BP ${pct(tot.hfc_cagr_bp)} p.a.` },
       { lbl: `${CO} market share ${CY}`, val: f1(tot.ms_cy) + "%", cmp: `<span class="${dir(dms)}">${arrow(dms)} ${pp(dms)}</span> vs. ${CY - 1}` },
       { lbl: "Countries by matrix position", list: Object.keys(ZONES).map(z => ({ name: ZONES[z].name, color: ZONES[z].color, n: counts[z] })) }
@@ -627,7 +630,7 @@ sup { font-size: .7em; line-height: 0; }
     svg.appendChild(el("text", { x: x0, y: yS(1) + 51, "font-size": 9.5, fill: "var(--ink)" }, "Market share, channel access, product fit"));
     const yt = el("g", { transform: `translate(14 ${y1}) rotate(-90)` });
     yt.appendChild(el("text", { x: 0, y: 0, "font-size": 12.5, "font-weight": 700, fill: "var(--ink)" }, "Market attractiveness"));
-    yt.appendChild(el("text", { x: 0, y: 13, "font-size": 9.5, fill: "var(--ink)" }, "Size, market growth, profitability, competition"));
+    yt.appendChild(el("text", { x: 0, y: 13, "font-size": 9.5, fill: "var(--ink)" }, "SAM, SAM growth, profitability, competition"));
     svg.appendChild(yt);
 
     // zone labels in bold red, placed in the corner each zone owns
@@ -718,7 +721,7 @@ sup { font-size: .7em; line-height: 0; }
   }
 
   const tip = document.getElementById("tip"), box = document.getElementById("chartBox");
-  const LBL = { market_size: "SAM", market_growth: "Market growth (5 yr)", reno_growth: "Renovation growth (5 yr)", nb_growth: "New build growth (5 yr)", profitability: "Profitability", competitive_intensity: "Competitive intensity",
+  const LBL = { market_size: "SAM", market_growth: "SAM growth (5 yr)", reno_growth: "Renovation SAM growth (5 yr)", nb_growth: "New build SAM growth (5 yr)", profitability: "Profitability", competitive_intensity: "Competitive intensity",
     market_share: "Market share", channel_access: "Channel access", product_fit: "Product fit" };
   function showTip(u, ev, anchor) {
     const rows = (parts, ws) => Object.keys(parts).map(k => `<tr><td>${LBL[k]} <span style="color:var(--muted)">×${Number(ws[k]) || 0}</span></td><td>${f1(parts[k])}</td></tr>`).join("");
@@ -816,7 +819,7 @@ sup { font-size: .7em; line-height: 0; }
   function renderTable(units) {
     const h = (a, b, cls) => `<th${cls ? ` class="${cls}"` : ""}>${a}<span class="u">${b}</span></th>`;
     const head = `<thead>
-      <tr class="grp"><th class="l sticky blank"></th><th class="g-mkt" colspan="4">Market growth<sup>1</sup></th><th class="gap"></th><th class="g-hfc" colspan="6">${CO}</th></tr>
+      <tr class="grp"><th class="l sticky blank"></th><th class="g-mkt" colspan="4">SAM growth<sup>1</sup></th><th class="gap"></th><th class="g-hfc" colspan="6">${CO}</th></tr>
       <tr><th class="l sticky">Country</th>${h("SAM " + (CY - 1) + "<sup>4</sup>", CFG.currency, "m")}
         ${h("CAGR 5 yrs", (CY - 6) + "–" + (CY - 1), "m")}${h("Growth " + CY + "E", "vs. " + (CY - 1), "m")}${h("CAGR 5 yrs", CY + "–" + (CY + 5), "m")}
         <th class="gap"></th>
@@ -836,7 +839,7 @@ sup { font-size: .7em; line-height: 0; }
     const t = document.getElementById("tbl");
     t.innerHTML = head + `<tbody>${body}</tbody>`;
     t.querySelectorAll("tr.country-row").forEach(tr => tr.addEventListener("click", () => select(tr.dataset.country, false)));
-    document.getElementById("tblScope").textContent = `Market vs. ${CO} growth and market share, ${segName()}, ${CFG.currency}; market growth split into renovation (R) and new build (NB)`;
+    document.getElementById("tblScope").textContent = `SAM vs. ${CO} growth and market share, ${segName()}, ${CFG.currency}; SAM growth split into renovation (R) and new build (NB)`;
 
     const gapBp = (grand.hfc_cagr_bp ?? NaN) - (grand.mkt_cagr_fwd ?? NaN);
     const gained = units.filter(u => u.r.ms_cy !== null && u.r.ms_py !== null && u.r.ms_cy - u.r.ms_py >= 0.05).length;
@@ -1084,7 +1087,8 @@ sup { font-size: .7em; line-height: 0; }
   function render() {
     // the application filter only shows when the data has applications
     const hasApps = ROWS.some(r => APPS.includes(r.application));
-    document.getElementById("appWrap").hidden = !hasApps;
+    document.querySelectorAll("#appCtl button").forEach(x => { x.disabled = !hasApps && x.dataset.app !== "All"; });
+    document.getElementById("appNote").hidden = hasApps;
     if (!hasApps && app !== "All") { app = "All"; document.querySelectorAll("#appCtl button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.app === "All"))); }
     const { units } = view();
     document.getElementById("dataBadge").textContent = usingImported ? "Uploaded data (this browser)" : "Illustrative sample data";

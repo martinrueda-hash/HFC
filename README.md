@@ -12,7 +12,7 @@ A self-contained dashboard for HFC's country portfolio, styled after the EU WT s
    - **Selective investment**: lower attractiveness or weak position. Invest selectively, protect margin.
 2. **Headline figures**: total market (construction work done, Oxford Economics, US$) with its 5-year CAGRs, and the SAM (serviceable addressable market, HFC's actual addressable market in EUR m).
 3. **Market vs. HFC positioning**: countries grouped by matrix zone (with a subtotal per zone, largest market first), one row per country in the Total view; the Residential and Commercial filters show each end market (Commercial = commercial + healthcare + multi-family):
-   - **Market**: SAM (last year, e.g. 2025), CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years. Market growth is construction work done (Oxford Economics); each figure shows the combined rate with the renovation (R) and new build (NB) rates underneath.
+   - **Market**: SAM (last year, e.g. 2025), CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years. SAM growth is the growth of construction work done (Oxford Economics); each figure shows the combined rate with the renovation (R) and new build (NB) rates underneath.
    - **HFC**: sales (last year, e.g. 2025), CAGR over the last 5 years, projected growth this year, business-plan CAGR over the next 5 years, each with the gap to the market in percentage points.
    - **HFC market share** this year and its change versus last year, shown inside the HFC block.
 
