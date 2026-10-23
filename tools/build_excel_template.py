@@ -87,6 +87,10 @@ APP_SPLIT = {
     "FR": (0.48, 0.27, 0.25), "IT": (0.40, 0.35, 0.25), "BE": (0.55, 0.19, 0.26), "ES": (0.30, 0.45, 0.25),
     "PT": (0.32, 0.42, 0.26),
 }
+# DUMMY reach: SAM as a share of TAM per country, adjusted per application (heating, cooling, sanitary)
+REACH = {"PL": 0.35, "CZ": 0.40, "HU": 0.35, "NL": 0.60, "SE": 0.45, "NO": 0.45, "FI": 0.45, "DK": 0.50, "DE": 0.50,
+         "AT": 0.50, "CH": 0.60, "UK": 0.30, "FR": 0.65, "IT": 0.55, "BE": 0.60, "ES": 0.45, "PT": 0.40}
+REACH_APP = (1.1, 0.7, 0.9)
 # Illustrative SAM: this share of construction work done (US$ m, 2023 prices) converted at 0.92 EUR/US$
 ADDRESSABLE_RATIO = 0.012
 USD_EUR = 0.92
@@ -273,8 +277,11 @@ COLS = [
     ("segment", "End market", "@", "Country", 15, "Residential, or Commercial (commercial + healthcare + multi family)", "in"),
     ("application", "Application", "@", "Country", 12, "Heating, Cooling or Sanitary", "in"),
     ("oe_location", "Oxford Economics\nlocation", "@", "Country", 16, "Location name exactly as in the Oxford Economics export", "in"),
-    ("market_size", "SAM {py}\n(EUR m)", "#,##0", "Market", 13, "Serviceable addressable market for this application in the base year (your estimate)", "in"),
     ("oe_level_py", "Total market {py}\n(construction, US$ m)", "#,##0", "Market", 15, "Construction work done for the end market (Oxford Economics, 2023 prices); same for every application", "calc"),
+    ("tam", "TAM {py}\n(EUR m)", "#,##0", "Market", 12, "Total addressable market: spend on this HVAC / sanitary application in the base year (your estimate)", "in"),
+    ("tam_cagr_hist_ov", "TAM CAGR {hy}-{py}\n(optional)", "0.0%", "Market", 13, "Leave empty to use the construction growth of the end market", "in"),
+    ("tam_cagr_fwd_ov", "TAM CAGR {cy}-{fy}\n(optional)", "0.0%", "Market", 13, "Leave empty to use the construction growth of the end market", "in"),
+    ("market_size", "SAM {py}\n(EUR m)", "#,##0", "Market", 12, "Serviceable addressable market: the part of the TAM within HFC's current geographical and technology reach (your estimate)", "in"),
     ("mkt_cagr_hist", "Market CAGR\n{hy}-{py}", "0.0%", "Market", 12, "From Market levels: needs the export to include the start year", "calc"),
     ("mkt_growth_cy", "Market growth\n{cy}E", "0.0%", "Market", 12, "From Market levels", "calc"),
     ("mkt_cagr_fwd", "Market CAGR\n{cy}-{fy}", "0.0%", "Market", 12, "From Market levels", "calc"),
@@ -411,7 +418,7 @@ for name, code, loc, ms, hfc, scores in COUNTRIES:
         bump = (0.5 if seg == "Commercial" else 0.0) + app_bump
         sample.append({
             "country": name, "code": code, "segment": seg, "application": app, "oe_location": loc,
-            "market_size": size, "hfc_sales": sales,
+            "market_size": size, "hfc_sales": sales, "tam": round(size / (REACH.get(code, 0.5) * REACH_APP[a_i])),
             "hfc_cagr_hist": (hfc[0] + bump) / 100, "hfc_growth_cy": (hfc[1] + bump) / 100, "hfc_cagr_bp": (hfc[2] + bump) / 100,
             "profitability": scores[0], "competitive_intensity": scores[1],
             "channel_access": scores[2], "product_fit": scores[3],
@@ -460,7 +467,7 @@ dv_score.add(f"{COL['profitability']}{FIRST}:{COL['product_fit']}{LAST_ROW}")
 for key in ("ms_py_override", "ms_cy_override"):
     dv_pct.add(f"{COL[key]}{FIRST}:{COL[key]}{LAST_ROW}")
 rd.freeze_panes = rd[f"F{FIRST}"]
-rd.cell(row=3, column=1, value=("Market growth comes from Oxford Economics (green). SAM (incl. the split by application), HFC figures and scores in the sample rows are DUMMY data for testing: "
+rd.cell(row=3, column=1, value=("Market growth comes from Oxford Economics (green). TAM, SAM (incl. the split by application), HFC figures and scores in the sample rows are DUMMY data for testing: "
                                 "replace them with your own. Add countries in the empty rows.")).font = font(9, color=RED, italic=True)
 
 # ================================================================ Dashboard data
@@ -478,6 +485,7 @@ OUT_FIELDS = [
     ("mkt_reno_cagr_hist", "Reno CAGR {hy}-{py} (%)", "0.0"), ("mkt_reno_growth_cy", "Reno growth {cy}E (%)", "0.0"), ("mkt_reno_cagr_fwd", "Reno CAGR {cy}-{fy} (%)", "0.0"),
     ("mkt_nb_cagr_hist", "NB CAGR {hy}-{py} (%)", "0.0"), ("mkt_nb_growth_cy", "NB growth {cy}E (%)", "0.0"), ("mkt_nb_cagr_fwd", "NB CAGR {cy}-{fy} (%)", "0.0"),
     ("application", "Application", "@"), ("total_market", "Total market {py} (construction, US$ m)", "#,##0"),
+    ("tam", "TAM {py}", "#,##0"), ("tam_cagr_hist", "TAM CAGR {hy}-{py} (%)", "0.0"), ("tam_cagr_fwd", "TAM CAGR {cy}-{fy} (%)", "0.0"),
 ]
 band(dd, 1, len(OUT_FIELDS) + 1, "Dashboard data", "Calculated from Raw data and Settings. Do not type here: this is the table the dashboard reads.")
 for i, (key, head, fmt) in enumerate(OUT_FIELDS, 1):
@@ -510,6 +518,9 @@ for n in range(N_ROWS):
         "segment": f'=IF($A{r_out}="","",{raw("segment")})',
         "application": f'=IF($A{r_out}="","",IF({raw("application")}="","",{raw("application")}))',
         "total_market": f'=IF($A{r_out}="","",IF(ISNUMBER({raw("oe_level_py")}),{raw("oe_level_py")},""))',
+        "tam": f'=IF($A{r_out}="","",IF(ISNUMBER({raw("tam")}),{raw("tam")},""))',
+        "tam_cagr_hist": f'=IF($A{r_out}="","",IF(ISNUMBER({raw("tam_cagr_hist_ov")}),{raw("tam_cagr_hist_ov")}*100,IF(ISNUMBER({raw("mkt_cagr_hist")}),{raw("mkt_cagr_hist")}*100,"")))',
+        "tam_cagr_fwd": f'=IF($A{r_out}="","",IF(ISNUMBER({raw("tam_cagr_fwd_ov")}),{raw("tam_cagr_fwd_ov")}*100,IF(ISNUMBER({raw("mkt_cagr_fwd")}),{raw("mkt_cagr_fwd")}*100,"")))',
         "market_size": f'=IF(OR($A{r_out}="",{raw("market_size")}=""),"",{raw("market_size")})',
         "hfc_sales": f'=IF(OR($A{r_out}="",{raw("hfc_sales")}=""),"",{raw("hfc_sales")})',
         "ms_py": (f'=IF($A{r_out}="","",IF({raw("ms_py_override")}<>"",{raw("ms_py_override")}*100,'
@@ -558,7 +569,8 @@ lines = [
     ("History", "The 5-year history needs the export to start 6 years before the current year (e.g. 2020 for 2026). With a shorter export it stays empty."),
     ("Series names", "If Oxford Economics renames a series, update its name in Settings; everything else follows."),
     ("Total market", "Construction work done for the end market (Oxford Economics, US$ m, 2023 prices). The same for each application of a country and end market."),
-    ("SAM", "Serviceable addressable market: your estimate of HFC's actual addressable market per application, in EUR m. Used for market size and market share."),
+    ("TAM", "Total addressable market: spend on all HVAC and sanitary applications (heating, cooling, sanitary), in EUR m. Its CAGRs follow construction growth unless you fill the optional TAM CAGR columns."),
+    ("SAM", "Serviceable addressable market: the part of the TAM within HFC's current geographical and technology reach, in EUR m. Used for market size, market share and the matrix."),
     ("Renovation / new build", "Calculated from the New and Renovation series: renovation share of the base year and the same three growth rates for each."),
     ("Qualitative scores", "Profitability, competitive intensity, channel access and product fit: type a whole score from 1 to 5 (5 = most favourable for HFC)."),
     ("Conventions", None),

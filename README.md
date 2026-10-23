@@ -10,7 +10,7 @@ A self-contained dashboard for HFC's country portfolio, styled after the EU WT s
    - **Leadership position**: attractive market and strong position. Accelerate and defend the lead.
    - **Priority growth**: good potential, position still to build. Invest to gain share.
    - **Selective investment**: lower attractiveness or weak position. Invest selectively, protect margin.
-2. **Headline figures**: total market (construction work done, Oxford Economics, US$) with its 5-year CAGRs, and the SAM (serviceable addressable market, HFC's actual addressable market in EUR m).
+2. **Headline figures**, as a market funnel with 5-year CAGRs: total market (construction work done, Oxford Economics, US$) › TAM (total addressable market: spend on all HVAC and sanitary applications, EUR m) › SAM (serviceable addressable market: the part of the TAM within HFC's current geographical and technology reach, EUR m). TAM CAGRs follow construction growth unless the optional TAM CAGR columns in the template are filled.
 3. **Market vs. HFC positioning**: countries grouped by matrix zone (with a subtotal per zone, largest market first), one row per country in the Total view; the Residential and Commercial filters show each end market (Commercial = commercial + healthcare + multi-family):
    - **Market**: SAM (last year, e.g. 2025), CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years. SAM growth is the growth of construction work done (Oxford Economics); each figure shows the combined rate with the renovation (R) and new build (NB) rates underneath.
    - **HFC**: sales (last year, e.g. 2025), CAGR over the last 5 years, projected growth this year, business-plan CAGR over the next 5 years, each with the gap to the market in percentage points.
