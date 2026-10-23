@@ -90,15 +90,29 @@ select, .btn { font: inherit; font-size: 12px; color: var(--ink-strong); backgro
 .hdr-panel { background: var(--bg); border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,.06); padding: 14px 20px 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
 .hdr-t { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .fn { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
-.fn-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(170px, 0.8fr); gap: 16px; align-items: center; }
+.fn-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(190px, 0.85fr); gap: 18px; align-items: center; }
 .fn-slot { display: flex; justify-content: center; min-width: 0; }
-.fn-band { width: var(--w); min-height: 54px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: #fff; background: var(--c); clip-path: polygon(0 0, 100% 0, calc(100% - var(--i)) 100%, var(--i) 100%); padding: 6px var(--i); }
-.fn-name { font-size: 10.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; opacity: .92; white-space: nowrap; }
-.fn-val { font-size: 20px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
-.fn-meta { display: grid; gap: 3px; font-size: 11px; color: var(--ink); min-width: 0; }
-.fn-pct { justify-self: start; font-size: 11.5px; font-weight: 700; color: var(--red); background: var(--tint); border: 1px solid var(--blush); border-radius: 999px; padding: 1px 9px; }
-.fn-pct.base { color: var(--ink); background: transparent; border-color: var(--line); font-weight: 600; }
-@media (max-width: 560px) { .fn-stage { grid-template-columns: minmax(0, 1fr); gap: 4px; } .fn-meta { justify-items: center; text-align: center; } .fn-pct { justify-self: center; } .fn-band { width: calc(60% + var(--w) * 0.4) !important; } }
+.fn-band { width: var(--w); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--c); color: var(--t); clip-path: polygon(0 0, 100% 0, calc(100% - var(--i)) 100%, var(--i) 100%); padding: 4px var(--i); }
+.fn-name { font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.fn-val { font-weight: 700; line-height: 1.15; white-space: nowrap; }
+/* context stages (total market, TAM): fixed scope, kept light */
+.fn-stage.ctx .fn-band { min-height: 36px; }
+.fn-stage.ctx .fn-val { font-size: 13px; }
+.fn-stage.ctx .fn-name { font-size: 9.5px; }
+/* focus stages (SAM, HFC sales): follow the filters */
+.fn-stage.focus .fn-band { min-height: 74px; }
+.fn-stage.focus .fn-val { font-size: 26px; }
+.fn-stage.focus .fn-name { font-size: 11px; }
+.fn-meta { display: grid; gap: 1px; min-width: 0; }
+.fn-cagr { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.fn-cagr b { font-weight: 700; color: var(--ink-strong); }
+.fn-cagr span { font-size: 11px; color: var(--ink); }
+.fn-stage.focus .fn-cagr b { font-size: 22px; color: var(--red); }
+.fn-stage.ctx .fn-cagr b { font-size: 14px; color: var(--ink); }
+.fn-hist { font-size: 11px; color: var(--ink); }
+.fn-pct { font-size: 10.5px; color: var(--muted); }
+.fn-scope { font-size: 10.5px; color: var(--muted); margin-top: -4px; }
+@media (max-width: 560px) { .fn-stage { grid-template-columns: minmax(0, 1fr); gap: 4px; } .fn-meta { justify-items: center; text-align: center; } .fn-cagr { justify-content: center; } .fn-band { width: calc(55% + var(--w) * 0.45) !important; } }
 .perf-list { display: grid; }
 .perf-list .kpi { padding: 10px 0; border-top: 1px solid var(--line); }
 .perf-list .kpi:first-child { border-top: 0; padding-top: 2px; }
@@ -250,6 +264,13 @@ sup { font-size: .7em; line-height: 0; }
       </div>
       <span class="app-note" id="appNote" hidden>Not in the loaded data: upload the new Excel template or restore the default data</span>
     </div>
+    <div class="ctl">Geography
+      <div class="seg" id="geoCtl">
+        <button type="button" data-geo="All" aria-pressed="true">All</button>
+        <button type="button" data-geo="Europe" aria-pressed="false">Europe</button>
+        <button type="button" data-geo="US" aria-pressed="false">US</button>
+      </div>
+    </div>
     <span class="spacer"></span>
     <button type="button" class="btn" id="clearHl" hidden>Clear selection</button>
   </div>
@@ -354,9 +375,9 @@ sup { font-size: .7em; line-height: 0; }
     "hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp", "ms_cy", "ms_py",
     "profitability", "competitive_intensity", "channel_access", "product_fit",
     "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd",
-    "application", "total_market", "tam", "tam_cagr_hist", "tam_cagr_fwd"];
+    "application", "total_market", "tam", "tam_cagr_hist", "tam_cagr_fwd", "region"];
   const OPTIONAL = ["code", "hfc_sales", "application", "total_market", "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
-  const NUMERIC = FIELDS.slice(3).filter(f => f !== "application");
+  const NUMERIC = FIELDS.slice(3).filter(f => f !== "application" && f !== "region");
   const APPS = ["Heating", "Cooling", "Sanitary"];
   const SCORES = ["profitability", "competitive_intensity", "channel_access", "product_fit"];
   // Takeaway messages in the red banners: placeholder for now (set to true to show the generated text again)
@@ -398,8 +419,9 @@ sup { font-size: .7em; line-height: 0; }
     const t = a == null ? "" : String(a).trim();
     return /^heat/i.test(t) ? "Heating" : /^cool/i.test(t) ? "Cooling" : /^sanit/i.test(t) ? "Sanitary" : t || null;
   }
+  function normRegion(g) { return /^\s*(us|usa|u\.s\.|united states|north america)\b/i.test(String(g || "")) ? "US" : "Europe"; }
   function clean(r) {
-    const o = { country: String(r.country || "").trim(), code: String(r.code || "").trim(), segment: normSegment(r.segment), application: normApp(r.application) };
+    const o = { country: String(r.country || "").trim(), code: String(r.code || "").trim(), segment: normSegment(r.segment), application: normApp(r.application), region: normRegion(r.region) };
     if (!o.code) o.code = o.country.slice(0, 3).toUpperCase();
     NUMERIC.forEach(f => { o[f] = toNum(r[f]); });
     // HFC sales in the base year default to market size x last year's share when not given
@@ -552,6 +574,7 @@ sup { font-size: .7em; line-height: 0; }
   // ---------- state ----------
   let seg = "All";
   let app = "All";
+  let geo = "All";
   let selected = null;
   const monthYear = new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" });
   document.getElementById("monthLbl").textContent = monthYear;
@@ -564,7 +587,7 @@ sup { font-size: .7em; line-height: 0; }
 
   function view() {
     const cs = countries();
-    const keep = r => (seg === "All" || r.segment === seg) && (app === "All" || r.application === app);
+    const keep = r => (seg === "All" || r.segment === seg) && (app === "All" || r.application === app) && (geo === "All" || r.region === geo);
     const units = cs.map(c => {
       const rows = c.rows.filter(keep);
       return { c, r: rows.length ? aggregate(rows, { country: c.country, code: c.code, segment: seg }) : null };
@@ -572,39 +595,46 @@ sup { font-size: .7em; line-height: 0; }
     score(units);
     return { cs, units };
   }
-  const segName = () => (seg === "All" ? "all end markets" : seg.toLowerCase()) + (app === "All" ? "" : ", " + app.toLowerCase());
+  const segName = () => (geo === "All" ? "" : geo + ", ") + (seg === "All" ? "all end markets" : seg.toLowerCase()) + (app === "All" ? "" : ", " + app.toLowerCase());
 
   // ---------- KPIs ----------
   function renderKpis(units) {
     const tot = aggregate(units.map(u => u.r), { country: "All", code: "", segment: seg });
+    // Total market and TAM always show the full scope: they do not follow the filters
+    const all = aggregate(ROWS.filter(r => r.market_size !== null), { country: "All", code: "", segment: "All" });
     const gap = (tot.hfc_growth_cy ?? NaN) - (tot.mkt_growth_cy ?? NaN);
     const dms = (tot.ms_cy ?? NaN) - (tot.ms_py ?? NaN);
     const rate = Number(CFG.usdEur) || 0.92;
     const share = (a, b) => a && b ? (a / b * 100) : null;
     const pctOf = v => v === null ? "–" : v < 10 ? v.toFixed(1) + "%" : Math.round(v) + "%";
-    const cagr = (fwd, hist, fwdLbl = "next 5 yrs") => `CAGR ${fwdLbl} ${pct(fwd)} · last 5 yrs ${pct(hist)}`;
-    const tmEur = tot.total_market ? tot.total_market * rate : null;
-    // Funnel: each stage narrower than the last; --i keeps the slope continuous (9% of the full width per side)
+    const yrsF = `${CY}–${String(CY + 5).slice(2)}`, yrsH = `${CY - 6}–${String(CY - 1).slice(2)}`;
+    const tmEur = all.total_market ? all.total_market * rate : null;
+    // widths step down by 14-18 points; --i keeps the funnel's slope continuous between bands
     const stages = [
-      { name: `Total market ${CY - 1}<sup>3</sup>`, val: tot.total_market ? "US$ " + money(tot.total_market / 1000) + "bn" : "–", w: 100, c: "var(--ink)",
-        pct: `<span class="fn-pct base">≈ €${money(tmEur / 1000)}bn at ${rate.toFixed(2)} €/US$</span>`, sub: cagr(tot.tm_cagr_fwd, tot.tm_cagr_hist) },
-      { name: `TAM ${CY - 1}<sup>4</sup>`, val: tot.tam ? "€" + money(tot.tam) + "M" : "–", w: 82, c: "var(--grey-bubble)",
-        pct: `<span class="fn-pct">${pctOf(share(tot.tam, tmEur))} of total market</span>`, sub: cagr(tot.tam_cagr_fwd, tot.tam_cagr_hist) },
-      { name: `SAM ${CY - 1}<sup>5</sup>`, val: "€" + money(tot.market_size) + "M", w: 64, c: "var(--red-2)",
-        pct: `<span class="fn-pct">${pctOf(share(tot.market_size, tot.tam))} of TAM</span>`, sub: cagr(tot.mkt_cagr_fwd, tot.mkt_cagr_hist) },
-      { name: `${CO} sales ${CY - 1}`, val: "€" + money(tot.hfc_sales) + "M", w: 46, c: "var(--red)",
-        pct: `<span class="fn-pct">${pctOf(share(tot.hfc_sales, tot.market_size))} of SAM = market share</span>`, sub: cagr(tot.hfc_cagr_bp, tot.hfc_cagr_hist, "BP next 5 yrs") },
+      { cls: "ctx", name: `Total market ${CY - 1}<sup>3</sup>`, val: all.total_market ? "US$ " + money(all.total_market / 1000) + "bn" : "–", w: 100, next: 86,
+        c: "#e9e9e9", t: "var(--ink)", fwd: all.tm_cagr_fwd, hist: all.tm_cagr_hist, of: `≈ €${money(tmEur / 1000)}bn at ${rate.toFixed(2)} €/US$` },
+      { cls: "ctx", name: `TAM ${CY - 1}<sup>4</sup>`, val: all.tam ? "€" + money(all.tam) + "M" : "–", w: 86, next: 68,
+        c: "#d6d6d6", t: "var(--ink-strong)", fwd: all.tam_cagr_fwd, hist: all.tam_cagr_hist, of: `${pctOf(share(all.tam, tmEur))} of total market` },
+      { cls: "focus", name: `SAM ${CY - 1}<sup>5</sup>`, val: "€" + money(tot.market_size) + "M", w: 68, next: 50,
+        c: "var(--red-2)", t: "#fff", fwd: tot.mkt_cagr_fwd, hist: tot.mkt_cagr_hist, of: `${pctOf(share(tot.market_size, all.tam))} of TAM` },
+      { cls: "focus", name: `${CO} sales ${CY - 1}`, val: "€" + money(tot.hfc_sales) + "M", w: 50, next: 32,
+        c: "var(--red)", t: "#fff", fwd: tot.hfc_cagr_bp, hist: tot.hfc_cagr_hist, of: `${pctOf(share(tot.hfc_sales, tot.market_size))} of SAM = market share`, bp: true },
     ];
-    const funnel = stages.map(st => `<li class="fn-stage">
-        <div class="fn-slot"><div class="fn-band" style="--w:${st.w}%;--c:${st.c};--i:${(9 / st.w * 100).toFixed(2)}%"><span class="fn-name">${st.name}</span><span class="fn-val">${st.val}</span></div></div>
-        <div class="fn-meta">${st.pct}<span>${st.sub}</span></div></li>`).join("");
+    const funnel = stages.map(st => `<li class="fn-stage ${st.cls}">
+        <div class="fn-slot"><div class="fn-band" style="--w:${st.w}%;--c:${st.c};--t:${st.t};--i:${((st.w - st.next) / 2 / st.w * 100).toFixed(2)}%"><span class="fn-name">${st.name}</span><span class="fn-val">${st.val}</span></div></div>
+        <div class="fn-meta">
+          <div class="fn-cagr"><b>${pct(st.fwd)}</b><span>${st.bp ? "BP " : ""}CAGR ${yrsF}</span></div>
+          <span class="fn-hist">${pct(st.hist)} CAGR ${yrsH}</span>
+          <span class="fn-pct">${st.of}</span>
+        </div></li>`).join("");
     const perf = [
       { lbl: `SAM growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Renovation ${pct(tot.mkt_reno_growth_cy)} · new build ${pct(tot.mkt_nb_growth_cy)}` },
       { lbl: `${CO} growth ${CY} forecast`, val: pct(tot.hfc_growth_cy), cmp: `<span class="${dir(gap)}">${arrow(gap)} ${pp(gap)}</span> vs. SAM growth` },
       { lbl: `${CO} market share ${CY}`, val: f1(tot.ms_cy) + "%", cmp: `<span class="${dir(dms)}">${arrow(dms)} ${pp(dms)}</span> vs. ${CY - 1} (${f1(tot.ms_py)}%)` },
     ].map(k => `<div class="kpi"><span class="lbl">${k.lbl}</span><span class="val">${k.val}</span><span class="cmp">${k.cmp}</span></div>`).join("");
     document.getElementById("kpis").innerHTML =
-      `<div class="hdr-panel"><span class="hdr-t">Market funnel · ${segName()}</span><ol class="fn">${funnel}</ol></div>` +
+      `<div class="hdr-panel"><span class="hdr-t">Market funnel · ${segName()}</span>` +
+      `<span class="fn-scope">Total market and TAM: full scope, all filters. SAM and ${CO} sales: filtered view.</span><ol class="fn">${funnel}</ol></div>` +
       `<div class="hdr-panel"><span class="hdr-t">Current performance and positioning</span><div class="perf-list">${perf}</div></div>`;
   }
 
@@ -791,7 +821,7 @@ sup { font-size: .7em; line-height: 0; }
       </div>`;
     }).join("");
     document.querySelectorAll("#zones .chip[data-country]").forEach(b => b.addEventListener("click", () => select(b.dataset.country, true)));
-    document.getElementById("mxScope").textContent = `${units.length} countries, ${segName()}`;
+    document.getElementById("mxScope").textContent = `${units.length} ${units.length === 1 ? "country" : "countries"}, ${segName()}`;
 
     const lead = by.lead.map(u => u.c.country), grow = by.grow;
     const growSize = grow.reduce((s, u) => s + u.r.market_size, 0);
@@ -1112,6 +1142,11 @@ sup { font-size: .7em; line-height: 0; }
   document.querySelectorAll("#appCtl button").forEach(b => b.addEventListener("click", () => {
     app = b.dataset.app;
     document.querySelectorAll("#appCtl button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    render();
+  }));
+  document.querySelectorAll("#geoCtl button").forEach(b => b.addEventListener("click", () => {
+    geo = b.dataset.geo;
+    document.querySelectorAll("#geoCtl button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     render();
   }));
 

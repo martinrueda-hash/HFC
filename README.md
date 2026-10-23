@@ -16,7 +16,7 @@ A self-contained dashboard for HFC's country portfolio, styled after the EU WT s
    - **HFC**: sales (last year, e.g. 2025), CAGR over the last 5 years, projected growth this year, business-plan CAGR over the next 5 years, each with the gap to the market in percentage points.
    - **HFC market share** this year and its change versus last year, shown inside the HFC block.
 
-Two filters, end market (Total / Residential / Commercial) and application (All / Heating / Cooling / Sanitary), drive the headline figures, the matrix and the table together. The total market depends on the end market only, since construction work done is not split by application. Clicking a bubble or a country chip highlights that country in the table.
+Three filters, end market (Total / Residential / Commercial), application (All / Heating / Cooling / Sanitary) and geography (All / Europe / US), drive SAM, HFC figures, the matrix and the table. Total market and TAM always show the full scope and do not follow the filters. The United States rows are dummy data; the Oxford Economics export has no US series, so US market growth and total market are empty until US data is added. Clicking a bubble or a country chip highlights that country in the table.
 
 ## How the matrix is scored
 
