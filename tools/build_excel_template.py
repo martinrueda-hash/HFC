@@ -198,7 +198,6 @@ SETTINGS = [
     ("Company name", "HFC", "company", "@", "Shown in column headers and labels"),
     ("Current year", 2026, "currentYear", "0", "Base year = current year - 1 (sizes and sales); history = 5 years to the base year; outlook = current year + 5"),
     ("Currency label", "EUR m", "currency", "@", "Unit of SAM and HFC sales"),
-    ("EUR per US$", 0.92, "usdEur", "0.00", "Converts the total market (Oxford Economics, US$) to EUR to compare it with TAM in the dashboard funnel"),
     ("Oxford Economics series (Indicator column of the export)", None, None, None, None),
     *[(label, name, key, "@", note) for (key, label, name), note in zip(SERIES, [
         "Residential = Residential total - Multi family (new and renovation separately)", "",
@@ -279,7 +278,7 @@ COLS = [
     ("application", "Application", "@", "Country", 12, "Heating, Cooling or Sanitary", "in"),
     ("region", "Geography", "@", "Country", 11, "Europe or US", "in"),
     ("oe_location", "Oxford Economics\nlocation", "@", "Country", 16, "Location name exactly as in the Oxford Economics export", "in"),
-    ("oe_level_py", "Total market {py}\n(construction, US$ m)", "#,##0", "Market", 15, "Construction work done for the end market (Oxford Economics, 2023 prices); same for every application", "calc"),
+    ("oe_level_py", "Total construction\nmarket {py} (US$ m)", "#,##0", "Market", 15, "Construction work done for the end market (Oxford Economics, 2023 prices); same for every application", "calc"),
     ("tam", "TAM {py}\n(EUR m)", "#,##0", "Market", 12, "Total addressable market: spend on this HVAC / sanitary application in the base year (your estimate)", "in"),
     ("tam_cagr_hist_ov", "TAM CAGR {hy}-{py}\n(optional)", "0.0%", "Market", 13, "Leave empty to use the construction growth of the end market", "in"),
     ("tam_cagr_fwd_ov", "TAM CAGR {cy}-{fy}\n(optional)", "0.0%", "Market", 13, "Leave empty to use the construction growth of the end market", "in"),
@@ -427,7 +426,7 @@ for name, code, loc, ms, hfc, scores in COUNTRIES:
         })
 
 # DUMMY United States rows to test the geography filter. The Oxford Economics export has no US series,
-# so US market growth and total market stay empty until US data is added to the export.
+# so US market growth and total construction market stay empty until US data is added to the export.
 US_SAM = {"Residential": 1300, "Commercial": 1700}
 US_SPLIT = (0.45, 0.40, 0.15)
 for s_i, seg in enumerate(("Residential", "Commercial")):
@@ -506,7 +505,7 @@ OUT_FIELDS = [
     ("reno_share", "Renovation share (%)", "0"),
     ("mkt_reno_cagr_hist", "Reno CAGR {hy}-{py} (%)", "0.0"), ("mkt_reno_growth_cy", "Reno growth {cy}E (%)", "0.0"), ("mkt_reno_cagr_fwd", "Reno CAGR {cy}-{fy} (%)", "0.0"),
     ("mkt_nb_cagr_hist", "NB CAGR {hy}-{py} (%)", "0.0"), ("mkt_nb_growth_cy", "NB growth {cy}E (%)", "0.0"), ("mkt_nb_cagr_fwd", "NB CAGR {cy}-{fy} (%)", "0.0"),
-    ("application", "Application", "@"), ("total_market", "Total market {py} (construction, US$ m)", "#,##0"),
+    ("application", "Application", "@"), ("total_market", "Total construction market {py} (US$ m)", "#,##0"),
     ("tam", "TAM {py}", "#,##0"), ("tam_cagr_hist", "TAM CAGR {hy}-{py} (%)", "0.0"), ("tam_cagr_fwd", "TAM CAGR {cy}-{fy} (%)", "0.0"),
     ("region", "Geography", "@"),
 ]
@@ -592,7 +591,7 @@ lines = [
     ("Growth rates", "CAGR last 5 years = (base year / base year - 5)^(1/5) - 1. Growth this year = current year / base year - 1. CAGR next 5 years = (current year + 5 / current year)^(1/5) - 1."),
     ("History", "The 5-year history needs the export to start 6 years before the current year (e.g. 2020 for 2026). With a shorter export it stays empty."),
     ("Series names", "If Oxford Economics renames a series, update its name in Settings; everything else follows."),
-    ("Total market", "Construction work done for the end market (Oxford Economics, US$ m, 2023 prices). The same for each application of a country and end market."),
+    ("Total construction market", "Construction work done for the end market (Oxford Economics, US$ m, 2023 prices). The same for each application of a country and end market."),
     ("TAM", "Total addressable market: spend on all HVAC and sanitary applications (heating, cooling, sanitary), in EUR m. Its CAGRs follow construction growth unless you fill the optional TAM CAGR columns."),
     ("SAM", "Serviceable addressable market: the part of the TAM within HFC's current geographical and technology reach, in EUR m. Used for market size, market share and the matrix."),
     ("Renovation / new build", "Calculated from the New and Renovation series: renovation share of the base year and the same three growth rates for each."),
@@ -625,7 +624,7 @@ for a, b in lines:
     if a == "Green cells":
         ca.font = font(10, True, LINK_GREEN)
     row += 1
-rm.cell(row=row + 1, column=2, value=("Market growth and total market are real Oxford Economics data. SAM, HFC figures and qualitative scores in the sample rows "
+rm.cell(row=row + 1, column=2, value=("Market growth and the total construction market are real Oxford Economics data. SAM, HFC figures and qualitative scores in the sample rows "
                                       "are illustrative, not HFC data.")).font = font(9, color=RED, italic=True)
 for ws in (rm, st):
     ws.sheet_view.showGridLines = False

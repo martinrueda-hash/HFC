@@ -2,7 +2,7 @@
 
 A self-contained dashboard for HFC's country portfolio, styled after the EU WT strategy deck (red/grey palette, "topic | subject" titles, red takeaway banners). Open `dashboard/index.html` in a browser; no build step, server or internet connection is needed (only the Montserrat font, a stand-in for Gotham, loads from Google Fonts, with a system-font fallback).
 
-> SAM (including its split by application), HFC figures and scores in `dashboard/data.js` are **dummy data for testing**; growth rates and the total market come from Oxford Economics. Replace the dummy figures before using the dashboard for decisions.
+> SAM (including its split by application), HFC figures and scores in `dashboard/data.js` are **dummy data for testing**; growth rates and the total construction market come from Oxford Economics. Replace the dummy figures before using the dashboard for decisions.
 
 ## What it shows
 
@@ -10,13 +10,13 @@ A self-contained dashboard for HFC's country portfolio, styled after the EU WT s
    - **Leadership position**: attractive market and strong position. Accelerate and defend the lead.
    - **Priority growth**: good potential, position still to build. Invest to gain share.
    - **Selective investment**: lower attractiveness or weak position. Invest selectively, protect margin.
-2. **Headline figures**: a market funnel, total market (construction work done, Oxford Economics, US$) › TAM (spend on all HVAC and sanitary applications, EUR m) › SAM (the part of the TAM within HFC's current geographical and technology reach) › HFC sales, each with its share of the previous stage (HFC sales / SAM = market share) and 5-year CAGRs; the total market is converted to EUR at the `usdEur` rate (Settings). Next to it, current performance and positioning: SAM growth, HFC growth and HFC market share this year. Matrix positions are shown only in the country prioritization section.
+2. **Headline figures**: a market funnel, total construction market (construction work done, Oxford Economics, US$) › TAM (spend on all HVAC and sanitary applications, EUR m) › SAM (the part of the TAM within HFC's current geographical and technology reach) › HFC sales, each with its share of the previous stage (HFC sales / SAM = market share) and 5-year CAGRs. Next to it, current performance and positioning: SAM growth, HFC growth and HFC market share this year. Matrix positions are shown only in the country prioritization section.
 3. **Market vs. HFC positioning**: countries grouped by matrix zone (with a subtotal per zone, largest market first), one row per country in the Total view; the Residential and Commercial filters show each end market (Commercial = commercial + healthcare + multi-family):
    - **Market**: SAM (last year, e.g. 2025), CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years. SAM growth is the growth of construction work done (Oxford Economics); each figure shows the combined rate with the renovation (R) and new build (NB) rates underneath.
    - **HFC**: sales (last year, e.g. 2025), CAGR over the last 5 years, projected growth this year, business-plan CAGR over the next 5 years, each with the gap to the market in percentage points.
    - **HFC market share** this year and its change versus last year, shown inside the HFC block.
 
-Three filters, end market (Total / Residential / Commercial), application (All / Heating / Cooling / Sanitary) and geography (All / Europe / US), drive SAM, HFC figures, the matrix and the table. Total market and TAM always show the full scope and do not follow the filters. The United States rows are dummy data; the Oxford Economics export has no US series, so US market growth and total market are empty until US data is added. Clicking a bubble or a country chip highlights that country in the table.
+Three filters, end market (Total / Residential / Commercial), application (All / Heating / Cooling / Sanitary) and geography (All / Europe / US), drive SAM, HFC figures, the matrix and the table. The total construction market always shows the full scope and does not follow the filters; TAM, SAM and HFC figures do. The United States rows are dummy data; the Oxford Economics export has no US series, so US market growth and total construction market are empty until US data is added. Clicking a bubble or a country chip highlights that country in the table.
 
 ## How the matrix is scored
 

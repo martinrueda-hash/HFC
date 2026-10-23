@@ -12,7 +12,7 @@
  * All growth figures and market shares are in % (3.2 means 3.2 %).
  *   market_size            SAM (serviceable addressable market), last year (base year, e.g. 2025), EUR m
  *   application            Heating, Cooling or Sanitary (one row per country x end market x application)
- *   total_market           Total market: construction work done for the end market, base year (Oxford Economics, US$ m, 2023 prices)
+ *   total_market           Total construction market: construction work done for the end market, base year (Oxford Economics, US$ m, 2023 prices)
  *   hfc_sales              HFC sales, last year (base year), EUR m. Optional: if empty, market_size x ms_py
  *   mkt_cagr_hist          Market CAGR, last 5 years
  *   mkt_growth_cy          Market growth, current year (estimate)
@@ -42,7 +42,6 @@ window.HFC_CONFIG = {
   company: "HFC",
   currentYear: 2026,
   currency: "EUR m",
-  usdEur: 0.92,   // EUR per US$, to compare the total market (Oxford Economics, US$) with TAM / SAM (EUR)
   // Weights used to build the two matrix axes (they are normalised, so any scale works).
   weights: {
     attractiveness: { market_size: 30, reno_growth: 15, nb_growth: 15, profitability: 20, competitive_intensity: 20 },

@@ -95,7 +95,7 @@ select, .btn { font: inherit; font-size: 12px; color: var(--ink-strong); backgro
 .fn-band { width: var(--w); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--c); color: var(--t); clip-path: polygon(0 0, 100% 0, calc(100% - var(--i)) 100%, var(--i) 100%); padding: 4px var(--i); }
 .fn-name { font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
 .fn-val { font-weight: 700; line-height: 1.15; white-space: nowrap; }
-/* context stages (total market, TAM): fixed scope, kept light */
+/* context stages (total construction market, TAM): kept light */
 .fn-stage.ctx .fn-band { min-height: 36px; }
 .fn-stage.ctx .fn-val { font-size: 13px; }
 .fn-stage.ctx .fn-name { font-size: 9.5px; }
@@ -323,7 +323,7 @@ sup { font-size: .7em; line-height: 0; }
     <div class="takeaway" id="tblTake"></div>
     <div class="source">
       <span>Source: Oxford Economics; HFC market intelligence data file; HFC business plan</span>
-      <span>Notes: 1. SAM growth = growth of construction work done (Oxford Economics) for the end market. R = renovation, NB = new build; the top figure combines both. 2. Commercial = commercial (offices, retail, hotels) + healthcare + multi-family residential. 3. Total market = construction work done (Oxford Economics, US$, 2023 prices), all applications; converted to € in the funnel at the US$/€ rate in Settings. 4. TAM = total addressable market: spend on all HVAC and sanitary applications (heating, cooling, sanitary), EUR m. 5. SAM = serviceable addressable market: the part of the TAM within HFC's current geographical and technology reach, EUR m. SAM and HFC sales are <span class="yr-prev"></span> values. Totals weight SAM growth by SAM and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
+      <span>Notes: 1. SAM growth = growth of construction work done (Oxford Economics) for the end market. R = renovation, NB = new build; the top figure combines both. 2. Commercial = commercial (offices, retail, hotels) + healthcare + multi-family residential. 3. Total construction market = construction work done (Oxford Economics, US$, 2023 prices), all geographies, end markets and applications. 4. TAM = total addressable market: spend on all HVAC and sanitary applications (heating, cooling, sanitary), EUR m. 5. SAM = serviceable addressable market: the part of the TAM within HFC's current geographical and technology reach, EUR m. SAM and HFC sales are <span class="yr-prev"></span> values. Totals weight SAM growth by SAM and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
     </div>
   </section>
 
@@ -440,7 +440,6 @@ sup { font-size: .7em; line-height: 0; }
   // general settings (company, year, currency) that came with an Excel upload
   function applyGeneral(g) {
     CFG.company = g && g.company ? String(g.company) : BASE_CFG.company;
-    CFG.usdEur = g && Number(g.usdEur) > 0 ? Number(g.usdEur) : BASE_CFG.usdEur;
     CFG.currency = g && g.currency ? String(g.currency) : BASE_CFG.currency;
     const y = g ? parseInt(g.currentYear, 10) : NaN;
     CFG.currentYear = y > 1990 && y < 2200 ? y : BASE_CFG.currentYear;
@@ -600,23 +599,21 @@ sup { font-size: .7em; line-height: 0; }
   // ---------- KPIs ----------
   function renderKpis(units) {
     const tot = aggregate(units.map(u => u.r), { country: "All", code: "", segment: seg });
-    // Total market and TAM always show the full scope: they do not follow the filters
+    // The total construction market always shows the full scope: it does not follow the filters
     const all = aggregate(ROWS.filter(r => r.market_size !== null), { country: "All", code: "", segment: "All" });
     const gap = (tot.hfc_growth_cy ?? NaN) - (tot.mkt_growth_cy ?? NaN);
     const dms = (tot.ms_cy ?? NaN) - (tot.ms_py ?? NaN);
-    const rate = Number(CFG.usdEur) || 0.92;
     const share = (a, b) => a && b ? (a / b * 100) : null;
     const pctOf = v => v === null ? "–" : v < 10 ? v.toFixed(1) + "%" : Math.round(v) + "%";
     const yrsF = `${CY}–${String(CY + 5).slice(2)}`, yrsH = `${CY - 6}–${String(CY - 1).slice(2)}`;
-    const tmEur = all.total_market ? all.total_market * rate : null;
     // widths step down by 14-18 points; --i keeps the funnel's slope continuous between bands
     const stages = [
-      { cls: "ctx", name: `Total market ${CY - 1}<sup>3</sup>`, val: all.total_market ? "US$ " + money(all.total_market / 1000) + "bn" : "–", w: 100, next: 86,
-        c: "#e9e9e9", t: "var(--ink)", fwd: all.tm_cagr_fwd, hist: all.tm_cagr_hist, of: `≈ €${money(tmEur / 1000)}bn at ${rate.toFixed(2)} €/US$` },
-      { cls: "ctx", name: `TAM ${CY - 1}<sup>4</sup>`, val: all.tam ? "€" + money(all.tam) + "M" : "–", w: 86, next: 68,
-        c: "#d6d6d6", t: "var(--ink-strong)", fwd: all.tam_cagr_fwd, hist: all.tam_cagr_hist, of: `${pctOf(share(all.tam, tmEur))} of total market` },
+      { cls: "ctx", name: `Total construction market ${CY - 1}<sup>3</sup>`, val: all.total_market ? "US$ " + money(all.total_market / 1000) + "bn" : "–", w: 100, next: 86,
+        c: "#e9e9e9", t: "var(--ink)", fwd: all.tm_cagr_fwd, hist: all.tm_cagr_hist, of: "All geographies, end markets and applications" },
+      { cls: "ctx", name: `TAM ${CY - 1}<sup>4</sup>`, val: tot.tam ? "€" + money(tot.tam) + "M" : "–", w: 86, next: 68,
+        c: "#d6d6d6", t: "var(--ink-strong)", fwd: tot.tam_cagr_fwd, hist: tot.tam_cagr_hist, of: "" },
       { cls: "focus", name: `SAM ${CY - 1}<sup>5</sup>`, val: "€" + money(tot.market_size) + "M", w: 68, next: 50,
-        c: "var(--red-2)", t: "#fff", fwd: tot.mkt_cagr_fwd, hist: tot.mkt_cagr_hist, of: `${pctOf(share(tot.market_size, all.tam))} of TAM` },
+        c: "var(--red-2)", t: "#fff", fwd: tot.mkt_cagr_fwd, hist: tot.mkt_cagr_hist, of: `${pctOf(share(tot.market_size, tot.tam))} of TAM` },
       { cls: "focus", name: `${CO} sales ${CY - 1}`, val: "€" + money(tot.hfc_sales) + "M", w: 50, next: 32,
         c: "var(--red)", t: "#fff", fwd: tot.hfc_cagr_bp, hist: tot.hfc_cagr_hist, of: `${pctOf(share(tot.hfc_sales, tot.market_size))} of SAM = market share`, bp: true },
     ];
@@ -625,7 +622,7 @@ sup { font-size: .7em; line-height: 0; }
         <div class="fn-meta">
           <div class="fn-cagr"><b>${pct(st.fwd)}</b><span>${st.bp ? "BP " : ""}CAGR ${yrsF}</span></div>
           <span class="fn-hist">${pct(st.hist)} CAGR ${yrsH}</span>
-          <span class="fn-pct">${st.of}</span>
+          ${st.of ? `<span class="fn-pct">${st.of}</span>` : ""}
         </div></li>`).join("");
     const perf = [
       { lbl: `SAM growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Renovation ${pct(tot.mkt_reno_growth_cy)} · new build ${pct(tot.mkt_nb_growth_cy)}` },
@@ -634,7 +631,7 @@ sup { font-size: .7em; line-height: 0; }
     ].map(k => `<div class="kpi"><span class="lbl">${k.lbl}</span><span class="val">${k.val}</span><span class="cmp">${k.cmp}</span></div>`).join("");
     document.getElementById("kpis").innerHTML =
       `<div class="hdr-panel"><span class="hdr-t">Market funnel · ${segName()}</span>` +
-      `<span class="fn-scope">Total market and TAM: full scope, all filters. SAM and ${CO} sales: filtered view.</span><ol class="fn">${funnel}</ol></div>` +
+      `<span class="fn-scope">Total construction market: full scope. TAM, SAM and ${CO} sales: filtered view.</span><ol class="fn">${funnel}</ol></div>` +
       `<div class="hdr-panel"><span class="hdr-t">Current performance and positioning</span><div class="perf-list">${perf}</div></div>`;
   }
 
@@ -1158,7 +1155,7 @@ sup { font-size: .7em; line-height: 0; }
     if (!hasApps && app !== "All") { app = "All"; document.querySelectorAll("#appCtl button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.app === "All"))); }
     const { units } = view();
     document.getElementById("dataBadge").textContent = usingImported ? "Uploaded data (this browser)" : "Dummy data for testing";
-    document.getElementById("srcData").textContent = usingImported ? importSource : "dummy data for testing; growth and total market from Oxford Economics";
+    document.getElementById("srcData").textContent = usingImported ? importSource : "dummy data for testing; growth and total construction market from Oxford Economics";
     renderKpis(units);
     renderMatrix(units);
     renderZones(units);
