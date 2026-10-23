@@ -16,7 +16,8 @@ DATA_JS = ROOT / "dashboard" / "data.js"
 FIELDS = ["country", "code", "segment", "market_size", "hfc_sales", "mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd",
           "hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp", "ms_cy", "ms_py",
           "profitability", "competitive_intensity", "channel_access", "product_fit",
-          "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"]
+          "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd",
+          "application", "total_market"]
 
 wb = load_workbook(SRC, data_only=True)
 ws = wb["Dashboard data"]

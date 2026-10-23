@@ -37,7 +37,7 @@ RED, RED_SOFT, SALMON, BLUSH, TINT = "CE0E2D", "DD6556", "E49587", "F4E4DC", "FC
 INK, INK_STRONG, MUTED, LINE, GREY_BAND = "505050", "191919", "8C8C8C", "E4E4E4", "7A7A7A"
 INPUT_BLUE, LINK_GREEN, WHITE = "0000FF", "008000", "FFFFFF"
 FONT = "Arial"
-N_ROWS = 60          # rows available in Raw data
+N_ROWS = 120         # rows available in Raw data (country x end market x application)
 OE_LAST_ROW = 1000   # paste area depth on the Oxford Economics sheet
 OE_LAST_COL = "AZ"
 
@@ -76,7 +76,9 @@ COUNTRIES = [
     ("Spain", "ES", "Spain", (9.8, 7.5), (7.5, 6.0, 8.0), (3, 3, 3, 4)),
     ("Portugal", "PT", "Portugal", (8.0, 6.0), (6.5, 5.0, 5.0), (3, 3, 3, 4)),
 ]
-# Illustrative addressable market: this share of construction work done (US$ m, 2023 prices) converted at 0.92 EUR/US$
+# Applications: name, ILLUSTRATIVE share of the SAM, HFC market share multiplier, HFC growth bump (pp)
+APPLICATIONS = [("Heating", 0.55, 1.2, 0.0), ("Cooling", 0.20, 0.6, 1.5), ("Sanitary", 0.25, 0.9, 0.5)]
+# Illustrative SAM: this share of construction work done (US$ m, 2023 prices) converted at 0.92 EUR/US$
 ADDRESSABLE_RATIO = 0.012
 USD_EUR = 0.92
 
@@ -182,7 +184,7 @@ SETTINGS = [
     ("General", None, None, None, None),
     ("Company name", "HFC", "company", "@", "Shown in column headers and labels"),
     ("Current year", 2026, "currentYear", "0", "Base year = current year - 1 (sizes and sales); history = 5 years to the base year; outlook = current year + 5"),
-    ("Currency label", "EUR m", "currency", "@", "Unit of addressable market size and HFC sales"),
+    ("Currency label", "EUR m", "currency", "@", "Unit of SAM and HFC sales"),
     ("Oxford Economics series (Indicator column of the export)", None, None, None, None),
     *[(label, name, key, "@", note) for (key, label, name), note in zip(SERIES, [
         "Residential = Residential total - Multi family (new and renovation separately)", "",
@@ -260,9 +262,10 @@ COLS = [
     ("country", "Country", "@", "Country", 17, None, "in"),
     ("code", "Code", "@", "Country", 7, "Short code (optional)", "in"),
     ("segment", "End market", "@", "Country", 15, "Residential, or Commercial (commercial + healthcare + multi family)", "in"),
+    ("application", "Application", "@", "Country", 12, "Heating, Cooling or Sanitary", "in"),
     ("oe_location", "Oxford Economics\nlocation", "@", "Country", 16, "Location name exactly as in the Oxford Economics export", "in"),
-    ("market_size", "Addressable market\n{py} (EUR m)", "#,##0", "Market", 13, "HFC addressable market in the base year (your estimate, not total construction output)", "in"),
-    ("oe_level_py", "Construction work\ndone {py} (US$ m)", "#,##0", "Market", 14, "From Market levels (Oxford Economics, 2023 prices)", "calc"),
+    ("market_size", "SAM {py}\n(EUR m)", "#,##0", "Market", 13, "Serviceable addressable market for this application in the base year (your estimate)", "in"),
+    ("oe_level_py", "Total market {py}\n(construction, US$ m)", "#,##0", "Market", 15, "Construction work done for the end market (Oxford Economics, 2023 prices); same for every application", "calc"),
     ("mkt_cagr_hist", "Market CAGR\n{hy}-{py}", "0.0%", "Market", 12, "From Market levels: needs the export to include the start year", "calc"),
     ("mkt_growth_cy", "Market growth\n{cy}E", "0.0%", "Market", 12, "From Market levels", "calc"),
     ("mkt_cagr_fwd", "Market CAGR\n{cy}-{fy}", "0.0%", "Market", 12, "From Market levels", "calc"),
@@ -277,7 +280,7 @@ COLS = [
     ("hfc_cagr_hist", "HFC sales CAGR\n{hy}-{py}", "0.0%", "HFC", 12, None, "in"),
     ("hfc_growth_cy", "HFC growth\n{cy} forecast", "0.0%", "HFC", 12, None, "in"),
     ("hfc_cagr_bp", "HFC BP CAGR\n{cy}-{fy}", "0.0%", "HFC", 12, "Business plan", "in"),
-    ("ms_py_override", "Market share {py}\n(optional)", "0.0%", "HFC", 12, "Leave empty to use HFC sales / addressable market", "in"),
+    ("ms_py_override", "Market share {py}\n(optional)", "0.0%", "HFC", 12, "Leave empty to use HFC sales / SAM", "in"),
     ("ms_cy_override", "Market share {cy}\n(optional)", "0.0%", "HFC", 12, "Leave empty to grow sales and market by their current-year growth", "in"),
     ("profitability", "Profitability", "0", "Score", 12, "1-5 score: price level and margin potential of the market (5 = best)", "in"),
     ("competitive_intensity", "Competitive\nintensity", "0", "Score", 12, "1-5 score: 5 = benign competition, 1 = very fierce", "in"),
@@ -365,8 +368,8 @@ def comp(ind_ref, year_cell, loc_cell, optional=False):
 for n in range(N_ROWS):
     mr, rr = ML_HEAD + 1 + n, FIRST + n
     calc_cell(ml.cell(row=mr, column=1, value=f"=IF('Raw data'!$A{rr}=\"\",\"\",'Raw data'!$A{rr})"), "@", 9)
-    calc_cell(ml.cell(row=mr, column=2, value=f"=IF($A{mr}=\"\",\"\",'Raw data'!$C{rr})"), "@", 9)
-    calc_cell(ml.cell(row=mr, column=3, value=f"=IF($A{mr}=\"\",\"\",IF('Raw data'!$D{rr}=\"\",$A{mr},'Raw data'!$D{rr}))"), "@", 9)
+    calc_cell(ml.cell(row=mr, column=2, value=f"=IF($A{mr}=\"\",\"\",'Raw data'!${COL['segment']}{rr})"), "@", 9)
+    calc_cell(ml.cell(row=mr, column=3, value=f"=IF($A{mr}=\"\",\"\",IF('Raw data'!${COL['oe_location']}{rr}=\"\",$A{mr},'Raw data'!${COL['oe_location']}{rr}))"), "@", 9)
     for off in YEAR_OFFSETS:
         for kind in ("reno", "new"):
             yc = f"{BCOL[(kind, off)]}${ML_HEAD}"
@@ -386,13 +389,15 @@ ML = "'Market levels'!"
 # ---------------------------------------------------------------- Raw data rows
 sample = []
 for name, code, loc, ms, hfc, scores in COUNTRIES:
-    for s_i, seg in enumerate(("Residential", "Commercial")):
-        lvl = segment_level(loc, seg, 2025, "new") + segment_level(loc, seg, 2025, "reno")
-        size = round(lvl * USD_EUR * ADDRESSABLE_RATIO / 5) * 5
-        sales = round(size * ms[s_i] / 100, 1)
-        bump = 0.5 if seg == "Commercial" else 0.0
+  for s_i, seg in enumerate(("Residential", "Commercial")):
+    lvl = segment_level(loc, seg, 2025, "new") + segment_level(loc, seg, 2025, "reno")
+    seg_size = lvl * USD_EUR * ADDRESSABLE_RATIO
+    for app, app_share, ms_mult, app_bump in APPLICATIONS:
+        size = max(1, round(seg_size * app_share))
+        sales = round(size * ms[s_i] * ms_mult / 100, 1)
+        bump = (0.5 if seg == "Commercial" else 0.0) + app_bump
         sample.append({
-            "country": name, "code": code, "segment": seg, "oe_location": loc,
+            "country": name, "code": code, "segment": seg, "application": app, "oe_location": loc,
             "market_size": size, "hfc_sales": sales,
             "hfc_cagr_hist": (hfc[0] + bump) / 100, "hfc_growth_cy": (hfc[1] + bump) / 100, "hfc_cagr_bp": (hfc[2] + bump) / 100,
             "profitability": scores[0], "competitive_intensity": scores[1],
@@ -435,11 +440,14 @@ dv_pct = DataValidation(type="decimal", operator="between", formula1="0", formul
 for dv in (dv_seg, dv_score, dv_pct):
     rd.add_data_validation(dv)
 dv_seg.add(f"{COL['segment']}{FIRST}:{COL['segment']}{LAST_ROW}")
+dv_app = DataValidation(type="list", formula1='"Heating,Cooling,Sanitary"', allow_blank=True)
+rd.add_data_validation(dv_app)
+dv_app.add(f"{COL['application']}{FIRST}:{COL['application']}{LAST_ROW}")
 dv_score.add(f"{COL['profitability']}{FIRST}:{COL['product_fit']}{LAST_ROW}")
 for key in ("ms_py_override", "ms_cy_override"):
     dv_pct.add(f"{COL[key]}{FIRST}:{COL[key]}{LAST_ROW}")
-rd.freeze_panes = rd[f"E{FIRST}"]
-rd.cell(row=3, column=1, value=("Market growth comes from Oxford Economics (green). Addressable market, HFC figures and scores in the sample rows are ILLUSTRATIVE: "
+rd.freeze_panes = rd[f"F{FIRST}"]
+rd.cell(row=3, column=1, value=("Market growth comes from Oxford Economics (green). SAM, HFC figures and scores in the sample rows are ILLUSTRATIVE: "
                                 "replace them with your own. Add countries in the empty rows.")).font = font(9, color=RED, italic=True)
 
 # ================================================================ Dashboard data
@@ -447,7 +455,7 @@ dd = wb.create_sheet("Dashboard data")
 dd.sheet_properties.tabColor = GREY_BAND
 OUT_FIELDS = [
     ("country", "Country", "@"), ("code", "Code", "@"), ("segment", "End market", "@"),
-    ("market_size", "Market size {py}", "#,##0"), ("hfc_sales", "HFC sales {py}", "#,##0"),
+    ("market_size", "SAM {py}", "#,##0"), ("hfc_sales", "HFC sales {py}", "#,##0"),
     ("mkt_cagr_hist", "Market CAGR {hy}-{py} (%)", "0.0"), ("mkt_growth_cy", "Market growth {cy}E (%)", "0.0"), ("mkt_cagr_fwd", "Market CAGR {cy}-{fy} (%)", "0.0"),
     ("hfc_cagr_hist", "HFC CAGR {hy}-{py} (%)", "0.0"), ("hfc_growth_cy", "HFC growth {cy}F (%)", "0.0"), ("hfc_cagr_bp", "HFC BP CAGR {cy}-{fy} (%)", "0.0"),
     ("ms_cy", "HFC share {cy} (%)", "0.0"), ("ms_py", "HFC share {py} (%)", "0.0"),
@@ -456,6 +464,7 @@ OUT_FIELDS = [
     ("reno_share", "Renovation share (%)", "0"),
     ("mkt_reno_cagr_hist", "Reno CAGR {hy}-{py} (%)", "0.0"), ("mkt_reno_growth_cy", "Reno growth {cy}E (%)", "0.0"), ("mkt_reno_cagr_fwd", "Reno CAGR {cy}-{fy} (%)", "0.0"),
     ("mkt_nb_cagr_hist", "NB CAGR {hy}-{py} (%)", "0.0"), ("mkt_nb_growth_cy", "NB growth {cy}E (%)", "0.0"), ("mkt_nb_cagr_fwd", "NB CAGR {cy}-{fy} (%)", "0.0"),
+    ("application", "Application", "@"), ("total_market", "Total market {py} (construction, US$ m)", "#,##0"),
 ]
 band(dd, 1, len(OUT_FIELDS) + 1, "Dashboard data", "Calculated from Raw data and Settings. Do not type here: this is the table the dashboard reads.")
 for i, (key, head, fmt) in enumerate(OUT_FIELDS, 1):
@@ -486,6 +495,8 @@ for n in range(N_ROWS):
         "country": f'=IF(TRIM({raw("country")})="","",TRIM({raw("country")}))',
         "code": f'=IF($A{r_out}="","",IF({raw("code")}="",UPPER(LEFT($A{r_out},3)),{raw("code")}))',
         "segment": f'=IF($A{r_out}="","",{raw("segment")})',
+        "application": f'=IF($A{r_out}="","",IF({raw("application")}="","",{raw("application")}))',
+        "total_market": f'=IF($A{r_out}="","",IF(ISNUMBER({raw("oe_level_py")}),{raw("oe_level_py")},""))',
         "market_size": f'=IF(OR($A{r_out}="",{raw("market_size")}=""),"",{raw("market_size")})',
         "hfc_sales": f'=IF(OR($A{r_out}="",{raw("hfc_sales")}=""),"",{raw("hfc_sales")})',
         "ms_py": (f'=IF($A{r_out}="","",IF({raw("ms_py_override")}<>"",{raw("ms_py_override")}*100,'
@@ -523,7 +534,7 @@ for col in "CDEFGH":
 lines = [
     ("How to update the dashboard", None),
     ("1", "Oxford Economics: paste the latest download (level values) at cell A6, header row included. Market growth for every country updates automatically."),
-    ("2", "Raw data: one row per country and end market. Update the blue cells: addressable market, HFC sales and growth, and the four 1-5 scores."),
+    ("2", "Raw data: one row per country, end market and application (heating, cooling, sanitary). Update the blue cells: SAM, HFC sales and growth, and the four 1-5 scores."),
     ("3", "Settings: check the company name, the current year and the Oxford Economics series names. Weights and zone lines are set in the dashboard."),
     ("4", "Dashboard data: nothing to type. Check that every country appears and that the check column shows no red cells."),
     ("5", "Save the file (.xlsx), open the dashboard, go to 'Update the figures' and click 'Upload Excel'."),
@@ -533,14 +544,15 @@ lines = [
     ("Growth rates", "CAGR last 5 years = (base year / base year - 5)^(1/5) - 1. Growth this year = current year / base year - 1. CAGR next 5 years = (current year + 5 / current year)^(1/5) - 1."),
     ("History", "The 5-year history needs the export to start 6 years before the current year (e.g. 2020 for 2026). With a shorter export it stays empty."),
     ("Series names", "If Oxford Economics renames a series, update its name in Settings; everything else follows."),
-    ("Addressable market", "Your estimate of the HFC addressable market in EUR m (not total construction output). Used for market size and market share."),
+    ("Total market", "Construction work done for the end market (Oxford Economics, US$ m, 2023 prices). The same for each application of a country and end market."),
+    ("SAM", "Serviceable addressable market: your estimate of HFC's actual addressable market per application, in EUR m. Used for market size and market share."),
     ("Renovation / new build", "Calculated from the New and Renovation series: renovation share of the base year and the same three growth rates for each."),
     ("Qualitative scores", "Profitability, competitive intensity, channel access and product fit: type a whole score from 1 to 5 (5 = most favourable for HFC)."),
     ("Conventions", None),
     ("Blue cells", "Inputs: type or paste your figures here."),
     ("Green cells", "Formulas: do not overwrite."),
     ("Percentages", "Type them as percentages (3.2%) or decimals (0.032). Growth rates can be negative."),
-    ("Rows", f"Room for {N_ROWS} rows in Raw data (for example {N_ROWS // 2} countries x 2 end markets). Empty rows are ignored."),
+    ("Rows", f"Room for {N_ROWS} rows in Raw data (for example 20 countries x 2 end markets x 3 applications). Empty rows are ignored."),
 ]
 row = 4
 for a, b in lines:
@@ -564,7 +576,7 @@ for a, b in lines:
     if a == "Green cells":
         ca.font = font(10, True, LINK_GREEN)
     row += 1
-rm.cell(row=row + 1, column=2, value=("Market growth is real Oxford Economics data. Addressable market, HFC figures and qualitative scores in the sample rows "
+rm.cell(row=row + 1, column=2, value=("Market growth and total market are real Oxford Economics data. SAM, HFC figures and qualitative scores in the sample rows "
                                       "are illustrative, not HFC data.")).font = font(9, color=RED, italic=True)
 for ws in (rm, st):
     ws.sheet_view.showGridLines = False

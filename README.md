@@ -10,12 +10,13 @@ A self-contained dashboard for HFC's country portfolio, styled after the EU WT s
    - **Leadership position**: attractive market and strong position. Accelerate and defend the lead.
    - **Priority growth**: good potential, position still to build. Invest to gain share.
    - **Selective investment**: lower attractiveness or weak position. Invest selectively, protect margin.
-2. **Market vs. HFC positioning**: countries grouped by matrix zone (with a subtotal per zone, largest market first), one row per country in the Total view; the Residential and Commercial filters show each end market (Commercial = commercial + healthcare + multi-family):
-   - **Market**: size (last year, e.g. 2025), CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years. Market growth is construction work done (Oxford Economics); each figure shows the combined rate with the renovation (R) and new build (NB) rates underneath.
+2. **Headline figures**: total market (construction work done, Oxford Economics, US$) with its 5-year CAGRs, and the SAM (serviceable addressable market, HFC's actual addressable market in EUR m).
+3. **Market vs. HFC positioning**: countries grouped by matrix zone (with a subtotal per zone, largest market first), one row per country in the Total view; the Residential and Commercial filters show each end market (Commercial = commercial + healthcare + multi-family):
+   - **Market**: SAM (last year, e.g. 2025), CAGR over the last 5 years, growth this year, projected CAGR over the next 5 years. Market growth is construction work done (Oxford Economics); each figure shows the combined rate with the renovation (R) and new build (NB) rates underneath.
    - **HFC**: sales (last year, e.g. 2025), CAGR over the last 5 years, projected growth this year, business-plan CAGR over the next 5 years, each with the gap to the market in percentage points.
    - **HFC market share** this year and its change versus last year, shown inside the HFC block.
 
-The end-market toggle (Total / Residential / Commercial) drives the headline figures, the matrix and the table together. Clicking a bubble or a country chip highlights that country in the table.
+Two filters, end market (Total / Residential / Commercial) and application (All / Heating / Cooling / Sanitary), drive the headline figures, the matrix and the table together. The total market depends on the end market only, since construction work done is not split by application. Clicking a bubble or a country chip highlights that country in the table.
 
 ## How the matrix is scored
 
@@ -41,7 +42,7 @@ Country totals weight market figures by market size and HFC figures by HFC sales
 Use the Excel template `templates/HFC_market_intelligence_template.xlsx`:
 
 1. **Oxford Economics** sheet: paste the latest download (level values, header row in cell A6). Market growth for every country updates automatically. Residential = Residential total − Multi family; Commercial = Commercial + Healthcare + Multi family, each for New and Renovation. Commercial already includes offices, retail and hotels; the healthcare series are optional in Settings (the current export has none).
-2. **Raw data** sheet: one row per country and end market. Fill in the addressable market (EUR m), HFC sales and growth and the four qualitative scores (1–5). Market growth and the renovation / new build split are calculated.
+2. **Raw data** sheet: one row per country, end market and application (heating, cooling, sanitary). Fill in the SAM (EUR m), HFC sales and growth and the four qualitative scores (1–5). Market growth and the renovation / new build split are calculated.
 3. **Settings**: company name, current year and the six Oxford Economics series names (New / Renovation for Residential total, Multi family and Commercial).
 4. Save, then click **Upload Excel** in the dashboard's "Update the figures" section. The dashboard reads the calculated **Dashboard data** sheet and the Settings sheet. Uploaded data is kept in that browser only.
 

@@ -192,11 +192,6 @@ tr.zone-row td .v.flat, tr.grand td .v.flat { color: var(--muted); }
 .split { display: flex; justify-content: flex-end; gap: 6px; font-size: 10px; font-weight: 500; color: var(--ink); margin-top: 2px; }
 .split span { white-space: nowrap; }
 sup { font-size: .7em; line-height: 0; }
-.ask { position: relative; display: flex; align-items: center; gap: 8px; background: var(--tint); border: 1px solid var(--rose); border-radius: 10px; padding: 6px 12px 6px 6px; font-size: 12px; color: var(--ink-strong); max-width: 100%; }
-.ask::after { content: ""; position: absolute; left: -7px; top: 50%; margin-top: -6px; border: 6px solid transparent; border-right-color: var(--rose); border-left: 0; }
-.ask b { color: var(--red); }
-@media (max-width: 719px) { .ask::after { display: none; } }
-.ask-q { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: 13px; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11.5px; color: var(--ink); align-items: center; }
 .legend .bar { display: inline-block; vertical-align: middle; }
 
@@ -232,7 +227,14 @@ sup { font-size: .7em; line-height: 0; }
         <button type="button" data-seg="Commercial" aria-pressed="false">Commercial<sup>2</sup></button>
       </div>
     </div>
-    <div class="ask" role="note"><span class="ask-q" aria-hidden="true">?</span><span><b>Open question:</b> should we also filter by application or by technology group?</span></div>
+    <div class="ctl" id="appWrap">Application
+      <div class="seg" id="appCtl">
+        <button type="button" data-app="All" aria-pressed="true">All</button>
+        <button type="button" data-app="Heating" aria-pressed="false">Heating</button>
+        <button type="button" data-app="Cooling" aria-pressed="false">Cooling</button>
+        <button type="button" data-app="Sanitary" aria-pressed="false">Sanitary</button>
+      </div>
+    </div>
     <span class="spacer"></span>
     <button type="button" class="btn" id="clearHl" hidden>Clear selection</button>
   </div>
@@ -252,7 +254,7 @@ sup { font-size: .7em; line-height: 0; }
       </div>
       <div class="zones">
         <div class="zones" id="zones"></div>
-        <div class="size-key"><span class="size-key-t">Bubble size = market size <span class="yr-prev"></span></span><svg id="sizeKey" role="img" aria-label="Bubble size key"></svg></div>
+        <div class="size-key"><span class="size-key-t">Bubble size = SAM <span class="yr-prev"></span></span><svg id="sizeKey" role="img" aria-label="Bubble size key"></svg></div>
       </div>
     </div>
     <details class="method">
@@ -263,7 +265,7 @@ sup { font-size: .7em; line-height: 0; }
     <div class="takeaway" id="mxTake"></div>
     <div class="source">
       <span>Source: Oxford Economics; HFC market intelligence data file (<span id="srcData">illustrative sample</span>)</span>
-      <span>Notes: scores from 1 to 5; market size, renovation and new build growth and market share are scored relative to the other countries in view, so 5 = best of the portfolio. Commercial = commercial (offices, retail, hotels) + healthcare + multi-family residential. Click a bubble or a country to find it in the table below.</span>
+      <span>Notes: scores from 1 to 5; SAM, renovation and new build growth and market share are scored relative to the other countries in view, so 5 = best of the portfolio. Commercial = commercial (offices, retail, hotels) + healthcare + multi-family residential. Bubble size and market size = SAM (serviceable addressable market). Click a bubble or a country to find it in the table below.</span>
     </div>
   </section>
 
@@ -285,7 +287,7 @@ sup { font-size: .7em; line-height: 0; }
     <div class="takeaway" id="tblTake"></div>
     <div class="source">
       <span>Source: Oxford Economics; HFC market intelligence data file; HFC business plan</span>
-      <span>Notes: 1. Market growth = construction work done. R = renovation, NB = new build; the top figure combines both. 2. Commercial = commercial (offices, retail, hotels) + healthcare + multi-family residential. Market size and HFC sales are <span class="yr-prev"></span> values. Totals weight market figures by market size and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
+      <span>Notes: 1. Market growth = construction work done. R = renovation, NB = new build; the top figure combines both. 2. Commercial = commercial (offices, retail, hotels) + healthcare + multi-family residential. 3. Total market = construction work done (Oxford Economics, US$, 2023 prices), all end markets and applications. 4. SAM = serviceable addressable market, HFC's actual addressable market (EUR m). SAM and HFC sales are <span class="yr-prev"></span> values. Totals weight market growth by SAM and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
     </div>
   </section>
 
@@ -336,9 +338,11 @@ sup { font-size: .7em; line-height: 0; }
   const FIELDS = ["country", "code", "segment", "market_size", "hfc_sales", "mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd",
     "hfc_cagr_hist", "hfc_growth_cy", "hfc_cagr_bp", "ms_cy", "ms_py",
     "profitability", "competitive_intensity", "channel_access", "product_fit",
-    "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
-  const OPTIONAL = ["code", "hfc_sales", "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
-  const NUMERIC = FIELDS.slice(3);
+    "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd",
+    "application", "total_market"];
+  const OPTIONAL = ["code", "hfc_sales", "application", "total_market", "reno_share", "mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd", "mkt_nb_cagr_hist", "mkt_nb_growth_cy", "mkt_nb_cagr_fwd"];
+  const NUMERIC = FIELDS.slice(3).filter(f => f !== "application");
+  const APPS = ["Heating", "Cooling", "Sanitary"];
   const SCORES = ["profitability", "competitive_intensity", "channel_access", "product_fit"];
   // Takeaway messages in the red banners: placeholder for now (set to true to show the generated text again)
   const SHOW_TAKEAWAYS = false;
@@ -374,8 +378,12 @@ sup { font-size: .7em; line-height: 0; }
     FIELDS.forEach((f, i) => { r[f] = a[i]; });
     return clean(r);
   }
+  function normApp(a) {
+    const t = a == null ? "" : String(a).trim();
+    return /^heat/i.test(t) ? "Heating" : /^cool/i.test(t) ? "Cooling" : /^sanit/i.test(t) ? "Sanitary" : t || null;
+  }
   function clean(r) {
-    const o = { country: String(r.country || "").trim(), code: String(r.code || "").trim(), segment: normSegment(r.segment) };
+    const o = { country: String(r.country || "").trim(), code: String(r.code || "").trim(), segment: normSegment(r.segment), application: normApp(r.application) };
     if (!o.code) o.code = o.country.slice(0, 3).toUpperCase();
     NUMERIC.forEach(f => { o[f] = toNum(r[f]); });
     // HFC sales in the base year default to market size x last year's share when not given
@@ -409,7 +417,7 @@ sup { font-size: .7em; line-height: 0; }
   // ---------- aggregation ----------
   function wavg(rows, field, wfn) {
     let s = 0, w = 0;
-    rows.forEach(r => { const v = r[field], ww = wfn(r); if (v !== null && ww > 0) { s += v * ww; w += ww; } });
+    rows.forEach(r => { const v = r[field], ww = wfn(r); if (v !== null && v !== undefined && ww > 0) { s += v * ww; w += ww; } });
     return w > 0 ? s / w : null;
   }
   const sizeW = r => r.market_size || 0;
@@ -418,6 +426,14 @@ sup { font-size: .7em; line-height: 0; }
   function aggregate(rows, label) {
     const o = { country: label.country, code: label.code, segment: label.segment };
     o.market_size = rows.reduce((s, r) => s + (r.market_size || 0), 0);
+    // Total market (construction work done) is per country x end market, repeated on each application row: count it once
+    const seen = new Map();
+    rows.forEach(r => { const k = r.country + "|" + r.segment; if (!seen.has(k) && r.total_market !== null && r.total_market !== undefined) seen.set(k, r); });
+    const tmRows = [...seen.values()], tmW = r => r.total_market || 0;
+    o.total_market = tmRows.length ? tmRows.reduce((s, r) => s + tmW(r), 0) : null;
+    ["cagr_hist", "growth_cy", "cagr_fwd"].forEach(k => {
+      o["tm_" + k] = wavg(tmRows.map(r => ({ v: r["tm_" + k] ?? r["mkt_" + k], w: tmW(r) })), "v", x => x.w);
+    });
     ["mkt_cagr_hist", "mkt_growth_cy", "mkt_cagr_fwd", "reno_share"].concat(SCORES).forEach(f => { o[f] = wavg(rows, f, sizeW); });
     const renoW = r => sizeW(r) * (r.reno_share ?? 50) / 100, nbW = r => sizeW(r) * (100 - (r.reno_share ?? 50)) / 100;
     ["mkt_reno_cagr_hist", "mkt_reno_growth_cy", "mkt_reno_cagr_fwd"].forEach(f => { o[f] = wavg(rows, f, renoW); });
@@ -513,6 +529,7 @@ sup { font-size: .7em; line-height: 0; }
 
   // ---------- state ----------
   let seg = "All";
+  let app = "All";
   let selected = null;
   const monthYear = new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" });
   document.getElementById("monthLbl").textContent = monthYear;
@@ -525,14 +542,15 @@ sup { font-size: .7em; line-height: 0; }
 
   function view() {
     const cs = countries();
-    const units = cs.map(c => ({
-      c,
-      r: seg === "All" ? c.total : c.rows.find(r => r.segment === seg) || null
-    })).filter(u => u.r && u.r.market_size !== null);
+    const keep = r => (seg === "All" || r.segment === seg) && (app === "All" || r.application === app);
+    const units = cs.map(c => {
+      const rows = c.rows.filter(keep);
+      return { c, r: rows.length ? aggregate(rows, { country: c.country, code: c.code, segment: seg }) : null };
+    }).filter(u => u.r && u.r.market_size > 0);
     score(units);
     return { cs, units };
   }
-  const segName = () => seg === "All" ? "all end markets" : seg.toLowerCase();
+  const segName = () => (seg === "All" ? "all end markets" : seg.toLowerCase()) + (app === "All" ? "" : ", " + app.toLowerCase());
 
   // ---------- KPIs ----------
   function renderKpis(units) {
@@ -542,8 +560,9 @@ sup { font-size: .7em; line-height: 0; }
     const gap = (tot.hfc_growth_cy ?? NaN) - (tot.mkt_growth_cy ?? NaN);
     const dms = (tot.ms_cy ?? NaN) - (tot.ms_py ?? NaN);
     const kp = [
-      { lbl: `Addressable market ${CY - 1}`, val: "€" + money(tot.market_size) + "M", cmp: `${units.length} countries · ${segName()}` },
-      { lbl: `Market growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Next 5 yrs ${pct(tot.mkt_cagr_fwd)} p.a. · last 5 yrs ${pct(tot.mkt_cagr_hist)}` },
+      { lbl: `Total market ${CY - 1}<sup>3</sup>`, val: tot.total_market ? "US$ " + money(tot.total_market / 1000) + "bn" : "–", cmp: `CAGR next 5 yrs ${pct(tot.tm_cagr_fwd)} · last 5 yrs ${pct(tot.tm_cagr_hist)}` },
+      { lbl: `SAM ${CY - 1}<sup>4</sup>`, val: "€" + money(tot.market_size) + "M", cmp: `${units.length} countries · ${segName()}` },
+      { lbl: `Market growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Renovation ${pct(tot.mkt_reno_growth_cy)} · new build ${pct(tot.mkt_nb_growth_cy)}` },
       { lbl: `${CO} growth ${CY} forecast`, val: pct(tot.hfc_growth_cy), cmp: `<span class="${dir(gap)}">${arrow(gap)} ${pp(gap)}</span> vs. market · BP ${pct(tot.hfc_cagr_bp)} p.a.` },
       { lbl: `${CO} market share ${CY}`, val: f1(tot.ms_cy) + "%", cmp: `<span class="${dir(dms)}">${arrow(dms)} ${pp(dms)}</span> vs. ${CY - 1}` },
       { lbl: "Countries by matrix position", list: Object.keys(ZONES).map(z => ({ name: ZONES[z].name, color: ZONES[z].color, n: counts[z] })) }
@@ -699,12 +718,12 @@ sup { font-size: .7em; line-height: 0; }
   }
 
   const tip = document.getElementById("tip"), box = document.getElementById("chartBox");
-  const LBL = { market_size: "Market size", market_growth: "Market growth (5 yr)", reno_growth: "Renovation growth (5 yr)", nb_growth: "New build growth (5 yr)", profitability: "Profitability", competitive_intensity: "Competitive intensity",
+  const LBL = { market_size: "SAM", market_growth: "Market growth (5 yr)", reno_growth: "Renovation growth (5 yr)", nb_growth: "New build growth (5 yr)", profitability: "Profitability", competitive_intensity: "Competitive intensity",
     market_share: "Market share", channel_access: "Channel access", product_fit: "Product fit" };
   function showTip(u, ev, anchor) {
     const rows = (parts, ws) => Object.keys(parts).map(k => `<tr><td>${LBL[k]} <span style="color:var(--muted)">×${Number(ws[k]) || 0}</span></td><td>${f1(parts[k])}</td></tr>`).join("");
     tip.innerHTML = `<h4>${esc(u.c.country)} · <span style="color:${ZONES[u.zone].color}">●</span> ${ZONES[u.zone].name}</h4>
-      <div style="margin-bottom:6px">${seg === "All" ? "All end markets" : seg} · market ${CY - 1} €${money(u.r.market_size)}M · MS ${f1(u.r.ms_cy)}%</div>
+      <div style="margin-bottom:6px">${segName().replace(/^./, ch => ch.toUpperCase())} · SAM ${CY - 1} €${money(u.r.market_size)}M · MS ${f1(u.r.ms_cy)}%</div>
       <table><tr class="sep"><td>Attractiveness</td><td>${f1(u.attr)}</td></tr>${rows(u.attrParts, u.attrW)}
       <tr class="sep"><td>Ability to win</td><td>${f1(u.abil)}</td></tr>${rows(u.abilParts, W.ability || {})}</table>`;
     tip.hidden = false;
@@ -798,7 +817,7 @@ sup { font-size: .7em; line-height: 0; }
     const h = (a, b, cls) => `<th${cls ? ` class="${cls}"` : ""}>${a}<span class="u">${b}</span></th>`;
     const head = `<thead>
       <tr class="grp"><th class="l sticky blank"></th><th class="g-mkt" colspan="4">Market growth<sup>1</sup></th><th class="gap"></th><th class="g-hfc" colspan="6">${CO}</th></tr>
-      <tr><th class="l sticky">Country</th>${h("Size " + (CY - 1), CFG.currency, "m")}
+      <tr><th class="l sticky">Country</th>${h("SAM " + (CY - 1) + "<sup>4</sup>", CFG.currency, "m")}
         ${h("CAGR 5 yrs", (CY - 6) + "–" + (CY - 1), "m")}${h("Growth " + CY + "E", "vs. " + (CY - 1), "m")}${h("CAGR 5 yrs", CY + "–" + (CY + 5), "m")}
         <th class="gap"></th>
         ${h("Sales " + (CY - 1), CFG.currency)}${h("CAGR 5 yrs", (CY - 6) + "–" + (CY - 1))}${h("Growth " + CY + "F", "vs. " + (CY - 1))}${h("BP CAGR 5 yrs", CY + "–" + (CY + 5))}
@@ -811,7 +830,7 @@ sup { font-size: .7em; line-height: 0; }
       if (!members.length) return;
       body += rowHtml(aggregate(members.map(u => u.r), { country: "", code: "", segment: seg }), "zone", members.length, z);
       members.forEach(u => {
-        body += rowHtml(seg === "All" ? u.c.total : u.r, "total", u.c, null);
+        body += rowHtml(u.r, "total", u.c, null);
       });
     });
     const t = document.getElementById("tbl");
@@ -852,7 +871,7 @@ sup { font-size: .7em; line-height: 0; }
     const grp = (key, title, labels, step) => `<fieldset><legend>${title}</legend>${Object.keys(labels).map(k =>
       `<label class="wrow" for="w-${key}-${k}">${labels[k]}<input id="w-${key}-${k}" type="number" min="0" max="100" step="${step}" data-g="${key}" data-k="${k}" value="${(W[key] || {})[k] ?? 0}"></label>`).join("")}</fieldset>`;
     document.getElementById("weights").innerHTML =
-      grp("attractiveness", "Market attractiveness weights", { market_size: "Market size", reno_growth: "Renovation growth, 5 yrs", nb_growth: "New build growth, 5 yrs", profitability: "Profitability", competitive_intensity: "Competitive intensity" }, 5) +
+      grp("attractiveness", "Market attractiveness weights", { market_size: "SAM (market size)", reno_growth: "Renovation growth, 5 yrs", nb_growth: "New build growth, 5 yrs", profitability: "Profitability", competitive_intensity: "Competitive intensity" }, 5) +
       grp("ability", "Ability to win weights", { market_share: `${CO} market share`, channel_access: "Channel access", product_fit: "Product fit" }, 5) +
       grp("zones", "Zone lines (attractiveness + ability, 2–10)", { leadership: "Leadership position from", priority_growth: "Priority growth from" }, 0.25) +
       `<div style="display:flex;align-items:end"><button type="button" class="btn" id="resetW">Restore default settings</button></div>`;
@@ -1025,7 +1044,7 @@ sup { font-size: .7em; line-height: 0; }
       ? "The formulas in this file have not been calculated. Open it in Excel, save it, and upload it again."
       : 'No countries found. Fill in the "Raw data" sheet, save, and upload again.', true);
     const bad = rows.filter(r => r.market_size === null);
-    if (bad.length) return say(`Addressable market size is missing for: ${bad.map(r => r.country + " " + r.segment).join(", ")}. Add it in "Raw data" and upload again.`, true);
+    if (bad.length) return say(`SAM is missing for: ${bad.map(r => r.country + " " + r.segment).join(", ")}. Add it in "Raw data" and upload again.`, true);
     const settings = await sheet("Settings");
     const set = readSettings(settings && settings.grid);
     ROWS = rows; usingImported = true; selected = null; importSource = "Excel upload, " + name;
@@ -1056,8 +1075,17 @@ sup { font-size: .7em; line-height: 0; }
     document.querySelectorAll("#segCtl button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     render();
   }));
+  document.querySelectorAll("#appCtl button").forEach(b => b.addEventListener("click", () => {
+    app = b.dataset.app;
+    document.querySelectorAll("#appCtl button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    render();
+  }));
 
   function render() {
+    // the application filter only shows when the data has applications
+    const hasApps = ROWS.some(r => APPS.includes(r.application));
+    document.getElementById("appWrap").hidden = !hasApps;
+    if (!hasApps && app !== "All") { app = "All"; document.querySelectorAll("#appCtl button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.app === "All"))); }
     const { units } = view();
     document.getElementById("dataBadge").textContent = usingImported ? "Uploaded data (this browser)" : "Illustrative sample data";
     document.getElementById("srcData").textContent = usingImported ? importSource : "illustrative sample";
