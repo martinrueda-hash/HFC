@@ -198,6 +198,7 @@ SETTINGS = [
     ("Company name", "HFC", "company", "@", "Shown in column headers and labels"),
     ("Current year", 2026, "currentYear", "0", "Base year = current year - 1 (sizes and sales); history = 5 years to the base year; outlook = current year + 5"),
     ("Currency label", "EUR m", "currency", "@", "Unit of SAM and HFC sales"),
+    ("EUR per US$", 0.92, "usdEur", "0.00", "Converts the total market (Oxford Economics, US$) to EUR to compare it with TAM in the dashboard funnel"),
     ("Oxford Economics series (Indicator column of the export)", None, None, None, None),
     *[(label, name, key, "@", note) for (key, label, name), note in zip(SERIES, [
         "Residential = Residential total - Multi family (new and renovation separately)", "",

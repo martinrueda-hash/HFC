@@ -84,23 +84,28 @@ select, .btn { font: inherit; font-size: 12px; color: var(--ink-strong); backgro
 .spacer { flex: 1; }
 
 /* KPI strip, styled like the deck's red value callouts */
-.kpis { display: grid; gap: 12px; }
-.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; background: var(--bg); border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,.06); padding: 6px 0; }
-.kpi-row-t { grid-column: 1 / -1; padding: 6px 20px 0; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.kpi { position: relative; padding: 10px 20px 12px; display: grid; gap: 2px; align-content: start; border-left: 1px solid var(--line); }
-.kpi-row-t + .kpi { border-left: 0; }
-.kpi-row.funnel { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.kpi-row.perf { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-@media (max-width: 860px) { .kpi-row.perf { grid-template-columns: repeat(2, minmax(0, 1fr)); } .kpi-row.perf .kpi:nth-child(4) { border-left: 0; } }
-@media (max-width: 560px) { .kpi-row.funnel, .kpi-row.perf { grid-template-columns: minmax(0, 1fr); } .kpi-row .kpi { border-left: 0; border-top: 1px solid var(--line); } .kpi-row-t + .kpi { border-top: 0; } .funnel .kpi + .kpi::before { display: none; } }
-.funnel .kpi + .kpi::before { content: "›"; position: absolute; left: -8px; top: 50%; transform: translateY(-50%); width: 16px; height: 22px; display: grid; place-items: center; background: var(--bg); color: var(--red); font-size: 20px; font-weight: 700; line-height: 1; }
+/* Header: market funnel (left) and current performance (right) */
+.kpis { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr); gap: 12px; }
+@media (max-width: 900px) { .kpis { grid-template-columns: minmax(0, 1fr); } }
+.hdr-panel { background: var(--bg); border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,.06); padding: 14px 20px 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.hdr-t { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.fn { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.fn-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(170px, 0.8fr); gap: 16px; align-items: center; }
+.fn-slot { display: flex; justify-content: center; min-width: 0; }
+.fn-band { width: var(--w); min-height: 54px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: #fff; background: var(--c); clip-path: polygon(0 0, 100% 0, calc(100% - var(--i)) 100%, var(--i) 100%); padding: 6px var(--i); }
+.fn-name { font-size: 10.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; opacity: .92; white-space: nowrap; }
+.fn-val { font-size: 20px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+.fn-meta { display: grid; gap: 3px; font-size: 11px; color: var(--ink); min-width: 0; }
+.fn-pct { justify-self: start; font-size: 11.5px; font-weight: 700; color: var(--red); background: var(--tint); border: 1px solid var(--blush); border-radius: 999px; padding: 1px 9px; }
+.fn-pct.base { color: var(--ink); background: transparent; border-color: var(--line); font-weight: 600; }
+@media (max-width: 560px) { .fn-stage { grid-template-columns: minmax(0, 1fr); gap: 4px; } .fn-meta { justify-items: center; text-align: center; } .fn-pct { justify-self: center; } .fn-band { width: calc(60% + var(--w) * 0.4) !important; } }
+.perf-list { display: grid; }
+.perf-list .kpi { padding: 10px 0; border-top: 1px solid var(--line); }
+.perf-list .kpi:first-child { border-top: 0; padding-top: 2px; }
+.kpi { display: grid; gap: 2px; align-content: start; }
 .kpi .lbl { font-size: 11px; font-weight: 700; color: var(--red); }
 .kpi .val { font-size: 24px; font-weight: 700; color: var(--red); }
 .kpi .cmp { font-size: 11px; color: var(--ink); }
-.zlist { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 3px; }
-.zlist li { display: grid; grid-template-columns: 10px 1fr auto; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-strong); }
-.zlist i { width: 10px; height: 10px; border-radius: 50%; }
-.zlist b { color: var(--red); font-size: 15px; font-weight: 700; }
 
 /* Red slanted takeaway banner */
 .takeaway { min-height: 42px; position: relative; color: #fff; font-size: 15px; font-weight: 500; text-align: center; padding: 10px 34px; isolation: isolate; text-wrap: balance; margin-inline: 6px; }
@@ -297,7 +302,7 @@ sup { font-size: .7em; line-height: 0; }
     <div class="takeaway" id="tblTake"></div>
     <div class="source">
       <span>Source: Oxford Economics; HFC market intelligence data file; HFC business plan</span>
-      <span>Notes: 1. SAM growth = growth of construction work done (Oxford Economics) for the end market. R = renovation, NB = new build; the top figure combines both. 2. Commercial = commercial (offices, retail, hotels) + healthcare + multi-family residential. 3. Total market = construction work done (Oxford Economics, US$, 2023 prices), all end markets and applications. 4. TAM = total addressable market: spend on all HVAC and sanitary applications (heating, cooling, sanitary), EUR m. 5. SAM = serviceable addressable market: the part of the TAM within HFC's current geographical and technology reach, EUR m. SAM and HFC sales are <span class="yr-prev"></span> values. Totals weight SAM growth by SAM and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
+      <span>Notes: 1. SAM growth = growth of construction work done (Oxford Economics) for the end market. R = renovation, NB = new build; the top figure combines both. 2. Commercial = commercial (offices, retail, hotels) + healthcare + multi-family residential. 3. Total market = construction work done (Oxford Economics, US$, 2023 prices), all applications; converted to € in the funnel at the US$/€ rate in Settings. 4. TAM = total addressable market: spend on all HVAC and sanitary applications (heating, cooling, sanitary), EUR m. 5. SAM = serviceable addressable market: the part of the TAM within HFC's current geographical and technology reach, EUR m. SAM and HFC sales are <span class="yr-prev"></span> values. Totals weight SAM growth by SAM and HFC figures by HFC sales. Growth bars share one scale, clipped at ±10%.</span>
     </div>
   </section>
 
@@ -413,6 +418,7 @@ sup { font-size: .7em; line-height: 0; }
   // general settings (company, year, currency) that came with an Excel upload
   function applyGeneral(g) {
     CFG.company = g && g.company ? String(g.company) : BASE_CFG.company;
+    CFG.usdEur = g && Number(g.usdEur) > 0 ? Number(g.usdEur) : BASE_CFG.usdEur;
     CFG.currency = g && g.currency ? String(g.currency) : BASE_CFG.currency;
     const y = g ? parseInt(g.currentYear, 10) : NaN;
     CFG.currentYear = y > 1990 && y < 2200 ? y : BASE_CFG.currentYear;
@@ -571,28 +577,35 @@ sup { font-size: .7em; line-height: 0; }
   // ---------- KPIs ----------
   function renderKpis(units) {
     const tot = aggregate(units.map(u => u.r), { country: "All", code: "", segment: seg });
-    const counts = { lead: 0, grow: 0, sel: 0 };
-    units.forEach(u => counts[u.zone]++);
     const gap = (tot.hfc_growth_cy ?? NaN) - (tot.mkt_growth_cy ?? NaN);
     const dms = (tot.ms_cy ?? NaN) - (tot.ms_py ?? NaN);
-    const kp = [
-      { lbl: `Total market ${CY - 1}<sup>3</sup>`, val: tot.total_market ? "US$ " + money(tot.total_market / 1000) + "bn" : "–", cmp: `CAGR next 5 yrs ${pct(tot.tm_cagr_fwd)} · last 5 yrs ${pct(tot.tm_cagr_hist)}` },
-      { lbl: `TAM ${CY - 1}<sup>4</sup>`, val: tot.tam ? "€" + money(tot.tam) + "M" : "–", cmp: `CAGR next 5 yrs ${pct(tot.tam_cagr_fwd)} · last 5 yrs ${pct(tot.tam_cagr_hist)}` },
-      { lbl: `SAM ${CY - 1}<sup>5</sup>`, val: "€" + money(tot.market_size) + "M", cmp: `${tot.tam ? Math.round(tot.market_size / tot.tam * 100) + "% of TAM · " : ""}CAGR next 5 yrs ${pct(tot.mkt_cagr_fwd)} · last 5 yrs ${pct(tot.mkt_cagr_hist)}` },
-      { split: true },
-      { lbl: `SAM growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Renovation ${pct(tot.mkt_reno_growth_cy)} · new build ${pct(tot.mkt_nb_growth_cy)}` },
-      { lbl: `${CO} growth ${CY} forecast`, val: pct(tot.hfc_growth_cy), cmp: `<span class="${dir(gap)}">${arrow(gap)} ${pp(gap)}</span> vs. market · BP ${pct(tot.hfc_cagr_bp)} p.a.` },
-      { lbl: `${CO} market share ${CY}`, val: f1(tot.ms_cy) + "%", cmp: `<span class="${dir(dms)}">${arrow(dms)} ${pp(dms)}</span> vs. ${CY - 1}` },
-      { lbl: "Countries by matrix position", list: Object.keys(ZONES).map(z => ({ name: ZONES[z].name, color: ZONES[z].color, n: counts[z] })) }
+    const rate = Number(CFG.usdEur) || 0.92;
+    const share = (a, b) => a && b ? (a / b * 100) : null;
+    const pctOf = v => v === null ? "–" : v < 10 ? v.toFixed(1) + "%" : Math.round(v) + "%";
+    const cagr = (fwd, hist, fwdLbl = "next 5 yrs") => `CAGR ${fwdLbl} ${pct(fwd)} · last 5 yrs ${pct(hist)}`;
+    const tmEur = tot.total_market ? tot.total_market * rate : null;
+    // Funnel: each stage narrower than the last; --i keeps the slope continuous (9% of the full width per side)
+    const stages = [
+      { name: `Total market ${CY - 1}<sup>3</sup>`, val: tot.total_market ? "US$ " + money(tot.total_market / 1000) + "bn" : "–", w: 100, c: "var(--ink)",
+        pct: `<span class="fn-pct base">≈ €${money(tmEur / 1000)}bn at ${rate.toFixed(2)} €/US$</span>`, sub: cagr(tot.tm_cagr_fwd, tot.tm_cagr_hist) },
+      { name: `TAM ${CY - 1}<sup>4</sup>`, val: tot.tam ? "€" + money(tot.tam) + "M" : "–", w: 82, c: "var(--grey-bubble)",
+        pct: `<span class="fn-pct">${pctOf(share(tot.tam, tmEur))} of total market</span>`, sub: cagr(tot.tam_cagr_fwd, tot.tam_cagr_hist) },
+      { name: `SAM ${CY - 1}<sup>5</sup>`, val: "€" + money(tot.market_size) + "M", w: 64, c: "var(--red-2)",
+        pct: `<span class="fn-pct">${pctOf(share(tot.market_size, tot.tam))} of TAM</span>`, sub: cagr(tot.mkt_cagr_fwd, tot.mkt_cagr_hist) },
+      { name: `${CO} sales ${CY - 1}`, val: "€" + money(tot.hfc_sales) + "M", w: 46, c: "var(--red)",
+        pct: `<span class="fn-pct">${pctOf(share(tot.hfc_sales, tot.market_size))} of SAM = market share</span>`, sub: cagr(tot.hfc_cagr_bp, tot.hfc_cagr_hist, "BP next 5 yrs") },
     ];
-    const tile = k => k.list
-      ? `<div class="kpi"><span class="lbl">${k.lbl}</span><ul class="zlist">${k.list.map(z =>
-          `<li><i style="background:${z.color}"></i><span>${z.name}</span><b>${z.n}</b></li>`).join("")}</ul></div>`
-      : `<div class="kpi"><span class="lbl">${k.lbl}</span><span class="val">${k.val}</span><span class="cmp">${k.cmp}</span></div>`;
-    const cut = kp.findIndex(k => k.split);
+    const funnel = stages.map(st => `<li class="fn-stage">
+        <div class="fn-slot"><div class="fn-band" style="--w:${st.w}%;--c:${st.c};--i:${(9 / st.w * 100).toFixed(2)}%"><span class="fn-name">${st.name}</span><span class="fn-val">${st.val}</span></div></div>
+        <div class="fn-meta">${st.pct}<span>${st.sub}</span></div></li>`).join("");
+    const perf = [
+      { lbl: `SAM growth ${CY}E<sup>1</sup>`, val: pct(tot.mkt_growth_cy), cmp: `Renovation ${pct(tot.mkt_reno_growth_cy)} · new build ${pct(tot.mkt_nb_growth_cy)}` },
+      { lbl: `${CO} growth ${CY} forecast`, val: pct(tot.hfc_growth_cy), cmp: `<span class="${dir(gap)}">${arrow(gap)} ${pp(gap)}</span> vs. SAM growth` },
+      { lbl: `${CO} market share ${CY}`, val: f1(tot.ms_cy) + "%", cmp: `<span class="${dir(dms)}">${arrow(dms)} ${pp(dms)}</span> vs. ${CY - 1} (${f1(tot.ms_py)}%)` },
+    ].map(k => `<div class="kpi"><span class="lbl">${k.lbl}</span><span class="val">${k.val}</span><span class="cmp">${k.cmp}</span></div>`).join("");
     document.getElementById("kpis").innerHTML =
-      `<div class="kpi-row funnel"><span class="kpi-row-t">Market funnel · ${segName()}</span>${kp.slice(0, cut).map(tile).join("")}</div>` +
-      `<div class="kpi-row perf"><span class="kpi-row-t">Growth and position</span>${kp.slice(cut + 1).map(tile).join("")}</div>`;
+      `<div class="hdr-panel"><span class="hdr-t">Market funnel · ${segName()}</span><ol class="fn">${funnel}</ol></div>` +
+      `<div class="hdr-panel"><span class="hdr-t">Current performance and positioning</span><div class="perf-list">${perf}</div></div>`;
   }
 
   // ---------- matrix ----------

@@ -42,6 +42,7 @@ window.HFC_CONFIG = {
   company: "HFC",
   currentYear: 2026,
   currency: "EUR m",
+  usdEur: 0.92,   // EUR per US$, to compare the total market (Oxford Economics, US$) with TAM / SAM (EUR)
   // Weights used to build the two matrix axes (they are normalised, so any scale works).
   weights: {
     attractiveness: { market_size: 30, reno_growth: 15, nb_growth: 15, profitability: 20, competitive_intensity: 20 },
