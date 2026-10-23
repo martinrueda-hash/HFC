@@ -78,6 +78,15 @@ COUNTRIES = [
 ]
 # Applications: name, ILLUSTRATIVE share of the SAM, HFC market share multiplier, HFC growth bump (pp)
 APPLICATIONS = [("Heating", 0.55, 1.2, 0.0), ("Cooling", 0.20, 0.6, 1.5), ("Sanitary", 0.25, 0.9, 0.5)]
+# DUMMY per-country SAM split (heating, cooling, sanitary) to make the application filter testable; southern
+# countries lean to cooling, northern to heating. Each country's application SAMs add up exactly to its SAM.
+APP_SPLIT = {
+    "PL": (0.62, 0.10, 0.28), "CZ": (0.60, 0.12, 0.28), "HU": (0.58, 0.14, 0.28), "NL": (0.55, 0.20, 0.25),
+    "SE": (0.66, 0.08, 0.26), "NO": (0.68, 0.07, 0.25), "FI": (0.70, 0.06, 0.24), "DK": (0.64, 0.10, 0.26),
+    "DE": (0.58, 0.15, 0.27), "AT": (0.57, 0.16, 0.27), "CH": (0.56, 0.17, 0.27), "UK": (0.60, 0.14, 0.26),
+    "FR": (0.48, 0.27, 0.25), "IT": (0.40, 0.35, 0.25), "BE": (0.55, 0.19, 0.26), "ES": (0.30, 0.45, 0.25),
+    "PT": (0.32, 0.42, 0.26),
+}
 # Illustrative SAM: this share of construction work done (US$ m, 2023 prices) converted at 0.92 EUR/US$
 ADDRESSABLE_RATIO = 0.012
 USD_EUR = 0.92
@@ -391,9 +400,13 @@ sample = []
 for name, code, loc, ms, hfc, scores in COUNTRIES:
   for s_i, seg in enumerate(("Residential", "Commercial")):
     lvl = segment_level(loc, seg, 2025, "new") + segment_level(loc, seg, 2025, "reno")
-    seg_size = lvl * USD_EUR * ADDRESSABLE_RATIO
-    for app, app_share, ms_mult, app_bump in APPLICATIONS:
-        size = max(1, round(seg_size * app_share))
+    seg_size = max(3, round(lvl * USD_EUR * ADDRESSABLE_RATIO))   # SAM of the country x end market (EUR m)
+    split = APP_SPLIT.get(code, tuple(a[1] for a in APPLICATIONS))
+    remaining = seg_size
+    for a_i, (app, app_share, ms_mult, app_bump) in enumerate(APPLICATIONS):
+        # last application takes the remainder, so the applications sum exactly to the SAM
+        size = remaining if a_i == len(APPLICATIONS) - 1 else max(1, round(seg_size * split[a_i]))
+        remaining -= size
         sales = round(size * ms[s_i] * ms_mult / 100, 1)
         bump = (0.5 if seg == "Commercial" else 0.0) + app_bump
         sample.append({
@@ -447,7 +460,7 @@ dv_score.add(f"{COL['profitability']}{FIRST}:{COL['product_fit']}{LAST_ROW}")
 for key in ("ms_py_override", "ms_cy_override"):
     dv_pct.add(f"{COL[key]}{FIRST}:{COL[key]}{LAST_ROW}")
 rd.freeze_panes = rd[f"F{FIRST}"]
-rd.cell(row=3, column=1, value=("Market growth comes from Oxford Economics (green). SAM, HFC figures and scores in the sample rows are ILLUSTRATIVE: "
+rd.cell(row=3, column=1, value=("Market growth comes from Oxford Economics (green). SAM (incl. the split by application), HFC figures and scores in the sample rows are DUMMY data for testing: "
                                 "replace them with your own. Add countries in the empty rows.")).font = font(9, color=RED, italic=True)
 
 # ================================================================ Dashboard data

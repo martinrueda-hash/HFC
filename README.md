@@ -2,7 +2,7 @@
 
 A self-contained dashboard for HFC's country portfolio, styled after the EU WT strategy deck (red/grey palette, "topic | subject" titles, red takeaway banners). Open `dashboard/index.html` in a browser; no build step, server or internet connection is needed (only the Montserrat font, a stand-in for Gotham, loads from Google Fonts, with a system-font fallback).
 
-> The figures in `dashboard/data.js` are **illustrative sample data**. Replace them with your own before using the dashboard for decisions.
+> SAM (including its split by application), HFC figures and scores in `dashboard/data.js` are **dummy data for testing**; growth rates and the total market come from Oxford Economics. Replace the dummy figures before using the dashboard for decisions.
 
 ## What it shows
 

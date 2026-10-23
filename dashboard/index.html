@@ -217,7 +217,7 @@ sup { font-size: .7em; line-height: 0; }
     </div>
     <div class="cover-side">
       <img class="logo-cover" src="assets/aalberts-logo-white.png" alt="Aalberts">
-      <span class="badge" id="dataBadge">Illustrative sample data</span>
+      <span class="badge" id="dataBadge">Dummy data for testing</span>
     </div>
   </header>
 
@@ -350,7 +350,8 @@ sup { font-size: .7em; line-height: 0; }
   // Takeaway messages in the red banners: placeholder for now (set to true to show the generated text again)
   const SHOW_TAKEAWAYS = false;
   const TAKEAWAY_PLACEHOLDER = "[key message]";
-  const LS_DATA = "hfc-mi-data-v1", LS_W = "hfc-mi-weights-v4", LS_SET = "hfc-mi-settings-v1", LS_SRC = "hfc-mi-source-v1";
+  // v2: data now has applications; uploads stored from the older template are ignored
+  const LS_DATA = "hfc-mi-data-v2", LS_W = "hfc-mi-weights-v4", LS_SET = "hfc-mi-settings-v2", LS_SRC = "hfc-mi-source-v2";
 
   const ZONES = {
     lead: { name: "Leadership position", color: "var(--z-lead)", order: 0,
@@ -1091,8 +1092,8 @@ sup { font-size: .7em; line-height: 0; }
     document.getElementById("appNote").hidden = hasApps;
     if (!hasApps && app !== "All") { app = "All"; document.querySelectorAll("#appCtl button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.app === "All"))); }
     const { units } = view();
-    document.getElementById("dataBadge").textContent = usingImported ? "Uploaded data (this browser)" : "Illustrative sample data";
-    document.getElementById("srcData").textContent = usingImported ? importSource : "illustrative sample";
+    document.getElementById("dataBadge").textContent = usingImported ? "Uploaded data (this browser)" : "Dummy data for testing";
+    document.getElementById("srcData").textContent = usingImported ? importSource : "dummy data for testing; growth and total market from Oxford Economics";
     renderKpis(units);
     renderMatrix(units);
     renderZones(units);
