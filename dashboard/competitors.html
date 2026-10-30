@@ -80,7 +80,6 @@ select:hover, input[type="search"]:hover { border-color: var(--red); }
 .takeaway b { font-weight: 700; }
 .source { font-size: 10.5px; color: var(--ink); margin: 0; }
 .source a { color: var(--ink); }
-.slide-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; font-size: 11px; color: var(--red); }
 .note { font-size: 11.5px; color: var(--ink); margin: 0; max-width: 95ch; }
 .empty { display: grid; place-items: center; text-align: center; min-height: 240px; padding: 20px; color: var(--ink); background: var(--tint); border: 1px dashed var(--rose); border-radius: 4px; font-size: 12.5px; }
 .empty code { font-size: 11.5px; background: #fff; padding: 1px 5px; border-radius: 3px; }
@@ -105,17 +104,16 @@ svg text { font-family: var(--font); }
 .legend button[aria-pressed="false"] .sw { background: transparent !important; outline: 1.5px solid var(--axis); outline-offset: -1.5px; }
 .legend button:hover { border-color: var(--red); }
 
-.next { display: grid; gap: 12px; align-content: start; }
-.banner { position: relative; isolation: isolate; color: #fff; padding: 10px 26px; margin-inline: 8px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 2px 14px; align-items: center; }
-.banner::before { content: ""; position: absolute; inset: 0; background: var(--red); transform: skewX(-14deg); border-radius: 12px 3px 12px 3px; z-index: -1; }
-.banner.est::before { background: var(--bg); border: 1.5px dashed var(--red); }
-.banner.est { color: var(--red); }
-.banner .d { font-weight: 700; font-size: 20px; line-height: 1; text-align: center; min-width: 46px; }
-.banner .d small { display: block; font-size: 10.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; margin-top: 3px; }
-.banner .w b { display: block; font-size: 14px; }
-.banner .w span { font-size: 11.5px; opacity: .95; }
-.banner .c { font-size: 11px; font-weight: 600; text-align: right; white-space: nowrap; }
-.banner .c em { display: block; font-style: normal; font-weight: 500; opacity: .9; font-size: 10.5px; }
+.next { display: grid; gap: 10px; align-content: start; }
+.next-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.next-list li { display: grid; grid-template-columns: 58px minmax(0, 1fr) auto; gap: 0 12px; align-items: baseline; padding: 9px 2px; border-bottom: 1px solid var(--line); }
+.next-list li:first-child { border-top: 1px solid var(--line); }
+.next-list .d { font-weight: 700; color: var(--red); font-size: 12.5px; white-space: nowrap; }
+.next-list .w { min-width: 0; }
+.next-list .w b { color: var(--ink-strong); font-size: 12.5px; }
+.next-list .w span { display: block; font-size: 11.5px; color: var(--ink); }
+.next-list .c { font-size: 11px; color: var(--muted); text-align: right; white-space: nowrap; }
+.next-list li.est .d { color: var(--muted); font-weight: 600; }
 
 .cal-box { position: relative; overflow-x: auto; }
 svg.cal { display: block; min-width: 760px; width: 100%; height: auto; }
@@ -148,10 +146,16 @@ table.mi td.wrap { white-space: normal; min-width: 220px; }
 .kpi.na .val { color: var(--axis); }
 .res-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
 @media (min-width: 980px) { .res-grid { grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr); } }
-.facts { list-style: none; margin: 0; padding: 0; display: grid; }
-.facts li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 6px 0; border-bottom: 1px solid var(--line); }
-.facts li b { color: var(--ink-strong); text-align: right; }
-.facts li small { grid-column: 1 / -1; color: var(--muted); font-size: 10.5px; margin-top: -2px; }
+table.fin { border-collapse: collapse; width: 100%; min-width: 480px; font-size: 12px; }
+table.fin th { font-weight: 700; color: var(--ink-strong); text-align: right; padding: 6px 10px; border-bottom: 2px solid var(--red); white-space: nowrap; }
+table.fin th.l, table.fin td.l { text-align: left; }
+table.fin td { padding: 3px 10px; text-align: right; color: var(--ink); white-space: nowrap; }
+table.fin td.cur, table.fin th.cur { background: #f2f2f2; color: var(--ink-strong); }
+table.fin tr.g td { font-weight: 700; color: var(--ink-strong); padding-top: 12px; }
+table.fin tr.g.sub td { font-weight: 600; font-style: italic; }
+table.fin tr.end td { border-bottom: 1px solid #a8a8a8; padding-bottom: 8px; }
+table.fin tr.sec td { color: var(--red); font-weight: 700; font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; padding-top: 18px; background: var(--bg); }
+table.fin td.nt { font-size: 10.5px; color: var(--muted); text-align: left; white-space: normal; padding-top: 0; }
 .box { background: var(--tint); border: 1px solid var(--blush); border-radius: 4px; padding: 10px 12px; font-size: 12px; }
 .box h4 { margin: 0 0 4px; font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: .05em; }
 .qual { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
@@ -209,6 +213,7 @@ table.mi td.wrap { white-space: normal; min-width: 220px; }
             <button type="button" data-r="all" aria-pressed="true">Since Jan 2025</button>
             <button type="button" data-r="ytd" aria-pressed="false">2026 YTD</button>
             <button type="button" data-r="12m" aria-pressed="false">12 months</button>
+            <button type="button" data-r="q" aria-pressed="false" id="rangeQ">Last quarter</button>
           </div>
         </div>
         <div class="chart-box" id="pxBox">
@@ -219,8 +224,8 @@ table.mi td.wrap { white-space: normal; min-width: 220px; }
       </div>
       <div class="next">
         <span class="subhead">Next releases</span>
-        <div class="next" id="nextList"></div>
-        <p class="note">Dashed banner: date not announced yet, estimated from last year's date.</p>
+        <ul class="next-list" id="nextList"></ul>
+        <p class="note">Grey date = not announced yet, estimated from last year's date.</p>
       </div>
     </div>
 
@@ -231,16 +236,13 @@ table.mi td.wrap { white-space: normal; min-width: 220px; }
     </div>
     <div class="mx-legend note" id="calKey"></div>
 
-    <span class="subhead">Share price performance</span>
-    <div class="table-scroll"><table class="mi" id="perfTbl"></table></div>
-    <div class="takeaway" id="mvTake"></div>
     <p class="source" id="pxSource"></p>
   </section>
 
   <!-- 2. Results -->
   <section class="slide" id="results" aria-labelledby="resTitle">
     <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
-    <h2 class="stitle" id="resTitle"><b>Competitor results</b><span class="pipe">|</span>financials and key messages per quarter</h2>
+    <h2 class="stitle" id="resTitle"><b>Financials and key messages</b></h2>
     <div class="filters" role="toolbar" aria-label="Results filters">
       <div class="ctl">Company <div class="seg" id="coCtl"></div></div>
       <div class="ctl">Quarter <div class="seg" id="qCtl"></div></div>
@@ -275,7 +277,6 @@ table.mi td.wrap { white-space: normal; min-width: 220px; }
     <p class="note" id="libNote"></p>
   </section>
 
-  <div class="slide-foot"><span id="footDate"></span><span>confidential | competitor watch</span><span>Sources: company releases and filings</span></div>
 </div>
 
 <script src="competitors-data.js"></script>
@@ -304,10 +305,19 @@ const isDer = (r, path) => !!(r.derived && r.derived.includes(path));
 const der = (r, path) => isDer(r, path) ? ' <span class="dv" title="Derived from reported growth rates, not reported as such">≈</span>' : "";
 
 $("asOf").textContent = "Data as of " + fmtDate(D.asOf);
-$("footDate").textContent = fmtDate(D.asOf);
 
 /* ---------- 1. Share price ---------- */
 const hidden = new Set(store.get("hidden", []));
+// Aalberts keeps the brand red; competitors get a softened tint of their hue so Aalberts stands out
+const soften = (hex, k = 0.42) => "#" + [1, 3, 5].map(i => Math.round(parseInt(hex.slice(i, i + 2), 16) * (1 - k) + 255 * k).toString(16).padStart(2, "0")).join("");
+const colorOf = id => CO[id].self ? CO[id].color : soften(CO[id].color);
+// last completed calendar quarter before the latest price date
+function lastQuarter(last) {
+  const d = parseD(last), q = Math.floor(d.getUTCMonth() / 3);
+  const y = q === 0 ? d.getUTCFullYear() - 1 : d.getUTCFullYear(), pq = q === 0 ? 3 : q - 1;
+  const pad = n => String(n).padStart(2, "0");
+  return { start: `${y}-${pad(pq * 3 + 1)}-01`, end: new Date(Date.UTC(y, pq * 3 + 3, 0)).toISOString().slice(0, 10), label: `Q${pq + 1} ${y}` };
+}
 let range = store.get("range", "all");
 
 function seriesFor(rangeKey) {
@@ -317,8 +327,10 @@ function seriesFor(rangeKey) {
   const last = dates[dates.length - 1];
   let start = "2025-01-01";
   if (rangeKey === "ytd") start = "2026-01-01";
+  let end = last;
   if (rangeKey === "12m") { const d = parseD(last); d.setUTCFullYear(d.getUTCFullYear() - 1); start = d.toISOString().slice(0, 10); }
-  const ds = dates.filter(d => d >= start);
+  if (rangeKey === "q") { const lq = lastQuarter(last); start = lq.start; end = lq.end; $("rangeQ").textContent = "Last quarter (" + lq.label + ")"; }
+  const ds = dates.filter(d => d >= start && d <= end);
   const out = {};
   for (const id of ids) {
     const pts = P[id].points; let j = 0, cur = null; const vals = [];
@@ -370,14 +382,14 @@ function drawPx() {
     const v = data.s[id].idx; let d = "", pen = false;
     v.forEach((val, i) => { if (val == null) { pen = false; return; } d += (pen ? "L" : "M") + x(i).toFixed(1) + " " + y(val).toFixed(1); pen = true; });
     const self = CO[id].self;
-    lines += `<path d="${d}" fill="none" stroke="${CO[id].color}" stroke-width="${self ? 3 : 2}" stroke-linejoin="round" stroke-linecap="round" ${self ? "" : 'opacity=".9"'}/>`;
+    lines += `<path d="${d}" fill="none" stroke="${colorOf(id)}" stroke-width="${self ? 3 : 1.75}" stroke-linejoin="round" stroke-linecap="round"/>`;
     const lv = [...v].reverse().find(t => t != null);
     if (lv != null) labels.push({ id, y: y(lv), v: lv });
   }
   // end labels, nudged apart
   labels.sort((a, b) => a.y - b.y);
   for (let i = 1; i < labels.length; i++) if (labels[i].y - labels[i - 1].y < 12) labels[i].y = labels[i - 1].y + 12;
-  const lab = labels.map(l => `<text x="${W - m.r + 6}" y="${l.y + 4}" font-size="10.5" fill="#191919" font-weight="${CO[l.id].self ? 700 : 500}">${esc(CO[l.id].name)} ${Math.round(l.v)}</text>`).join("");
+  const lab = labels.map(l => `<text x="${W - m.r + 6}" y="${l.y + 4}" font-size="10.5" fill="${CO[l.id].self ? "#ce0e2d" : "#505050"}" font-weight="${CO[l.id].self ? 700 : 500}">${esc(CO[l.id].name)} ${Math.round(l.v)}</text>`).join("");
   svg.innerHTML = g + lines + lab + `<line id="pxCross" y1="${m.t}" y2="${H - m.b}" stroke="#505050" stroke-width="1" visibility="hidden"/><g id="pxDots"></g><rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}" fill="transparent" id="pxHit"/>`;
   svg.style.display = "";
 
@@ -387,8 +399,8 @@ function drawPx() {
     const i = Math.max(0, Math.min(n - 1, Math.round((sx - m.l) / (W - m.l - m.r) * (n - 1))));
     cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
     const rows = vis.map(id => ({ id, v: data.s[id].idx[i], raw: data.s[id].raw[i] })).filter(o => o.v != null).sort((a, b) => b.v - a.v);
-    dots.innerHTML = rows.map(o => `<circle cx="${x(i)}" cy="${y(o.v)}" r="4" fill="${CO[o.id].color}" stroke="#fff" stroke-width="2"/>`).join("");
-    tip.innerHTML = `<h4>${fmtDate(data.dates[i])}</h4><table>${rows.map(o => `<tr><td><span class="sw" style="background:${CO[o.id].color}"></span></td><td>${esc(CO[o.id].name)}</td><td>${o.v.toFixed(1)}</td><td class="muted" style="font-weight:400">${o.raw.toFixed(2)} ${esc(P[o.id].ccy || "")}</td></tr>`).join("")}</table>`;
+    dots.innerHTML = rows.map(o => `<circle cx="${x(i)}" cy="${y(o.v)}" r="4" fill="${colorOf(o.id)}" stroke="#fff" stroke-width="2"/>`).join("");
+    tip.innerHTML = `<h4>${fmtDate(data.dates[i])}</h4><table>${rows.map(o => `<tr><td><span class="sw" style="background:${colorOf(o.id)}"></span></td><td>${esc(CO[o.id].name)}</td><td>${o.v.toFixed(1)}</td><td class="muted" style="font-weight:400">${o.raw.toFixed(2)} ${esc(P[o.id].ccy || "")}</td></tr>`).join("")}</table>`;
     tip.hidden = false;
     const bx = box.getBoundingClientRect(), px = ev.clientX - bx.left;
     tip.style.left = Math.min(Math.max(0, px + 14), bx.width - tip.offsetWidth) + "px";
@@ -399,25 +411,28 @@ function drawPx() {
   hit.addEventListener("pointerdown", move);
   hit.addEventListener("pointerleave", () => { tip.hidden = true; cross.setAttribute("visibility", "hidden"); dots.innerHTML = ""; });
 
-  $("pxLegend").innerHTML = D.companies.filter(c => P[c.id]).map(c => `<button type="button" data-id="${c.id}" aria-pressed="${!hidden.has(c.id)}"><span class="sw" style="background:${c.color}"></span>${esc(c.name)}</button>`).join("");
+  $("pxLegend").innerHTML = D.companies.filter(c => P[c.id]).map(c => `<button type="button" data-id="${c.id}" aria-pressed="${!hidden.has(c.id)}"><span class="sw" style="background:${colorOf(c.id)}"></span>${esc(c.name)}</button>`).join("");
   const missing = D.companies.filter(c => !P[c.id]).map(c => c.name);
   $("pxSource").textContent = `Share prices: ${window.CW_PRICES.source}, local currency, not dividend-adjusted; updated ${window.CW_PRICES.updated}.` + (missing.length ? ` No data for ${missing.join(", ")}.` : "");
 }
-$("rangeCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; range = b.dataset.r; store.set("range", range); drawPx(); drawPerf(); });
+$("rangeCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; range = b.dataset.r; store.set("range", range); drawPx(); });
 $("pxLegend").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; const id = b.dataset.id; hidden.has(id) ? hidden.delete(id) : hidden.add(id); store.set("hidden", [...hidden]); drawPx(); });
 
 /* ---------- Next releases + calendar ---------- */
 const upcoming = D.calendar.filter(e => parseD(e.date) >= today).sort((a, b) => a.date.localeCompare(b.date));
-function nextFor(id) { return upcoming.find(e => e.co === id); }
 function drawNext() {
   const list = upcoming.slice(0, 6);
   $("nextList").innerHTML = list.length ? list.map(e => {
-    const d = parseD(e.date), days = Math.round((d - today) / 864e5);
-    return `<div class="banner${e.status === "estimated" ? " est" : ""}" title="${esc(e.note || "")}">
-      <span class="d">${d.getUTCDate()}<small>${MON[d.getUTCMonth()]} ${String(d.getUTCFullYear()).slice(2)}</small></span>
-      <span class="w"><b>${esc(CO[e.co].name)}</b><span>${esc(e.event)}</span></span>
-      <span class="c">${days === 0 ? "today" : days === 1 ? "tomorrow" : "in " + days + " days"}<em>${e.status === "estimated" ? "estimated" : "confirmed"}</em></span></div>`;
-  }).join("") : `<div class="empty" style="min-height:120px">No upcoming dates in the calendar. Add them to <code>calendar</code> in competitors-data.js.</div>`;
+    const d = parseD(e.date), days = Math.round((d - today) / 864e5), est = e.status === "estimated";
+    return `<li class="${est ? "est" : ""}" title="${esc(e.note || "")}"><span class="d">${d.getUTCDate()} ${MON[d.getUTCMonth()]}${d.getUTCFullYear() !== today.getUTCFullYear() ? " " + String(d.getUTCFullYear()).slice(2) : ""}</span><span class="w"><b>${esc(CO[e.co].name)}</b><span>${esc(e.event)}</span></span><span class="c">${days === 0 ? "today" : days === 1 ? "tomorrow" : "in " + days + " days"}${est ? " · est." : ""}</span></li>`;
+  }).join("") : `<li><span></span><span class="w">No upcoming dates in the calendar.</span><span></span></li>`;
+}
+// report type from the event name: full year, half year or quarter / trading update
+const evType = ev => /FY|annual|sales 20/i.test(ev) ? "fy" : /H1|half/i.test(ev) ? "h1" : "q";
+function mark(type, cx, cy, r, st) {
+  if (type === "fy") return `<path d="M${cx} ${cy - r * 1.35}L${cx + r * 1.35} ${cy}L${cx} ${cy + r * 1.35}L${cx - r * 1.35} ${cy}Z" ${st}/>`;
+  if (type === "h1") return `<rect x="${cx - r}" y="${cy - r}" width="${r * 2}" height="${r * 2}" rx="1.5" ${st}/>`;
+  return `<circle cx="${cx}" cy="${cy}" r="${r}" ${st}/>`;
 }
 function drawCal() {
   const start = Date.UTC(2026, 0, 1), end = Date.UTC(2027, 7, 1);
@@ -441,7 +456,7 @@ function drawCal() {
     if (i < 0 || t < start || t >= end) return;
     const cy = top + i * rh + rh / 2, past = t < today.getTime();
     const st = past ? `fill="#7a7a7a" stroke="#fff" stroke-width="1.5"` : e.status === "estimated" ? `fill="#fff" stroke="#ce0e2d" stroke-width="2" stroke-dasharray="2 2"` : `fill="#ce0e2d" stroke="#fff" stroke-width="1.5"`;
-    s += `<g class="ev" data-k="${k}"><circle cx="${x(t)}" cy="${cy}" r="12" fill="transparent"/><circle cx="${x(t)}" cy="${cy}" r="${past ? 5 : 6.5}" ${st}/></g>`;
+    s += `<g class="ev" data-k="${k}"><circle cx="${x(t)}" cy="${cy}" r="12" fill="transparent"/>${mark(evType(e.event), x(t), cy, past ? 5 : 6, st)}</g>`;
   });
   const svg = $("cal");
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
@@ -459,27 +474,9 @@ function drawCal() {
     g.addEventListener("pointerenter", show); g.addEventListener("pointerdown", show);
     g.addEventListener("pointerleave", () => tip.hidden = true);
   });
-  $("calKey").innerHTML = `<span><svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="#7a7a7a"/></svg> published</span> &nbsp; <span><svg width="14" height="14"><circle cx="7" cy="7" r="5.5" fill="#ce0e2d"/></svg> upcoming, confirmed</span> &nbsp; <span><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="#fff" stroke="#ce0e2d" stroke-width="2" stroke-dasharray="2 2"/></svg> upcoming, estimated</span>`;
-}
-
-function drawPerf() {
-  const all = seriesFor("all"), ytd = seriesFor("ytd"), y1 = seriesFor("12m");
-  const chg = (set, id) => { if (!set || !set.s[id]) return null; const v = set.s[id].idx.filter(t => t != null); return v.length ? v[v.length - 1] - 100 : null; };
-  const last = id => P[id] ? P[id].points[P[id].points.length - 1] : null;
-  const rows = D.companies.map(c => ({ c, l: last(c.id), a: chg(all, c.id), y: chg(ytd, c.id), m: chg(y1, c.id), n: nextFor(c.id) }));
-  $("perfTbl").innerHTML = `<thead><tr><th class="l">Company</th><th class="l">Listing</th><th>Last close<span class="u">local currency</span></th><th>Since Jan 2025</th><th>2026 YTD</th><th>12 months</th><th class="l">Next release</th></tr></thead><tbody>` +
-    rows.map(r => `<tr class="${r.c.self ? "self" : ""}"><td class="l">${esc(r.c.name)}</td><td class="l">${esc(r.c.exch)} · ${esc(r.c.ticker)}</td><td>${r.l ? r.l[1].toFixed(2) + " " + esc(P[r.c.id].ccy || "") + `<span class="muted"> ${fmtDate(r.l[0]).replace(/ \d{4}$/, "")}</span>` : "–"}</td><td class="${cls(r.a)}">${pct(r.a)}</td><td class="${cls(r.y)}">${pct(r.y)}</td><td class="${cls(r.m)}">${pct(r.m)}</td><td class="l">${r.n ? `${fmtDate(r.n.date)} · ${esc(r.n.event)}${r.n.status === "estimated" ? ' <span class="muted">(est.)</span>' : ""}` : "–"}</td></tr>`).join("") + "</tbody>";
-  // takeaway: Aalberts vs peer median since Jan 2025
-  const peers = rows.filter(r => !r.c.self && r.a != null).map(r => r.a).sort((a, b) => a - b);
-  const aal = rows.find(r => r.c.self);
-  const nx = upcoming[0];
-  let msg = "";
-  if (aal && aal.a != null && peers.length) {
-    const med = peers.length % 2 ? peers[(peers.length - 1) / 2] : (peers[peers.length / 2 - 1] + peers[peers.length / 2]) / 2;
-    msg = `Aalberts <b>${pct(aal.a, 0)}</b> since Jan 2025 vs. a peer median of <b>${pct(med, 0)}</b>`;
-  }
-  if (nx) msg += (msg ? " · " : "") + `next up: <b>${esc(CO[nx.co].name)}</b>, ${fmtDate(nx.date)}`;
-  $("mvTake").innerHTML = msg || "Share prices not loaded yet";
+  const key = (t, l) => `<span style="white-space:nowrap"><svg width="16" height="16" style="vertical-align:-3px">${mark(t, 8, 8, 5, 'fill="#505050"')}</svg> ${l}</span>`;
+  $("calKey").innerHTML = [key("fy", "full year / annual"), key("h1", "half year"), key("q", "quarter / trading update")].join(" &nbsp; ") +
+    ` &nbsp;·&nbsp; <span style="white-space:nowrap"><svg width="14" height="14" style="vertical-align:-3px"><circle cx="7" cy="7" r="5" fill="#7a7a7a"/></svg> published</span> &nbsp; <span style="white-space:nowrap"><svg width="14" height="14" style="vertical-align:-3px"><circle cx="7" cy="7" r="5.5" fill="#ce0e2d"/></svg> upcoming</span> &nbsp; <span style="white-space:nowrap"><svg width="14" height="14" style="vertical-align:-3px"><circle cx="7" cy="7" r="5" fill="#fff" stroke="#ce0e2d" stroke-width="2" stroke-dasharray="2 2"/></svg> upcoming, estimated date</span>`;
 }
 
 /* ---------- 2. Results ---------- */
@@ -494,6 +491,42 @@ function drawFilters() {
 }
 $("coCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; selCo = b.dataset.co; store.set("co", selCo); drawResults(); });
 $("qCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; selP = b.dataset.p; store.set("p", selP); drawResults(); });
+
+// profitability measure a company uses, for reports that do not give one
+const defMgn = co => Object.values(D.results[co] || {}).map(r => r.mgnLbl).find(Boolean) || "margin";
+const profName = l => l.replace(/ margin.*$/i, "").replace(/^(Adj\. )?operating$/i, (m0, a) => (a || "") + "operating profit").replace(/^Segment operating$/i, "Segment operating profit");
+// column labels, e.g. 3Q26 / 3Q25, 1H26 / 1H25, FY25 / FY24
+function colLabels(r, p) {
+  const yy = +((r.report.match(/20(\d\d)/) || p.match(/20(\d\d)/))[1]);
+  const f = r.report.match(/^Fiscal Q(\d)/), pre = /^H1/.test(r.report) ? "1H" : /^FY/.test(r.report) ? "FY" : f ? "FQ" + f[1] + " " : p[1] + "Q";
+  return [pre + yy, pre + (yy - 1)];
+}
+function finTable(c, r) {
+  const [cur, prev] = colLabels(r, selP);
+  const segM = c.id === "watts" ? "Segment operating margin" : c.id === "ecolab" ? "Operating margin" : (r.mgnLbl || defMgn(c.id)).replace(/^Organic /, "");
+  const orgL = (r.orgLbl || "Organic growth").replace(/, Flow Solutions$/, "");
+  const n1 = v => Math.abs(v) >= 1000 ? Math.round(v).toLocaleString("en-US") : v.toFixed(1);
+  const row = (lbl, a, b, ch, path, fmtA = n1) => `<tr><td class="l">${lbl}</td><td class="cur">${a == null ? "–" : fmtA(a) + (path ? der(r, path) : "")}</td><td>${b == null ? "" : fmtA(b) + (path ? der(r, path + "Py") : "")}</td><td class="${cls(typeof ch === "number" ? ch : null)}">${ch == null ? "" : typeof ch === "number" ? pct(ch) : ch}</td></tr>`;
+  const block = (o, name, pfx, opts = {}) => {
+    const revPy = o.revPy ?? (o.rev != null && o.chg != null ? o.rev / (1 + o.chg / 100) : null);
+    const revCh = o.chg ?? (o.rev != null && o.revPy ? (o.rev / o.revPy - 1) * 100 : null);
+    const mPy = o.mgnPy ?? (o.mgn != null && o.mgnChg != null ? o.mgn - o.mgnChg / 100 : null);
+    const ml = o.mLbl || opts.mLbl;
+    let h = `<tr class="g${o.sub ? " sub" : ""}"><td class="l" colspan="4">${esc(name)}</td></tr>`, n = 0;
+    if (o.rev != null || revPy != null) { h += row(`revenue (${c.ccy} m)`, o.rev, revPy, revCh, pfx + "rev").replace(/(<td>[^<]+)(<\/td>)/, o.revPy == null && revPy != null && !isDer(r, pfx + "revPy") ? '$1 <span class="dv" title="Derived from the reported growth rate">≈</span>$2' : "$1$2"); n++; }
+    if (o.org != null) { h += row(esc(orgL.toLowerCase()) + " (%)", o.org, o.orgPy, null, "", v => pct(v)); n++; }
+    if (o.prof != null || o.profPy != null) { h += row(`${esc(profName(ml))} (${c.ccy} m)`, o.prof, o.profPy, o.prof != null && o.profPy ? (o.prof / o.profPy - 1) * 100 : null, pfx + "prof"); n++; }
+    if (o.mgn != null || mPy != null) { h += row(esc(ml) + " (%)", o.mgn, mPy, o.mgn != null && mPy != null ? bps(Math.round((o.mgn - mPy) * 100)) : null, pfx + "mgn", v => v.toFixed(1)); n++; }
+    if (o.note) h += `<tr><td class="nt" colspan="4">${esc(o.note)}</td></tr>`;
+    return n || o.note ? h.replace(/<tr>(?!.*<tr>)/s, '<tr class="end">') : "";
+  };
+  const g = { rev: r.rev, revPy: r.revPy, chg: r.revChg, org: r.org, orgPy: r.orgPy, prof: r.prof, profPy: r.profPy, mgn: r.mgn, mgnPy: r.mgnPy, mgnChg: r.mgnChg };
+  let h = block(g, c.name, "", { mLbl: r.mgnLbl || defMgn(c.id) });
+  if (r.seg && r.seg.length) h += `<tr class="sec"><td class="l" colspan="4">${esc(r.segLbl || "By reporting segment")}</td></tr>` + r.seg.map(s => block(s, s.n.replace(/^· /, ""), "seg." + s.n + ".", { mLbl: segM })).join("");
+  if (r.geo && r.geo.length) h += `<tr class="sec"><td class="l" colspan="4">By region</td></tr>` + r.geo.map(s => block(s, s.n, "geo." + s.n + ".", { mLbl: segM })).join("");
+  if (!(r.seg && r.seg.length) && !(r.geo && r.geo.length)) h += `<tr><td class="nt" colspan="4">No segment or regional split in this report.</td></tr>`;
+  return `<table class="fin"><thead><tr><th class="l">in ${c.ccy} million unless stated</th><th class="cur">${cur}</th><th>${prev}</th><th>change</th></tr></thead><tbody>${h}</tbody></table>`;
+}
 
 function kpi(lbl, val, cmp, na) { return `<div class="kpi${na ? " na" : ""}"><span class="lbl">${lbl}</span><span class="val">${val}</span><span class="cmp">${cmp || "&nbsp;"}</span></div>`; }
 
@@ -510,23 +543,17 @@ function drawResults() {
       body.innerHTML = `<div class="empty" style="min-height:140px"><div><b>Not published yet.</b><br>${esc(r.note || "")}<br><a href="${esc(c.ir)}" target="_blank" rel="noopener">${esc(c.name)} investor relations ›</a></div></div>`;
     } else {
       let k = "";
+      const mLbl = r.mgnLbl || defMgn(selCo);
       k += kpi("Revenue", r.rev != null ? num(r.rev) + der(r, "rev") : "–", r.revChg != null ? `${pct(r.revChg)} reported${der(r, "revChg")}` : "", r.rev == null);
-      k += kpi(esc(r.orgLbl || "Organic growth"), r.org != null ? `<span class="${cls(r.org)}" style="color:inherit">${pct(r.org)}</span>` : "–", "", r.org == null);
-      k += kpi(esc(r.mgnLbl || "Margin"), r.mgn != null ? r.mgn.toFixed(1) + "%" + der(r, "mgn") : "–", bps(r.mgnChg) ? bps(r.mgnChg) + " year on year" : "", r.mgn == null);
+      k += kpi(esc(r.orgLbl || "Organic growth"), r.org != null ? pct(r.org) : "–", "", r.org == null);
+      k += kpi("Profitability: " + esc(mLbl), r.mgn != null ? r.mgn.toFixed(1) + "%" + der(r, "mgn") : "–", r.mgn == null ? "not disclosed in this report" : bps(r.mgnChg) ? bps(r.mgnChg) + " year on year" : "", r.mgn == null);
       if (r.eps) k += kpi(esc(r.eps.l), esc(r.eps.v) + der(r, "eps"), esc(r.eps.c || ""));
       if (r.cash) k += kpi(esc(r.cash.l), esc(r.cash.v) + der(r, "cash"), esc(r.cash.c || ""));
       if (r.orders) k += kpi(esc(r.orders.l), esc(r.orders.v), esc(r.orders.c || ""));
-      let segHtml = "";
-      if (r.seg && r.seg.length) {
-        const hasRev = r.seg.some(s => s.rev != null), hasChg = r.seg.some(s => s.chg != null), hasOrg = r.seg.some(s => s.org != null), hasM = r.seg.some(s => s.mgn != null);
-        segHtml = `<div style="display:grid;gap:8px;min-width:0"><span class="subhead">Revenue by segment / region</span><div class="table-scroll"><table class="mi"><thead><tr><th class="l">Segment</th>${hasRev ? `<th>Revenue<span class="u">${ccy} m</span></th>` : ""}${hasChg ? "<th>Reported<span class=\"u\">growth</span></th>" : ""}${hasOrg ? `<th>${esc(r.orgLbl && r.orgLbl.startsWith("Growth in local") ? "Local ccy" : r.orgLbl && r.orgLbl.startsWith("Underlying") ? "Underlying" : "Organic")}<span class="u">growth</span></th>` : ""}${hasM ? "<th>Margin</th>" : ""}<th class="l">Comment</th></tr></thead><tbody>` +
-          r.seg.map(s => `<tr><td class="l">${esc(s.n)}</td>${hasRev ? `<td>${num(s.rev)}${der(r, "seg." + s.n + ".rev")}</td>` : ""}${hasChg ? `<td class="${cls(s.chg)}">${pct(s.chg)}${der(r, "seg." + s.n + ".chg")}</td>` : ""}${hasOrg ? `<td class="${cls(s.org)}">${pct(s.org)}</td>` : ""}${hasM ? `<td>${s.mgn != null ? s.mgn.toFixed(1) + "%" + der(r, "seg." + s.n + ".mgn") : "–"}</td>` : ""}<td class="l wrap">${esc(s.note || "")}</td></tr>`).join("") + "</tbody></table></div></div>";
-      }
-      const facts = (r.extra || []).map(f => `<li><span>${esc(f.l)}</span><b>${esc(f.v)}${der(r, "extra." + f.l)}</b>${f.c ? `<small>${esc(f.c)}</small>` : ""}</li>`).join("");
-      const side = `<div style="display:grid;gap:10px;align-content:start;min-width:0">${facts ? `<span class="subhead">Other figures</span><ul class="facts">${facts}</ul>` : ""}${r.note ? `<div class="box"><h4>Comment</h4>${esc(r.note)}</div>` : ""}</div>`;
-      body.innerHTML = `<div class="kpi-row">${k}</div>` + (segHtml || facts || r.note ? `<div class="res-grid">${segHtml || "<div></div>"}${side}</div>` : "") +
-        (r.guide ? `<div class="takeaway"><b>Outlook:</b> ${esc(r.guide)}</div>` : "") +
-        `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived ? " · ≈ derived from reported growth rates" : ""}</p>`;
+      const comment = r.segNote || r.note;
+      body.innerHTML = `<div class="kpi-row">${k}</div><div class="res-grid"><div class="table-scroll">${finTable(c, r)}</div>` +
+        `<div style="display:grid;gap:10px;align-content:start;min-width:0">${comment ? `<div class="box"><h4>Segment growth</h4>${esc(comment)}</div>` : ""}${r.guide ? `<div class="box"><h4>Outlook</h4>${esc(r.guide)}</div>` : ""}</div></div>` +
+        `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived ? " · ≈ derived from reported figures and growth rates, not reported as such" : ""}</p>`;
     }
   }
   drawQual(); drawPeers(); drawHeat();
@@ -583,7 +610,7 @@ function drawLib() {
 ["libCo", "libP", "libT"].forEach(id => $(id).addEventListener("change", drawLib));
 $("libQ").addEventListener("input", drawLib);
 
-drawPx(); drawNext(); drawCal(); drawPerf(); drawResults(); drawLibFilters(); drawLib();
+drawPx(); drawNext(); drawCal(); drawResults(); drawLibFilters(); drawLib();
 })();
 </script>
 </body>
