@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Competitor Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+/* Same slide language as index.html: "topic | subject" titles, red sub-headers, red slanted banners, source lines.
+   Single light look by design, matching the corporate deck. */
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --page: #f6f6f6;
+  --red: #ce0e2d;
+  --salmon: #e49587;
+  --rose: #efc3b6;
+  --blush: #f4e4dc;
+  --tint: #fcf1f1;
+  --ink: #505050;
+  --ink-strong: #191919;
+  --muted: #8c8c8c;
+  --line: #e4e4e4;
+  --axis: #bdbdbd;
+  --good: #2e8540;
+  --good-tint: #e3f1e6;
+  --bad-tint: #fbe3e6;
+  --font: "Montserrat", "Gotham Office", "Gotham", "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 13px/1.45 var(--font); }
+.wrap { max-width: 1400px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 40px; display: grid; gap: 18px; }
+@media (min-width: 720px) { .wrap { padding-inline: 28px; } }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 400; color: var(--red); }
+td, .num { font-variant-numeric: tabular-nums; }
+a { color: var(--red); }
+
+.stitle { display: flex; align-items: baseline; flex-wrap: wrap; border-left: 1px solid var(--red); padding: 2px 0 2px 12px; font-size: 22px; line-height: 1.2; color: var(--red); }
+.stitle b { font-weight: 700; }
+.stitle .pipe { font-weight: 700; margin: 0 8px; }
+.subhead { font-weight: 700; color: var(--red); font-size: 14px; }
+.slide { position: relative; background: var(--bg); border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,.06); padding: 22px 22px 14px; display: grid; gap: 14px; min-width: 0; scroll-margin-top: 70px; }
+@media (min-width: 720px) { .slide { padding: 26px 30px 16px; } }
+.slide > .stitle { padding-right: 56px; }
+.logo-slide { position: absolute; top: 18px; right: 22px; height: 40px; width: auto; }
+@media (min-width: 720px) { .logo-slide { right: 30px; } }
+
+header.cover { background: var(--red); color: #fff; border-radius: 4px; padding: 22px; display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: end; justify-content: space-between; }
+@media (min-width: 720px) { header.cover { padding: 26px 36px; } }
+header.cover > div { display: grid; gap: 6px; min-width: 0; }
+header.cover .kicker { font-size: 13px; opacity: .9; }
+header.cover h1 { color: #fff; font-size: 28px; font-weight: 700; }
+header.cover p { margin: 0; max-width: 70ch; opacity: .92; }
+header.cover > .cover-side { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 14px; align-self: stretch; }
+.logo-cover { height: 64px; width: auto; display: block; }
+@media (max-width: 719px) { header.cover > .cover-side { flex-direction: row; align-items: center; width: 100%; } .logo-cover { height: 48px; } }
+.badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 3px; background: #fff; color: var(--red); }
+
+nav.controls { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; padding: 10px 16px; background: var(--bg); border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,.06); z-index: 5; }
+@media (min-width: 720px) { nav.controls { position: sticky; top: env(safe-area-inset-top, 0px); } }
+nav.controls a { font-size: 12px; font-weight: 600; color: var(--ink-strong); text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; }
+nav.controls a:hover { color: var(--red); border-bottom-color: var(--red); }
+nav.controls .spacer { flex: 1; }
+nav.controls a.back { color: var(--red); }
+
+.ctl { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--ink); flex-wrap: wrap; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--red); border-radius: 3px; overflow: hidden; }
+.seg button { font: inherit; font-size: 12px; font-weight: 500; border: 0; background: var(--bg); color: var(--red); padding: 6px 11px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--red); }
+.seg button[aria-pressed="true"] { background: var(--red); color: #fff; font-weight: 700; }
+.seg button.nodata:not([aria-pressed="true"]) { color: var(--salmon); }
+select, input[type="search"] { font: inherit; font-size: 12px; color: var(--ink-strong); background: var(--bg); border: 1px solid var(--axis); border-radius: 3px; padding: 6px 10px; }
+select:hover, input[type="search"]:hover { border-color: var(--red); }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.filters { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; padding: 10px 14px; background: var(--tint); border: 1px solid var(--blush); border-radius: 4px; }
+
+.takeaway { min-height: 42px; position: relative; color: #fff; font-size: 14px; font-weight: 500; text-align: center; padding: 10px 34px; isolation: isolate; text-wrap: balance; margin-inline: 6px; }
+.takeaway::before { content: ""; position: absolute; inset: 0; background: var(--red); transform: skewX(-18deg); border-radius: 14px 4px 14px 4px; z-index: -1; }
+.takeaway b { font-weight: 700; }
+.source { font-size: 10.5px; color: var(--ink); margin: 0; }
+.source a { color: var(--ink); }
+.slide-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; font-size: 11px; color: var(--red); }
+.note { font-size: 11.5px; color: var(--ink); margin: 0; max-width: 95ch; }
+.empty { display: grid; place-items: center; text-align: center; min-height: 240px; padding: 20px; color: var(--ink); background: var(--tint); border: 1px dashed var(--rose); border-radius: 4px; font-size: 12.5px; }
+.empty code { font-size: 11.5px; background: #fff; padding: 1px 5px; border-radius: 3px; }
+
+/* Market view */
+.mv-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+@media (min-width: 1000px) { .mv-grid { grid-template-columns: minmax(0, 1.75fr) minmax(300px, 1fr); } }
+.chart-head { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.chart-box { position: relative; min-width: 0; }
+svg.px { width: 100%; height: auto; display: block; overflow: visible; touch-action: pan-y; }
+svg text { font-family: var(--font); }
+.tip { position: absolute; pointer-events: none; background: var(--bg); color: var(--ink); border: 1px solid var(--rose); border-radius: 4px; padding: 8px 10px; font-size: 11.5px; box-shadow: 0 6px 20px rgba(0,0,0,.12); min-width: 190px; z-index: 4; }
+.tip h4 { margin: 0 0 4px; font-size: 12px; color: var(--ink-strong); }
+.tip table { border-collapse: collapse; width: 100%; }
+.tip td { padding: 1px 0; white-space: nowrap; }
+.tip td:nth-child(2) { padding-left: 6px; }
+.tip td:last-child { text-align: right; color: var(--ink-strong); padding-left: 12px; font-weight: 600; }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: -1px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 11.5px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink-strong); border-radius: 3px; padding: 3px 9px; cursor: pointer; }
+.legend button[aria-pressed="false"] { color: var(--muted); }
+.legend button[aria-pressed="false"] .sw { background: transparent !important; outline: 1.5px solid var(--axis); outline-offset: -1.5px; }
+.legend button:hover { border-color: var(--red); }
+
+.next { display: grid; gap: 12px; align-content: start; }
+.banner { position: relative; isolation: isolate; color: #fff; padding: 10px 26px; margin-inline: 8px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 2px 14px; align-items: center; }
+.banner::before { content: ""; position: absolute; inset: 0; background: var(--red); transform: skewX(-14deg); border-radius: 12px 3px 12px 3px; z-index: -1; }
+.banner.est::before { background: var(--bg); border: 1.5px dashed var(--red); }
+.banner.est { color: var(--red); }
+.banner .d { font-weight: 700; font-size: 20px; line-height: 1; text-align: center; min-width: 46px; }
+.banner .d small { display: block; font-size: 10.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; margin-top: 3px; }
+.banner .w b { display: block; font-size: 14px; }
+.banner .w span { font-size: 11.5px; opacity: .95; }
+.banner .c { font-size: 11px; font-weight: 600; text-align: right; white-space: nowrap; }
+.banner .c em { display: block; font-style: normal; font-weight: 500; opacity: .9; font-size: 10.5px; }
+
+.cal-box { position: relative; overflow-x: auto; }
+svg.cal { display: block; min-width: 760px; width: 100%; height: auto; }
+
+table.mi { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 11.5px; }
+table.mi th, table.mi td { padding: 6px 7px; white-space: nowrap; }
+table.mi thead th { background: var(--bg); font-weight: 700; color: var(--red); text-align: right; vertical-align: bottom; border-bottom: 1px solid var(--red); }
+table.mi thead th .u { display: block; font-weight: 400; color: var(--ink); font-size: 10.5px; }
+table.mi th.l, table.mi td.l { text-align: left; }
+table.mi td { text-align: right; color: var(--ink-strong); border-bottom: 1px solid var(--line); background: var(--bg); }
+table.mi tr.self td { background: var(--tint); font-weight: 700; }
+table.mi tr.pick td { background: #fde7c8; }
+table.mi tr.click { cursor: pointer; }
+table.mi tr.click:hover td { background: var(--blush); }
+table.mi td.wrap { white-space: normal; min-width: 220px; }
+.table-scroll { overflow-x: auto; }
+.up { color: var(--good); font-weight: 600; }
+.down { color: var(--red); font-weight: 600; }
+.dv { color: var(--muted); cursor: help; }
+
+/* Results */
+.rep-line { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; }
+.rep-line b { font-size: 17px; color: var(--ink-strong); }
+.rep-line span { font-size: 12px; color: var(--ink); }
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.kpi { background: var(--tint); border: 1px solid var(--blush); border-radius: 4px; padding: 10px 12px; display: grid; gap: 2px; align-content: start; min-width: 0; }
+.kpi .lbl { font-size: 11px; font-weight: 700; color: var(--red); }
+.kpi .val { font-size: 22px; font-weight: 700; color: var(--red); line-height: 1.2; overflow-wrap: anywhere; }
+.kpi .cmp { font-size: 11px; color: var(--ink); }
+.kpi.na .val { color: var(--axis); }
+.res-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+@media (min-width: 980px) { .res-grid { grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr); } }
+.facts { list-style: none; margin: 0; padding: 0; display: grid; }
+.facts li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.facts li b { color: var(--ink-strong); text-align: right; }
+.facts li small { grid-column: 1 / -1; color: var(--muted); font-size: 10.5px; margin-top: -2px; }
+.box { background: var(--tint); border: 1px solid var(--blush); border-radius: 4px; padding: 10px 12px; font-size: 12px; }
+.box h4 { margin: 0 0 4px; font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: .05em; }
+.qual { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@media (min-width: 900px) { .qual { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.qcard { border: 1px solid var(--blush); border-top: 3px solid var(--red); border-radius: 4px; padding: 12px 14px; display: grid; gap: 8px; align-content: start; }
+.qcard h3 { font-size: 13px; font-weight: 700; display: flex; gap: 8px; align-items: baseline; }
+.qcard h3 i { font-style: normal; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--red); color: #fff; font-size: 11px; flex: none; }
+.qcard ul { margin: 0; padding-left: 16px; display: grid; gap: 6px; font-size: 12px; color: var(--ink-strong); }
+.heat td.h { min-width: 64px; }
+.cell-pos { background: var(--good-tint) !important; }
+.cell-neg { background: var(--bad-tint) !important; }
+.cell-na { color: var(--axis) !important; }
+.cell-sel { outline: 2px solid var(--red); outline-offset: -2px; }
+
+/* Library */
+.lib-filters { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.tag { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 1px 7px; border-radius: 3px; border: 1px solid var(--rose); color: var(--ink-strong); background: var(--bg); }
+.tag.ar { background: var(--red); color: #fff; border-color: var(--red); }
+.dl { font-weight: 700; }
+.muted { color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="cover">
+    <div>
+      <span class="kicker" id="asOf"></span>
+      <h1>Competitor watch</h1>
+      <p>Share price, reporting calendar and results of Aalberts and its listed peers: IMI, Belimo, Xylem, Ecolab, Watts, Emerson and Georg Fischer. Scope: 2025 and 2026.</p>
+    </div>
+    <div class="cover-side">
+      <img class="logo-cover" src="assets/aalberts-logo-white.png" alt="Aalberts">
+      <span class="badge">Figures in each company's reporting currency</span>
+    </div>
+  </header>
+
+  <nav class="controls" aria-label="Sections">
+    <a href="#market">Market view</a>
+    <a href="#results">Results by quarter</a>
+    <a href="#library">Report library</a>
+    <span class="spacer"></span>
+    <a class="back" href="index.html">Market intelligence dashboard ›</a>
+  </nav>
+
+  <!-- 1. Market view -->
+  <section class="slide" id="market" aria-labelledby="mvTitle">
+    <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
+    <h2 class="stitle" id="mvTitle"><b>Market view</b><span class="pipe">|</span>share price and next releases</h2>
+    <div class="mv-grid">
+      <div style="display:grid;gap:10px;min-width:0">
+        <div class="chart-head">
+          <span class="subhead">Share price, indexed to 100 at the start of the period</span>
+          <div class="seg" id="rangeCtl" role="group" aria-label="Period">
+            <button type="button" data-r="all" aria-pressed="true">Since Jan 2025</button>
+            <button type="button" data-r="ytd" aria-pressed="false">2026 YTD</button>
+            <button type="button" data-r="12m" aria-pressed="false">12 months</button>
+          </div>
+        </div>
+        <div class="chart-box" id="pxBox">
+          <svg class="px" id="px" viewBox="0 0 760 380" role="img" aria-label="Indexed share price lines for Aalberts and competitors"></svg>
+          <div class="tip" id="pxTip" hidden></div>
+        </div>
+        <div class="legend" id="pxLegend" aria-label="Show or hide companies"></div>
+      </div>
+      <div class="next">
+        <span class="subhead">Next releases</span>
+        <div class="next" id="nextList"></div>
+        <p class="note">Dashed banner: date not announced yet, estimated from last year's date.</p>
+      </div>
+    </div>
+
+    <span class="subhead">Reporting calendar, 2026–2027</span>
+    <div class="cal-box" id="calBox">
+      <svg class="cal" id="cal" role="img" aria-label="Reporting calendar per company"></svg>
+      <div class="tip" id="calTip" hidden></div>
+    </div>
+    <div class="mx-legend note" id="calKey"></div>
+
+    <span class="subhead">Share price performance</span>
+    <div class="table-scroll"><table class="mi" id="perfTbl"></table></div>
+    <div class="takeaway" id="mvTake"></div>
+    <p class="source" id="pxSource"></p>
+  </section>
+
+  <!-- 2. Results -->
+  <section class="slide" id="results" aria-labelledby="resTitle">
+    <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
+    <h2 class="stitle" id="resTitle"><b>Competitor results</b><span class="pipe">|</span>financials and key messages per quarter</h2>
+    <div class="filters" role="toolbar" aria-label="Results filters">
+      <div class="ctl">Company <div class="seg" id="coCtl"></div></div>
+      <div class="ctl">Quarter <div class="seg" id="qCtl"></div></div>
+    </div>
+    <div class="rep-line" id="repLine"></div>
+    <div id="resBody" style="display:grid;gap:16px"></div>
+
+    <span class="subhead" id="qualHead">Key messages</span>
+    <div class="qual" id="qual"></div>
+    <p class="source" id="qualSrc"></p>
+
+    <span class="subhead" id="peerHead">Peer comparison</span>
+    <div class="table-scroll"><table class="mi" id="peerTbl"></table></div>
+
+    <span class="subhead">Organic growth by quarter</span>
+    <div class="table-scroll"><table class="mi heat" id="heatTbl"></table></div>
+    <p class="note">Organic growth as each company defines it: Belimo = growth in local currencies, Emerson = underlying growth, GF 2026 = Flow Solutions. For half-year reporters Q2 = H1 and Q4 = full year. ≈ = derived from reported growth rates, not reported as such. Click a cell to open that report.</p>
+  </section>
+
+  <!-- 3. Library -->
+  <section class="slide" id="library" aria-labelledby="libTitle">
+    <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
+    <h2 class="stitle" id="libTitle"><b>Report library</b><span class="pipe">|</span>annual reports and quarterly releases, 2025–2026</h2>
+    <div class="lib-filters">
+      <label class="ctl">Company <select id="libCo"></select></label>
+      <label class="ctl">Quarter <select id="libP"></select></label>
+      <label class="ctl">Type <select id="libT"></select></label>
+      <label class="ctl">Search <input type="search" id="libQ" placeholder="e.g. annual report"></label>
+      <span class="note" id="libCount"></span>
+    </div>
+    <div class="table-scroll"><table class="mi" id="libTbl"></table></div>
+    <p class="note" id="libNote"></p>
+  </section>
+
+  <div class="slide-foot"><span id="footDate"></span><span>confidential | competitor watch</span><span>Sources: company releases and filings</span></div>
+</div>
+
+<script src="competitors-data.js"></script>
+<script src="competitors-prices.js"></script>
+<script src="competitors-reports.js"></script>
+<script>
+(() => {
+const D = window.CW, P = (window.CW_PRICES && window.CW_PRICES.series) || {}, R = (window.CW_REPORTS && window.CW_REPORTS.files) || {};
+const CO = Object.fromEntries(D.companies.map(c => [c.id, c]));
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const parseD = s => new Date(s + "T00:00:00Z");
+const fmtDate = s => { const d = parseD(s); return `${d.getUTCDate()} ${MON[d.getUTCMonth()]} ${d.getUTCFullYear()}`; };
+const today = (() => { const n = new Date(); return new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate())); })();
+const store = { get(k, d) { try { const v = localStorage.getItem("cw." + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+                set(k, v) { try { localStorage.setItem("cw." + k, JSON.stringify(v)); } catch {} } };
+
+const num = v => { if (v == null) return "–"; const a = Math.abs(v); return a >= 1000 ? Math.round(v).toLocaleString("en-US") : (Number.isInteger(v) ? String(v) : v.toFixed(1)); };
+const pct = (v, d = 1) => v == null ? "–" : (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(d) + "%";
+const bps = v => v == null ? "" : (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v) + " bps";
+const cls = v => v == null ? "" : v > 0 ? "up" : v < 0 ? "down" : "";
+const isDer = (r, path) => !!(r.derived && r.derived.includes(path));
+const der = (r, path) => isDer(r, path) ? ' <span class="dv" title="Derived from reported growth rates, not reported as such">≈</span>' : "";
+
+$("asOf").textContent = "Data as of " + fmtDate(D.asOf);
+$("footDate").textContent = fmtDate(D.asOf);
+
+/* ---------- 1. Share price ---------- */
+const hidden = new Set(store.get("hidden", []));
+let range = store.get("range", "all");
+
+function seriesFor(rangeKey) {
+  const ids = D.companies.map(c => c.id).filter(id => P[id] && P[id].points.length);
+  if (!ids.length) return null;
+  const dates = [...new Set(ids.flatMap(id => P[id].points.map(p => p[0])))].sort();
+  const last = dates[dates.length - 1];
+  let start = "2025-01-01";
+  if (rangeKey === "ytd") start = "2026-01-01";
+  if (rangeKey === "12m") { const d = parseD(last); d.setUTCFullYear(d.getUTCFullYear() - 1); start = d.toISOString().slice(0, 10); }
+  const ds = dates.filter(d => d >= start);
+  const out = {};
+  for (const id of ids) {
+    const pts = P[id].points; let j = 0, cur = null; const vals = [];
+    // carry the last close forward over other exchanges' trading days
+    for (const d of ds) { while (j < pts.length && pts[j][0] <= d) cur = pts[j++][1]; vals.push(cur); }
+    const base = vals.find(v => v != null);
+    out[id] = { raw: vals, idx: vals.map(v => v == null || !base ? null : v / base * 100) };
+  }
+  return { dates: ds, s: out, ids };
+}
+
+function drawPx() {
+  const svg = $("px"), box = $("pxBox");
+  const data = seriesFor(range);
+  document.querySelectorAll("#rangeCtl button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.r === range)));
+  if (!data) {
+    svg.style.display = "none";
+    if (!$("pxEmpty")) box.insertAdjacentHTML("beforeend", `<div class="empty" id="pxEmpty"><div><b>No share prices loaded yet.</b><br>The GitHub Action <i>Competitor data</i> fetches daily closes from Yahoo Finance and commits them to <code>dashboard/competitors-prices.js</code>.<br>Run it from the repository's Actions tab, or locally: <code>python3 tools/fetch_competitor_data.py --prices</code></div></div>`);
+    $("pxLegend").innerHTML = "";
+    $("pxSource").textContent = "Share prices: not loaded.";
+    return;
+  }
+  const W = 760, H = 380, m = { l: 40, r: 92, t: 12, b: 26 };
+  const vis = data.ids.filter(id => !hidden.has(id));
+  const all = vis.flatMap(id => data.s[id].idx.filter(v => v != null));
+  let lo = Math.min(100, ...all), hi = Math.max(100, ...all);
+  const step = (hi - lo) > 120 ? 40 : (hi - lo) > 60 ? 20 : 10;
+  lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step;
+  const n = data.dates.length;
+  const x = i => m.l + (n <= 1 ? 0 : i / (n - 1) * (W - m.l - m.r));
+  const y = v => m.t + (hi - v) / (hi - lo || 1) * (H - m.t - m.b);
+  let g = "";
+  for (let v = lo; v <= hi; v += step) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 100 ? "#bdbdbd" : "#eeeeee"}" stroke-width="1"${v === 100 ? ' stroke-dasharray="4 3"' : ""}/><text x="${m.l - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10.5" fill="#8c8c8c">${v}</text>`;
+  // month ticks
+  let lastM = "";
+  const every = n > 300 ? 3 : n > 150 ? 2 : 1;
+  data.dates.forEach((d, i) => {
+    const mk = d.slice(0, 7);
+    if (mk !== lastM) {
+      const mi = +d.slice(5, 7) - 1;
+      if (mi % every === 0) g += `<line x1="${x(i)}" x2="${x(i)}" y1="${H - m.b}" y2="${H - m.b + 4}" stroke="#bdbdbd"/><text x="${x(i)}" y="${H - 8}" text-anchor="middle" font-size="10" fill="#8c8c8c">${MON[mi]}${mi === 0 ? " " + d.slice(2, 4) : ""}</text>`;
+      lastM = mk;
+    }
+  });
+  // lines: competitors first, Aalberts on top
+  const order = [...vis].sort((a, b) => (CO[a].self ? 1 : 0) - (CO[b].self ? 1 : 0));
+  let lines = "", labels = [];
+  for (const id of order) {
+    const v = data.s[id].idx; let d = "", pen = false;
+    v.forEach((val, i) => { if (val == null) { pen = false; return; } d += (pen ? "L" : "M") + x(i).toFixed(1) + " " + y(val).toFixed(1); pen = true; });
+    const self = CO[id].self;
+    lines += `<path d="${d}" fill="none" stroke="${CO[id].color}" stroke-width="${self ? 3 : 2}" stroke-linejoin="round" stroke-linecap="round" ${self ? "" : 'opacity=".9"'}/>`;
+    const lv = [...v].reverse().find(t => t != null);
+    if (lv != null) labels.push({ id, y: y(lv), v: lv });
+  }
+  // end labels, nudged apart
+  labels.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < labels.length; i++) if (labels[i].y - labels[i - 1].y < 12) labels[i].y = labels[i - 1].y + 12;
+  const lab = labels.map(l => `<text x="${W - m.r + 6}" y="${l.y + 4}" font-size="10.5" fill="#191919" font-weight="${CO[l.id].self ? 700 : 500}">${esc(CO[l.id].name)} ${Math.round(l.v)}</text>`).join("");
+  svg.innerHTML = g + lines + lab + `<line id="pxCross" y1="${m.t}" y2="${H - m.b}" stroke="#505050" stroke-width="1" visibility="hidden"/><g id="pxDots"></g><rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}" fill="transparent" id="pxHit"/>`;
+  svg.style.display = "";
+
+  const tip = $("pxTip"), hit = $("pxHit"), cross = $("pxCross"), dots = $("pxDots");
+  const move = ev => {
+    const r = svg.getBoundingClientRect(), sx = (ev.clientX - r.left) / r.width * W;
+    const i = Math.max(0, Math.min(n - 1, Math.round((sx - m.l) / (W - m.l - m.r) * (n - 1))));
+    cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
+    const rows = vis.map(id => ({ id, v: data.s[id].idx[i], raw: data.s[id].raw[i] })).filter(o => o.v != null).sort((a, b) => b.v - a.v);
+    dots.innerHTML = rows.map(o => `<circle cx="${x(i)}" cy="${y(o.v)}" r="4" fill="${CO[o.id].color}" stroke="#fff" stroke-width="2"/>`).join("");
+    tip.innerHTML = `<h4>${fmtDate(data.dates[i])}</h4><table>${rows.map(o => `<tr><td><span class="sw" style="background:${CO[o.id].color}"></span></td><td>${esc(CO[o.id].name)}</td><td>${o.v.toFixed(1)}</td><td class="muted" style="font-weight:400">${o.raw.toFixed(2)} ${esc(P[o.id].ccy || "")}</td></tr>`).join("")}</table>`;
+    tip.hidden = false;
+    const bx = box.getBoundingClientRect(), px = ev.clientX - bx.left;
+    tip.style.left = Math.min(Math.max(0, px + 14), bx.width - tip.offsetWidth) + "px";
+    if (px + 14 + tip.offsetWidth > bx.width) tip.style.left = Math.max(0, px - tip.offsetWidth - 14) + "px";
+    tip.style.top = "8px";
+  };
+  hit.addEventListener("pointermove", move);
+  hit.addEventListener("pointerdown", move);
+  hit.addEventListener("pointerleave", () => { tip.hidden = true; cross.setAttribute("visibility", "hidden"); dots.innerHTML = ""; });
+
+  $("pxLegend").innerHTML = D.companies.filter(c => P[c.id]).map(c => `<button type="button" data-id="${c.id}" aria-pressed="${!hidden.has(c.id)}"><span class="sw" style="background:${c.color}"></span>${esc(c.name)}</button>`).join("");
+  const missing = D.companies.filter(c => !P[c.id]).map(c => c.name);
+  $("pxSource").textContent = `Share prices: ${window.CW_PRICES.source}, local currency, not dividend-adjusted; updated ${window.CW_PRICES.updated}.` + (missing.length ? ` No data for ${missing.join(", ")}.` : "");
+}
+$("rangeCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; range = b.dataset.r; store.set("range", range); drawPx(); drawPerf(); });
+$("pxLegend").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; const id = b.dataset.id; hidden.has(id) ? hidden.delete(id) : hidden.add(id); store.set("hidden", [...hidden]); drawPx(); });
+
+/* ---------- Next releases + calendar ---------- */
+const upcoming = D.calendar.filter(e => parseD(e.date) >= today).sort((a, b) => a.date.localeCompare(b.date));
+function nextFor(id) { return upcoming.find(e => e.co === id); }
+function drawNext() {
+  const list = upcoming.slice(0, 6);
+  $("nextList").innerHTML = list.length ? list.map(e => {
+    const d = parseD(e.date), days = Math.round((d - today) / 864e5);
+    return `<div class="banner${e.status === "estimated" ? " est" : ""}" title="${esc(e.note || "")}">
+      <span class="d">${d.getUTCDate()}<small>${MON[d.getUTCMonth()]} ${String(d.getUTCFullYear()).slice(2)}</small></span>
+      <span class="w"><b>${esc(CO[e.co].name)}</b><span>${esc(e.event)}</span></span>
+      <span class="c">${days === 0 ? "today" : days === 1 ? "tomorrow" : "in " + days + " days"}<em>${e.status === "estimated" ? "estimated" : "confirmed"}</em></span></div>`;
+  }).join("") : `<div class="empty" style="min-height:120px">No upcoming dates in the calendar. Add them to <code>calendar</code> in competitors-data.js.</div>`;
+}
+function drawCal() {
+  const start = Date.UTC(2026, 0, 1), end = Date.UTC(2027, 7, 1);
+  const W = 1000, lw = 112, rh = 30, top = 24, rows = D.companies;
+  const H = top + rows.length * rh + 8;
+  const x = t => lw + (t - start) / (end - start) * (W - lw - 10);
+  let s = "";
+  for (let y = 2026, mo = 0; Date.UTC(y, mo, 1) < end; mo++, (mo > 11 && (mo = 0, y++))) {
+    const t = Date.UTC(y, mo, 1);
+    s += `<line x1="${x(t)}" x2="${x(t)}" y1="${top - 4}" y2="${H - 6}" stroke="${mo === 0 ? "#bdbdbd" : "#f0f0f0"}"/><text x="${x(t) + 3}" y="${top - 9}" font-size="10" fill="${mo === 0 ? "#505050" : "#8c8c8c"}" font-weight="${mo === 0 ? 700 : 400}">${mo === 0 ? y : MON[mo]}</text>`;
+  }
+  rows.forEach((c, i) => {
+    const cy = top + i * rh + rh / 2;
+    s += `<rect x="0" y="${top + i * rh}" width="${W}" height="${rh}" fill="${c.self ? "#fcf1f1" : i % 2 ? "#fafafa" : "#ffffff"}"/>`;
+    s += `<text x="8" y="${cy + 4}" font-size="11.5" font-weight="${c.self ? 700 : 600}" fill="${c.self ? "#ce0e2d" : "#191919"}">${esc(c.name)}</text>`;
+  });
+  const tx = x(today.getTime());
+  s += `<line x1="${tx}" x2="${tx}" y1="${top - 4}" y2="${H - 6}" stroke="#ce0e2d" stroke-dasharray="3 3"/><text x="${tx + 3}" y="${H - 1}" font-size="9.5" fill="#ce0e2d" font-weight="700">today</text>`;
+  D.calendar.forEach((e, k) => {
+    const i = rows.findIndex(c => c.id === e.co), t = parseD(e.date).getTime();
+    if (i < 0 || t < start || t >= end) return;
+    const cy = top + i * rh + rh / 2, past = t < today.getTime();
+    const st = past ? `fill="#7a7a7a" stroke="#fff" stroke-width="1.5"` : e.status === "estimated" ? `fill="#fff" stroke="#ce0e2d" stroke-width="2" stroke-dasharray="2 2"` : `fill="#ce0e2d" stroke="#fff" stroke-width="1.5"`;
+    s += `<g class="ev" data-k="${k}"><circle cx="${x(t)}" cy="${cy}" r="12" fill="transparent"/><circle cx="${x(t)}" cy="${cy}" r="${past ? 5 : 6.5}" ${st}/></g>`;
+  });
+  const svg = $("cal");
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  svg.innerHTML = s;
+  const tip = $("calTip"), box = $("calBox");
+  svg.querySelectorAll(".ev").forEach(g => {
+    const show = ev => {
+      const e = D.calendar[+g.dataset.k];
+      tip.innerHTML = `<h4>${esc(CO[e.co].name)}</h4>${esc(e.event)}<br><b>${fmtDate(e.date)}</b>${e.status ? " · " + e.status : " · published"}${e.note ? `<br><span class="muted">${esc(e.note)}</span>` : ""}`;
+      tip.hidden = false;
+      const bx = box.getBoundingClientRect(), r = g.getBoundingClientRect();
+      tip.style.left = Math.min(r.left - bx.left + box.scrollLeft + 14, box.scrollWidth - tip.offsetWidth) + "px";
+      tip.style.top = (r.top - bx.top + 18) + "px";
+    };
+    g.addEventListener("pointerenter", show); g.addEventListener("pointerdown", show);
+    g.addEventListener("pointerleave", () => tip.hidden = true);
+  });
+  $("calKey").innerHTML = `<span><svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="#7a7a7a"/></svg> published</span> &nbsp; <span><svg width="14" height="14"><circle cx="7" cy="7" r="5.5" fill="#ce0e2d"/></svg> upcoming, confirmed</span> &nbsp; <span><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="#fff" stroke="#ce0e2d" stroke-width="2" stroke-dasharray="2 2"/></svg> upcoming, estimated</span>`;
+}
+
+function drawPerf() {
+  const all = seriesFor("all"), ytd = seriesFor("ytd"), y1 = seriesFor("12m");
+  const chg = (set, id) => { if (!set || !set.s[id]) return null; const v = set.s[id].idx.filter(t => t != null); return v.length ? v[v.length - 1] - 100 : null; };
+  const last = id => P[id] ? P[id].points[P[id].points.length - 1] : null;
+  const rows = D.companies.map(c => ({ c, l: last(c.id), a: chg(all, c.id), y: chg(ytd, c.id), m: chg(y1, c.id), n: nextFor(c.id) }));
+  $("perfTbl").innerHTML = `<thead><tr><th class="l">Company</th><th class="l">Listing</th><th>Last close<span class="u">local currency</span></th><th>Since Jan 2025</th><th>2026 YTD</th><th>12 months</th><th class="l">Next release</th></tr></thead><tbody>` +
+    rows.map(r => `<tr class="${r.c.self ? "self" : ""}"><td class="l">${esc(r.c.name)}</td><td class="l">${esc(r.c.exch)} · ${esc(r.c.ticker)}</td><td>${r.l ? r.l[1].toFixed(2) + " " + esc(P[r.c.id].ccy || "") + `<span class="muted"> ${fmtDate(r.l[0]).replace(/ \d{4}$/, "")}</span>` : "–"}</td><td class="${cls(r.a)}">${pct(r.a)}</td><td class="${cls(r.y)}">${pct(r.y)}</td><td class="${cls(r.m)}">${pct(r.m)}</td><td class="l">${r.n ? `${fmtDate(r.n.date)} · ${esc(r.n.event)}${r.n.status === "estimated" ? ' <span class="muted">(est.)</span>' : ""}` : "–"}</td></tr>`).join("") + "</tbody>";
+  // takeaway: Aalberts vs peer median since Jan 2025
+  const peers = rows.filter(r => !r.c.self && r.a != null).map(r => r.a).sort((a, b) => a - b);
+  const aal = rows.find(r => r.c.self);
+  const nx = upcoming[0];
+  let msg = "";
+  if (aal && aal.a != null && peers.length) {
+    const med = peers.length % 2 ? peers[(peers.length - 1) / 2] : (peers[peers.length / 2 - 1] + peers[peers.length / 2]) / 2;
+    msg = `Aalberts <b>${pct(aal.a, 0)}</b> since Jan 2025 vs. a peer median of <b>${pct(med, 0)}</b>`;
+  }
+  if (nx) msg += (msg ? " · " : "") + `next up: <b>${esc(CO[nx.co].name)}</b>, ${fmtDate(nx.date)}`;
+  $("mvTake").innerHTML = msg || "Share prices not loaded yet";
+}
+
+/* ---------- 2. Results ---------- */
+let selCo = store.get("co", "imi"), selP = store.get("p", D.periods[D.periods.length - 1]);
+if (!CO[selCo]) selCo = "imi";
+if (!D.periods.includes(selP)) selP = D.periods[D.periods.length - 1];
+const res = (co, p) => (D.results[co] || {})[p];
+
+function drawFilters() {
+  $("coCtl").innerHTML = D.companies.map(c => `<button type="button" data-co="${c.id}" aria-pressed="${c.id === selCo}">${esc(c.name)}</button>`).join("");
+  $("qCtl").innerHTML = D.periods.map(p => { const r = res(selCo, p); return `<button type="button" data-p="${p}" aria-pressed="${p === selP}" class="${r && !r.pending ? "" : "nodata"}" title="${esc(r ? r.report : "No report for this quarter")}">${p}</button>`; }).join("");
+}
+$("coCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; selCo = b.dataset.co; store.set("co", selCo); drawResults(); });
+$("qCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; selP = b.dataset.p; store.set("p", selP); drawResults(); });
+
+function kpi(lbl, val, cmp, na) { return `<div class="kpi${na ? " na" : ""}"><span class="lbl">${lbl}</span><span class="val">${val}</span><span class="cmp">${cmp || "&nbsp;"}</span></div>`; }
+
+function drawResults() {
+  drawFilters();
+  const c = CO[selCo], r = res(selCo, selP), ccy = c.ccy;
+  const body = $("resBody");
+  if (!r) {
+    $("repLine").innerHTML = `<b>${esc(c.name)} · ${selP}</b>`;
+    body.innerHTML = `<div class="empty" style="min-height:140px"><div>${esc((D.noReport[selCo] && (selCo !== "imi" || selP === "Q1 2025")) ? D.noReport[selCo] : "No report captured for this quarter.")}<br><a href="${esc(c.ir)}" target="_blank" rel="noopener">${esc(c.name)} investor relations ›</a></div></div>`;
+  } else {
+    $("repLine").innerHTML = `<b>${esc(c.name)} · ${esc(r.report)}</b><span>${r.date ? "Published " + fmtDate(r.date) + " · " : ""}${ccy} m unless stated · ${esc(c.cadence)}</span>`;
+    if (r.pending) {
+      body.innerHTML = `<div class="empty" style="min-height:140px"><div><b>Not published yet.</b><br>${esc(r.note || "")}<br><a href="${esc(c.ir)}" target="_blank" rel="noopener">${esc(c.name)} investor relations ›</a></div></div>`;
+    } else {
+      let k = "";
+      k += kpi("Revenue", r.rev != null ? num(r.rev) + der(r, "rev") : "–", r.revChg != null ? `${pct(r.revChg)} reported${der(r, "revChg")}` : "", r.rev == null);
+      k += kpi(esc(r.orgLbl || "Organic growth"), r.org != null ? `<span class="${cls(r.org)}" style="color:inherit">${pct(r.org)}</span>` : "–", "", r.org == null);
+      k += kpi(esc(r.mgnLbl || "Margin"), r.mgn != null ? r.mgn.toFixed(1) + "%" + der(r, "mgn") : "–", bps(r.mgnChg) ? bps(r.mgnChg) + " year on year" : "", r.mgn == null);
+      if (r.eps) k += kpi(esc(r.eps.l), esc(r.eps.v) + der(r, "eps"), esc(r.eps.c || ""));
+      if (r.cash) k += kpi(esc(r.cash.l), esc(r.cash.v) + der(r, "cash"), esc(r.cash.c || ""));
+      if (r.orders) k += kpi(esc(r.orders.l), esc(r.orders.v), esc(r.orders.c || ""));
+      let segHtml = "";
+      if (r.seg && r.seg.length) {
+        const hasRev = r.seg.some(s => s.rev != null), hasChg = r.seg.some(s => s.chg != null), hasOrg = r.seg.some(s => s.org != null), hasM = r.seg.some(s => s.mgn != null);
+        segHtml = `<div style="display:grid;gap:8px;min-width:0"><span class="subhead">Revenue by segment / region</span><div class="table-scroll"><table class="mi"><thead><tr><th class="l">Segment</th>${hasRev ? `<th>Revenue<span class="u">${ccy} m</span></th>` : ""}${hasChg ? "<th>Reported<span class=\"u\">growth</span></th>" : ""}${hasOrg ? `<th>${esc(r.orgLbl && r.orgLbl.startsWith("Growth in local") ? "Local ccy" : r.orgLbl && r.orgLbl.startsWith("Underlying") ? "Underlying" : "Organic")}<span class="u">growth</span></th>` : ""}${hasM ? "<th>Margin</th>" : ""}<th class="l">Comment</th></tr></thead><tbody>` +
+          r.seg.map(s => `<tr><td class="l">${esc(s.n)}</td>${hasRev ? `<td>${num(s.rev)}${der(r, "seg." + s.n + ".rev")}</td>` : ""}${hasChg ? `<td class="${cls(s.chg)}">${pct(s.chg)}${der(r, "seg." + s.n + ".chg")}</td>` : ""}${hasOrg ? `<td class="${cls(s.org)}">${pct(s.org)}</td>` : ""}${hasM ? `<td>${s.mgn != null ? s.mgn.toFixed(1) + "%" + der(r, "seg." + s.n + ".mgn") : "–"}</td>` : ""}<td class="l wrap">${esc(s.note || "")}</td></tr>`).join("") + "</tbody></table></div></div>";
+      }
+      const facts = (r.extra || []).map(f => `<li><span>${esc(f.l)}</span><b>${esc(f.v)}${der(r, "extra." + f.l)}</b>${f.c ? `<small>${esc(f.c)}</small>` : ""}</li>`).join("");
+      const side = `<div style="display:grid;gap:10px;align-content:start;min-width:0">${facts ? `<span class="subhead">Other figures</span><ul class="facts">${facts}</ul>` : ""}${r.note ? `<div class="box"><h4>Comment</h4>${esc(r.note)}</div>` : ""}</div>`;
+      body.innerHTML = `<div class="kpi-row">${k}</div>` + (segHtml || facts || r.note ? `<div class="res-grid">${segHtml || "<div></div>"}${side}</div>` : "") +
+        (r.guide ? `<div class="takeaway"><b>Outlook:</b> ${esc(r.guide)}</div>` : "") +
+        `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived ? " · ≈ derived from reported growth rates" : ""}</p>`;
+    }
+  }
+  drawQual(); drawPeers(); drawHeat();
+}
+
+function drawQual() {
+  const q = D.qual[selCo], c = CO[selCo];
+  if (!q) { $("qual").innerHTML = ""; $("qualSrc").textContent = ""; return; }
+  $("qualHead").textContent = `Key messages: ${c.name}, ${q.title}`;
+  const card = (n, t, items) => `<div class="qcard"><h3><i>${n}</i>${t}</h3><ul>${items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`;
+  $("qual").innerHTML = card(1, "Overall performance and walk through the results", q.perf) + card(2, "M&amp;A moves", q.ma) + card(3, "Operations, innovation, partnerships and production", q.other);
+  $("qualSrc").innerHTML = (q.period !== selP ? `Based on the latest report (${esc(q.title)}), whatever quarter is selected above. ` : "") + "Source: " + q.src.map(s => `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ");
+}
+
+function drawPeers() {
+  $("peerHead").textContent = `Peer comparison, ${selP}`;
+  $("peerTbl").innerHTML = `<thead><tr><th class="l">Company</th><th class="l">Report</th><th>Revenue<span class="u">m, own currency</span></th><th>Reported<span class="u">growth</span></th><th>Organic<span class="u">growth</span></th><th>Margin</th><th>Change<span class="u">y/y</span></th><th class="l">Margin measure</th></tr></thead><tbody>` +
+    D.companies.map(c => {
+      const r = res(c.id, selP);
+      const cl = `click${c.self ? " self" : ""}${c.id === selCo ? " pick" : ""}`;
+      if (!r || r.pending) return `<tr class="${cl}" data-co="${c.id}"><td class="l">${esc(c.name)}</td><td class="l muted">${r ? esc(r.report) : "no report"}</td><td>–</td><td>–</td><td>–</td><td>–</td><td></td><td class="l"></td></tr>`;
+      return `<tr class="${cl}" data-co="${c.id}"><td class="l">${esc(c.name)}</td><td class="l">${esc(r.report)}</td><td>${r.rev != null ? num(r.rev) + " " + c.ccy + der(r, "rev") : "–"}</td><td class="${cls(r.revChg)}">${pct(r.revChg)}</td><td class="${cls(r.org)}">${pct(r.org)}</td><td>${r.mgn != null ? r.mgn.toFixed(1) + "%" + der(r, "mgn") : "–"}</td><td>${bps(r.mgnChg)}</td><td class="l muted">${esc(r.mgnLbl || "")}</td></tr>`;
+    }).join("") + "</tbody>";
+}
+$("peerTbl").addEventListener("click", e => { const tr = e.target.closest("tr[data-co]"); if (!tr) return; selCo = tr.dataset.co; store.set("co", selCo); drawResults(); });
+
+function drawHeat() {
+  $("heatTbl").innerHTML = `<thead><tr><th class="l">Company</th>${D.periods.map(p => `<th>${p}</th>`).join("")}</tr></thead><tbody>` +
+    D.companies.map(c => `<tr class="${c.self ? "self" : ""}"><td class="l">${esc(c.name)}</td>${D.periods.map(p => {
+      const r = res(c.id, p), v = r && !r.pending ? r.org : null;
+      const k = v == null ? "cell-na" : v > 0 ? "cell-pos" : v < 0 ? "cell-neg" : "";
+      return `<td class="h ${k}${c.id === selCo && p === selP ? " cell-sel" : ""}" data-co="${c.id}" data-p="${p}" style="cursor:pointer" title="${esc(r ? r.report : "no report")}">${v == null ? (r && r.pending ? "due" : "–") : pct(v)}</td>`;
+    }).join("")}</tr>`).join("") + "</tbody>";
+}
+$("heatTbl").addEventListener("click", e => { const td = e.target.closest("td[data-co]"); if (!td) return; selCo = td.dataset.co; selP = td.dataset.p; store.set("co", selCo); store.set("p", selP); drawResults(); });
+
+/* ---------- 3. Library ---------- */
+function drawLibFilters() {
+  $("libCo").innerHTML = `<option value="">All companies</option>` + D.companies.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("");
+  $("libP").innerHTML = `<option value="">All quarters</option>` + D.periods.map(p => `<option>${p}</option>`).join("");
+  $("libT").innerHTML = `<option value="">All types</option>` + [...new Set(D.docs.map(d => d.type))].sort().map(t => `<option>${esc(t)}</option>`).join("");
+}
+function drawLib() {
+  const fc = $("libCo").value, fp = $("libP").value, ft = $("libT").value, q = $("libQ").value.trim().toLowerCase();
+  const docs = D.docs.filter(d => (!fc || d.co === fc) && (!fp || d.p === fp) && (!ft || d.type === ft) && (!q || (CO[d.co].name + " " + d.title + " " + d.type + " " + d.p).toLowerCase().includes(q)))
+    .sort((a, b) => D.companies.findIndex(c => c.id === a.co) - D.companies.findIndex(c => c.id === b.co) || D.periods.indexOf(b.p) - D.periods.indexOf(a.p));
+  const local = D.docs.filter(d => R[d.url]).length;
+  $("libCount").textContent = `${docs.length} of ${D.docs.length} documents · ${local} stored in the repository`;
+  $("libTbl").innerHTML = `<thead><tr><th class="l">Company</th><th class="l">Quarter</th><th class="l">Type</th><th class="l">Document</th><th class="l">Repository copy</th><th class="l">Official source</th></tr></thead><tbody>` +
+    docs.map(d => { const f = R[d.url]; return `<tr class="${CO[d.co].self ? "self" : ""}"><td class="l">${esc(CO[d.co].name)}</td><td class="l">${d.p}</td><td class="l"><span class="tag${d.type === "Annual report" ? " ar" : ""}">${esc(d.type)}</span></td><td class="l">${esc(d.title)}</td><td class="l">${f ? `<a class="dl" href="../${esc(f.path)}" target="_blank" rel="noopener">Open copy</a> <span class="muted">${f.path.endsWith(".pdf") ? "PDF" : "HTML"}, ${Math.max(1, Math.round(f.bytes / 1024)).toLocaleString("en-US")} KB</span>` : '<span class="muted">not stored yet</span>'}</td><td class="l"><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(new URL(d.url).hostname.replace(/^www\./, ""))} ›</a></td></tr>`; }).join("") + "</tbody>";
+  $("libNote").innerHTML = `Copies live in the repository's <code>reports/</code> folder, one sub-folder per company. The GitHub Action <i>Competitor data</i> downloads any document listed in <code>docs</code> in competitors-data.js that is not stored yet${window.CW_REPORTS.updated ? " (last run " + esc(window.CW_REPORTS.updated) + ")" : ""}. To add a report, add a line to <code>docs</code> and push. Investor relations pages: ` +
+    D.companies.map(c => `<a href="${esc(c.ir)}" target="_blank" rel="noopener">${esc(c.name)}</a>`).join(" · ");
+}
+["libCo", "libP", "libT"].forEach(id => $(id).addEventListener("change", drawLib));
+$("libQ").addEventListener("input", drawLib);
+
+drawPx(); drawNext(); drawCal(); drawPerf(); drawResults(); drawLibFilters(); drawLib();
+})();
+</script>
+</body>
+</html>

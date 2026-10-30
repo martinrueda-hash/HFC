@@ -53,3 +53,19 @@ To change the default data for everyone: recalculate the workbook, run `python3 
 The 5-year history (e.g. 2020–2025) needs the Oxford Economics export to include the start year. The renovation / new build split comes from the New and Renovation series; without them, the matrix uses total market growth and the table hides the split.
 
 A CSV option is still available under "CSV option" on the page.
+
+## Competitor watch (`dashboard/competitors.html`)
+
+A second dashboard that follows Aalberts' listed peers (IMI, Belimo, Xylem, Ecolab, Watts, Emerson, Georg Fischer) for 2025–2026. Open `dashboard/competitors.html`, or use the *Competitor watch* button on the main dashboard.
+
+1. **Market view**: share price of Aalberts and its peers, indexed to 100 (since Jan 2025, 2026 YTD, 12 months), with the next releases as banners on the right, a 2026–2027 reporting calendar and a performance table.
+2. **Results by quarter**: pick a company and a calendar quarter (Q1 2025 – Q3 2026) to see revenue, organic growth, margin, EPS, cash flow, orders, segments and outlook, plus three key-message blocks from the latest report: overall performance and walk through the results, M&A moves, and operations / innovation / partnerships / production. A peer table and an organic-growth heat table compare all companies for that quarter.
+3. **Report library**: every annual report, results release, presentation and filing used, with a link to the official source and to a copy stored in `reports/<company>/`.
+
+Notes on the figures (in `dashboard/competitors-data.js`):
+- Each company's own reporting currency and its own measures (Aalberts EBITA margin, Xylem adjusted EBITDA margin, Emerson adjusted segment EBITA margin and underlying growth, Belimo growth in local currencies, etc.).
+- Half-year reporters (Aalberts, IMI, Belimo, Georg Fischer): Q2 shows the H1 report and Q4 the full-year report; Q1 and Q3 show trading updates where they exist. Emerson's fiscal year ends 30 September, so calendar Q3 2026 = fiscal Q4 2026.
+- Figures marked ≈ are derived from reported growth rates, not reported as such. Figures were collected from releases and press coverage of them; check the linked source before quoting them.
+- Watts (Q3) and Emerson (fiscal Q4) report on 4 Nov 2026; Xylem and Ecolab Q4 dates are estimates until announced.
+
+Share prices and report copies come from the GitHub Action **Competitor data** (`.github/workflows/competitor-data.yml`), which runs `tools/fetch_competitor_data.py` on weekdays, when the data file changes, or on demand from the Actions tab. It fetches daily closes from Yahoo Finance into `dashboard/competitors-prices.js`, downloads any listed document not stored yet into `reports/`, and commits the result. You can also run it locally: `python3 tools/fetch_competitor_data.py`. To add a report, add a line to `docs` in `competitors-data.js`; to add a quarter, add an entry under `results` and the period to `periods`.

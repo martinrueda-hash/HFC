@@ -1,0 +1,44 @@
+name: Competitor data
+
+# Refreshes share prices and downloads new competitor reports for dashboard/competitors.html,
+# then commits the result to the branch it ran on.
+on:
+  schedule:
+    - cron: "17 6 * * 1-5"   # weekdays 06:17 UTC (runs on the default branch)
+  workflow_dispatch:
+  push:
+    paths:
+      - "dashboard/competitors-data.js"
+      - "tools/fetch_competitor_data.py"
+      - ".github/workflows/competitor-data.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: competitor-data-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch share prices
+        run: python3 tools/fetch_competitor_data.py --prices
+      - name: Download reports
+        run: python3 tools/fetch_competitor_data.py --reports
+        env:
+          SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dashboard/competitors-prices.js dashboard/competitors-reports.js reports
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Refresh competitor share prices and reports"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
