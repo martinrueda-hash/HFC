@@ -284,6 +284,8 @@ table.mi td.wrap { white-space: normal; min-width: 220px; }
 <script>
 (() => {
 const D = window.CW, P = (window.CW_PRICES && window.CW_PRICES.series) || {}, R = (window.CW_REPORTS && window.CW_REPORTS.files) || {};
+// Report copies: relative when opened from the repository checkout, the GitHub copy anywhere else.
+const REPO = location.protocol === "file:" || location.hostname === "localhost" ? "../" : "https://github.com/martinrueda-hash/HFC/blob/claude/hopeful-allen-tvjcl3/";
 const CO = Object.fromEntries(D.companies.map(c => [c.id, c]));
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
@@ -574,7 +576,7 @@ function drawLib() {
   const local = D.docs.filter(d => R[d.url]).length;
   $("libCount").textContent = `${docs.length} of ${D.docs.length} documents · ${local} stored in the repository`;
   $("libTbl").innerHTML = `<thead><tr><th class="l">Company</th><th class="l">Quarter</th><th class="l">Type</th><th class="l">Document</th><th class="l">Repository copy</th><th class="l">Official source</th></tr></thead><tbody>` +
-    docs.map(d => { const f = R[d.url]; return `<tr class="${CO[d.co].self ? "self" : ""}"><td class="l">${esc(CO[d.co].name)}</td><td class="l">${d.p}</td><td class="l"><span class="tag${d.type === "Annual report" ? " ar" : ""}">${esc(d.type)}</span></td><td class="l">${esc(d.title)}</td><td class="l">${f ? `<a class="dl" href="../${esc(f.path)}" target="_blank" rel="noopener">Open copy</a> <span class="muted">${f.path.endsWith(".pdf") ? "PDF" : "HTML"}, ${Math.max(1, Math.round(f.bytes / 1024)).toLocaleString("en-US")} KB</span>` : '<span class="muted">not stored yet</span>'}</td><td class="l"><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(new URL(d.url).hostname.replace(/^www\./, ""))} ›</a></td></tr>`; }).join("") + "</tbody>";
+    docs.map(d => { const f = R[d.url]; return `<tr class="${CO[d.co].self ? "self" : ""}"><td class="l">${esc(CO[d.co].name)}</td><td class="l">${d.p}</td><td class="l"><span class="tag${d.type === "Annual report" ? " ar" : ""}">${esc(d.type)}</span></td><td class="l">${esc(d.title)}</td><td class="l">${f ? `<a class="dl" href="${REPO}${esc(f.path)}" target="_blank" rel="noopener">Open copy</a> <span class="muted">${f.path.endsWith(".pdf") ? "PDF" : "HTML"}, ${Math.max(1, Math.round(f.bytes / 1024)).toLocaleString("en-US")} KB</span>` : '<span class="muted">not stored yet</span>'}</td><td class="l"><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(new URL(d.url).hostname.replace(/^www\./, ""))} ›</a></td></tr>`; }).join("") + "</tbody>";
   $("libNote").innerHTML = `Copies live in the repository's <code>reports/</code> folder, one sub-folder per company. The GitHub Action <i>Competitor data</i> downloads any document listed in <code>docs</code> in competitors-data.js that is not stored yet${window.CW_REPORTS.updated ? " (last run " + esc(window.CW_REPORTS.updated) + ")" : ""}. To add a report, add a line to <code>docs</code> and push. Investor relations pages: ` +
     D.companies.map(c => `<a href="${esc(c.ir)}" target="_blank" rel="noopener">${esc(c.name)}</a>`).join(" · ");
 }
