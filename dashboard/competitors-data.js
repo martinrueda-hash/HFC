@@ -7,14 +7,14 @@ window.CW = {
   "asOf": "2026-10-30",
   "periods": ["Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025", "Q1 2026", "Q2 2026", "Q3 2026"],
   "companies": [
-    {"id": "aalberts", "name": "Aalberts", "self": true, "ccy": "EUR", "exch": "Euronext Amsterdam", "ticker": "AALB", "yahoo": ["AALB.AS"], "cadence": "Q1 and Q3 trading updates, H1 and FY results", "ir": "https://aalberts.com/investor", "color": "#ce0e2d"},
-    {"id": "imi", "name": "IMI", "ccy": "GBP", "exch": "London", "ticker": "IMI", "yahoo": ["IMI.L"], "cadence": "Q1 and Q3 trading updates, H1 and FY results", "ir": "https://www.imiplc.com/en/investors/results-reports-presentations/", "color": "#2a78d6"},
-    {"id": "belimo", "name": "Belimo", "ccy": "CHF", "exch": "SIX Swiss Exchange", "ticker": "BEAN", "yahoo": ["BEAN.SW"], "cadence": "H1 and FY results; FY sales published in January", "ir": "https://www.belimo.com/ch/en_GB/about/investor-relations", "color": "#eb6834"},
-    {"id": "xylem", "name": "Xylem", "ccy": "USD", "exch": "NYSE", "ticker": "XYL", "yahoo": ["XYL"], "cadence": "Quarterly", "ir": "https://investors.xylem.com/", "color": "#1baf7a"},
-    {"id": "ecolab", "name": "Ecolab", "ccy": "USD", "exch": "NYSE", "ticker": "ECL", "yahoo": ["ECL"], "cadence": "Quarterly", "ir": "https://investor.ecolab.com/", "color": "#eda100"},
-    {"id": "watts", "name": "Watts", "ccy": "USD", "exch": "NYSE", "ticker": "WTS", "yahoo": ["WTS"], "cadence": "Quarterly", "ir": "https://investors.watts.com/", "color": "#e87ba4"},
-    {"id": "emerson", "name": "Emerson", "ccy": "USD", "exch": "NYSE", "ticker": "EMR", "yahoo": ["EMR"], "cadence": "Quarterly, fiscal year ends 30 September", "ir": "https://ir.emerson.com/", "color": "#008300"},
-    {"id": "gf", "name": "Georg Fischer", "ccy": "CHF", "exch": "SIX Swiss Exchange", "ticker": "GF", "yahoo": ["GF.SW", "FI-N.SW"], "cadence": "H1 and FY results", "ir": "https://www.georgfischer.com/en/investors/reports-and-presentations.html", "color": "#6250d6"}
+    {"id": "aalberts", "name": "Aalberts", "self": true, "ccy": "EUR", "exch": "Euronext Amsterdam", "ticker": "AALB", "yahoo": ["AALB.AS"], "stooq": ["aalb.nl"], "quoteCcy": "EUR", "cadence": "Q1 and Q3 trading updates, H1 and FY results", "ir": "https://aalberts.com/investor", "color": "#ce0e2d"},
+    {"id": "imi", "name": "IMI", "ccy": "GBP", "exch": "London", "ticker": "IMI", "yahoo": ["IMI.L"], "stooq": ["imi.uk"], "quoteCcy": "GBp", "cadence": "Q1 and Q3 trading updates, H1 and FY results", "ir": "https://www.imiplc.com/en/investors/results-reports-presentations/", "color": "#2a78d6"},
+    {"id": "belimo", "name": "Belimo", "ccy": "CHF", "exch": "SIX Swiss Exchange", "ticker": "BEAN", "yahoo": ["BEAN.SW"], "stooq": ["bean.ch"], "quoteCcy": "CHF", "cadence": "H1 and FY results; FY sales published in January", "ir": "https://www.belimo.com/ch/en_GB/about/investor-relations", "color": "#eb6834"},
+    {"id": "xylem", "name": "Xylem", "ccy": "USD", "exch": "NYSE", "ticker": "XYL", "yahoo": ["XYL"], "stooq": ["xyl.us"], "quoteCcy": "USD", "cadence": "Quarterly", "ir": "https://investors.xylem.com/", "color": "#1baf7a"},
+    {"id": "ecolab", "name": "Ecolab", "ccy": "USD", "exch": "NYSE", "ticker": "ECL", "yahoo": ["ECL"], "stooq": ["ecl.us"], "quoteCcy": "USD", "cadence": "Quarterly", "ir": "https://investor.ecolab.com/", "color": "#eda100"},
+    {"id": "watts", "name": "Watts", "ccy": "USD", "exch": "NYSE", "ticker": "WTS", "yahoo": ["WTS"], "stooq": ["wts.us"], "quoteCcy": "USD", "cadence": "Quarterly", "ir": "https://investors.watts.com/", "color": "#e87ba4"},
+    {"id": "emerson", "name": "Emerson", "ccy": "USD", "exch": "NYSE", "ticker": "EMR", "yahoo": ["EMR"], "stooq": ["emr.us"], "quoteCcy": "USD", "cadence": "Quarterly, fiscal year ends 30 September", "ir": "https://ir.emerson.com/", "color": "#008300"},
+    {"id": "gf", "name": "Georg Fischer", "ccy": "CHF", "exch": "SIX Swiss Exchange", "ticker": "GF", "yahoo": ["GF.SW", "FI-N.SW"], "stooq": ["gf.ch", "fi-n.ch"], "quoteCcy": "CHF", "cadence": "H1 and FY results", "ir": "https://www.georgfischer.com/en/investors/reports-and-presentations.html", "color": "#6250d6"}
   ],
 
   "calendar": [

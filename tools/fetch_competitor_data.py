@@ -37,7 +37,7 @@ def load_data():
     return json.loads(body)
 
 
-def get(url, ua=BROWSER_UA, tries=3):
+def get(url, ua=BROWSER_UA, tries=2):
     for i in range(tries):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": ua, "Accept": "*/*"})
@@ -77,14 +77,53 @@ def yahoo_closes(symbol):
     return None
 
 
+def yfinance_closes(symbol):
+    try:
+        import yfinance  # handles Yahoo's session cookie, which plain requests from CI often lack (HTTP 429)
+    except ImportError:
+        return None
+    try:
+        h = yfinance.Ticker(symbol).history(start=START.isoformat(), interval="1d", auto_adjust=False)
+    except Exception as e:
+        print(f"  {symbol} via yfinance: {e}")
+        return None
+    if h is None or h.empty:
+        return None
+    pts = [[i.date().isoformat(), round(float(c), 4)] for i, c in h["Close"].dropna().items()]
+    try:
+        ccy = yfinance.Ticker(symbol).fast_info.get("currency")
+    except Exception:
+        ccy = None
+    return {"symbol": symbol, "ccy": ccy, "points": pts} if pts else None
+
+
+def stooq_closes(symbol, ccy):
+    url = f"https://stooq.com/q/d/l/?s={urllib.parse.quote(symbol)}&d1={START.strftime('%Y%m%d')}&i=d"
+    try:
+        raw, _ = get(url)
+    except Exception as e:
+        print(f"  {symbol} via stooq: {e}")
+        return None
+    rows = raw.decode("utf-8", "replace").strip().splitlines()
+    if not rows or not rows[0].lower().startswith("date"):
+        return None
+    pts = [[r.split(",")[0], round(float(r.split(",")[4]), 4)] for r in rows[1:] if r.count(",") >= 4]
+    return {"symbol": symbol, "ccy": ccy, "points": pts} if pts else None
+
+
 def fetch_prices(data):
     out = {}
     for co in data["companies"]:
         got = None
         for sym in co["yahoo"]:
-            got = yahoo_closes(sym)
+            got = yfinance_closes(sym) or yahoo_closes(sym)
             if got:
                 break
+            time.sleep(1)
+        for sym in co.get("stooq", []):
+            if got:
+                break
+            got = stooq_closes(sym, co.get("quoteCcy"))
         if got:
             print(f"{co['name']}: {len(got['points'])} closes, last {got['points'][-1]}")
             out[co["id"]] = got
