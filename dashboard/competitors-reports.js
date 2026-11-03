@@ -15,7 +15,7 @@ window.CW_REPORTS = {
   },
   "https://ir.emerson.com/sec-filings/all-sec-filings/content/0000032604-25-000087/0000032604-25-000087.pdf": {
    "bytes": 5875502,
-   "path": "reports/emerson/Q3-2025_fiscal-2025-form-10-k.pdf"
+   "path": "reports/emerson/Q4-2025_fy-2025-form-10-k-year-ended-30-sep-2025.pdf"
   },
   "https://report.belimo.com/ar25/app/uploads/Annual-Report-2025.pdf": {
    "bytes": 14956339,
@@ -74,5 +74,5 @@ window.CW_REPORTS = {
    "path": "reports/aalberts/Q3-2026_q3-2026-press-release.pdf"
   }
  },
- "updated": "2026-11-03 15:38 UTC"
+ "updated": "2026-11-03 15:42 UTC"
 };
