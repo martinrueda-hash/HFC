@@ -104,7 +104,7 @@ window.CW = {
    "cadence": "Quarterly",
    "ir": "https://investor.ecolab.com/",
    "color": "#eda100",
-   "profLbl": "Operating income"
+   "profLbl": "Reported operating income"
   },
   {
    "id": "watts",
@@ -416,6 +416,21 @@ window.CW = {
   },
   {
    "co": "xylem",
+   "date": "2025-10-28",
+   "event": "Q3 2025 results"
+  },
+  {
+   "co": "ecolab",
+   "date": "2025-04-29",
+   "event": "Q1 2025 results"
+  },
+  {
+   "co": "ecolab",
+   "date": "2025-07-29",
+   "event": "Q2 2025 results"
+  },
+  {
+   "co": "ecolab",
    "date": "2025-10-28",
    "event": "Q3 2025 results"
   }
@@ -2079,236 +2094,670 @@ window.CW = {
   "ecolab": {
    "Q1 2025": {
     "report": "Q1 2025 results",
+    "date": "2025-04-29",
+    "rev": 3695.0,
+    "revPy": 3751.9,
     "org": 3,
     "mgnLbl": "Organic operating margin",
     "mgn": 16.0,
     "mgnChg": 190,
+    "prof": 555.3,
+    "profPy": 517.9,
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.50",
      "c": "+12%; GAAP $1.41"
     },
+    "segLbl": "By reporting segment, at fixed currency; margin = segment operating margin",
+    "seg": [
+     {
+      "n": "Global Water",
+      "rev": 1800.5,
+      "revPy": 1755.0,
+      "org": 2,
+      "prof": 260.0,
+      "profPy": 243.6,
+      "mgn": 14.4,
+      "mgnPy": 13.9
+     },
+     {
+      "n": "· Food & Beverage",
+      "org": 2,
+      "sub": true
+     },
+     {
+      "n": "· Paper",
+      "org": 0,
+      "sub": true
+     },
+     {
+      "n": "Global Institutional & Specialty",
+      "rev": 1406.5,
+      "revPy": 1446.9,
+      "org": 4,
+      "prof": 298.6,
+      "profPy": 257.4,
+      "mgn": 21.2,
+      "mgnPy": 17.8
+     },
+     {
+      "n": "· Institutional",
+      "org": 4,
+      "sub": true,
+      "note": "-5% at fixed currency incl. acquisitions"
+     },
+     {
+      "n": "· Specialty",
+      "org": 3,
+      "sub": true
+     },
+     {
+      "n": "Global Pest Elimination",
+      "rev": 278.1,
+      "revPy": 260.3,
+      "org": 5,
+      "prof": 46.1,
+      "profPy": 46.5,
+      "mgn": 16.6,
+      "mgnPy": 17.9
+     },
+     {
+      "n": "Global Life Sciences",
+      "rev": 167.0,
+      "revPy": 159.3,
+      "org": 5,
+      "prof": 25.2,
+      "profPy": 19.3,
+      "mgn": 15.1,
+      "mgnPy": 12.1
+     }
+    ],
+    "segNote": "Organic +3%: Pest +5% and Life Sciences +5% led; Water +2%, Institutional & Specialty +4% organic (−3% at fixed rates after the surgical-solutions sale). Life Sciences OI +31%, Institutional & Specialty OI +16%; Pest OI flat.",
+    "guide": "FY 2025 adj. EPS growth of 12–15%; 20% organic OI margin by 2027.",
     "src": [
      [
-      "Q1 2025 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/31462/000155837025005743/ecl-20250429xex99d1.htm"
+      "Q1 2025 earnings presentation (PDF)",
+      "reports/ecolab/Q1-2025_earnings-presentation.pdf"
      ]
     ]
    },
    "Q2 2025": {
     "report": "Q2 2025 results",
+    "date": "2025-07-29",
+    "rev": 4025.2,
+    "revPy": 3985.8,
     "org": 3,
     "mgnLbl": "Organic operating margin",
     "mgn": 18.3,
     "mgnChg": 170,
+    "prof": 710.1,
+    "profPy": 656.9,
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.89",
      "c": "+13%; GAAP $1.84"
     },
+    "segLbl": "By reporting segment, at fixed currency; margin = segment operating margin",
+    "seg": [
+     {
+      "n": "Global Water",
+      "rev": 1908.5,
+      "revPy": 1863.2,
+      "org": 2,
+      "prof": 306.3,
+      "profPy": 288.6,
+      "mgn": 16.0,
+      "mgnPy": 15.5
+     },
+     {
+      "n": "· Food & Beverage",
+      "org": 3,
+      "sub": true
+     },
+     {
+      "n": "· Paper",
+      "org": -3,
+      "sub": true
+     },
+     {
+      "n": "Global Institutional & Specialty",
+      "rev": 1511.7,
+      "revPy": 1548.1,
+      "org": 4,
+      "prof": 359.4,
+      "profPy": 329.5,
+      "mgn": 23.8,
+      "mgnPy": 21.3
+     },
+     {
+      "n": "· Institutional",
+      "org": 3,
+      "sub": true,
+      "note": "-5% at fixed currency incl. acquisitions"
+     },
+     {
+      "n": "· Specialty",
+      "org": 4,
+      "sub": true
+     },
+     {
+      "n": "Global Pest Elimination",
+      "rev": 311.3,
+      "revPy": 290.2,
+      "org": 6,
+      "prof": 61.2,
+      "profPy": 60.0,
+      "mgn": 19.7,
+      "mgnPy": 20.7
+     },
+     {
+      "n": "Global Life Sciences",
+      "rev": 176.7,
+      "revPy": 169.8,
+      "org": 4,
+      "prof": 34.8,
+      "profPy": 17.0,
+      "mgn": 19.7,
+      "mgnPy": 10.0
+     }
+    ],
+    "segNote": "Pest +6% and Institutional & Specialty +4% organic; Water +2% with Paper −3%. Life Sciences OI doubled (34.8 vs 17.0). Organic OI margin +170 bps.",
+    "guide": "FY 2025 adj. EPS growth of 12–15%; 20% organic OI margin by 2027.",
     "src": [
      [
-      "Q2 2025 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/31462/000155837025009695/ecl-20250729xex99d1.htm"
+      "Q2 2025 earnings presentation (PDF)",
+      "reports/ecolab/Q2-2025_earnings-presentation.pdf"
      ]
     ]
    },
    "Q3 2025": {
     "report": "Q3 2025 results",
-    "rev": 4154,
-    "revChg": 4,
+    "date": "2025-10-28",
+    "rev": 4165.0,
+    "revPy": 3998.5,
     "org": 3,
     "mgnLbl": "Organic operating margin",
     "mgn": 18.7,
     "mgnChg": 110,
+    "prof": 760.2,
+    "profPy": 1044.8,
     "eps": {
      "l": "Adj. EPS",
      "v": "$2.07",
      "c": "+13%; GAAP $2.05"
     },
-    "note": "Value pricing accelerated from 2% to 3%; volume +1%.",
-    "derived": [
-     "rev"
+    "segLbl": "By reporting segment, at fixed currency; margin = segment operating margin",
+    "seg": [
+     {
+      "n": "Global Water",
+      "rev": 1953.5,
+      "revPy": 1897.6,
+      "org": 2,
+      "prof": 336.0,
+      "profPy": 324.8,
+      "mgn": 17.2,
+      "mgnPy": 17.1
+     },
+     {
+      "n": "· Food & Beverage",
+      "org": 4,
+      "sub": true
+     },
+     {
+      "n": "· Paper",
+      "org": -4,
+      "sub": true
+     },
+     {
+      "n": "Global Institutional & Specialty",
+      "rev": 1544.8,
+      "revPy": 1525.7,
+      "org": 4,
+      "prof": 365.0,
+      "profPy": 327.6,
+      "mgn": 23.6,
+      "mgnPy": 21.5
+     },
+     {
+      "n": "· Institutional",
+      "org": 3,
+      "sub": true,
+      "note": "-1% at fixed currency incl. acquisitions"
+     },
+     {
+      "n": "· Specialty",
+      "org": 7,
+      "sub": true
+     },
+     {
+      "n": "Global Pest Elimination",
+      "rev": 322.6,
+      "revPy": 301.7,
+      "org": 6,
+      "prof": 67.4,
+      "profPy": 60.5,
+      "mgn": 20.9,
+      "mgnPy": 20.1
+     },
+     {
+      "n": "Global Life Sciences",
+      "rev": 171.0,
+      "revPy": 161.7,
+      "org": 6,
+      "prof": 28.1,
+      "profPy": 23.9,
+      "mgn": 16.4,
+      "mgnPy": 14.8
+     }
     ],
+    "segNote": "Pest +6%, Life Sciences +6%, Institutional & Specialty +4% organic; Water +2% (Paper −4%). OI up in all segments, Institutional & Specialty +15% and Life Sciences +18%.",
+    "guide": "Q4 2025 adj. EPS $2.02–2.12 (+12% to 17%).",
     "src": [
      [
-      "Q3 2025 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/31462/000110465925102859/ecl-20251028xex99d1.htm"
+      "Q3 2025 earnings presentation (PDF)",
+      "reports/ecolab/Q3-2025_earnings-presentation.pdf"
      ]
     ]
    },
    "Q4 2025": {
     "report": "Q4 2025 results",
     "date": "2026-02-10",
-    "revChg": 5,
+    "rev": 4196.0,
+    "revPy": 4005.2,
     "org": 3,
+    "mgnLbl": "Organic operating margin",
+    "mgn": 18.5,
+    "mgnChg": 140,
+    "prof": 712.0,
+    "profPy": 582.8,
     "eps": {
      "l": "Adj. EPS",
-     "v": "$2.07",
-     "c": "FY $7.53 less Q1–Q3"
+     "v": "$2.08",
+     "c": "+15%; GAAP $1.98"
     },
-    "extra": [
+    "segLbl": "By reporting segment, at fixed currency; margin = segment operating margin",
+    "seg": [
      {
-      "l": "Organic operating income",
-      "v": "+12%"
+      "n": "Global Water",
+      "rev": 2017.4,
+      "revPy": 1967.6,
+      "org": 2,
+      "prof": 361.6,
+      "profPy": 350.2,
+      "mgn": 17.9,
+      "mgnPy": 17.8
      },
      {
-      "l": "FY 2025 sales",
-      "v": "16,100",
-      "c": "+2%; organic +3%"
+      "n": "· Food & Beverage",
+      "org": 5,
+      "sub": true
      },
      {
-      "l": "FY 2025 adj. EPS",
-      "v": "$7.53",
-      "c": "+13%; GAAP $7.28"
+      "n": "· Paper",
+      "org": -7,
+      "sub": true
      },
      {
-      "l": "FY 2025 operating cash flow",
-      "v": "3,000",
-      "c": "2,800 in 2024"
+      "n": "Global Institutional & Specialty",
+      "rev": 1499.0,
+      "revPy": 1458.7,
+      "org": 3,
+      "prof": 334.8,
+      "profPy": 287.7,
+      "mgn": 22.3,
+      "mgnPy": 19.7
+     },
+     {
+      "n": "· Institutional",
+      "org": 1,
+      "sub": true
+     },
+     {
+      "n": "· Specialty",
+      "org": 7,
+      "sub": true
+     },
+     {
+      "n": "Global Pest Elimination",
+      "rev": 307.2,
+      "revPy": 287.9,
+      "org": 7,
+      "prof": 62.4,
+      "profPy": 42.7,
+      "mgn": 20.3,
+      "mgnPy": 14.8
+     },
+     {
+      "n": "Global Life Sciences",
+      "rev": 191.4,
+      "revPy": 179.7,
+      "org": 7,
+      "prof": 32.6,
+      "profPy": 31.6,
+      "mgn": 17.0,
+      "mgnPy": 17.6
      }
     ],
-    "derived": [
-     "eps"
-    ],
-    "guide": "2026 adj. EPS growth of 12–15% (before the CoolIT deal).",
+    "segNote": "Pest +7% and Life Sciences +7% organic; Institutional & Specialty +3%, Water +2% with Paper −7%. Pest OI +46%, Institutional & Specialty OI +16%. Organic OI margin +140 bps to 18.5%.",
+    "guide": "2026 adj. EPS $8.43–8.63 (+12% to 15%), incl. ~$0.13 Ovivo Electronics amortisation; Q1 2026 $1.67–1.73.",
     "src": [
      [
-      "Q4 2025 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/31462/000110465926012358/ecl-20260210xex99d1.htm"
-     ],
-     [
-      "10-K 2025",
-      "https://www.sec.gov/Archives/edgar/data/31462/000110465926018357/ecl-20251231x10k.htm"
+      "Q4 2025 earnings presentation (PDF)",
+      "reports/ecolab/Q4-2025_earnings-presentation.pdf"
      ]
     ]
    },
    "Q1 2026": {
     "report": "Q1 2026 results",
     "date": "2026-04-28",
+    "rev": 4066.1,
+    "revPy": 3695.0,
     "org": 4,
     "mgnLbl": "Adj. operating margin",
     "mgn": 16.7,
+    "mgnChg": 70,
+    "prof": 622.0,
+    "profPy": 555.3,
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.70",
-     "c": "+13%"
+     "c": "+13%; GAAP $1.52"
     },
+    "segLbl": "By reporting segment, at fixed currency; margin = segment operating margin",
+    "seg": [
+     {
+      "n": "Global Water",
+      "rev": 2035.2,
+      "revPy": 1899.5,
+      "org": 2,
+      "prof": 297.8,
+      "profPy": 278.7,
+      "mgn": 14.6,
+      "mgnPy": 14.7
+     },
+     {
+      "n": "· Food & Beverage",
+      "org": 5,
+      "sub": true
+     },
+     {
+      "n": "· Heavy Water",
+      "org": -2,
+      "sub": true
+     },
+     {
+      "n": "· High-Tech",
+      "org": 25,
+      "sub": true,
+      "note": "+131% at fixed currency incl. acquisitions"
+     },
+     {
+      "n": "· Light Water",
+      "org": 2,
+      "sub": true
+     },
+     {
+      "n": "· Paper",
+      "org": -2,
+      "sub": true
+     },
+     {
+      "n": "Global Institutional & Specialty",
+      "rev": 1507.7,
+      "revPy": 1454.8,
+      "org": 4,
+      "prof": 347.5,
+      "profPy": 308.4,
+      "mgn": 23.0,
+      "mgnPy": 21.2
+     },
+     {
+      "n": "· Institutional",
+      "org": 2,
+      "sub": true
+     },
+     {
+      "n": "· Specialty",
+      "org": 9,
+      "sub": true
+     },
+     {
+      "n": "Global Pest Elimination",
+      "rev": 310.1,
+      "revPy": 287.4,
+      "org": 7,
+      "prof": 51.7,
+      "profPy": 47.7,
+      "mgn": 16.7,
+      "mgnPy": 16.6
+     },
+     {
+      "n": "Global Life Sciences",
+      "rev": 200.9,
+      "revPy": 181.4,
+      "org": 11,
+      "prof": 37.5,
+      "profPy": 31.0,
+      "mgn": 18.7,
+      "mgnPy": 17.1
+     }
+    ],
+    "segNote": "Growth engines accelerated: High-Tech +25% organic (+131% with Ovivo), Life Sciences +11% (bioprocessing doubled), Pest +7%. Water +2% as Paper and Heavy Water stabilised. Institutional & Specialty OI +13%, margin +180 bps to 23.0%.",
+    "guide": "2026 adj. EPS $8.43–8.63 (+12% to 15%) excl. CoolIT; organic growth 2H +6% to 7%; adj. OI margin ~19%; Q2 $2.02–2.12.",
     "src": [
      [
-      "Q1 2026 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/0000031462/000110465926049822/ecl-20260428xex99d1.htm"
+      "Q1 2026 earnings presentation (PDF)",
+      "reports/ecolab/Q1-2026_earnings-presentation.pdf"
      ]
     ]
    },
    "Q2 2026": {
     "report": "Q2 2026 results",
     "date": "2026-07-28",
-    "revChg": 10,
+    "rev": 4415.4,
+    "revPy": 4025.2,
     "org": 5,
     "mgnLbl": "Organic operating margin",
     "mgn": 18.8,
+    "mgnChg": 40,
+    "prof": 757.9,
+    "profPy": 710.1,
     "eps": {
      "l": "Adj. EPS",
      "v": "$2.09",
      "c": "+11%; GAAP $1.90"
     },
-    "extra": [
+    "segLbl": "By reporting segment, at fixed currency; margin = segment operating margin",
+    "seg": [
      {
-      "l": "Reported operating margin",
-      "v": "17.2%"
+      "n": "Global Water",
+      "rev": 2215.5,
+      "revPy": 2014.9,
+      "org": 4,
+      "prof": 347.7,
+      "profPy": 329.7,
+      "mgn": 15.7,
+      "mgnPy": 16.4
+     },
+     {
+      "n": "· Food & Beverage",
+      "org": 7,
+      "sub": true
+     },
+     {
+      "n": "· Heavy Water",
+      "org": -1,
+      "sub": true
+     },
+     {
+      "n": "· High-Tech",
+      "org": 29,
+      "sub": true,
+      "note": "+139% at fixed currency incl. acquisitions"
+     },
+     {
+      "n": "· Light Water",
+      "org": 3,
+      "sub": true
+     },
+     {
+      "n": "· Paper",
+      "org": 0,
+      "sub": true
+     },
+     {
+      "n": "Global Institutional & Specialty",
+      "rev": 1617.4,
+      "revPy": 1562.5,
+      "org": 4,
+      "prof": 389.9,
+      "profPy": 368.1,
+      "mgn": 24.1,
+      "mgnPy": 23.6
+     },
+     {
+      "n": "· Institutional",
+      "org": 3,
+      "sub": true
+     },
+     {
+      "n": "· Specialty",
+      "org": 6,
+      "sub": true
+     },
+     {
+      "n": "Global Pest Elimination",
+      "rev": 350.5,
+      "revPy": 321.2,
+      "org": 7,
+      "prof": 70.5,
+      "profPy": 62.5,
+      "mgn": 20.1,
+      "mgnPy": 19.5
+     },
+     {
+      "n": "Global Life Sciences",
+      "rev": 221.0,
+      "revPy": 191.4,
+      "org": 15,
+      "prof": 58.5,
+      "profPy": 40.2,
+      "mgn": 26.5,
+      "mgnPy": 21.0
      }
     ],
-    "guide": "2026 adj. EPS raised to $8.05–8.25 (+7–10%).",
+    "segNote": "Organic growth accelerated to 5%: High-Tech +29% organic, Life Sciences +15%, Pest +7%, Water +4%. Life Sciences OI +46% with margin 26.5%. CoolIT closed 2 July.",
+    "guide": "2026 adj. EPS raised to $8.05–8.25 (+7% to 10%) incl. CoolIT costs; Q3 $2.13–2.23; organic OI margin 20% target.",
     "src": [
      [
-      "Q2 2026 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/0000031462/000162828026049933/ecl_ex99x1.htm"
+      "Q2 2026 earnings presentation (PDF)",
+      "reports/ecolab/Q2-2026_earnings-presentation.pdf"
      ]
     ]
    },
    "Q3 2026": {
     "report": "Q3 2026 results",
     "date": "2026-10-27",
-    "rev": 4694,
-    "revChg": 13,
+    "rev": 4694.8,
+    "revPy": 4165.0,
     "org": 7,
     "mgnLbl": "Organic operating margin",
     "mgn": 19.6,
     "mgnChg": 70,
+    "prof": 810.5,
+    "profPy": 760.2,
     "eps": {
      "l": "Adj. EPS",
      "v": "$2.18",
-     "c": "+5% (~10 pts CoolIT drag); GAAP $1.95"
+     "c": "+5%; GAAP $1.95; ~10 pts CoolIT drag"
     },
-    "extra": [
-     {
-      "l": "Operating income",
-      "v": "810.5",
-      "c": "+7%; adjusted +14%"
-     },
-     {
-      "l": "Reported operating margin",
-      "v": "17.3%"
-     },
-     {
-      "l": "Net interest expense",
-      "v": "+70",
-      "c": "deal financing"
-     }
-    ],
+    "segLbl": "By reporting segment, at fixed currency; margin = segment operating margin",
     "seg": [
      {
       "n": "Global Water",
-      "rev": 2480,
-      "chg": 20,
+      "rev": 2479.6,
+      "revPy": 2061.0,
       "org": 9,
-      "note": "High-Tech +63% organic; ~11 pts from Ovivo Electronics and CoolIT"
+      "prof": 445.2,
+      "profPy": 357.9,
+      "mgn": 18.0,
+      "mgnPy": 17.4
+     },
+     {
+      "n": "· Food & Beverage",
+      "org": 8,
+      "sub": true
+     },
+     {
+      "n": "· Heavy Water",
+      "org": 4,
+      "sub": true
+     },
+     {
+      "n": "· High-Tech",
+      "org": 63,
+      "sub": true,
+      "note": "+293% at fixed currency incl. acquisitions"
+     },
+     {
+      "n": "· Light Water",
+      "org": 5,
+      "sub": true
+     },
+     {
+      "n": "· Paper",
+      "org": 6,
+      "sub": true
      },
      {
       "n": "Global Institutional & Specialty",
-      "rev": 1640,
-      "chg": 3,
-      "org": 3
+      "rev": 1638.3,
+      "revPy": 1596.0,
+      "org": 3,
+      "prof": 404.9,
+      "profPy": 376.3,
+      "mgn": 24.7,
+      "mgnPy": 23.6
+     },
+     {
+      "n": "· Institutional",
+      "org": 2,
+      "sub": true
+     },
+     {
+      "n": "· Specialty",
+      "org": 5,
+      "sub": true
      },
      {
       "n": "Global Pest Elimination",
       "rev": 363.5,
-      "chg": 9
+      "revPy": 332.7,
+      "org": 8,
+      "prof": 73.9,
+      "profPy": 69.5,
+      "mgn": 20.3,
+      "mgnPy": 20.9
      },
      {
       "n": "Global Life Sciences",
-      "rev": 215,
+      "rev": 215.8,
+      "revPy": 185.2,
       "org": 17,
       "prof": 50.2,
       "profPy": 33.8,
       "mgn": 23.3,
-      "mgnPy": 18.3,
-      "note": "Operating income +49%"
-     },
-     {
-      "n": "Ecolab Digital",
-      "rev": 129,
-      "chg": 34
+      "mgnPy": 18.3
      }
     ],
-    "guide": "2026 adj. EPS $8.10–8.20 (+8–9%); Q4 organic growth 6–7%; path to 20% organic operating margin in 2027.",
+    "segNote": "Organic growth accelerated to 7%: High-Tech +63% organic (+293% with Ovivo and CoolIT), Life Sciences +17%, Pest +8%, Water +9%; Institutional & Specialty +3%. Life Sciences OI +49% (margin 23.3%); Water OI +24% at fixed rates.",
+    "guide": "2026 adj. EPS $8.10–8.20 (+8% to 9%); Q4 $2.13–2.23 with reported sales +12% to 14%; 20% adj. OI margin in 2027.",
     "src": [
      [
-      "Q3 2026 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/0000031462/000162828026067418/ecl_ex99x1.htm"
-     ],
-     [
-      "Q3 2026 10-Q",
-      "https://www.sec.gov/Archives/edgar/data/0000031462/000162828026068208/ecl-20260930.htm"
+      "Q3 2026 earnings presentation (PDF)",
+      "reports/ecolab/Q3-2026_earnings-presentation.pdf"
      ]
-    ],
-    "derived": [
-     "seg.Global Life Sciences.rev",
-     "seg.Global Life Sciences.mgnPy"
-    ],
-    "segNote": "Global Water +20% (9% organic), driven by High-Tech (+63% organic) and the Ovivo/CoolIT deals. Life Sciences +17% organic with operating income +49% and margin 23.3% (+500 bps). Institutional & Specialty +3%, Pest +9%. Segment sales at fixed currency.",
-    "orgPy": 3
+    ]
    }
   },
   "watts": {
@@ -3429,12 +3878,12 @@ window.CW = {
    ],
    "src": [
     [
-     "Q3 2026 earnings release",
-     "https://www.sec.gov/Archives/edgar/data/0000031462/000162828026067418/ecl_ex99x1.htm"
+     "Q3 2026 earnings presentation (PDF)",
+     "reports/ecolab/Q3-2026_earnings-presentation.pdf"
     ],
     [
-     "Q3 2026 10-Q",
-     "https://www.sec.gov/Archives/edgar/data/0000031462/000162828026068208/ecl-20260930.htm"
+     "Q2 2026 earnings presentation (PDF)",
+     "reports/ecolab/Q2-2026_earnings-presentation.pdf"
     ]
    ]
   },
@@ -3773,86 +4222,65 @@ window.CW = {
   {
    "co": "ecolab",
    "p": "Q1 2025",
-   "type": "Results release",
-   "title": "Q1 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/31462/000155837025005743/ecl-20250429xex99d1.htm"
+   "type": "Presentation",
+   "title": "Q1 2025 earnings presentation",
+   "url": "https://investor.ecolab.com/",
+   "file": "reports/ecolab/Q1-2025_earnings-presentation.pdf",
+   "bytes": 1400897
   },
   {
    "co": "ecolab",
    "p": "Q2 2025",
-   "type": "Results release",
-   "title": "Q2 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/31462/000155837025009695/ecl-20250729xex99d1.htm"
+   "type": "Presentation",
+   "title": "Q2 2025 earnings presentation",
+   "url": "https://investor.ecolab.com/",
+   "file": "reports/ecolab/Q2-2025_earnings-presentation.pdf",
+   "bytes": 1406182
   },
   {
    "co": "ecolab",
    "p": "Q3 2025",
-   "type": "Results release",
-   "title": "Q3 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/31462/000110465925102859/ecl-20251028xex99d1.htm"
+   "type": "Presentation",
+   "title": "Q3 2025 earnings presentation",
+   "url": "https://investor.ecolab.com/",
+   "file": "reports/ecolab/Q3-2025_earnings-presentation.pdf",
+   "bytes": 1697690
   },
   {
    "co": "ecolab",
    "p": "Q4 2025",
-   "type": "Results release",
-   "title": "Q4 / FY 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/31462/000110465926012358/ecl-20260210xex99d1.htm"
-  },
-  {
-   "co": "ecolab",
-   "p": "Q4 2025",
-   "type": "Annual report",
-   "title": "Annual report 2025",
-   "url": "https://www.sec.gov/Archives/edgar/data/31462/000110465926032785/tm268255d1_ars.pdf"
-  },
-  {
-   "co": "ecolab",
-   "p": "Q4 2025",
-   "type": "Annual report",
-   "title": "10-K 2025",
-   "url": "https://www.sec.gov/Archives/edgar/data/31462/000110465926018357/ecl-20251231x10k.htm"
+   "type": "Presentation",
+   "title": "Q4 2025 earnings presentation",
+   "url": "https://investor.ecolab.com/",
+   "file": "reports/ecolab/Q4-2025_earnings-presentation.pdf",
+   "bytes": 935874
   },
   {
    "co": "ecolab",
    "p": "Q1 2026",
-   "type": "Results release",
-   "title": "Q1 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000031462/000110465926049822/ecl-20260428xex99d1.htm"
-  },
-  {
-   "co": "ecolab",
-   "p": "Q1 2026",
-   "type": "Quarterly report",
-   "title": "Q1 2026 10-Q",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000031462/000110465926056737/ecl-20260331x10q.htm"
+   "type": "Presentation",
+   "title": "Q1 2026 earnings presentation",
+   "url": "https://investor.ecolab.com/",
+   "file": "reports/ecolab/Q1-2026_earnings-presentation.pdf",
+   "bytes": 1174988
   },
   {
    "co": "ecolab",
    "p": "Q2 2026",
-   "type": "Results release",
-   "title": "Q2 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000031462/000162828026049933/ecl_ex99x1.htm"
-  },
-  {
-   "co": "ecolab",
-   "p": "Q2 2026",
-   "type": "Quarterly report",
-   "title": "Q2 2026 10-Q",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000031462/000162828026053886/ecl-20260630.htm"
+   "type": "Presentation",
+   "title": "Q2 2026 earnings presentation",
+   "url": "https://investor.ecolab.com/",
+   "file": "reports/ecolab/Q2-2026_earnings-presentation.pdf",
+   "bytes": 9066740
   },
   {
    "co": "ecolab",
    "p": "Q3 2026",
-   "type": "Results release",
-   "title": "Q3 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000031462/000162828026067418/ecl_ex99x1.htm"
-  },
-  {
-   "co": "ecolab",
-   "p": "Q3 2026",
-   "type": "Quarterly report",
-   "title": "Q3 2026 10-Q",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000031462/000162828026068208/ecl-20260930.htm"
+   "type": "Presentation",
+   "title": "Q3 2026 earnings presentation",
+   "url": "https://investor.ecolab.com/",
+   "file": "reports/ecolab/Q3-2026_earnings-presentation.pdf",
+   "bytes": 9060582
   },
   {
    "co": "watts",

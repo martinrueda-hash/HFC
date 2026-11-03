@@ -523,7 +523,7 @@ function finTable(c, r) {
   };
   const g = { rev: r.rev, revPy: r.revPy, chg: r.revChg, org: r.org, orgPy: r.orgPy, prof: r.prof, profPy: r.profPy, mgn: r.mgn, mgnPy: r.mgnPy, mgnChg: r.mgnChg };
   let h = block(g, c.name, "", { mLbl: r.mgnLbl || defMgn(c.id), pLbl: c.profLbl });
-  if (r.seg && r.seg.length) h += `<tr class="sec"><td class="l" colspan="4">${esc(r.segLbl || "By reporting segment")}</td></tr>` + r.seg.map(s => block(s, s.n.replace(/^· /, ""), "seg." + s.n + ".", { mLbl: segM, pLbl: c.id === "pentair" ? "Segment income" : null })).join("");
+  if (r.seg && r.seg.length) h += `<tr class="sec"><td class="l" colspan="4">${esc(r.segLbl || "By reporting segment")}</td></tr>` + r.seg.map(s => block(s, s.n.replace(/^· /, ""), "seg." + s.n + ".", { mLbl: segM, pLbl: c.id === "pentair" ? "Segment income" : c.id === "ecolab" ? "Operating income" : null })).join("");
   if (r.geo && r.geo.length) h += `<tr class="sec"><td class="l" colspan="4">By region</td></tr>` + r.geo.map(s => block(s, s.n, "geo." + s.n + ".", { mLbl: segM })).join("");
   if (!(r.seg && r.seg.length) && !(r.geo && r.geo.length)) h += `<tr><td class="nt" colspan="4">No segment or regional split in this report.</td></tr>`;
   return `<table class="fin"><thead><tr><th class="l">in ${c.ccy} million unless stated</th><th class="cur">${cur}</th><th>${prev}</th><th>change</th></tr></thead><tbody>${h}</tbody></table>`;
