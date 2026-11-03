@@ -1744,82 +1744,77 @@ window.CW = {
     "guide": "FY 2025 adj. EPS raised to $5.03–5.08."
    },
    "Q4 2025": {
-    "report": "Q4 2025 results",
+    "report": "FY 2025 results (12 months)",
     "date": "2026-02-10",
-    "rev": 2397,
-    "revPy": 2256,
-    "org": 4,
+    "rev": 9035,
+    "revPy": 8562,
+    "org": 5,
     "mgnLbl": "Adj. EBITDA margin",
-    "mgn": 23.2,
-    "mgnPy": 21.0,
-    "prof": 557,
+    "mgn": 22.2,
+    "mgnPy": 20.6,
+    "prof": 2009,
+    "profPy": 1763,
     "eps": {
      "l": "Adj. EPS",
-     "v": "$1.42",
-     "c": "+20% vs $1.18"
+     "v": "$5.08",
+     "c": "+19%; GAAP $3.92"
     },
     "cash": {
-     "l": "Free cash flow, FY 2025",
+     "l": "Free cash flow",
      "v": "925",
-     "c": "942 a year earlier"
-    },
-    "orders": {
-     "l": "Orders",
-     "v": "2,391",
-     "c": "+7% organic; +9% reported"
+     "c": "942 in 2024"
     },
     "segLbl": "By reporting segment; margin = adj. segment EBITDA margin",
     "seg": [
      {
       "n": "Water Infrastructure",
-      "rev": 749,
-      "org": 0,
-      "prof": 219,
-      "mgn": 29.2,
-      "mgnChg": 510,
-      "note": "Orders 691 (-1% organic)"
+      "rev": 2636,
+      "revPy": 2555,
+      "org": 3,
+      "prof": 641,
+      "profPy": 529,
+      "mgn": 24.3,
+      "mgnPy": 20.7
      },
      {
       "n": "Applied Water",
-      "rev": 475,
-      "org": 3,
-      "prof": 89,
-      "mgn": 18.7,
-      "mgnChg": 60,
-      "note": "Orders 474 (+5% organic)"
+      "rev": 1849,
+      "revPy": 1793,
+      "org": 2,
+      "prof": 378,
+      "profPy": 317,
+      "mgn": 20.4,
+      "mgnPy": 17.7
      },
      {
       "n": "Measurement & Control Solutions",
-      "rev": 534,
-      "org": 10,
-      "prof": 108,
-      "mgn": 20.2,
-      "mgnChg": 310,
-      "note": "Orders 588 (+22% organic)"
+      "rev": 2086,
+      "revPy": 1871,
+      "org": 9,
+      "prof": 450,
+      "profPy": 395,
+      "mgn": 21.6,
+      "mgnPy": 21.1
      },
      {
       "n": "Water Solutions & Services",
-      "rev": 639,
-      "org": 4,
-      "prof": 153,
-      "mgn": 23.9,
-      "mgnChg": 110,
-      "note": "Orders 638 (+7% organic)"
+      "rev": 2464,
+      "revPy": 2343,
+      "org": 5,
+      "prof": 595,
+      "profPy": 548,
+      "mgn": 24.1,
+      "mgnPy": 23.4
      }
     ],
-    "segNote": "MCS +10% and WSS +4% drove growth; WI margin reached 29.2% (+510 bps), MCS +310 bps. MCS orders +22%. FY 2025 revenue USD 9,035m, adj. EBITDA 2,009 (22.2%).",
+    "segNote": "Record year: organic +5% with MCS +9% (metering) leading; WSS +5%, WI +3%, AW +2%. Adj. EBITDA margin +160 bps to 22.2%, with WI +360 bps to 24.3% and AW +270 bps to 20.4%.",
+    "guide": "2026: revenue USD 9.1–9.2bn, organic +2–4%, adj. EBITDA margin 22.9–23.3%, adj. EPS $5.35–5.60 (initial guidance).",
     "src": [
      [
       "Q4 2025 earnings package (PDF)",
       "reports/xylem/Q4-2025_earnings-package.pdf"
-     ],
-     [
-      "Q4 2025 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/1524472/000152447226000008/xyl02102026ex991.htm"
      ]
-    ],
-    "guide": "2026 outlook given with FY results.",
-    "note": "FY 2025: revenue USD 9,035m, adj. EBITDA USD 2,009m (22.2%), adj. EPS $5.08."
+    ]
    },
    "Q1 2026": {
     "report": "Q1 2026 results",
@@ -2361,86 +2356,88 @@ window.CW = {
     ]
    },
    "Q4 2025": {
-    "report": "Q4 2025 results",
+    "report": "FY 2025 results (12 months)",
     "date": "2026-02-10",
-    "rev": 4196.0,
-    "revPy": 4005.2,
+    "rev": 16081.2,
+    "revPy": 15741.4,
     "org": 3,
     "mgnLbl": "Organic operating margin",
-    "mgn": 18.5,
-    "mgnChg": 140,
-    "prof": 712.0,
-    "profPy": 582.8,
+    "mgn": 17.9,
+    "mgnPy": 16.4,
+    "prof": 2737.6,
+    "profPy": 2802.4,
     "eps": {
      "l": "Adj. EPS",
-     "v": "$2.08",
-     "c": "+15%; GAAP $1.98"
+     "v": "$7.53",
+     "c": "+13%; GAAP $7.28"
     },
-    "segLbl": "By reporting segment, at fixed currency; margin = segment operating margin",
+    "segLbl": "By reporting segment, at fixed currency (sum of the four quarters); margin = segment operating margin",
     "seg": [
      {
       "n": "Global Water",
-      "rev": 2017.4,
-      "revPy": 1967.6,
-      "org": 2,
-      "prof": 361.6,
-      "profPy": 350.2,
-      "mgn": 17.9,
-      "mgnPy": 17.8
-     },
-     {
-      "n": "· Food & Beverage",
-      "org": 5,
-      "sub": true
-     },
-     {
-      "n": "· Paper",
-      "org": -7,
-      "sub": true
+      "rev": 7679.9,
+      "revPy": 7483.4,
+      "org": 2.0,
+      "prof": 1263.9,
+      "profPy": 1207.2,
+      "mgn": 16.5,
+      "mgnPy": 16.1
      },
      {
       "n": "Global Institutional & Specialty",
-      "rev": 1499.0,
-      "revPy": 1458.7,
-      "org": 3,
-      "prof": 334.8,
-      "profPy": 287.7,
-      "mgn": 22.3,
-      "mgnPy": 19.7
-     },
-     {
-      "n": "· Institutional",
-      "org": 1,
-      "sub": true
-     },
-     {
-      "n": "· Specialty",
-      "org": 7,
-      "sub": true
+      "rev": 5962.0,
+      "revPy": 5979.4,
+      "org": 3.4,
+      "prof": 1357.8,
+      "profPy": 1202.2,
+      "mgn": 22.8,
+      "mgnPy": 20.1
      },
      {
       "n": "Global Pest Elimination",
-      "rev": 307.2,
-      "revPy": 287.9,
-      "org": 7,
-      "prof": 62.4,
-      "profPy": 42.7,
-      "mgn": 20.3,
-      "mgnPy": 14.8
+      "rev": 1219.2,
+      "revPy": 1140.1,
+      "org": 6.1,
+      "prof": 237.1,
+      "profPy": 209.7,
+      "mgn": 19.4,
+      "mgnPy": 18.4
      },
      {
       "n": "Global Life Sciences",
-      "rev": 191.4,
-      "revPy": 179.7,
-      "org": 7,
-      "prof": 32.6,
-      "profPy": 31.6,
-      "mgn": 17.0,
-      "mgnPy": 17.6
+      "rev": 706.1,
+      "revPy": 670.5,
+      "org": 5.3,
+      "prof": 120.7,
+      "profPy": 91.8,
+      "mgn": 17.1,
+      "mgnPy": 13.7
      }
     ],
-    "segNote": "Pest +7% and Life Sciences +7% organic; Institutional & Specialty +3%, Water +2% with Paper −7%. Pest OI +46%, Institutional & Specialty OI +16%. Organic OI margin +140 bps to 18.5%.",
-    "guide": "2026 adj. EPS $8.43–8.63 (+12% to 15%), incl. ~$0.13 Ovivo Electronics amortisation; Q1 2026 $1.67–1.73.",
+    "segNote": "Organic +3% with pricing; Pest Elimination and Life Sciences grew fastest, Water held back by Paper. Organic operating margin +150 bps to 17.9%; Life Sciences operating income rose strongly from a low base.",
+    "guide": "2026 adj. EPS $8.43–8.63 (+12% to 15%), incl. ~$0.13 Ovivo Electronics amortisation (initial guidance).",
+    "derived": [
+     "seg.Global Water.rev",
+     "seg.Global Water.revPy",
+     "seg.Global Water.prof",
+     "seg.Global Water.profPy",
+     "seg.Global Institutional & Specialty.rev",
+     "seg.Global Institutional & Specialty.revPy",
+     "seg.Global Institutional & Specialty.prof",
+     "seg.Global Institutional & Specialty.profPy",
+     "seg.Global Pest Elimination.rev",
+     "seg.Global Pest Elimination.revPy",
+     "seg.Global Pest Elimination.prof",
+     "seg.Global Pest Elimination.profPy",
+     "seg.Global Life Sciences.rev",
+     "seg.Global Life Sciences.revPy",
+     "seg.Global Life Sciences.prof",
+     "seg.Global Life Sciences.profPy",
+     "seg.Global Water.org",
+     "seg.Global Institutional & Specialty.org",
+     "seg.Global Pest Elimination.org",
+     "seg.Global Life Sciences.org"
+    ],
     "src": [
      [
       "Q4 2025 earnings presentation (PDF)",
@@ -2966,97 +2963,68 @@ window.CW = {
     "segLbl": "By reporting segment (regions); sales to external customers; margin = segment earnings / sales"
    },
    "Q4 2025": {
-    "report": "Q4 2025 results",
+    "report": "FY 2025 results (12 months)",
     "date": "2026-02-11",
-    "rev": 625,
-    "revChg": 16,
-    "org": 8,
+    "rev": 2438.5,
+    "revPy": 2252.2,
+    "revChg": 8.3,
+    "org": 5.3,
     "mgnLbl": "Adj. operating margin",
-    "mgn": 19.0,
-    "mgnChg": 220,
+    "mgn": 19.6,
+    "mgnChg": 190,
+    "prof": 448.1,
+    "profPy": 390.4,
     "eps": {
      "l": "Adj. EPS",
-     "v": "$2.62",
-     "c": "+28%; GAAP $2.50"
+     "v": "$10.58",
+     "c": "+19%; GAAP $10.17"
     },
     "cash": {
-     "l": "FY 2025 free cash flow",
+     "l": "Free cash flow",
      "v": "356.3",
      "c": "+7%"
     },
-    "extra": [
+    "segLbl": "By reporting segment (regions); sales to external customers; margin = segment earnings / sales",
+    "seg": [
      {
-      "l": "FY 2025 sales",
-      "v": "2,440",
-      "c": "+8%; organic +5%"
+      "n": "Americas",
+      "rev": 1847.4,
+      "revPy": 1664.9,
+      "org": 8.0,
+      "prof": 452.2,
+      "profPy": 376.0,
+      "mgn": 24.5,
+      "mgnPy": 22.6
      },
      {
-      "l": "FY 2025 adj. operating margin",
-      "v": "19.6%",
-      "c": "+190 bps"
+      "n": "Europe",
+      "rev": 450.7,
+      "revPy": 453.3,
+      "org": -4.6,
+      "prof": 59.8,
+      "profPy": 53.2,
+      "mgn": 13.3,
+      "mgnPy": 11.7
      },
      {
-      "l": "FY 2025 adj. EPS",
-      "v": "$10.58",
-      "c": "+19%"
+      "n": "APMEA",
+      "rev": 140.4,
+      "revPy": 134.0,
+      "org": 4.8,
+      "prof": 25.7,
+      "profPy": 24.5,
+      "mgn": 18.3,
+      "mgnPy": 18.3
      }
     ],
-    "note": "Acquisitions (~USD 29m in the quarter): Haws, Superior Boiler and Saudi Cast completed.",
+    "segNote": "Organic +5.3% on price in all segments and volume in the Americas and APMEA; acquisitions added 2.3 pts (Haws, Superior Boiler, Saudi Cast). Americas +8.0% organic with segment earnings +19%; Europe −4.6% on lower volume but earnings +8%; APMEA +4.8%. GAAP operating income +15%.",
     "guide": "2026: sales +8–12%, organic +2–6%.",
     "src": [
      [
       "2025 annual report incl. Form 10-K (PDF)",
       "reports/watts/Q4-2025_2025-annual-report-incl-form-10-k.pdf"
      ]
-    ],
-    "prof": 118.8,
-    "derived": [
-     "revPy",
-     "seg.Americas.rev",
-     "seg.Americas.revPy",
-     "seg.Americas.prof",
-     "seg.Americas.profPy",
-     "seg.Europe.rev",
-     "seg.Europe.revPy",
-     "seg.Europe.prof",
-     "seg.Europe.profPy",
-     "seg.APMEA.rev",
-     "seg.APMEA.revPy",
-     "seg.APMEA.prof",
-     "seg.APMEA.profPy"
-    ],
-    "seg": [
-     {
-      "n": "Americas",
-      "rev": 466.6,
-      "revPy": 398.0,
-      "prof": 108.7,
-      "profPy": 87.0,
-      "mgn": 23.3,
-      "mgnPy": 21.9
-     },
-     {
-      "n": "Europe",
-      "rev": 119.7,
-      "revPy": 108.6,
-      "prof": 18.1,
-      "profPy": 11.0,
-      "mgn": 15.1,
-      "mgnPy": 10.1
-     },
-     {
-      "n": "APMEA",
-      "rev": 38.8,
-      "revPy": 33.8,
-      "prof": 6.7,
-      "profPy": 5.9,
-      "mgn": 17.3,
-      "mgnPy": 17.5
-     }
-    ],
-    "segLbl": "By reporting segment (regions); Q4 = FY 2025 less nine months; margin = segment earnings / sales",
-    "revPy": 540.4,
-    "segNote": "Fourth-quarter segment figures are FY 2025 (annual report) less the first nine months (Q3 10-Q). Americas +17% with margin 23.3% (21.9%); Europe +10%, margin 15.1% (10.1%); APMEA +15%. FY 2025: Americas USD 1,847m, segment earnings 452 (24.5%); Europe 451, 60 (13.3%); APMEA 140, 26 (18.3%)."
+    ]
    },
    "Q1 2026": {
     "report": "Q1 2026 results",
@@ -3471,156 +3439,102 @@ window.CW = {
     "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
    "Q4 2025": {
-    "report": "Q4 2025 results (quarter ended 30 Sep 2025, incl. FY 2025)",
+    "report": "FY 2025 results (year ended 30 Sep 2025)",
     "date": "2025-11-05",
-    "rev": 4855,
-    "revChg": 5,
-    "org": 4,
+    "rev": 18016,
+    "revPy": 17492,
+    "revChg": 3,
+    "org": 3,
     "orgLbl": "Underlying growth",
+    "mgnLbl": "Adj. segment EBITA margin",
+    "mgn": 27.6,
+    "mgnPy": 26.0,
+    "prof": 4975,
+    "profPy": 4552,
     "eps": {
      "l": "Adj. EPS",
-     "v": "$1.62",
-     "c": "top of guidance"
+     "v": "$6.00",
+     "c": "+9%"
     },
     "cash": {
      "l": "Free cash flow",
-     "v": "843",
-     "c": "−7%"
+     "v": "3,245",
+     "c": "+12%"
     },
-    "extra": [
-     {
-      "l": "FY 2025 net sales",
-      "v": "18,016",
-      "c": "+3%; underlying +3%"
-     },
-     {
-      "l": "FY 2025 adj. EPS",
-      "v": "$6.00",
-      "c": "+9%"
-     },
-     {
-      "l": "FY 2025 free cash flow",
-      "v": "3,245",
-      "c": "+12%"
-     }
-    ],
-    "guide": "FY 2026: adj. EPS $6.35–6.55, FCF USD 3.5–3.6bn, net sales ~+5.5%.",
-    "src": [
-     [
-      "Fiscal 2025 Form 10-K (PDF)",
-      "reports/emerson/Q3-2025_fiscal-2025-form-10-k.pdf"
-     ],
-     [
-      "Q4 / FY 2025 release",
-      "https://ir.emerson.com/_assets/_80fc1c2bd9b6b4b0e1f3c778904be7d7/emerson/news/2025-11-05_Emerson_Reports_Fourth_Quarter_and_Full_Year_2025__617.pdf"
-     ]
-    ],
-    "prof": 1334,
-    "profPy": 1210,
-    "mgn": 27.5,
-    "mgnPy": 26.2,
-    "mgnLbl": "Adj. segment EBITA margin",
-    "segLbl": "By business group and segment (Q4 = FY 2025 less nine months); margin = adj. EBITA margin",
+    "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying",
     "seg": [
      {
       "n": "Intelligent Devices",
-      "rev": 3403,
-      "revPy": 3281,
-      "org": null,
-      "prof": 927,
-      "profPy": 875,
-      "mgn": 27.2,
-      "mgnPy": 26.7
+      "rev": 12400,
+      "revPy": 12161,
+      "org": 2,
+      "prof": 3212,
+      "profPy": 3094,
+      "mgn": 25.9,
+      "mgnPy": 25.4
      },
      {
       "n": "· Final Control",
-      "rev": 1215,
-      "revPy": 1167,
-      "org": null,
-      "sub": true
+      "rev": 4380,
+      "revPy": 4204,
+      "org": 4,
+      "sub": true,
+      "note": "Power end markets"
      },
      {
       "n": "· Measurement & Analytical",
-      "rev": 1151,
-      "revPy": 1119,
-      "org": null,
+      "rev": 4143,
+      "revPy": 4061,
+      "org": 2,
       "sub": true
      },
      {
       "n": "· Discrete Automation",
-      "rev": 677,
-      "revPy": 643,
-      "org": null,
+      "rev": 2521,
+      "revPy": 2506,
+      "org": 1,
       "sub": true
      },
      {
       "n": "· Safety & Productivity",
-      "rev": 360,
-      "revPy": 352,
-      "org": null,
+      "rev": 1356,
+      "revPy": 1390,
+      "org": -3,
       "sub": true
      },
      {
       "n": "Software and Control",
-      "rev": 1474,
-      "revPy": 1355,
-      "org": null,
-      "prof": 407,
-      "profPy": 335,
-      "mgn": 27.6,
-      "mgnPy": 24.7
+      "rev": 5691,
+      "revPy": 5399,
+      "org": 5,
+      "prof": 1763,
+      "profPy": 1458,
+      "mgn": 31.0,
+      "mgnPy": 27.0
      },
      {
       "n": "· Control Systems & Software",
-      "rev": 1067,
-      "revPy": 995,
-      "org": null,
-      "sub": true
+      "rev": 4205,
+      "revPy": 3935,
+      "org": 7,
+      "sub": true,
+      "note": "Incl. AspenTech (fully owned since March 2025)"
      },
      {
       "n": "· Test & Measurement",
-      "rev": 407,
-      "revPy": 360,
-      "org": null,
+      "rev": 1486,
+      "revPy": 1464,
+      "org": 1,
       "sub": true
      }
     ],
-    "segNote": "Fourth-quarter segment figures are FY 2025 (10-K) less the first nine months (fiscal Q3 10-Q); Emerson does not publish them separately. Software and Control +9% with adj. EBITA margin 27.6% (24.7%); Intelligent Devices +4%, margin 27.2% (26.7%). FY 2025: Intelligent Devices USD 12,400m (+2% underlying, margin 25.9%), Software and Control USD 5,691m (+5%, margin 31.0%).",
-    "derived": [
-     "profPy",
-     "prof",
-     "seg.Intelligent Devices.rev",
-     "seg.Intelligent Devices.revPy",
-     "seg.Intelligent Devices.prof",
-     "seg.Intelligent Devices.profPy",
-     "seg.Software and Control.rev",
-     "seg.Software and Control.revPy",
-     "seg.Software and Control.prof",
-     "seg.Software and Control.profPy",
-     "seg.· Final Control.rev",
-     "seg.· Final Control.revPy",
-     "seg.· Final Control.prof",
-     "seg.· Final Control.profPy",
-     "seg.· Measurement & Analytical.rev",
-     "seg.· Measurement & Analytical.revPy",
-     "seg.· Measurement & Analytical.prof",
-     "seg.· Measurement & Analytical.profPy",
-     "seg.· Discrete Automation.rev",
-     "seg.· Discrete Automation.revPy",
-     "seg.· Discrete Automation.prof",
-     "seg.· Discrete Automation.profPy",
-     "seg.· Safety & Productivity.rev",
-     "seg.· Safety & Productivity.revPy",
-     "seg.· Safety & Productivity.prof",
-     "seg.· Safety & Productivity.profPy",
-     "seg.· Control Systems & Software.rev",
-     "seg.· Control Systems & Software.revPy",
-     "seg.· Control Systems & Software.prof",
-     "seg.· Control Systems & Software.profPy",
-     "seg.· Test & Measurement.rev",
-     "seg.· Test & Measurement.revPy",
-     "seg.· Test & Measurement.prof",
-     "seg.· Test & Measurement.profPy"
+    "segNote": "Underlying +3%: Software and Control +5% (Control Systems & Software +7%) with adj. EBITA margin +400 bps to 31.0%; Intelligent Devices +2% (Final Control +4%), margin 25.9%; Safety & Productivity −3%. Old segment structure (before the fiscal 2026 change).",
+    "guide": "FY 2026: adj. EPS $6.35–6.55, FCF USD 3.5–3.6bn, net sales ~+5.5% (initial guidance).",
+    "src": [
+     [
+      "FY 2025 Form 10-K (PDF)",
+      "reports/emerson/Q3-2025_fiscal-2025-form-10-k.pdf"
+     ]
     ]
    },
    "Q1 2026": {
@@ -4377,23 +4291,21 @@ window.CW = {
     ]
    },
    "Q4 2025": {
-    "report": "Q4 2025 results",
-    "rev": 1021,
-    "org": 4,
-    "orgLbl": "Core sales growth",
+    "report": "FY 2025 results (12 months)",
+    "rev": 4200,
+    "revChg": 2,
     "mgnLbl": "Adj. return on sales",
-    "mgn": 24.7,
     "eps": {
      "l": "Adj. EPS",
-     "v": "$1.18",
-     "c": "+9%; GAAP $0.98"
+     "v": "$4.92",
+     "c": "+14%; GAAP $3.93"
     },
     "cash": {
-     "l": "FY 2025 free cash flow",
+     "l": "Free cash flow",
      "v": "748",
      "c": "+55 vs 2024"
     },
-    "note": "FY 2025: sales USD 4.2bn (+2%), adj. EPS $4.92 (+14%), GAAP EPS $3.93. Reported return on sales 20.1% in Q4.",
+    "segNote": "Full-year segment detail not yet in the dashboard (no Pentair annual report stored). Q4 2025: sales USD 1,021m, core +4%, adj. return on sales 24.7%.",
     "guide": "2026 adj. EPS $5.25–5.40 (initial guidance).",
     "src": [
      [
@@ -5295,5 +5207,8 @@ window.CW = {
    "title": "Q3 2026 10-Q",
    "url": "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000058/pnr-20260930.htm"
   }
- ]
+ ],
+ "periodLabels": {
+  "Q4 2025": "FY 2025"
+ }
 };

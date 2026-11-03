@@ -260,7 +260,7 @@ table.fin td.nt { font-size: 10.5px; color: var(--muted); text-align: left; whit
 
     <span class="subhead">Organic growth by quarter</span>
     <div class="table-scroll"><table class="mi heat" id="heatTbl"></table></div>
-    <p class="note">Organic growth as each company defines it: Belimo = growth in local currencies, Emerson = underlying growth, GF 2026 = Flow Solutions. For half-year reporters Q2 = H1 and Q4 = full year. ≈ = derived from reported growth rates, not reported as such. Click a cell to open that report. <span id="heatFy"></span></p>
+    <p class="note">Organic growth as each company defines it: Belimo = growth in local currencies, Emerson = underlying growth, GF 2026 = Flow Solutions. For half-year reporters Q2 = H1. FY 2025 = full-year results for every company. ≈ = derived from reported growth rates, not reported as such. Click a cell to open that report. <span id="heatFy"></span></p>
   </section>
 
   <!-- 3. Library -->
@@ -290,6 +290,8 @@ const D = window.CW, P = (window.CW_PRICES && window.CW_PRICES.series) || {}, R 
 const REPO = location.protocol === "file:" || location.hostname === "localhost" ? "../" : "https://github.com/martinrueda-hash/HFC/blob/claude/hopeful-allen-tvjcl3/";
 const href = u => /^https?:/.test(u) ? u : REPO + u;
 // company name with an asterisk when its financial year is not the calendar year (footnote in fyNote)
+// display label of a period, e.g. Q4 2025 is shown as the full year
+const pl = p => (D.periodLabels || {})[p] || p;
 const nm = c => esc(c.name) + (c.fyNote ? "*" : "");
 const CO = Object.fromEntries(D.companies.map(c => [c.id, c]));
 const $ = id => document.getElementById(id);
@@ -491,7 +493,7 @@ const res = (co, p) => (D.results[co] || {})[p];
 
 function drawFilters() {
   $("coCtl").innerHTML = D.companies.map(c => `<button type="button" data-co="${c.id}" aria-pressed="${c.id === selCo}">${nm(c)}</button>`).join("");
-  $("qCtl").innerHTML = D.periods.map(p => { const r = res(selCo, p); return `<button type="button" data-p="${p}" aria-pressed="${p === selP}" class="${r && !r.pending ? "" : "nodata"}" title="${esc(r ? r.report : "No report for this quarter")}">${p}</button>`; }).join("");
+  $("qCtl").innerHTML = D.periods.map(p => { const r = res(selCo, p); return `<button type="button" data-p="${p}" aria-pressed="${p === selP}" class="${r && !r.pending ? "" : "nodata"}" title="${esc(r ? r.report : "No report for this quarter")}">${pl(p)}</button>`; }).join("");
 }
 $("coCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; selCo = b.dataset.co; store.set("co", selCo); drawResults(); });
 $("qCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; selP = b.dataset.p; store.set("p", selP); drawResults(); });
@@ -539,7 +541,7 @@ function drawResults() {
   const c = CO[selCo], r = res(selCo, selP), ccy = c.ccy;
   const body = $("resBody");
   if (!r) {
-    $("repLine").innerHTML = `<b>${nm(c)} · ${selP}</b>`;
+    $("repLine").innerHTML = `<b>${nm(c)} · ${pl(selP)}</b>`;
     body.innerHTML = `<div class="empty" style="min-height:140px"><div>${esc((D.noReport[selCo] && (selCo !== "imi" || selP === "Q1 2025")) ? D.noReport[selCo] : "No report captured for this quarter.")}<br><a href="${esc(c.ir)}" target="_blank" rel="noopener">${esc(c.name)} investor relations ›</a></div></div>`;
   } else {
     $("repLine").innerHTML = `<b>${nm(c)} · ${esc(r.report)}</b><span>${r.date ? "Published " + fmtDate(r.date) + " · " : ""}${ccy} m unless stated · ${esc(c.cadence)}</span>`;
@@ -575,7 +577,7 @@ function drawQual() {
 function fyNotes() { return D.companies.filter(c => c.fyNote).map(c => `<b>*</b> ${esc(c.fyNote)}`).join(" "); }
 function drawPeers() {
   $("peerNote").innerHTML = fyNotes();
-  $("peerHead").textContent = `Peer comparison, ${selP}`;
+  $("peerHead").textContent = `Peer comparison, ${pl(selP)}`;
   $("peerTbl").innerHTML = `<thead><tr><th class="l">Company</th><th class="l">Report</th><th>Revenue<span class="u">m, own currency</span></th><th>Reported<span class="u">growth</span></th><th>Organic<span class="u">growth</span></th><th>Margin</th><th>Change<span class="u">y/y</span></th><th class="l">Margin measure</th></tr></thead><tbody>` +
     D.companies.map(c => {
       const r = res(c.id, selP);
@@ -588,7 +590,7 @@ $("peerTbl").addEventListener("click", e => { const tr = e.target.closest("tr[da
 
 function drawHeat() {
   $("heatFy").innerHTML = fyNotes();
-  $("heatTbl").innerHTML = `<thead><tr><th class="l">Company</th>${D.periods.map(p => `<th>${p}</th>`).join("")}</tr></thead><tbody>` +
+  $("heatTbl").innerHTML = `<thead><tr><th class="l">Company</th>${D.periods.map(p => `<th>${pl(p)}</th>`).join("")}</tr></thead><tbody>` +
     D.companies.map(c => `<tr class="${c.self ? "self" : ""}"><td class="l">${nm(c)}</td>${D.periods.map(p => {
       const r = res(c.id, p), v = r && !r.pending ? r.org : null;
       const k = v == null ? "cell-na" : v > 0 ? "cell-pos" : v < 0 ? "cell-neg" : "";
@@ -600,7 +602,7 @@ $("heatTbl").addEventListener("click", e => { const td = e.target.closest("td[da
 /* ---------- 3. Library ---------- */
 function drawLibFilters() {
   $("libCo").innerHTML = `<option value="">All companies</option>` + D.companies.map(c => `<option value="${c.id}">${esc(c.name)}${c.fyNote ? "*" : ""}</option>`).join("");
-  $("libP").innerHTML = `<option value="">All quarters</option>` + D.periods.map(p => `<option>${p}</option>`).join("");
+  $("libP").innerHTML = `<option value="">All quarters</option>` + D.periods.map(p => `<option value="${p}">${pl(p)}</option>`).join("");
   $("libT").innerHTML = `<option value="">All types</option>` + [...new Set(D.docs.map(d => d.type))].sort().map(t => `<option>${esc(t)}</option>`).join("");
 }
 function drawLib() {
@@ -610,7 +612,7 @@ function drawLib() {
   const local = D.docs.filter(d => d.file || R[d.url]).length;
   $("libCount").textContent = `${docs.length} of ${D.docs.length} documents · ${local} stored in the repository`;
   $("libTbl").innerHTML = `<thead><tr><th class="l">Company</th><th class="l">Quarter</th><th class="l">Type</th><th class="l">Document</th><th class="l">Repository copy</th><th class="l">Official source</th></tr></thead><tbody>` +
-    docs.map(d => { const f = d.file ? { path: d.file, bytes: d.bytes || 0 } : R[d.url]; return `<tr class="${CO[d.co].self ? "self" : ""}"><td class="l">${esc(CO[d.co].name)}</td><td class="l">${d.p}</td><td class="l"><span class="tag${d.type === "Annual report" ? " ar" : ""}">${esc(d.type)}</span></td><td class="l">${esc(d.title)}</td><td class="l">${f ? `<a class="dl" href="${REPO}${esc(f.path)}" target="_blank" rel="noopener">Open copy</a> <span class="muted">${f.path.endsWith(".pdf") ? "PDF" : "HTML"}, ${Math.max(1, Math.round(f.bytes / 1024)).toLocaleString("en-US")} KB</span>` : '<span class="muted">not stored yet</span>'}</td><td class="l"><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(new URL(d.url).hostname.replace(/^www\./, ""))} ›</a></td></tr>`; }).join("") + "</tbody>";
+    docs.map(d => { const f = d.file ? { path: d.file, bytes: d.bytes || 0 } : R[d.url]; return `<tr class="${CO[d.co].self ? "self" : ""}"><td class="l">${esc(CO[d.co].name)}</td><td class="l">${pl(d.p)}</td><td class="l"><span class="tag${d.type === "Annual report" ? " ar" : ""}">${esc(d.type)}</span></td><td class="l">${esc(d.title)}</td><td class="l">${f ? `<a class="dl" href="${REPO}${esc(f.path)}" target="_blank" rel="noopener">Open copy</a> <span class="muted">${f.path.endsWith(".pdf") ? "PDF" : "HTML"}, ${Math.max(1, Math.round(f.bytes / 1024)).toLocaleString("en-US")} KB</span>` : '<span class="muted">not stored yet</span>'}</td><td class="l"><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(new URL(d.url).hostname.replace(/^www\./, ""))} ›</a></td></tr>`; }).join("") + "</tbody>";
   $("libNote").innerHTML = `Copies live in the repository's <code>reports/</code> folder, one sub-folder per company. The GitHub Action <i>Competitor data</i> downloads any document listed in <code>docs</code> in competitors-data.js that is not stored yet${window.CW_REPORTS.updated ? " (last run " + esc(window.CW_REPORTS.updated) + ")" : ""}. To add a report, add a line to <code>docs</code> and push. Investor relations pages: ` +
     D.companies.map(c => `<a href="${esc(c.ir)}" target="_blank" rel="noopener">${esc(c.name)}</a>`).join(" · ");
 }
