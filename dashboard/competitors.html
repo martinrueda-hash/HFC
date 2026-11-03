@@ -287,6 +287,7 @@ table.fin td.nt { font-size: 10.5px; color: var(--muted); text-align: left; whit
 const D = window.CW, P = (window.CW_PRICES && window.CW_PRICES.series) || {}, R = (window.CW_REPORTS && window.CW_REPORTS.files) || {};
 // Report copies: relative when opened from the repository checkout, the GitHub copy anywhere else.
 const REPO = location.protocol === "file:" || location.hostname === "localhost" ? "../" : "https://github.com/martinrueda-hash/HFC/blob/claude/hopeful-allen-tvjcl3/";
+const href = u => /^https?:/.test(u) ? u : REPO + u;
 const CO = Object.fromEntries(D.companies.map(c => [c.id, c]));
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
@@ -553,7 +554,7 @@ function drawResults() {
       const comment = r.segNote || r.note;
       body.innerHTML = `<div class="kpi-row">${k}</div><div class="res-grid"><div class="table-scroll">${finTable(c, r)}</div>` +
         `<div style="display:grid;gap:10px;align-content:start;min-width:0">${comment ? `<div class="box"><h4>Segment growth</h4>${esc(comment)}</div>` : ""}${r.guide ? `<div class="box"><h4>Outlook</h4>${esc(r.guide)}</div>` : ""}</div></div>` +
-        `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived ? " · ≈ derived from reported figures and growth rates, not reported as such" : ""}</p>`;
+        `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived ? " · ≈ derived from reported figures and growth rates, not reported as such" : ""}</p>`;
     }
   }
   drawQual(); drawPeers(); drawHeat();
@@ -565,7 +566,7 @@ function drawQual() {
   $("qualHead").textContent = `Key messages: ${c.name}, ${q.title}`;
   const card = (n, t, items) => `<div class="qcard"><h3><i>${n}</i>${t}</h3><ul>${items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`;
   $("qual").innerHTML = card(1, "Overall performance and walk through the results", q.perf) + card(2, "M&amp;A moves", q.ma) + card(3, "Operations, innovation, partnerships and production", q.other);
-  $("qualSrc").innerHTML = (q.period !== selP ? `Based on the latest report (${esc(q.title)}), whatever quarter is selected above. ` : "") + "Source: " + q.src.map(s => `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ");
+  $("qualSrc").innerHTML = (q.period !== selP ? `Based on the latest report (${esc(q.title)}), whatever quarter is selected above. ` : "") + "Source: " + q.src.map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ");
 }
 
 function drawPeers() {

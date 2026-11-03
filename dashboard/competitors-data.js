@@ -655,7 +655,8 @@ window.CW = {
       "profPy": 42.0,
       "mgn": 12.1,
       "mgnPy": 10.8,
-      "orgPy": 3.2
+      "orgPy": 3.2,
+      "note": "Mixed by region and product line. North America strong, especially valves, with a growing data-centre order book; Europe mixed, residential low, connection systems still under margin pressure."
      },
      {
       "n": "Industry",
@@ -666,7 +667,8 @@ window.CW = {
       "profPy": 49.6,
       "mgn": 19.1,
       "mgnPy": 17.7,
-      "orgPy": -1.1
+      "orgPy": -1.1,
+      "note": "Growth supported by business development and geographical expansion; strong demand in aerospace, power generation and defence, stable automotive."
      },
      {
       "n": "Semicon",
@@ -677,24 +679,25 @@ window.CW = {
       "profPy": 14.2,
       "mgn": 15.5,
       "mgnPy": 13.2,
-      "orgPy": -17.8
+      "orgPy": -17.8,
+      "note": "Growth accelerated and was higher than expected; capacity ramped up in Europe and Southeast Asia."
      }
     ],
-    "guide": "Full-year guidance kept: improved organic growth and EBITA margin versus 2025.",
+    "guide": "Entering Q4 with positive momentum and a healthy order book; confident of a full year with improved organic growth and EBITA margin versus 2025.",
     "src": [
      [
-      "Q3 2026 press release (segment table)",
-      "https://www.globenewswire.com/news-release/2026/10/22/3386031/0/en/aalberts-n-v-aalberts-reports-third-quarter-2026-results.html"
+      "Q3 2026 press release (PDF, 22 Oct 2026)",
+      "reports/aalberts/Q3-2026_q3-2026-press-release.pdf"
      ],
      [
-      "Results page",
-      "https://aalberts.com/progress/third-quarter-2026-results"
+      "Press release (web)",
+      "https://www.globenewswire.com/news-release/2026/10/22/3386031/0/en/aalberts-n-v-aalberts-reports-third-quarter-2026-results.html"
      ]
     ],
     "prof": 113.8,
     "profPy": 96.3,
     "revPy": 772.5,
-    "segNote": "Semicon drove the quarter: revenue +87% (+34.1% organic) and EBITA more than doubled on AI-related demand. Building grew 9.3% organically, but revenue was flat after divestments; margin +130 bps to 12.1%. Industry +8.6% organic; revenue −15% from divestments, while margin rose 140 bps to 19.1%.",
+    "segNote": "All three segments improved organic growth and EBITA margin. Semicon +34.1% organic (revenue nearly doubled, EBITA 31.2 vs 14.2, margin 15.5%) on accelerating AI-related demand. Building +9.3% organic and margin 12.1% (+130 bps), but revenue −2.2m after divestments. Industry +8.6% organic, margin 19.1% (+140 bps); revenue −42.0m from divestments.",
     "orgPy": -1.9
    }
   },
@@ -2620,31 +2623,29 @@ window.CW = {
    "period": "Q3 2026",
    "title": "Q3 2026 trading update, 22 Oct 2026",
    "perf": [
-    "Revenue EUR 823.3m with organic growth of 13.0%, the strongest quarter in two years after an organic decline of 2.5% in 2025.",
-    "EBITA +18% to EUR 113.8m; margin 13.8% (+130 bps), above consensus (~EUR 110m).",
-    "All three segments grew organically and improved margin. Semicon stood out (+34.1% organic) on AI-related investment; building was mixed.",
-    "Walk through 2026: Q1 +2.8% organic (14.2% margin) › H1 +5.0% (14.4%) › Q3 +13.0% (13.8%). Full-year guidance of better growth and margin kept."
+    "Revenue EUR 823.3m (+50.8m), organic growth 13.0% vs −1.9% a year ago; EBITA EUR 113.8m (+17.5m), margin 13.8% (+130 bps).",
+    "All three segments improved organic growth and EBITA margin; added value margin remained at a good level.",
+    "Semicon +34.1% organic, margin 15.5% (+230 bps); Building +9.3%, margin 12.1% (+130 bps); Industry +8.6%, margin 19.1% (+140 bps).",
+    "Positive end markets: data centres, aerospace, power generation, defence and semicon; automotive and residential building stable. 2026 walk: Q1 +2.8% › H1 +5.0% › Q3 +13.0% organic."
    ],
    "ma": [
-    "Divestment programme under 'thrive 2030': Broen (Denmark) sold 12 March 2026; 85% stake in Flamco RUS sold June 2026; sale of Metalis agreed; control of the Polish KAN joint venture given up.",
-    "H1 2026 portfolio effect: +EUR 135m revenue from acquisitions, −EUR 178m from divestments (FX −EUR 21m)."
+    "GVT post-merger integration (semicon) completed.",
+    "Divestment programme under 'thrive 2030' continues: Broen (Denmark) sold in March 2026, 85% of Flamco RUS in June 2026; H1 portfolio effect +EUR 135m acquisitions / −EUR 178m divestments."
    ],
    "other": [
-    "EUR 75m share buyback completed 9 Oct 2026 (2,068,007 shares); the shares will be cancelled.",
-    "Growth pockets named in H1: data centres, aerospace, power generation, defence and semicon; semicon order book high."
+    "Operational excellence programmes and footprint optimisation in building and industry.",
+    "Investing in manufacturing capacity in Europe, North America and Southeast Asia; semicon greenfield in Dronten (NL) to start production in Q4 2026.",
+    "EUR 75m share buyback completed 9 Oct 2026 (2,068,007 shares), shares to be cancelled.",
+    "Healthy order book entering Q4; full-year guidance of improved organic growth and EBITA margin confirmed."
    ],
    "src": [
     [
-     "Q3 2026 press release",
-     "https://www.globenewswire.com/news-release/2026/10/22/3386031/0/en/aalberts-n-v-aalberts-reports-third-quarter-2026-results.html"
+     "Q3 2026 press release (PDF)",
+     "reports/aalberts/Q3-2026_q3-2026-press-release.pdf"
     ],
     [
      "Broen divestment",
      "https://www.globenewswire.com/news-release/2026/03/12/3254283/0/en/Aalberts-N-V-Aalberts-completes-divestment-Broen-in-Denmark.html"
-    ],
-    [
-     "Divestment programme",
-     "https://aalberts.com/progress/Aalberts-reports-progress-on-divestment-programme"
     ]
    ]
   },
@@ -2947,7 +2948,7 @@ window.CW = {
    "co": "aalberts",
    "p": "Q3 2026",
    "type": "Results release",
-   "title": "Q3 2026 press release (web)",
+   "title": "Q3 2026 press release",
    "url": "https://www.globenewswire.com/news-release/2026/10/22/3386031/0/en/aalberts-n-v-aalberts-reports-third-quarter-2026-results.html"
   },
   {

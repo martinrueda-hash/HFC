@@ -137,6 +137,10 @@ window.CW_REPORTS = {
    "bytes": 177412,
    "path": "reports/gf/Q2-2026_mid-year-report-2026-web.html"
   },
+  "https://www.globenewswire.com/news-release/2026/10/22/3386031/0/en/aalberts-n-v-aalberts-reports-third-quarter-2026-results.html": {
+   "bytes": 59595,
+   "path": "reports/aalberts/Q3-2026_q3-2026-press-release.pdf"
+  },
   "https://www.investegate.co.uk/announcement/rns/imi--imi/trading-update/9846878": {
    "bytes": 94539,
    "path": "reports/imi/Q3-2026_q3-2026-trading-update-web.html"
