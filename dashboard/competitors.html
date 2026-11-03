@@ -185,7 +185,7 @@ table.fin td.nt { font-size: 10.5px; color: var(--muted); text-align: left; whit
     <div>
       <span class="kicker" id="asOf"></span>
       <h1>Competitor watch</h1>
-      <p>Share price, reporting calendar and results of Aalberts and its listed peers: IMI, Belimo, Xylem, Ecolab, Watts, Emerson and Georg Fischer. Scope: 2025 and 2026.</p>
+      <p>Share price, reporting calendar and results of Aalberts and its listed peers: IMI, Belimo, Xylem, Ecolab, Watts, Emerson, Pentair and Georg Fischer. Scope: 2025 and 2026.</p>
     </div>
     <div class="cover-side">
       <img class="logo-cover" src="assets/aalberts-logo-white.png" alt="Aalberts">
@@ -455,7 +455,7 @@ function drawCal() {
     const i = rows.findIndex(c => c.id === e.co), t = parseD(e.date).getTime();
     if (i < 0 || t < start || t >= end) return;
     const cy = top + i * rh + rh / 2, past = t < today.getTime();
-    const st = past ? `fill="#7a7a7a" stroke="#fff" stroke-width="1.5"` : e.status === "estimated" ? `fill="#fff" stroke="#ce0e2d" stroke-width="2" stroke-dasharray="2 2"` : `fill="#ce0e2d" stroke="#fff" stroke-width="1.5"`;
+    const st = past ? `fill="#ce0e2d" stroke="#fff" stroke-width="1.5"` : e.status === "estimated" ? `fill="#fff" stroke="#7a7a7a" stroke-width="2" stroke-dasharray="2 2"` : `fill="#7a7a7a" stroke="#fff" stroke-width="1.5"`;
     s += `<g class="ev" data-k="${k}"><circle cx="${x(t)}" cy="${cy}" r="12" fill="transparent"/>${mark(evType(e.event), x(t), cy, past ? 5 : 6, st)}</g>`;
   });
   const svg = $("cal");
@@ -476,7 +476,7 @@ function drawCal() {
   });
   const key = (t, l) => `<span style="white-space:nowrap"><svg width="16" height="16" style="vertical-align:-3px">${mark(t, 8, 8, 5, 'fill="#505050"')}</svg> ${l}</span>`;
   $("calKey").innerHTML = [key("fy", "full year / annual"), key("h1", "half year"), key("q", "quarter / trading update")].join(" &nbsp; ") +
-    ` &nbsp;·&nbsp; <span style="white-space:nowrap"><svg width="14" height="14" style="vertical-align:-3px"><circle cx="7" cy="7" r="5" fill="#7a7a7a"/></svg> published</span> &nbsp; <span style="white-space:nowrap"><svg width="14" height="14" style="vertical-align:-3px"><circle cx="7" cy="7" r="5.5" fill="#ce0e2d"/></svg> upcoming</span> &nbsp; <span style="white-space:nowrap"><svg width="14" height="14" style="vertical-align:-3px"><circle cx="7" cy="7" r="5" fill="#fff" stroke="#ce0e2d" stroke-width="2" stroke-dasharray="2 2"/></svg> upcoming, estimated date</span>`;
+    ` &nbsp;·&nbsp; <span style="white-space:nowrap"><svg width="14" height="14" style="vertical-align:-3px"><circle cx="7" cy="7" r="5" fill="#ce0e2d"/></svg> published</span> &nbsp; <span style="white-space:nowrap"><svg width="14" height="14" style="vertical-align:-3px"><circle cx="7" cy="7" r="5.5" fill="#7a7a7a"/></svg> upcoming</span> &nbsp; <span style="white-space:nowrap"><svg width="14" height="14" style="vertical-align:-3px"><circle cx="7" cy="7" r="5" fill="#fff" stroke="#7a7a7a" stroke-width="2" stroke-dasharray="2 2"/></svg> upcoming, estimated date</span>`;
 }
 
 /* ---------- 2. Results ---------- */

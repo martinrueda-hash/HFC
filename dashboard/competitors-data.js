@@ -143,6 +143,24 @@ window.CW = {
    "profLbl": "Adj. segment EBITA"
   },
   {
+   "id": "pentair",
+   "name": "Pentair",
+   "ccy": "USD",
+   "exch": "NYSE",
+   "ticker": "PNR",
+   "yahoo": [
+    "PNR"
+   ],
+   "stooq": [
+    "pnr.us"
+   ],
+   "quoteCcy": "USD",
+   "cadence": "Quarterly",
+   "ir": "https://investors.pentair.com/",
+   "color": "#0e7c86",
+   "profLbl": "Adj. operating income"
+  },
+  {
    "id": "gf",
    "name": "Georg Fischer",
    "ccy": "CHF",
@@ -343,6 +361,23 @@ window.CW = {
    "date": "2027-07-16",
    "event": "H1 2027 results",
    "status": "confirmed"
+  },
+  {
+   "co": "pentair",
+   "date": "2026-07-28",
+   "event": "Q2 2026 results"
+  },
+  {
+   "co": "pentair",
+   "date": "2026-10-27",
+   "event": "Q3 2026 results"
+  },
+  {
+   "co": "pentair",
+   "date": "2027-02-02",
+   "event": "Q4 / FY 2026 results",
+   "status": "estimated",
+   "note": "Not announced yet; Pentair usually reports Q4 in early February"
   }
  ],
  "results": {
@@ -2304,6 +2339,275 @@ window.CW = {
     "revPy": 2255,
     "segNote": "Industry & Infrastructure revenue +9% with comparable EBITDA up to CHF 144m, though margin eased to 14.4%. Building +3.3% organic (−2% in CHF), margin 12.6% (12.5%). Group revenue −25% after the casting exit."
    }
+  },
+  "pentair": {
+   "Q1 2025": {
+    "report": "Q1 2025 results",
+    "revChg": -1,
+    "mgnLbl": "Adj. return on sales",
+    "mgn": 24.0,
+    "eps": {
+     "l": "Adj. EPS",
+     "v": "$1.11",
+     "c": "$0.94 in Q1 2024"
+    },
+    "cash": {
+     "l": "Free cash flow",
+     "v": "−56"
+    },
+    "src": [
+     [
+      "Q1 2025 earnings release",
+      "https://www.sec.gov/Archives/edgar/data/77360/000007736025000015/q12025pressrelease.htm"
+     ]
+    ]
+   },
+   "Q2 2025": {
+    "report": "Q2 2025 results",
+    "rev": 1124,
+    "revChg": 2,
+    "mgnLbl": "Adj. return on sales",
+    "mgn": 26.4,
+    "eps": {
+     "l": "Adj. EPS",
+     "v": "$1.39",
+     "c": "GAAP $0.90"
+    },
+    "cash": {
+     "l": "Free cash flow",
+     "v": "596",
+     "c": "522 in Q2 2024"
+    },
+    "derived": [
+     "rev",
+     "mgn"
+    ],
+    "src": [
+     [
+      "Q2 2025 earnings release",
+      "https://www.sec.gov/Archives/edgar/data/77360/000007736025000035/q22025pressrelease.htm"
+     ]
+    ]
+   },
+   "Q3 2025": {
+    "report": "Q3 2025 results",
+    "rev": 1022.0,
+    "revPy": 993.4,
+    "revChg": 2.9,
+    "mgnLbl": "Adj. return on sales",
+    "mgn": 25.7,
+    "prof": 263,
+    "eps": {
+     "l": "Adj. EPS",
+     "v": "$1.24",
+     "c": "+14%; GAAP $1.12"
+    },
+    "cash": {
+     "l": "Free cash flow",
+     "v": "179",
+     "c": "234 in Q3 2024"
+    },
+    "seg": [
+     {
+      "n": "Flow",
+      "rev": 252,
+      "prof": 59.7,
+      "mgn": 23.7
+     },
+     {
+      "n": "Water Solutions",
+      "rev": 418,
+      "prof": 104.3,
+      "mgn": 25.0
+     },
+     {
+      "n": "Pool",
+      "rev": 355,
+      "prof": 116.1,
+      "mgn": 32.7
+     }
+    ],
+    "derived": [
+     "mgn",
+     "prof",
+     "seg.Flow.rev",
+     "seg.Water Solutions.rev",
+     "seg.Water Solutions.prof",
+     "seg.Pool.rev",
+     "seg.Pool.prof",
+     "seg.Pool.mgn"
+    ],
+    "segNote": "Prior-year base derived from the Q3 2026 release's growth rates; Pool was the most profitable segment at ~33% return on sales.",
+    "src": [
+     [
+      "Q3 2025 earnings release",
+      "https://www.sec.gov/Archives/edgar/data/77360/000007736025000044/q32025pressrelease.htm"
+     ]
+    ]
+   },
+   "Q4 2025": {
+    "report": "Q4 2025 results",
+    "rev": 1021,
+    "org": 4,
+    "orgLbl": "Core sales growth",
+    "mgnLbl": "Adj. return on sales",
+    "mgn": 24.7,
+    "eps": {
+     "l": "Adj. EPS",
+     "v": "$1.18",
+     "c": "+9%; GAAP $0.98"
+    },
+    "cash": {
+     "l": "FY 2025 free cash flow",
+     "v": "748",
+     "c": "+55 vs 2024"
+    },
+    "note": "FY 2025: sales USD 4.2bn (+2%), adj. EPS $4.92 (+14%), GAAP EPS $3.93. Reported return on sales 20.1% in Q4.",
+    "guide": "2026 adj. EPS $5.25–5.40 (initial guidance).",
+    "src": [
+     [
+      "Q4 / FY 2025 earnings release",
+      "https://www.sec.gov/Archives/edgar/data/77360/000007736026000003/a2025q4pressrelease.htm"
+     ]
+    ]
+   },
+   "Q1 2026": {
+    "report": "Q1 2026 results",
+    "rev": 1036.7,
+    "org": 2,
+    "orgLbl": "Core sales growth",
+    "mgnLbl": "Adj. return on sales",
+    "mgn": 25.0,
+    "mgnChg": 100,
+    "eps": {
+     "l": "Adj. EPS",
+     "v": "$1.22",
+     "c": "+10%"
+    },
+    "guide": "2026 adj. EPS raised to $5.30–5.40.",
+    "src": [
+     [
+      "Q1 2026 earnings release",
+      "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000023/q12026pressrelease.htm"
+     ]
+    ]
+   },
+   "Q2 2026": {
+    "report": "Q2 2026 results",
+    "date": "2026-07-28",
+    "rev": 933,
+    "revChg": -17,
+    "org": -17,
+    "orgLbl": "Core sales growth",
+    "mgnLbl": "Adj. return on sales",
+    "mgn": 25.4,
+    "mgnChg": -100,
+    "eps": {
+     "l": "Adj. EPS",
+     "v": "$1.14",
+     "c": "−18%; GAAP $0.80"
+    },
+    "seg": [
+     {
+      "n": "Pool",
+      "chg": -42,
+      "note": "Larger-than-expected inventory destock in the Pool channel"
+     },
+     {
+      "n": "Flow and Water Solutions",
+      "note": "Record profitability (call summary)"
+     }
+    ],
+    "segNote": "Pool sales −42% as channel partners cut inventory; Flow and Water Solutions held up with record profitability.",
+    "guide": "2026 cut in July: adj. EPS $4.60–4.80 (from $5.30–5.40); sales −4% to −7%; adj. operating income −5% to −9%.",
+    "src": [
+     [
+      "Q2 2026 earnings release",
+      "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000042/q22026pressrelease.htm"
+     ],
+     [
+      "Q2 2026 slides",
+      "https://investors.pentair.com/static-files/c02242e3-5891-418c-81e9-62a4da417ea3"
+     ]
+    ]
+   },
+   "Q3 2026": {
+    "report": "Q3 2026 results",
+    "date": "2026-10-27",
+    "rev": 976,
+    "revPy": 1022.0,
+    "org": -5,
+    "orgLbl": "Core sales growth",
+    "mgnLbl": "Adj. return on sales",
+    "mgn": 24.8,
+    "mgnPy": 25.7,
+    "prof": 242,
+    "profPy": 263,
+    "eps": {
+     "l": "Adj. EPS",
+     "v": "$1.18",
+     "c": "−5%, above $1.05–1.08 guidance; GAAP $0.91"
+    },
+    "cash": {
+     "l": "Free cash flow",
+     "v": "153",
+     "c": "179 in Q3 2025"
+    },
+    "seg": [
+     {
+      "n": "Flow",
+      "rev": 262,
+      "chg": 4,
+      "org": 1,
+      "prof": 68.8,
+      "profPy": 59.7,
+      "mgn": 26.2,
+      "mgnPy": 23.7
+     },
+     {
+      "n": "Water Solutions",
+      "rev": 422,
+      "chg": 1,
+      "prof": 121,
+      "profPy": 104.3,
+      "mgn": 28.7,
+      "mgnPy": 25.0,
+      "note": "Includes ~USD 6m of tariff refunds"
+     },
+     {
+      "n": "Pool",
+      "rev": 291,
+      "chg": -18,
+      "org": -18,
+      "prof": 72,
+      "profPy": 116.1,
+      "mgn": 24.7,
+      "mgnPy": 32.7,
+      "note": "Channel destock now completed"
+     }
+    ],
+    "segLbl": "By reporting segment; margin = segment return on sales",
+    "derived": [
+     "mgnPy",
+     "profPy",
+     "seg.Water Solutions.profPy",
+     "seg.Pool.profPy",
+     "seg.Pool.mgn",
+     "seg.Pool.mgnPy"
+    ],
+    "segNote": "Flow (+4%, core +1%) and Water Solutions (+1%) both lifted segment income ~15% with return on sales up 250 and 370 bps. Pool −18% with income −38% as the channel destock ended; management targets ~30% Pool return on sales in 2027.",
+    "guide": "2026 adj. EPS ~$4.70 midpoint reaffirmed; sales ~−3% reported including Taco; GAAP EPS ~$3.76.",
+    "src": [
+     [
+      "Q3 2026 earnings release",
+      "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000055/q32026pressrelease.htm"
+     ],
+     [
+      "Q3 2026 10-Q",
+      "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000058/pnr-20260930.htm"
+     ]
+    ]
+   }
   }
  },
  "noReport": {
@@ -2535,6 +2839,35 @@ window.CW = {
     [
      "Precicast sale",
      "https://www.cash.ch/news/top-news/georg-fischer-schliesst-verkauf-von-precicast-gruppe-ab-973242"
+    ]
+   ]
+  },
+  "pentair": {
+   "period": "Q3 2026",
+   "title": "Q3 2026 results, 27 Oct 2026",
+   "perf": [
+    "Sales USD 976m (−4.5%), core sales −5%; adj. EPS $1.18 (−5%) beat the $1.05–1.08 guidance.",
+    "Adj. operating income USD 242m (−8%), adj. return on sales 24.8%.",
+    "Flow and Water Solutions grew segment income ~15% (return on sales 26.2% and 28.7%); Pool −18% with income −38% as channel destocking ended.",
+    "2026 walk: Q1 core +2% › Q2 −17% (Pool −42%, guidance cut) › Q3 −5%. FY adj. EPS ~$4.70 reaffirmed."
+   ],
+   "ma": [
+    "Acquisition of Taco (Taco Group Holdings, HVAC hydronics) completed 1 Oct 2026: ~USD 560m sales in 2026 (+~23%), >USD 620m expected in 2027.",
+    "Financed with term loans at ~5.25%; pro forma net leverage 2.5x at the start of Q4. Adds exposure to HVAC, data centres, schools, hospitals and commercial buildings."
+   ],
+   "other": [
+    "Pool channel inventory realignment with major partners completed; Pool expected to reach ~30% return on sales in 2027.",
+    "Leadership: Robert W. Hau appointed CFO; Josh Cowley named CEO of Pentair Pool.",
+    "Water Solutions margin helped by pricing, productivity and ~USD 6m of tariff refunds."
+   ],
+   "src": [
+    [
+     "Q3 2026 earnings release",
+     "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000055/q32026pressrelease.htm"
+    ],
+    [
+     "Q3 2026 call highlights",
+     "https://www.gurufocus.com/news/9145327/pentair-plc-pnr-q3-2026-earnings-call-highlights-eps-beat-taco-acquisition-and-pool-recovery-in-focus"
     ]
    ]
   }
@@ -3064,6 +3397,76 @@ window.CW = {
    "type": "Half-year report",
    "title": "Mid-year report 2026 (web)",
    "url": "https://www.georgfischer.com/en/investors/reports-and-presentations/mid-year-report.html"
+  },
+  {
+   "co": "pentair",
+   "p": "Q1 2025",
+   "type": "Results release",
+   "title": "Q1 2025 earnings release",
+   "url": "https://www.sec.gov/Archives/edgar/data/77360/000007736025000015/q12025pressrelease.htm"
+  },
+  {
+   "co": "pentair",
+   "p": "Q2 2025",
+   "type": "Results release",
+   "title": "Q2 2025 earnings release",
+   "url": "https://www.sec.gov/Archives/edgar/data/77360/000007736025000035/q22025pressrelease.htm"
+  },
+  {
+   "co": "pentair",
+   "p": "Q3 2025",
+   "type": "Results release",
+   "title": "Q3 2025 earnings release",
+   "url": "https://www.sec.gov/Archives/edgar/data/77360/000007736025000044/q32025pressrelease.htm"
+  },
+  {
+   "co": "pentair",
+   "p": "Q4 2025",
+   "type": "Results release",
+   "title": "Q4 / FY 2025 earnings release",
+   "url": "https://www.sec.gov/Archives/edgar/data/77360/000007736026000003/a2025q4pressrelease.htm"
+  },
+  {
+   "co": "pentair",
+   "p": "Q1 2026",
+   "type": "Results release",
+   "title": "Q1 2026 earnings release",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000023/q12026pressrelease.htm"
+  },
+  {
+   "co": "pentair",
+   "p": "Q2 2026",
+   "type": "Results release",
+   "title": "Q2 2026 earnings release",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000042/q22026pressrelease.htm"
+  },
+  {
+   "co": "pentair",
+   "p": "Q2 2026",
+   "type": "Presentation",
+   "title": "Q2 2026 earnings slides",
+   "url": "https://investors.pentair.com/static-files/c02242e3-5891-418c-81e9-62a4da417ea3"
+  },
+  {
+   "co": "pentair",
+   "p": "Q3 2026",
+   "type": "Results release",
+   "title": "Q3 2026 earnings release",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000055/q32026pressrelease.htm"
+  },
+  {
+   "co": "pentair",
+   "p": "Q3 2026",
+   "type": "Results release",
+   "title": "Q3 2026 news release (PDF)",
+   "url": "https://investors.pentair.com/static-files/7d17cedc-d3a4-46e9-ab6e-9775bc98900e"
+  },
+  {
+   "co": "pentair",
+   "p": "Q3 2026",
+   "type": "Quarterly report",
+   "title": "Q3 2026 10-Q",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000058/pnr-20260930.htm"
   }
  ]
 };

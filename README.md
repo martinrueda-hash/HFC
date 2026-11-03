@@ -56,7 +56,7 @@ A CSV option is still available under "CSV option" on the page.
 
 ## Competitor watch (`dashboard/competitors.html`)
 
-A second dashboard that follows Aalberts' listed peers (IMI, Belimo, Xylem, Ecolab, Watts, Emerson, Georg Fischer) for 2025–2026. Open `dashboard/competitors.html`, or use the *Competitor watch* button on the main dashboard.
+A second dashboard that follows Aalberts' listed peers (IMI, Belimo, Xylem, Ecolab, Watts, Emerson, Pentair, Georg Fischer) for 2025–2026. Open `dashboard/competitors.html`, or use the *Competitor watch* button on the main dashboard.
 
 1. **Market view**: share price of Aalberts and its peers, indexed to 100 (since Jan 2025, 2026 YTD, 12 months), with the next releases as banners on the right, a 2026–2027 reporting calendar and a performance table.
 2. **Results by quarter**: pick a company and a calendar quarter (Q1 2025 – Q3 2026) to see revenue, organic growth, margin, EPS, cash flow, orders, segments and outlook, plus three key-message blocks from the latest report: overall performance and walk through the results, M&A moves, and operations / innovation / partnerships / production. A peer table and an organic-growth heat table compare all companies for that quarter.
