@@ -3728,69 +3728,6 @@ window.CW = {
   {
    "co": "xylem",
    "p": "Q1 2025",
-   "type": "Results release",
-   "title": "Q1 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/1524472/000152447225000019/xyl04292025ex991.htm"
-  },
-  {
-   "co": "xylem",
-   "p": "Q2 2025",
-   "type": "Results release",
-   "title": "Q2 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/1524472/000152447225000035/xyl07312025ex991.htm"
-  },
-  {
-   "co": "xylem",
-   "p": "Q3 2025",
-   "type": "Results release",
-   "title": "Q3 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/1524472/000152447225000043/xyl10282025ex991.htm"
-  },
-  {
-   "co": "xylem",
-   "p": "Q4 2025",
-   "type": "Results release",
-   "title": "Q4 / FY 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/1524472/000152447226000008/xyl02102026ex991.htm"
-  },
-  {
-   "co": "xylem",
-   "p": "Q1 2026",
-   "type": "Results release",
-   "title": "Q1 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000065/xyl04282026ex991.htm"
-  },
-  {
-   "co": "xylem",
-   "p": "Q2 2026",
-   "type": "Results release",
-   "title": "Q2 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000108/xyl07282026ex991.htm"
-  },
-  {
-   "co": "xylem",
-   "p": "Q2 2026",
-   "type": "Quarterly report",
-   "title": "Q2 2026 10-Q",
-   "url": "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000110/xyl-20260630.htm"
-  },
-  {
-   "co": "xylem",
-   "p": "Q3 2026",
-   "type": "Results release",
-   "title": "Q3 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000146/xyl10272026ex991.htm"
-  },
-  {
-   "co": "xylem",
-   "p": "Q3 2026",
-   "type": "Quarterly report",
-   "title": "Q3 2026 10-Q",
-   "url": "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000148/xyl-20260930.htm"
-  },
-  {
-   "co": "xylem",
-   "p": "Q1 2025",
    "type": "Presentation",
    "title": "Q1 2025 earnings package",
    "url": "https://investors.xylem.com/",
