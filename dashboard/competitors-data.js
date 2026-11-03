@@ -159,7 +159,7 @@ window.CW = {
    "cadence": "Quarterly",
    "ir": "https://investors.pentair.com/",
    "color": "#0e7c86",
-   "profLbl": "Adj. operating income"
+   "profLbl": "Total segment income"
   },
   {
    "id": "gf",
@@ -4188,7 +4188,7 @@ window.CW = {
   "pentair": {
    "Q1 2025": {
     "report": "Q1 2025 results",
-    "revChg": -1,
+    "revChg": -0.7,
     "mgnLbl": "Adj. return on sales",
     "mgn": 24.0,
     "eps": {
@@ -4202,15 +4202,55 @@ window.CW = {
     },
     "src": [
      [
-      "Q1 2025 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/77360/000007736025000015/q12025pressrelease.htm"
+      "Q1 2025 Form 10-Q (PDF)",
+      "reports/pentair/Q1-2025_10-q.pdf"
      ]
-    ]
+    ],
+    "rev": 1010.4,
+    "revPy": 1017.2,
+    "org": -0.8,
+    "orgLbl": "Core sales growth",
+    "prof": 270.3,
+    "profPy": 243.7,
+    "seg": [
+     {
+      "n": "Flow",
+      "rev": 367.9,
+      "revPy": 384.3,
+      "org": -2.9,
+      "prof": 83.6,
+      "profPy": 77.3,
+      "mgn": 22.7,
+      "mgnPy": 20.1
+     },
+     {
+      "n": "Water Solutions",
+      "rev": 258.2,
+      "revPy": 273.1,
+      "org": -4.3,
+      "prof": 60.7,
+      "profPy": 55.6,
+      "mgn": 23.5,
+      "mgnPy": 20.4
+     },
+     {
+      "n": "Pool",
+      "rev": 383.9,
+      "revPy": 359.5,
+      "org": 4.2,
+      "prof": 126.0,
+      "profPy": 110.8,
+      "mgn": 32.8,
+      "mgnPy": 30.8
+     }
+    ],
+    "segLbl": "By reporting segment; margin = segment return on sales (segment income / sales); growth = core",
+    "segNote": "Pool core +4.2% with segment income +14%; Flow −2.9% and Water Solutions −4.3% core, but both raised segment income (+8% and +9%) and return on sales on price and productivity."
    },
    "Q2 2025": {
     "report": "Q2 2025 results",
-    "rev": 1124,
-    "revChg": 2,
+    "rev": 1123.1,
+    "revChg": 2.2,
     "mgnLbl": "Adj. return on sales",
     "mgn": 26.4,
     "eps": {
@@ -4224,15 +4264,53 @@ window.CW = {
      "c": "522 in Q2 2024"
     },
     "derived": [
-     "rev",
      "mgn"
     ],
     "src": [
      [
-      "Q2 2025 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/77360/000007736025000035/q22025pressrelease.htm"
+      "Q2 2025 Form 10-Q (PDF)",
+      "reports/pentair/Q2-2025_10-q.pdf"
      ]
-    ]
+    ],
+    "revPy": 1099.3,
+    "org": 1.3,
+    "orgLbl": "Core sales growth",
+    "prof": 316.0,
+    "profPy": 290.9,
+    "seg": [
+     {
+      "n": "Flow",
+      "rev": 397.3,
+      "revPy": 396.8,
+      "org": -1.3,
+      "prof": 93.1,
+      "profPy": 84.4,
+      "mgn": 23.4,
+      "mgnPy": 21.3
+     },
+     {
+      "n": "Water Solutions",
+      "rev": 298.3,
+      "revPy": 310.5,
+      "org": -3.0,
+      "prof": 70.2,
+      "profPy": 72.9,
+      "mgn": 23.5,
+      "mgnPy": 23.5
+     },
+     {
+      "n": "Pool",
+      "rev": 427.2,
+      "revPy": 391.5,
+      "org": 7.3,
+      "prof": 152.7,
+      "profPy": 133.6,
+      "mgn": 35.7,
+      "mgnPy": 34.1
+     }
+    ],
+    "segLbl": "By reporting segment; margin = segment return on sales (segment income / sales); growth = core",
+    "segNote": "Pool core +7.3% (segment income +14%, ROS 35.7%) drove the quarter; Flow −1.3% core with ROS +210 bps to 23.4%; Water Solutions −3.0% core, segment income −4%."
    },
    "Q3 2025": {
     "report": "Q3 2025 results",
@@ -4241,7 +4319,7 @@ window.CW = {
     "revChg": 2.9,
     "mgnLbl": "Adj. return on sales",
     "mgn": 25.7,
-    "prof": 263,
+    "prof": 279.9,
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.24",
@@ -4255,40 +4333,49 @@ window.CW = {
     "seg": [
      {
       "n": "Flow",
-      "rev": 252,
-      "prof": 59.7,
-      "mgn": 23.7
+      "rev": 394.0,
+      "revPy": 372.2,
+      "org": 3.6,
+      "prof": 95.3,
+      "profPy": 82.8,
+      "mgn": 24.2,
+      "mgnPy": 22.2
      },
      {
       "n": "Water Solutions",
-      "rev": 418,
-      "prof": 104.3,
-      "mgn": 25.0
+      "rev": 273.3,
+      "revPy": 289.5,
+      "org": 0.5,
+      "prof": 68.4,
+      "profPy": 64.4,
+      "mgn": 25.0,
+      "mgnPy": 22.2
      },
      {
       "n": "Pool",
-      "rev": 355,
-      "prof": 116.1,
-      "mgn": 32.7
+      "rev": 354.3,
+      "revPy": 331.4,
+      "org": 5.6,
+      "prof": 116.2,
+      "profPy": 112.7,
+      "mgn": 32.8,
+      "mgnPy": 34.0
      }
     ],
     "derived": [
-     "mgn",
-     "prof",
-     "seg.Flow.rev",
-     "seg.Water Solutions.rev",
-     "seg.Water Solutions.prof",
-     "seg.Pool.rev",
-     "seg.Pool.prof",
-     "seg.Pool.mgn"
+     "mgn"
     ],
-    "segNote": "Prior-year base derived from the Q3 2026 release's growth rates; Pool was the most profitable segment at ~33% return on sales.",
+    "segNote": "Core +3.3%: Pool +5.6% and Flow +3.6% (segment income +15%, ROS 24.2%); Water Solutions +0.5% core with ROS +280 bps to 25.0%. Hydra-Stop acquired in September 2025 (USD 292m).",
     "src": [
      [
-      "Q3 2025 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/77360/000007736025000044/q32025pressrelease.htm"
+      "Q3 2025 Form 10-Q (PDF)",
+      "reports/pentair/Q3-2025_10-q.pdf"
      ]
-    ]
+    ],
+    "org": 3.3,
+    "orgLbl": "Core sales growth",
+    "profPy": 259.9,
+    "segLbl": "By reporting segment; margin = segment return on sales (segment income / sales); growth = core"
    },
    "Q4 2025": {
     "report": "FY 2025 results (12 months)",
@@ -4317,7 +4404,7 @@ window.CW = {
    "Q1 2026": {
     "report": "Q1 2026 results",
     "rev": 1036.7,
-    "org": 2,
+    "org": 1.1,
     "orgLbl": "Core sales growth",
     "mgnLbl": "Adj. return on sales",
     "mgn": 25.0,
@@ -4330,17 +4417,56 @@ window.CW = {
     "guide": "2026 adj. EPS raised to $5.30–5.40.",
     "src": [
      [
-      "Q1 2026 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000023/q12026pressrelease.htm"
+      "Q1 2026 Form 10-Q (PDF)",
+      "reports/pentair/Q1-2026_10-q.pdf"
      ]
-    ]
+    ],
+    "revPy": 1010.4,
+    "revChg": 2.6,
+    "prof": 289.2,
+    "profPy": 270.3,
+    "seg": [
+     {
+      "n": "Flow",
+      "rev": 258.1,
+      "revPy": 232.6,
+      "org": 2.5,
+      "prof": 61.2,
+      "profPy": 50.2,
+      "mgn": 23.7,
+      "mgnPy": 21.6,
+      "note": "Incl. Hydra-Stop (+4.3 pts acquisitions)"
+     },
+     {
+      "n": "Water Solutions",
+      "rev": 391.0,
+      "revPy": 393.5,
+      "org": 0.9,
+      "prof": 99.9,
+      "profPy": 94.1,
+      "mgn": 25.5,
+      "mgnPy": 23.9
+     },
+     {
+      "n": "Pool",
+      "rev": 387.1,
+      "revPy": 383.9,
+      "org": 0.5,
+      "prof": 128.1,
+      "profPy": 126.0,
+      "mgn": 33.1,
+      "mgnPy": 32.8
+     }
+    ],
+    "segLbl": "By reporting segment; margin = segment return on sales (segment income / sales); growth = core",
+    "segNote": "New segment structure from 1 Jan 2026 (residential and irrigation flow moved from Flow to Water Solutions; prior year restated). Core +1.1% on price +5.3% and volume −4.2%. Flow segment income +22% (ROS 23.7%), Water Solutions +6% (ROS 25.5%), Pool +2%."
    },
    "Q2 2026": {
     "report": "Q2 2026 results",
     "date": "2026-07-28",
-    "rev": 933,
-    "revChg": -17,
-    "org": -17,
+    "rev": 932.6,
+    "revChg": -17.0,
+    "org": -17.3,
     "orgLbl": "Core sales growth",
     "mgnLbl": "Adj. return on sales",
     "mgn": 25.4,
@@ -4352,27 +4478,49 @@ window.CW = {
     },
     "seg": [
      {
-      "n": "Pool",
-      "chg": -42,
-      "note": "Larger-than-expected inventory destock in the Pool channel"
+      "n": "Flow",
+      "rev": 263.7,
+      "revPy": 250.9,
+      "org": -0.8,
+      "prof": 69.8,
+      "profPy": 54.8,
+      "mgn": 26.5,
+      "mgnPy": 21.8
      },
      {
-      "n": "Flow and Water Solutions",
-      "note": "Record profitability (call summary)"
+      "n": "Water Solutions",
+      "rev": 422.0,
+      "revPy": 444.7,
+      "org": -2.6,
+      "prof": 126.4,
+      "profPy": 108.5,
+      "mgn": 30.0,
+      "mgnPy": 24.4
+     },
+     {
+      "n": "Pool",
+      "rev": 246.6,
+      "revPy": 427.2,
+      "org": -42.4,
+      "prof": 57.6,
+      "profPy": 152.7,
+      "mgn": 23.4,
+      "mgnPy": 35.7,
+      "note": "Larger-than-expected channel inventory destock"
      }
     ],
-    "segNote": "Pool sales −42% as channel partners cut inventory; Flow and Water Solutions held up with record profitability.",
+    "segNote": "Pool core −42.4% on the channel destock, segment income −62%. Flow (ROS 26.5%, +470 bps) and Water Solutions (ROS 30.0%, +560 bps) grew segment income despite slightly lower core sales.",
     "guide": "2026 cut in July: adj. EPS $4.60–4.80 (from $5.30–5.40); sales −4% to −7%; adj. operating income −5% to −9%.",
     "src": [
      [
-      "Q2 2026 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000042/q22026pressrelease.htm"
-     ],
-     [
-      "Q2 2026 slides",
-      "https://investors.pentair.com/static-files/c02242e3-5891-418c-81e9-62a4da417ea3"
+      "Q2 2026 Form 10-Q (PDF)",
+      "reports/pentair/Q2-2026_10-q.pdf"
      ]
-    ]
+    ],
+    "revPy": 1123.1,
+    "prof": 253.8,
+    "profPy": 316.0,
+    "segLbl": "By reporting segment; margin = segment return on sales (segment income / sales); growth = core"
    },
    "Q3 2026": {
     "report": "Q3 2026 results",
@@ -4424,8 +4572,8 @@ window.CW = {
       "org": -18,
       "prof": 72,
       "profPy": 116.1,
-      "mgn": 24.7,
-      "mgnPy": 32.7,
+      "mgn": 24.6,
+      "mgnPy": 32.8,
       "note": "Channel destock now completed"
      }
     ],
@@ -4434,22 +4582,17 @@ window.CW = {
      "mgnPy",
      "profPy",
      "seg.Water Solutions.profPy",
-     "seg.Pool.profPy",
-     "seg.Pool.mgn",
-     "seg.Pool.mgnPy"
+     "seg.Pool.profPy"
     ],
     "segNote": "Flow (+4%, core +1%) and Water Solutions (+1%) both lifted segment income ~15% with return on sales up 250 and 370 bps. Pool −18% with income −38% as the channel destock ended; management targets ~30% Pool return on sales in 2027.",
-    "guide": "2026 adj. EPS ~$4.70 midpoint reaffirmed; sales ~−3% reported including Taco; GAAP EPS ~$3.76.",
+    "guide": "FY 2026: sales ~−3%, adj. operating income ~−6%, adj. EPS ~$4.70 (−4%); Q4: sales +7–9% incl. Taco, adj. EPS ~$1.15; FCF >100% of net income.",
     "src": [
      [
-      "Q3 2026 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000055/q32026pressrelease.htm"
-     ],
-     [
-      "Q3 2026 10-Q",
-      "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000058/pnr-20260930.htm"
+      "Q3 2026 earnings presentation (PDF)",
+      "reports/pentair/Q3-2026_earnings-presentation.pdf"
      ]
-    ]
+    ],
+    "profLbl": "Adj. operating income"
    }
   }
  },
@@ -5110,6 +5253,74 @@ window.CW = {
    "url": "https://ir.emerson.com/sec-filings/all-sec-filings/content/0000032604-25-000087/0000032604-25-000087.pdf"
   },
   {
+   "co": "pentair",
+   "p": "Q1 2025",
+   "type": "Quarterly report",
+   "title": "Q1 2025 Form 10-Q",
+   "url": "https://investors.pentair.com/",
+   "file": "reports/pentair/Q1-2025_10-q.pdf",
+   "bytes": 738157
+  },
+  {
+   "co": "pentair",
+   "p": "Q2 2025",
+   "type": "Quarterly report",
+   "title": "Q2 2025 Form 10-Q",
+   "url": "https://investors.pentair.com/",
+   "file": "reports/pentair/Q2-2025_10-q.pdf",
+   "bytes": 817105
+  },
+  {
+   "co": "pentair",
+   "p": "Q3 2025",
+   "type": "Quarterly report",
+   "title": "Q3 2025 Form 10-Q",
+   "url": "https://investors.pentair.com/",
+   "file": "reports/pentair/Q3-2025_10-q.pdf",
+   "bytes": 996782
+  },
+  {
+   "co": "pentair",
+   "p": "Q1 2026",
+   "type": "Quarterly report",
+   "title": "Q1 2026 Form 10-Q",
+   "url": "https://investors.pentair.com/",
+   "file": "reports/pentair/Q1-2026_10-q.pdf",
+   "bytes": 741827
+  },
+  {
+   "co": "pentair",
+   "p": "Q2 2026",
+   "type": "Quarterly report",
+   "title": "Q2 2026 Form 10-Q",
+   "url": "https://investors.pentair.com/",
+   "file": "reports/pentair/Q2-2026_10-q.pdf",
+   "bytes": 847972
+  },
+  {
+   "co": "pentair",
+   "p": "Q3 2026",
+   "type": "Presentation",
+   "title": "Q3 2026 earnings presentation",
+   "url": "https://investors.pentair.com/",
+   "file": "reports/pentair/Q3-2026_earnings-presentation.pdf",
+   "bytes": 1227710
+  },
+  {
+   "co": "pentair",
+   "p": "Q4 2025",
+   "type": "Annual report",
+   "title": "2025 annual report (incl. Form 10-K)",
+   "url": "https://investors.pentair.com/static-files/47275fb3-6d2b-41e3-a33a-545c38f36e64"
+  },
+  {
+   "co": "pentair",
+   "p": "Q4 2025",
+   "type": "Annual report",
+   "title": "FY 2025 Form 10-K",
+   "url": "https://pentair.gcs-web.com/static-files/11b1bf56-568a-49b3-bf96-0362f91ae219"
+  },
+  {
    "co": "gf",
    "p": "Q4 2025",
    "type": "Annual report",
@@ -5136,76 +5347,6 @@ window.CW = {
    "type": "Presentation",
    "title": "H1 2026 results presentation",
    "url": "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/mid-year-report-2026/en/mid-year-report-2026-presentation-en.pdf"
-  },
-  {
-   "co": "pentair",
-   "p": "Q1 2025",
-   "type": "Results release",
-   "title": "Q1 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/77360/000007736025000015/q12025pressrelease.htm"
-  },
-  {
-   "co": "pentair",
-   "p": "Q2 2025",
-   "type": "Results release",
-   "title": "Q2 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/77360/000007736025000035/q22025pressrelease.htm"
-  },
-  {
-   "co": "pentair",
-   "p": "Q3 2025",
-   "type": "Results release",
-   "title": "Q3 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/77360/000007736025000044/q32025pressrelease.htm"
-  },
-  {
-   "co": "pentair",
-   "p": "Q4 2025",
-   "type": "Results release",
-   "title": "Q4 / FY 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/77360/000007736026000003/a2025q4pressrelease.htm"
-  },
-  {
-   "co": "pentair",
-   "p": "Q1 2026",
-   "type": "Results release",
-   "title": "Q1 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000023/q12026pressrelease.htm"
-  },
-  {
-   "co": "pentair",
-   "p": "Q2 2026",
-   "type": "Results release",
-   "title": "Q2 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000042/q22026pressrelease.htm"
-  },
-  {
-   "co": "pentair",
-   "p": "Q2 2026",
-   "type": "Presentation",
-   "title": "Q2 2026 earnings slides",
-   "url": "https://investors.pentair.com/static-files/c02242e3-5891-418c-81e9-62a4da417ea3"
-  },
-  {
-   "co": "pentair",
-   "p": "Q3 2026",
-   "type": "Results release",
-   "title": "Q3 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000055/q32026pressrelease.htm"
-  },
-  {
-   "co": "pentair",
-   "p": "Q3 2026",
-   "type": "Results release",
-   "title": "Q3 2026 news release (PDF)",
-   "url": "https://investors.pentair.com/static-files/7d17cedc-d3a4-46e9-ab6e-9775bc98900e"
-  },
-  {
-   "co": "pentair",
-   "p": "Q3 2026",
-   "type": "Quarterly report",
-   "title": "Q3 2026 10-Q",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000077360/000007736026000058/pnr-20260930.htm"
   }
  ],
  "periodLabels": {

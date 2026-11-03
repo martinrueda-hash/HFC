@@ -527,7 +527,7 @@ function finTable(c, r) {
     return n || o.note ? h.replace(/<tr>(?!.*<tr>)/s, '<tr class="end">') : "";
   };
   const g = { rev: r.rev, revPy: r.revPy, chg: r.revChg, org: r.org, orgPy: r.orgPy, prof: r.prof, profPy: r.profPy, mgn: r.mgn, mgnPy: r.mgnPy, mgnChg: r.mgnChg };
-  let h = block(g, c.name + (c.fyNote ? "*" : ""), "", { mLbl: r.mgnLbl || defMgn(c.id), pLbl: c.profLbl });
+  let h = block(g, c.name + (c.fyNote ? "*" : ""), "", { mLbl: r.mgnLbl || defMgn(c.id), pLbl: r.profLbl || c.profLbl });
   if (r.seg && r.seg.length) h += `<tr class="sec"><td class="l" colspan="4">${esc(r.segLbl || "By reporting segment")}</td></tr>` + r.seg.map(s => block(s, s.n.replace(/^· /, ""), "seg." + s.n + ".", { mLbl: segM, pLbl: c.id === "pentair" ? "Segment income" : c.id === "ecolab" ? "Operating income" : c.id === "watts" ? "Segment earnings" : null })).join("");
   if (r.geo && r.geo.length) h += `<tr class="sec"><td class="l" colspan="4">By region</td></tr>` + r.geo.map(s => block(s, s.n, "geo." + s.n + ".", { mLbl: segM })).join("");
   if (!(r.seg && r.seg.length) && !(r.geo && r.geo.length)) h += `<tr><td class="nt" colspan="4">No segment or regional split in this report.</td></tr>`;
