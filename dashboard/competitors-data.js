@@ -1,6 +1,6 @@
 // Competitor watch data. Strict JSON after "window.CW =", so tools/fetch_competitor_data.py can read it.
-// Figures are in each company's reporting currency (millions unless stated). Calendar quarters: for Emerson
-// (fiscal year ends 30 September) a calendar quarter maps to its fiscal quarter, e.g. Q3 2026 = fiscal Q4 2026.
+// Figures are in each company's reporting currency (millions unless stated). Quarters are labelled as each company
+// declares them; Emerson's fiscal year ends 30 September, so its Q1 is October–December.
 // For half-year reporters, Q2 shows the H1 report and Q4 the full-year report; Q1 and Q3 show trading updates.
 // "derived" lists figures calculated from reported growth rates and the current-year figure, not reported directly.
 window.CW = {
@@ -137,7 +137,7 @@ window.CW = {
     "emr.us"
    ],
    "quoteCcy": "USD",
-   "cadence": "Quarterly, fiscal year ends 30 September",
+   "cadence": "Quarterly; fiscal year ends 30 September. Quarters shown as Emerson labels them (Q1 = Oct–Dec).",
    "ir": "https://ir.emerson.com/",
    "color": "#008300",
    "profLbl": "Adj. segment EBITA"
@@ -331,22 +331,22 @@ window.CW = {
   {
    "co": "emerson",
    "date": "2026-02-03",
-   "event": "Fiscal Q1 2026 results"
+   "event": "Q1 2026 results"
   },
   {
    "co": "emerson",
    "date": "2026-05-05",
-   "event": "Fiscal Q2 2026 results"
+   "event": "Q2 2026 results"
   },
   {
    "co": "emerson",
    "date": "2026-08-04",
-   "event": "Fiscal Q3 2026 results"
+   "event": "Q3 2026 results"
   },
   {
    "co": "emerson",
    "date": "2026-11-04",
-   "event": "Fiscal Q4 / FY 2026 results",
+   "event": "Q4 / FY 2026 results",
    "status": "confirmed",
    "note": "Before market open; call 8:30 ET"
   },
@@ -3004,14 +3004,58 @@ window.CW = {
     "guide": "2026: sales +8–12%, organic +2–6%.",
     "src": [
      [
-      "Q4 2025 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/795403/000110465926013437/wts-20260211xex99d1.htm"
+      "2025 annual report incl. Form 10-K (PDF)",
+      "reports/watts/Q4-2025_2025-annual-report-incl-form-10-k.pdf"
      ]
     ],
     "prof": 118.8,
     "derived": [
-     "prof"
-    ]
+     "revPy",
+     "seg.Americas.rev",
+     "seg.Americas.revPy",
+     "seg.Americas.prof",
+     "seg.Americas.profPy",
+     "seg.Europe.rev",
+     "seg.Europe.revPy",
+     "seg.Europe.prof",
+     "seg.Europe.profPy",
+     "seg.APMEA.rev",
+     "seg.APMEA.revPy",
+     "seg.APMEA.prof",
+     "seg.APMEA.profPy"
+    ],
+    "seg": [
+     {
+      "n": "Americas",
+      "rev": 466.6,
+      "revPy": 398.0,
+      "prof": 108.7,
+      "profPy": 87.0,
+      "mgn": 23.3,
+      "mgnPy": 21.9
+     },
+     {
+      "n": "Europe",
+      "rev": 119.7,
+      "revPy": 108.6,
+      "prof": 18.1,
+      "profPy": 11.0,
+      "mgn": 15.1,
+      "mgnPy": 10.1
+     },
+     {
+      "n": "APMEA",
+      "rev": 38.8,
+      "revPy": 33.8,
+      "prof": 6.7,
+      "profPy": 5.9,
+      "mgn": 17.3,
+      "mgnPy": 17.5
+     }
+    ],
+    "segLbl": "By reporting segment (regions); Q4 = FY 2025 less nine months; margin = segment earnings / sales",
+    "revPy": 540.4,
+    "segNote": "Fourth-quarter segment figures are FY 2025 (annual report) less the first nine months (Q3 10-Q). Americas +17% with margin 23.3% (21.9%); Europe +10%, margin 15.1% (10.1%); APMEA +15%. FY 2025: Americas USD 1,847m, segment earnings 452 (24.5%); Europe 451, 60 (13.3%); APMEA 140, 26 (18.3%)."
    },
    "Q1 2026": {
     "report": "Q1 2026 results",
@@ -3183,8 +3227,8 @@ window.CW = {
    }
   },
   "emerson": {
-   "Q1 2025": {
-    "report": "Fiscal Q2 2025 (Jan–Mar 2025)",
+   "Q2 2025": {
+    "report": "Q2 2025 results (quarter ended 31 Mar 2025)",
     "date": "2025-05-07",
     "rev": 4432,
     "revChg": 1.3,
@@ -3204,7 +3248,7 @@ window.CW = {
     },
     "src": [
      [
-      "Fiscal Q2 2025 Form 10-Q (PDF)",
+      "Q2 2025 Form 10-Q (PDF)",
       "reports/emerson/FQ2-2025_10-q.pdf"
      ]
     ],
@@ -3303,8 +3347,8 @@ window.CW = {
     "segNote": "Software and Control +7% underlying (Control Systems & Software +11%, AspenTech) with adj. EBITA margin 32.3% (+560 bps); Intelligent Devices flat with Safety & Productivity −6%. Americas and AMEA +3%, Europe −1%. AspenTech buy-out completed 12 Mar 2025 (~USD 7.2bn). Old segment structure (before the fiscal 2026 change).",
     "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
-   "Q2 2025": {
-    "report": "Fiscal Q3 2025 (Apr–Jun 2025)",
+   "Q3 2025": {
+    "report": "Q3 2025 results (quarter ended 30 Jun 2025)",
     "date": "2025-08-06",
     "rev": 4553,
     "revChg": 3.9,
@@ -3325,7 +3369,7 @@ window.CW = {
     "guide": "FY 2025 adj. EPS ~$6.00, free cash flow ~USD 3.2bn.",
     "src": [
      [
-      "Fiscal Q3 2025 Form 10-Q (PDF)",
+      "Q3 2025 Form 10-Q (PDF)",
       "reports/emerson/FQ3-2025_10-q.pdf"
      ]
     ],
@@ -3425,8 +3469,8 @@ window.CW = {
     "segNote": "Intelligent Devices +3% underlying led by Final Control (+5%, power); margin −110 bps on FX and tariffs. Software and Control +2% with adj. EBITA margin 32.6% (+230 bps). Americas +7% (US +10%), Europe −7%. Old segment structure.",
     "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
-   "Q3 2025": {
-    "report": "Fiscal Q4 2025 (Jul–Sep 2025)",
+   "Q4 2025": {
+    "report": "Q4 2025 results (quarter ended 30 Sep 2025, incl. FY 2025)",
     "date": "2025-11-05",
     "rev": 4855,
     "revChg": 5,
@@ -3462,13 +3506,124 @@ window.CW = {
     "guide": "FY 2026: adj. EPS $6.35–6.55, FCF USD 3.5–3.6bn, net sales ~+5.5%.",
     "src": [
      [
-      "Fiscal Q4 / FY 2025 release",
+      "Fiscal 2025 Form 10-K (PDF)",
+      "reports/emerson/Q3-2025_fiscal-2025-form-10-k.pdf"
+     ],
+     [
+      "Q4 / FY 2025 release",
       "https://ir.emerson.com/_assets/_80fc1c2bd9b6b4b0e1f3c778904be7d7/emerson/news/2025-11-05_Emerson_Reports_Fourth_Quarter_and_Full_Year_2025__617.pdf"
      ]
+    ],
+    "prof": 1334,
+    "profPy": 1210,
+    "mgn": 27.5,
+    "mgnPy": 26.2,
+    "mgnLbl": "Adj. segment EBITA margin",
+    "segLbl": "By business group and segment (Q4 = FY 2025 less nine months); margin = adj. EBITA margin",
+    "seg": [
+     {
+      "n": "Intelligent Devices",
+      "rev": 3403,
+      "revPy": 3281,
+      "org": null,
+      "prof": 927,
+      "profPy": 875,
+      "mgn": 27.2,
+      "mgnPy": 26.7
+     },
+     {
+      "n": "· Final Control",
+      "rev": 1215,
+      "revPy": 1167,
+      "org": null,
+      "sub": true
+     },
+     {
+      "n": "· Measurement & Analytical",
+      "rev": 1151,
+      "revPy": 1119,
+      "org": null,
+      "sub": true
+     },
+     {
+      "n": "· Discrete Automation",
+      "rev": 677,
+      "revPy": 643,
+      "org": null,
+      "sub": true
+     },
+     {
+      "n": "· Safety & Productivity",
+      "rev": 360,
+      "revPy": 352,
+      "org": null,
+      "sub": true
+     },
+     {
+      "n": "Software and Control",
+      "rev": 1474,
+      "revPy": 1355,
+      "org": null,
+      "prof": 407,
+      "profPy": 335,
+      "mgn": 27.6,
+      "mgnPy": 24.7
+     },
+     {
+      "n": "· Control Systems & Software",
+      "rev": 1067,
+      "revPy": 995,
+      "org": null,
+      "sub": true
+     },
+     {
+      "n": "· Test & Measurement",
+      "rev": 407,
+      "revPy": 360,
+      "org": null,
+      "sub": true
+     }
+    ],
+    "segNote": "Fourth-quarter segment figures are FY 2025 (10-K) less the first nine months (fiscal Q3 10-Q); Emerson does not publish them separately. Software and Control +9% with adj. EBITA margin 27.6% (24.7%); Intelligent Devices +4%, margin 27.2% (26.7%). FY 2025: Intelligent Devices USD 12,400m (+2% underlying, margin 25.9%), Software and Control USD 5,691m (+5%, margin 31.0%).",
+    "derived": [
+     "profPy",
+     "prof",
+     "seg.Intelligent Devices.rev",
+     "seg.Intelligent Devices.revPy",
+     "seg.Intelligent Devices.prof",
+     "seg.Intelligent Devices.profPy",
+     "seg.Software and Control.rev",
+     "seg.Software and Control.revPy",
+     "seg.Software and Control.prof",
+     "seg.Software and Control.profPy",
+     "seg.· Final Control.rev",
+     "seg.· Final Control.revPy",
+     "seg.· Final Control.prof",
+     "seg.· Final Control.profPy",
+     "seg.· Measurement & Analytical.rev",
+     "seg.· Measurement & Analytical.revPy",
+     "seg.· Measurement & Analytical.prof",
+     "seg.· Measurement & Analytical.profPy",
+     "seg.· Discrete Automation.rev",
+     "seg.· Discrete Automation.revPy",
+     "seg.· Discrete Automation.prof",
+     "seg.· Discrete Automation.profPy",
+     "seg.· Safety & Productivity.rev",
+     "seg.· Safety & Productivity.revPy",
+     "seg.· Safety & Productivity.prof",
+     "seg.· Safety & Productivity.profPy",
+     "seg.· Control Systems & Software.rev",
+     "seg.· Control Systems & Software.revPy",
+     "seg.· Control Systems & Software.prof",
+     "seg.· Control Systems & Software.profPy",
+     "seg.· Test & Measurement.rev",
+     "seg.· Test & Measurement.revPy",
+     "seg.· Test & Measurement.prof",
+     "seg.· Test & Measurement.profPy"
     ]
    },
-   "Q4 2025": {
-    "report": "Fiscal Q1 2026 (Oct–Dec 2025)",
+   "Q1 2026": {
+    "report": "Q1 2026 results (quarter ended 31 Dec 2025)",
     "date": "2026-02-03",
     "rev": 4346,
     "revChg": 4.1,
@@ -3491,7 +3646,7 @@ window.CW = {
     "guide": "FY 2026 adj. EPS midpoint raised: $6.40–6.55.",
     "src": [
      [
-      "Fiscal Q1 2026 Form 10-Q (PDF)",
+      "Q1 2026 Form 10-Q (PDF)",
       "reports/emerson/FQ1-2026_10-q.pdf"
      ]
     ],
@@ -3589,8 +3744,8 @@ window.CW = {
     "segNote": "New structure from fiscal 2026 (prior year restated). Test & Measurement +11% underlying (aerospace & defence, semiconductor); Software & Systems margin 31.3% despite ~2 pts drag from software-renewal timing. Intelligent Devices +2%, margin −70 bps; Safety & Productivity +1%.",
     "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
-   "Q1 2026": {
-    "report": "Fiscal Q2 2026 (Jan–Mar 2026)",
+   "Q2 2026": {
+    "report": "Q2 2026 results (quarter ended 31 Mar 2026)",
     "date": "2026-05-05",
     "org": 0.5,
     "orgLbl": "Underlying growth",
@@ -3610,7 +3765,7 @@ window.CW = {
     "guide": "FY 2026: underlying +3%, reported +4.5%, adj. EPS $6.45–6.55, FCF USD 3.5–3.6bn.",
     "src": [
      [
-      "Fiscal Q2 2026 Form 10-Q (PDF)",
+      "Q2 2026 Form 10-Q (PDF)",
       "reports/emerson/FQ2-2026_10-q.pdf"
      ]
     ],
@@ -3709,8 +3864,8 @@ window.CW = {
     "segNote": "Underlying +0.5%: price +3.5% but volume −3% from software-renewal timing (−2 pts) and the Middle East conflict (−1 pt). Software & Systems margin 29.2% (−250 bps, ~3 pts renewal timing); Intelligent Devices margin +80 bps to 27.9%. US +9%, international −5%.",
     "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
-   "Q2 2026": {
-    "report": "Fiscal Q3 2026 (Apr–Jun 2026)",
+   "Q3 2026": {
+    "report": "Q3 2026 results (quarter ended 30 Jun 2026)",
     "date": "2026-08-04",
     "rev": 4873,
     "revChg": 7.0,
@@ -3809,7 +3964,7 @@ window.CW = {
     "guide": "FY 2026 raised: net sales ~+5%, underlying ~+3.5%, adj. EPS ~$6.55, FCF ~USD 3.6bn, adj. segment EBITA margin ~28%.",
     "src": [
      [
-      "Fiscal Q3 2026 Form 10-Q (PDF)",
+      "Q3 2026 Form 10-Q (PDF)",
       "reports/emerson/FQ3-2026_10-q.pdf"
      ]
     ],
@@ -3842,14 +3997,120 @@ window.CW = {
     "mgnPy": 27.1,
     "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
-   "Q3 2026": {
-    "report": "Fiscal Q4 2026 (Jul–Sep 2026) — due 4 Nov 2026",
-    "pending": true,
-    "note": "Guidance for the quarter: adj. segment EBITA margin ~28.5%.",
+   "Q1 2025": {
+    "report": "Q1 2025 results (quarter ended 31 Dec 2024)",
+    "date": "2025-02-05",
+    "rev": 4175,
+    "revPy": 4117,
+    "revChg": 1.4,
+    "org": 2,
+    "orgLbl": "Underlying growth",
+    "mgnLbl": "Adj. segment EBITA margin",
+    "mgn": 28.0,
+    "mgnPy": 24.6,
+    "prof": 1169,
+    "profPy": 1014,
+    "eps": {
+     "l": "Adj. EPS",
+     "v": "$1.38",
+     "c": "+13% vs $1.22"
+    },
+    "cash": {
+     "l": "Free cash flow",
+     "v": "694"
+    },
+    "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying",
+    "seg": [
+     {
+      "n": "Intelligent Devices",
+      "rev": 2843,
+      "revPy": 2822,
+      "org": 2,
+      "prof": 741,
+      "profPy": 671,
+      "mgn": 26.1,
+      "mgnPy": 23.8
+     },
+     {
+      "n": "· Final Control",
+      "rev": 976,
+      "revPy": 940,
+      "org": 5,
+      "sub": true
+     },
+     {
+      "n": "· Measurement & Analytical",
+      "rev": 975,
+      "revPy": 947,
+      "org": 4,
+      "sub": true
+     },
+     {
+      "n": "· Discrete Automation",
+      "rev": 580,
+      "revPy": 613,
+      "org": -4,
+      "sub": true
+     },
+     {
+      "n": "· Safety & Productivity",
+      "rev": 312,
+      "revPy": 322,
+      "org": -3,
+      "sub": true
+     },
+     {
+      "n": "Software and Control",
+      "rev": 1352,
+      "revPy": 1314,
+      "org": 4,
+      "prof": 428,
+      "profPy": 343,
+      "mgn": 31.6,
+      "mgnPy": 26.1
+     },
+     {
+      "n": "· Control Systems & Software",
+      "rev": 690,
+      "revPy": 675,
+      "org": 3,
+      "sub": true
+     },
+     {
+      "n": "· Test & Measurement",
+      "rev": 359,
+      "revPy": 382,
+      "org": -5,
+      "sub": true
+     },
+     {
+      "n": "· AspenTech",
+      "rev": 303,
+      "revPy": 257,
+      "org": 18,
+      "sub": true
+     }
+    ],
+    "geo": [
+     {
+      "n": "Americas",
+      "org": 3
+     },
+     {
+      "n": "Asia, Middle East & Africa",
+      "org": 4,
+      "note": "China −5%"
+     },
+     {
+      "n": "Europe",
+      "org": -2
+     }
+    ],
+    "segNote": "Underlying +2%: Final Control +5% and Measurement & Analytical +4% offset Discrete Automation (−4%) and Safety & Productivity (−3%); AspenTech +18%. Adj. segment EBITA margin 28.0% (+340 bps), Software and Control 31.6% (+550 bps). Old segment structure.",
     "src": [
      [
-      "Emerson investor relations",
-      "https://ir.emerson.com/"
+      "Q1 2025 Form 10-Q (PDF)",
+      "reports/emerson/FQ1-2025_10-q.pdf"
      ]
     ]
    }
@@ -4459,8 +4720,8 @@ window.CW = {
    ]
   },
   "emerson": {
-   "period": "Q2 2026",
-   "title": "Fiscal Q3 2026 results, 4 Aug 2026 (fiscal Q4 due 4 Nov)",
+   "period": "Q3 2026",
+   "title": "Q3 2026 results (quarter ended 30 Jun 2026), 4 Aug 2026",
    "perf": [
     "Net sales USD 4,873m, +7% reported and +6% underlying; underlying orders +7%.",
     "Adj. segment EBITA margin 28.5% (+140 bps); adj. EPS $1.71 (+13%), above guidance.",
@@ -4876,63 +5137,63 @@ window.CW = {
   },
   {
    "co": "emerson",
-   "p": "Q4 2024",
+   "p": "Q1 2025",
    "type": "Quarterly report",
-   "title": "Fiscal Q1 2025 Form 10-Q (Oct–Dec 2024)",
+   "title": "Q1 2025 Form 10-Q (quarter ended 31 Dec 2024)",
    "url": "https://ir.emerson.com/",
    "file": "reports/emerson/FQ1-2025_10-q.pdf",
    "bytes": 1809246
   },
   {
    "co": "emerson",
-   "p": "Q1 2025",
+   "p": "Q2 2025",
    "type": "Quarterly report",
-   "title": "Fiscal Q2 2025 Form 10-Q",
+   "title": "Q2 2025 Form 10-Q",
    "url": "https://ir.emerson.com/",
    "file": "reports/emerson/FQ2-2025_10-q.pdf",
    "bytes": 2733467
   },
   {
    "co": "emerson",
-   "p": "Q2 2025",
+   "p": "Q3 2025",
    "type": "Quarterly report",
-   "title": "Fiscal Q3 2025 Form 10-Q",
+   "title": "Q3 2025 Form 10-Q",
    "url": "https://ir.emerson.com/",
    "file": "reports/emerson/FQ3-2025_10-q.pdf",
    "bytes": 2718105
   },
   {
    "co": "emerson",
-   "p": "Q4 2025",
+   "p": "Q1 2026",
    "type": "Quarterly report",
-   "title": "Fiscal Q1 2026 Form 10-Q",
+   "title": "Q1 2026 Form 10-Q",
    "url": "https://ir.emerson.com/",
    "file": "reports/emerson/FQ1-2026_10-q.pdf",
    "bytes": 1915301
   },
   {
    "co": "emerson",
-   "p": "Q1 2026",
+   "p": "Q2 2026",
    "type": "Quarterly report",
-   "title": "Fiscal Q2 2026 Form 10-Q",
+   "title": "Q2 2026 Form 10-Q",
    "url": "https://ir.emerson.com/",
    "file": "reports/emerson/FQ2-2026_10-q.pdf",
    "bytes": 2615076
   },
   {
    "co": "emerson",
-   "p": "Q2 2026",
+   "p": "Q3 2026",
    "type": "Quarterly report",
-   "title": "Fiscal Q3 2026 Form 10-Q",
+   "title": "Q3 2026 Form 10-Q",
    "url": "https://ir.emerson.com/",
    "file": "reports/emerson/FQ3-2026_10-q.pdf",
    "bytes": 2653206
   },
   {
    "co": "emerson",
-   "p": "Q3 2025",
+   "p": "Q4 2025",
    "type": "Annual report",
-   "title": "Fiscal 2025 Form 10-K",
+   "title": "FY 2025 Form 10-K (year ended 30 Sep 2025)",
    "url": "https://ir.emerson.com/sec-filings/all-sec-filings/content/0000032604-25-000087/0000032604-25-000087.pdf"
   },
   {

@@ -64,7 +64,7 @@ A second dashboard that follows Aalberts' listed peers (IMI, Belimo, Xylem, Ecol
 
 Notes on the figures (in `dashboard/competitors-data.js`):
 - Each company's own reporting currency and its own measures (Aalberts EBITA margin, Xylem adjusted EBITDA margin, Emerson adjusted segment EBITA margin and underlying growth, Belimo growth in local currencies, etc.).
-- Half-year reporters (Aalberts, IMI, Belimo, Georg Fischer): Q2 shows the H1 report and Q4 the full-year report; Q1 and Q3 show trading updates where they exist. Emerson's fiscal year ends 30 September, so calendar Q3 2026 = fiscal Q4 2026.
+- Half-year reporters (Aalberts, IMI, Belimo, Georg Fischer): Q2 shows the H1 report and Q4 the full-year report; Q1 and Q3 show trading updates where they exist. Emerson's quarters are shown as Emerson labels them (fiscal year ends 30 September, so Q1 = October–December).
 - Figures marked ≈ are derived from reported growth rates, not reported as such. Figures were collected from releases and press coverage of them; check the linked source before quoting them.
 - Watts (Q3) and Emerson (fiscal Q4) report on 4 Nov 2026; Xylem and Ecolab Q4 dates are estimates until announced.
 
