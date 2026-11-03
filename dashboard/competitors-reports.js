@@ -13,9 +13,17 @@ window.CW_REPORTS = {
    "bytes": 1747131,
    "path": "reports/aalberts/Q2-2025_h1-2025-presentation.pdf"
   },
+  "https://ir.emerson.com/sec-filings/all-sec-filings/content/0000032604-25-000087/0000032604-25-000087.pdf": {
+   "bytes": 5875502,
+   "path": "reports/emerson/Q3-2025_fiscal-2025-form-10-k.pdf"
+  },
   "https://report.belimo.com/ar25/app/uploads/Annual-Report-2025.pdf": {
    "bytes": 14956339,
    "path": "reports/belimo/Q4-2025_annual-report-2025.pdf"
+  },
+  "https://s29.q4cdn.com/117128878/files/doc_financials/2025/ar/Watts-Water-2025-Annual-Report.pdf": {
+   "bytes": 2943376,
+   "path": "reports/watts/Q4-2025_2025-annual-report-incl-form-10-k.pdf"
   },
   "https://s3.eu-west-1.amazonaws.com/aalberts-website/media/App/Models/Download/000/000/569/attachment/original/Q3%202025.pdf": {
    "bytes": 127160,
@@ -66,5 +74,5 @@ window.CW_REPORTS = {
    "path": "reports/aalberts/Q3-2026_q3-2026-press-release.pdf"
   }
  },
- "updated": "2026-11-03 15:35 UTC"
+ "updated": "2026-11-03 15:38 UTC"
 };
