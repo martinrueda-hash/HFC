@@ -4868,6 +4868,13 @@ window.CW = {
    "bytes": 508032
   },
   {
+   "co": "watts",
+   "p": "Q4 2025",
+   "type": "Annual report",
+   "title": "2025 annual report (incl. Form 10-K)",
+   "url": "https://s29.q4cdn.com/117128878/files/doc_financials/2025/ar/Watts-Water-2025-Annual-Report.pdf"
+  },
+  {
    "co": "emerson",
    "p": "Q4 2024",
    "type": "Quarterly report",
@@ -4920,6 +4927,13 @@ window.CW = {
    "url": "https://ir.emerson.com/",
    "file": "reports/emerson/FQ3-2026_10-q.pdf",
    "bytes": 2653206
+  },
+  {
+   "co": "emerson",
+   "p": "Q3 2025",
+   "type": "Annual report",
+   "title": "Fiscal 2025 Form 10-K",
+   "url": "https://ir.emerson.com/sec-filings/all-sec-filings/content/0000032604-25-000087/0000032604-25-000087.pdf"
   },
   {
    "co": "gf",
