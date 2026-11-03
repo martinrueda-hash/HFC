@@ -140,7 +140,8 @@ window.CW = {
    "cadence": "Quarterly; fiscal year ends 30 September. Quarters shown as Emerson labels them (Q1 = Oct–Dec).",
    "ir": "https://ir.emerson.com/",
    "color": "#008300",
-   "profLbl": "Adj. segment EBITA"
+   "profLbl": "Adj. segment EBITA",
+   "fyNote": "Emerson's financial year ends on 30 September, so its quarters are offset from the calendar: Q1 = October–December, Q2 = January–March, Q3 = April–June, Q4 = July–September. Quarters are shown as Emerson labels them (e.g. Q1 2026 = October–December 2025)."
   },
   {
    "id": "pentair",
