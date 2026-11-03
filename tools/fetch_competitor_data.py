@@ -167,8 +167,8 @@ def fetch_reports(data):
             print(f"skip {d['co']} {d['title']}: {len(raw) // 1048576} MB is above {MAX_MB} MB")
             continue
         pdf = is_pdf or "pdf" in ctype or raw[:5] == b"%PDF-"
-        if not pdf and "html" not in ctype and not raw.lstrip()[:1] == b"<":
-            print(f"skip {d['co']} {d['title']}: unexpected content type {ctype}")
+        if not pdf:  # the library keeps PDFs only; web pages stay link-only
+            print(f"skip {d['co']} {d['title']}: not a PDF ({ctype})")
             continue
         folder.mkdir(parents=True, exist_ok=True)
         path = folder / (base + (".pdf" if pdf else ".html"))

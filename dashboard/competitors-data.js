@@ -403,6 +403,21 @@ window.CW = {
    "co": "belimo",
    "date": "2026-02-23",
    "event": "FY 2025 results and annual report"
+  },
+  {
+   "co": "xylem",
+   "date": "2025-04-29",
+   "event": "Q1 2025 results"
+  },
+  {
+   "co": "xylem",
+   "date": "2025-07-31",
+   "event": "Q2 2025 results"
+  },
+  {
+   "co": "xylem",
+   "date": "2025-10-28",
+   "event": "Q3 2025 results"
   }
  ],
  "results": {
@@ -1488,248 +1503,581 @@ window.CW = {
   "xylem": {
    "Q1 2025": {
     "report": "Q1 2025 results",
+    "date": "2025-04-29",
     "rev": 2069,
-    "revChg": 2,
+    "revPy": 2033,
     "org": 3,
     "mgnLbl": "Adj. EBITDA margin",
     "mgn": 20.4,
-    "mgnChg": 120,
+    "mgnPy": 19.2,
+    "prof": 423,
+    "eps": {
+     "l": "Adj. EPS",
+     "v": "$1.03",
+     "c": "+14% vs $0.90"
+    },
+    "cash": {
+     "l": "Free cash flow",
+     "v": "−38",
+     "c": "15 a year earlier"
+    },
+    "orders": {
+     "l": "Orders",
+     "v": "2,158",
+     "c": "-2% organic; -4% reported"
+    },
+    "segLbl": "By reporting segment; margin = adj. segment EBITDA margin",
+    "seg": [
+     {
+      "n": "Water Infrastructure",
+      "rev": 581,
+      "org": 5,
+      "prof": 120,
+      "mgn": 20.7,
+      "mgnChg": 290,
+      "note": "Orders 626 (+1% organic)"
+     },
+     {
+      "n": "Applied Water",
+      "rev": 435,
+      "org": 1,
+      "prof": 85,
+      "mgn": 19.5,
+      "mgnChg": 300,
+      "note": "Orders 486 (+3% organic)"
+     },
+     {
+      "n": "Measurement & Control Solutions",
+      "rev": 490,
+      "org": 6,
+      "prof": 103,
+      "mgn": 21.0,
+      "mgnChg": -170,
+      "note": "Orders 402 (-8% organic)"
+     },
+     {
+      "n": "Water Solutions & Services",
+      "rev": 563,
+      "org": 1,
+      "prof": 122,
+      "mgn": 21.7,
+      "mgnChg": -60,
+      "note": "Orders 644 (-5% organic)"
+     }
+    ],
+    "segNote": "Growth led by MCS (+6%) and Water Infrastructure (+5%); Applied Water and WSS +1%. Margins up sharply in WI and AW (+290/+300 bps) on productivity and price; MCS margin −170 bps. Record Q1 adj. EBITDA margin and EPS.",
     "src": [
+     [
+      "Q1 2025 earnings package (PDF)",
+      "reports/xylem/Q1-2025_earnings-package.pdf"
+     ],
      [
       "Q1 2025 earnings release",
       "https://www.sec.gov/Archives/edgar/data/1524472/000152447225000019/xyl04292025ex991.htm"
      ]
     ],
-    "prof": 422.0,
-    "derived": [
-     "prof"
-    ]
+    "guide": "FY 2025 adj. EPS raised to $4.50–4.70."
    },
    "Q2 2025": {
     "report": "Q2 2025 results",
-    "rev": 2300,
-    "revChg": 6,
+    "date": "2025-07-31",
+    "rev": 2301,
+    "revPy": 2169,
     "org": 6,
     "mgnLbl": "Adj. EBITDA margin",
     "mgn": 21.8,
-    "mgnChg": 100,
+    "mgnPy": 20.8,
+    "prof": 502,
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.26",
-     "c": "+16%"
+     "c": "+16% vs $1.09"
     },
-    "note": "Revenue rounded to USD 2.3bn in the release summary.",
+    "cash": {
+     "l": "Free cash flow, year to date",
+     "v": "169",
+     "c": "230 a year earlier"
+    },
+    "orders": {
+     "l": "Orders",
+     "v": "2,174",
+     "c": "+4% organic; +4% reported"
+    },
+    "segLbl": "By reporting segment; margin = adj. segment EBITDA margin",
+    "seg": [
+     {
+      "n": "Water Infrastructure",
+      "rev": 650,
+      "org": 4,
+      "prof": 142,
+      "mgn": 21.8,
+      "mgnChg": 200,
+      "note": "Orders 672 (-2% organic)"
+     },
+     {
+      "n": "Applied Water",
+      "rev": 483,
+      "org": 5,
+      "prof": 105,
+      "mgn": 21.7,
+      "mgnChg": 420,
+      "note": "Orders 488 (+4% organic)"
+     },
+     {
+      "n": "Measurement & Control Solutions",
+      "rev": 540,
+      "org": 10,
+      "prof": 125,
+      "mgn": 23.1,
+      "mgnChg": -30,
+      "note": "Orders 437 (+12% organic)"
+     },
+     {
+      "n": "Water Solutions & Services",
+      "rev": 628,
+      "org": 5,
+      "prof": 153,
+      "mgn": 24.4,
+      "mgnChg": 60,
+      "note": "Orders 577 (+5% organic)"
+     }
+    ],
+    "segNote": "Growth in all segments, led by MCS (+10%); Applied Water margin +420 bps and WI +200 bps. Record quarterly adj. EBITDA margin; strength in North America.",
     "src": [
+     [
+      "Q2 2025 earnings package (PDF)",
+      "reports/xylem/Q2-2025_earnings-package.pdf"
+     ],
      [
       "Q2 2025 earnings release",
       "https://www.sec.gov/Archives/edgar/data/1524472/000152447225000035/xyl07312025ex991.htm"
      ]
-    ],
-    "prof": 501.0,
-    "derived": [
-     "prof"
     ]
    },
    "Q3 2025": {
     "report": "Q3 2025 results",
-    "rev": 2269,
-    "revChg": 8,
+    "date": "2025-10-28",
+    "rev": 2268,
+    "revPy": 2104,
     "org": 7,
     "mgnLbl": "Adj. EBITDA margin",
     "mgn": 23.2,
-    "mgnChg": 200,
+    "mgnPy": 21.2,
+    "prof": 527,
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.37",
-     "c": "+23%"
+     "c": "+23% vs $1.11"
     },
-    "derived": [
-     "rev",
-     "eps",
-     "prof"
+    "cash": {
+     "l": "Free cash flow, year to date",
+     "v": "450",
+     "c": "467 a year earlier"
+    },
+    "orders": {
+     "l": "Orders",
+     "v": "2,181",
+     "c": "-2% organic; -1% reported"
+    },
+    "segLbl": "By reporting segment; margin = adj. segment EBITDA margin",
+    "seg": [
+     {
+      "n": "Water Infrastructure",
+      "rev": 656,
+      "org": 5,
+      "prof": 160,
+      "mgn": 24.4,
+      "mgnChg": 400,
+      "note": "Orders 683 (-2% organic)"
+     },
+     {
+      "n": "Applied Water",
+      "rev": 456,
+      "org": 1,
+      "prof": 99,
+      "mgn": 21.7,
+      "mgnChg": 310,
+      "note": "Orders 445 (0% organic)"
+     },
+     {
+      "n": "Measurement & Control Solutions",
+      "rev": 522,
+      "org": 11,
+      "prof": 114,
+      "mgn": 21.8,
+      "mgnChg": 60,
+      "note": "Orders 446 (+11% organic)"
+     },
+     {
+      "n": "Water Solutions & Services",
+      "rev": 634,
+      "org": 10,
+      "prof": 167,
+      "mgn": 26.3,
+      "mgnChg": 160,
+      "note": "Orders 607 (-11% organic)"
+     }
     ],
+    "segNote": "MCS (+11%) and WSS (+10%) led growth; WI margin +400 bps to 24.4%, AW +310 bps. Orders −2% against tough comparisons, with MCS orders +11%.",
     "src": [
+     [
+      "Q3 2025 earnings package (PDF)",
+      "reports/xylem/Q3-2025_earnings-package.pdf"
+     ],
      [
       "Q3 2025 earnings release",
       "https://www.sec.gov/Archives/edgar/data/1524472/000152447225000043/xyl10282025ex991.htm"
      ]
     ],
-    "prof": 526.0
+    "guide": "FY 2025 adj. EPS raised to $5.03–5.08."
    },
    "Q4 2025": {
     "report": "Q4 2025 results",
     "date": "2026-02-10",
-    "rev": 2400,
-    "revChg": 6,
+    "rev": 2397,
+    "revPy": 2256,
     "org": 4,
     "mgnLbl": "Adj. EBITDA margin",
     "mgn": 23.2,
-    "mgnChg": 220,
+    "mgnPy": 21.0,
+    "prof": 557,
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.42",
-     "c": "+20%"
+     "c": "+20% vs $1.18"
     },
-    "extra": [
+    "cash": {
+     "l": "Free cash flow, FY 2025",
+     "v": "925",
+     "c": "942 a year earlier"
+    },
+    "orders": {
+     "l": "Orders",
+     "v": "2,391",
+     "c": "+7% organic; +9% reported"
+    },
+    "segLbl": "By reporting segment; margin = adj. segment EBITDA margin",
+    "seg": [
      {
-      "l": "FY 2025 revenue",
-      "v": "9,000",
-      "c": "+6%; organic +5%"
+      "n": "Water Infrastructure",
+      "rev": 749,
+      "org": 0,
+      "prof": 219,
+      "mgn": 29.2,
+      "mgnChg": 510,
+      "note": "Orders 691 (-1% organic)"
      },
      {
-      "l": "FY 2025 adj. EPS",
-      "v": "$5.08",
-      "c": "+19%; GAAP $3.92"
+      "n": "Applied Water",
+      "rev": 475,
+      "org": 3,
+      "prof": 89,
+      "mgn": 18.7,
+      "mgnChg": 60,
+      "note": "Orders 474 (+5% organic)"
+     },
+     {
+      "n": "Measurement & Control Solutions",
+      "rev": 534,
+      "org": 10,
+      "prof": 108,
+      "mgn": 20.2,
+      "mgnChg": 310,
+      "note": "Orders 588 (+22% organic)"
+     },
+     {
+      "n": "Water Solutions & Services",
+      "rev": 639,
+      "org": 4,
+      "prof": 153,
+      "mgn": 23.9,
+      "mgnChg": 110,
+      "note": "Orders 638 (+7% organic)"
      }
     ],
-    "note": "Record full-year revenue, adjusted EBITDA margin and adjusted EPS. Quarter revenue rounded to USD 2.4bn.",
+    "segNote": "MCS +10% and WSS +4% drove growth; WI margin reached 29.2% (+510 bps), MCS +310 bps. MCS orders +22%. FY 2025 revenue USD 9,035m, adj. EBITDA 2,009 (22.2%).",
     "src": [
+     [
+      "Q4 2025 earnings package (PDF)",
+      "reports/xylem/Q4-2025_earnings-package.pdf"
+     ],
      [
       "Q4 2025 earnings release",
       "https://www.sec.gov/Archives/edgar/data/1524472/000152447226000008/xyl02102026ex991.htm"
      ]
     ],
-    "prof": 557.0,
-    "derived": [
-     "prof"
-    ]
+    "guide": "2026 outlook given with FY results.",
+    "note": "FY 2025: revenue USD 9,035m, adj. EBITDA USD 2,009m (22.2%), adj. EPS $5.08."
    },
    "Q1 2026": {
     "report": "Q1 2026 results",
     "date": "2026-04-28",
     "rev": 2125,
-    "revChg": 2.7,
-    "org": -0.4,
+    "revPy": 2069,
+    "org": 0,
     "mgnLbl": "Adj. EBITDA margin",
     "mgn": 20.6,
-    "mgnChg": 20,
+    "mgnPy": 20.4,
+    "prof": 437,
     "eps": {
-     "l": "GAAP EPS",
-     "v": "$0.79",
-     "c": "+14%; adjusted +9%"
+     "l": "Adj. EPS",
+     "v": "$1.12",
+     "c": "+9% vs $1.03"
     },
+    "cash": {
+     "l": "Free cash flow",
+     "v": "18",
+     "c": "−38 a year earlier"
+    },
+    "orders": {
+     "l": "Orders",
+     "v": "2,228",
+     "c": "0% organic; +3% reported"
+    },
+    "segLbl": "By reporting segment; margin = adj. segment EBITDA margin",
+    "seg": [
+     {
+      "n": "Water Infrastructure",
+      "rev": 603,
+      "org": -1,
+      "prof": 132,
+      "mgn": 21.9,
+      "revPy": 581,
+      "profPy": 120,
+      "mgnPy": 20.7,
+      "orgPy": 5,
+      "note": "Orders 675 (+2% organic)"
+     },
+     {
+      "n": "Applied Water",
+      "rev": 448,
+      "org": 0,
+      "prof": 88,
+      "mgn": 19.6,
+      "revPy": 435,
+      "profPy": 85,
+      "mgnPy": 19.5,
+      "orgPy": 1,
+      "note": "Orders 512 (+2% organic)"
+     },
+     {
+      "n": "Measurement & Control Solutions",
+      "rev": 508,
+      "org": 1,
+      "prof": 106,
+      "mgn": 20.9,
+      "revPy": 490,
+      "profPy": 103,
+      "mgnPy": 21.0,
+      "orgPy": 6,
+      "note": "Orders 475 (+15% organic)"
+     },
+     {
+      "n": "Water Solutions & Services",
+      "rev": 566,
+      "org": -2,
+      "prof": 125,
+      "mgn": 22.1,
+      "revPy": 563,
+      "profPy": 122,
+      "mgnPy": 21.7,
+      "orgPy": 1,
+      "note": "Orders 566 (-15% organic)"
+     }
+    ],
+    "segNote": "Revenue flat organically; strength in energy metering, dewatering, transport and building solutions offset declines. MCS orders +15%. Margins up in WI (+120 bps) and WSS (+40 bps).",
     "src": [
+     [
+      "Q1 2026 earnings package (PDF)",
+      "reports/xylem/Q1-2026_earnings-package.pdf"
+     ],
      [
       "Q1 2026 earnings release",
       "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000065/xyl04282026ex991.htm"
-     ],
-     [
-      "Q1 2026 slides",
-      "https://xyleminc.gcs-web.com/static-files/b7ba322b-6ff8-450f-bfa7-2df9d270fcf1"
      ]
     ],
-    "prof": 438.0,
-    "derived": [
-     "prof"
-    ],
-    "orgPy": 3
+    "profPy": 423
    },
    "Q2 2026": {
     "report": "Q2 2026 results",
     "date": "2026-07-28",
-    "rev": 2300,
-    "revChg": 2,
+    "rev": 2336,
+    "revPy": 2301,
     "org": 1,
+    "mgnLbl": "Adj. EBITDA margin",
+    "mgn": 23.3,
+    "mgnPy": 21.8,
+    "prof": 544,
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.46",
-     "c": "+16%; GAAP $1.11"
+     "c": "+16% vs $1.26"
+    },
+    "cash": {
+     "l": "Free cash flow, year to date",
+     "v": "219",
+     "c": "169 a year earlier"
     },
     "orders": {
      "l": "Orders",
-     "v": "3,100",
-     "c": "+42%; organic +41%"
+     "v": "3,086",
+     "c": "+41% organic; +42% reported"
     },
-    "guide": "FY 2026: revenue ~USD 9.2bn, organic +2–3%, adj. EBITDA margin 23.1–23.5%, adj. EPS $5.55–5.70.",
+    "segLbl": "By reporting segment; margin = adj. segment EBITDA margin",
+    "seg": [
+     {
+      "n": "Water Infrastructure",
+      "rev": 683,
+      "org": 3,
+      "prof": 182,
+      "mgn": 26.6,
+      "revPy": 650,
+      "profPy": 142,
+      "mgnPy": 21.8,
+      "orgPy": 4,
+      "note": "Orders 669 (-4% organic); Strength in Transport"
+     },
+     {
+      "n": "Applied Water",
+      "rev": 501,
+      "org": 3,
+      "prof": 106,
+      "mgn": 21.2,
+      "revPy": 483,
+      "profPy": 105,
+      "mgnPy": 21.7,
+      "orgPy": 5,
+      "note": "Orders 538 (+9% organic); Data-centre orders; building solutions"
+     },
+     {
+      "n": "Measurement & Control Solutions",
+      "rev": 508,
+      "org": -1,
+      "prof": 107,
+      "mgn": 21.1,
+      "revPy": 540,
+      "profPy": 125,
+      "mgnPy": 23.1,
+      "orgPy": 10,
+      "note": "Orders 430 (+2% organic); Energy metering strength"
+     },
+     {
+      "n": "Water Solutions & Services",
+      "rev": 644,
+      "org": 1,
+      "prof": 163,
+      "mgn": 25.3,
+      "revPy": 628,
+      "profPy": 153,
+      "mgnPy": 24.4,
+      "orgPy": 5,
+      "note": "Orders 1,449 (+147% organic); Outsourced-water order surge (orders +147%)"
+     }
+    ],
+    "segNote": "Orders +41% organic on a WSS outsourced-water surge (+147%) and AW data-centre wins. WI margin +480 bps to 26.6%, WSS +90 bps; MCS margin −200 bps. China declines offset by developed markets.",
     "src": [
+     [
+      "Q2 2026 earnings package (PDF)",
+      "reports/xylem/Q2-2026_earnings-package.pdf"
+     ],
      [
       "Q2 2026 earnings release",
       "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000108/xyl07282026ex991.htm"
      ]
-    ]
+    ],
+    "profPy": 502,
+    "guide": "FY 2026: revenue ~USD 9.2bn, organic +2–3%, adj. EBITDA margin 23.1–23.5%, adj. EPS $5.55–5.70."
    },
    "Q3 2026": {
     "report": "Q3 2026 results",
     "date": "2026-10-27",
     "rev": 2201,
-    "revChg": -3.0,
+    "revPy": 2268,
     "org": 0,
     "mgnLbl": "Adj. EBITDA margin",
     "mgn": 23.9,
-    "mgnChg": 70,
+    "mgnPy": 23.2,
+    "prof": 527,
     "eps": {
      "l": "Adj. EPS",
-     "v": "$1.44",
-     "c": "+5%; GAAP $1.25"
+     "v": "$1.42",
+     "c": "+4% vs $1.37; excl. $0.11 tariff-refund benefit"
+    },
+    "cash": {
+     "l": "Adj. free cash flow, year to date",
+     "v": "444",
+     "c": "462 a year earlier"
     },
     "orders": {
      "l": "Orders",
      "v": "2,331",
-     "c": "+6.9%; organic +9.9%; backlog record USD 5.5bn"
+     "c": "+10% organic; +7% reported"
     },
-    "cash": {
-     "l": "Free cash flow, year to date",
-     "v": "444",
-     "c": "slightly below 2025"
-    },
-    "extra": [
-     {
-      "l": "Net debt / adj. EBITDA",
-      "v": "1.1x"
-     }
-    ],
+    "segLbl": "By reporting segment; margin = adj. segment EBITDA margin",
     "seg": [
      {
       "n": "Water Infrastructure",
       "rev": 645,
-      "chg": -2,
       "org": -1,
+      "prof": 169,
       "mgn": 26.2,
+      "revPy": 656,
+      "profPy": 160,
       "mgnPy": 24.4,
-      "note": "Orders 675 (−1%)"
+      "orgPy": 5,
+      "note": "Orders 675 (-1% organic); Treatment softness offset by Transport"
      },
      {
       "n": "Applied Water",
       "rev": 489,
-      "chg": 7,
       "org": 9,
-      "note": "Orders 502 (+13%); data-centre orders more than tripled"
+      "prof": 104,
+      "mgn": 21.3,
+      "revPy": 456,
+      "profPy": 99,
+      "mgnPy": 21.7,
+      "orgPy": 1,
+      "note": "Orders 502 (+15% organic); NA data centres and commercial; Americas revenue growth"
      },
      {
       "n": "Measurement & Control Solutions",
       "rev": 436,
-      "chg": -16,
       "org": -5,
-      "note": "Orders 504 (+13%, +30% organic)"
+      "prof": 107,
+      "mgn": 24.5,
+      "revPy": 522,
+      "profPy": 114,
+      "mgnPy": 21.8,
+      "orgPy": 11,
+      "note": "Orders 504 (+30% organic); Electric metering and analytics down; international metrology divested May 2026"
      },
      {
       "n": "Water Solutions & Services",
       "rev": 631,
-      "chg": 0,
       "org": -2,
-      "note": "Orders 650 (+7%); margin −140 bps"
+      "prof": 157,
+      "mgn": 24.9,
+      "revPy": 634,
+      "profPy": 167,
+      "mgnPy": 26.3,
+      "orgPy": 10,
+      "note": "Orders 650 (+6% organic); Prior-year one-off services and capital work did not repeat"
      }
     ],
-    "guide": "FY 2026 cut: revenue ~USD 8.95bn (−1%), organic ~flat, adj. EPS $5.40–5.45 ($5.55–5.70), FCF margin ~10.2%.",
+    "segNote": "Orders +10% organic (MCS +30% on water and gas meters, AW +15% on NA data centres) but revenue flat: MCS −5% (electric metering, affordability), WSS −2%, WI −1%; AW +9%. Margins up in MCS (+270 bps) and WI (+180 bps), down in AW (−40) and WSS (−140).",
     "src": [
+     [
+      "Q3 2026 earnings package (PDF)",
+      "reports/xylem/Q3-2026_earnings-package.pdf"
+     ],
      [
       "Q3 2026 earnings release",
       "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000146/xyl10272026ex991.htm"
-     ],
-     [
-      "Q3 2026 10-Q",
-      "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000148/xyl-20260930.htm"
      ]
     ],
-    "revPy": 2268,
-    "prof": 527,
-    "profPy": 526.2,
-    "derived": [
-     "profPy",
-     "seg.Water Infrastructure.mgnPy"
-    ],
-    "segNote": "Orders were strong in Applied Water and Measurement & Control (+13% each; MCS +30% organic on water and gas metering), but MCS revenue fell 16% (−5% organic) on divestitures and weak electric metering. Water Infrastructure revenue −2% with margin +180 bps to 26.2%. Water Solutions & Services flat as large projects ramp slower.",
-    "orgPy": 7
+    "profPy": 527,
+    "orgPy": 7,
+    "guide": "FY 2026 cut: revenue ~USD 8.95bn (−1%), organic flat, adj. EBITDA margin ~23.2% (+100 bps), adj. EPS $5.40–5.45 ($5.55–5.70), FCF margin ~10.2%. Q4: revenue ~USD 2.3bn, margin ~24.5%."
    }
   },
   "ecolab": {
@@ -3039,26 +3387,29 @@ window.CW = {
    "period": "Q3 2026",
    "title": "Q3 2026 results, 27 Oct 2026",
    "perf": [
-    "Revenue USD 2,201m, −3.0% reported (divestitures) and about flat organically; missed consensus by ~3.5%.",
-    "Orders USD 2,331m, +9.9% organic; record backlog USD 5.5bn. Applied Water +9% organic with data centre orders more than tripled.",
-    "Adj. EBITDA margin 23.9% (+70 bps); adj. EPS $1.44 (+5%), slightly below consensus. Water Infrastructure margin 26.2% (+180 bps); Measurement & Control −5% organic.",
-    "Guidance cut: revenue ~USD 8.95bn, organic ~flat, adj. EPS $5.40–5.45 (from $5.55–5.70)."
+    "Revenue USD 2,201m, −3% reported and flat organically, below expectations on metering affordability pressure and project timing.",
+    "Orders USD 2,331m, +10% organic, book-to-bill >1; backlog USD 5.5bn (+16% organic). Strength in MCS water/gas meters and AW data centres.",
+    "Adj. EBITDA margin 23.9% (+70 bps) on productivity and price; adj. EPS $1.42 (+4%), excluding a $0.11 benefit from US tariff refunds.",
+    "2026 walk: Q1 flat › Q2 +1% (orders +41%) › Q3 flat. FY guidance cut to ~USD 8.95bn revenue and adj. EPS $5.40–5.45."
    ],
    "ma": [
-    "Plans to divest Applied Water International and Specialty Flow Control (beverage and marine): ~9% of revenue, <5% of EBITDA; cuts China exposure from ~2% to ~1% of revenue."
+    "Acquisitions of Cornell & Roper (expected Q4 2026) and WaterFleet (~USD 200m, signed in Q2) to rotate toward higher-growth markets.",
+    "Planned divestiture of AW International (Europe, MEA, APAC) and Specialty Flow Control; international metrology (~USD 250m revenue) divested in May 2026.",
+    "~USD 648m of shares repurchased in Q2 2026."
    ],
    "other": [
-    "From 1 Jan 2027 three segments: Treatment & Services, Flow Solutions, Measurement & Analytics.",
-    "CFO transition announced; restructuring ahead. More investment in data centres and microelectronics."
+    "From 1 Jan 2027, four segments become three: Treatment & Services (~USD 3.5bn), Flow Solutions (~2.6bn), Measurement & Analytics (~2.1bn); AW businesses to be sold move to 'Other' (~0.8bn).",
+    "Operational excellence: productivity and price more than offset inflation; restructuring and realignment costs of USD 80–90m in 2026.",
+    "Net debt 1.1x adj. EBITDA; capex ~USD 350m in 2026."
    ],
    "src": [
     [
-     "Q3 2026 earnings release",
-     "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000146/xyl10272026ex991.htm"
+     "Q3 2026 earnings package (PDF)",
+     "reports/xylem/Q3-2026_earnings-package.pdf"
     ],
     [
-     "Divestitures and new structure",
-     "https://www.rttnews.com/3703532/xylem-announces-divestitures-new-3-segment-structure.aspx"
+     "Q2 2026 earnings package (PDF)",
+     "reports/xylem/Q2-2026_earnings-package.pdf"
     ]
    ]
   },
@@ -3348,14 +3699,14 @@ window.CW = {
    "co": "belimo",
    "p": "Q4 2025",
    "type": "Results release",
-   "title": "FY 2025 press release (web)",
+   "title": "FY 2025 press release",
    "url": "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-growth-in-2025/295f5591-80dd-4287-b3ff-f149c4acf182_en"
   },
   {
    "co": "belimo",
    "p": "Q2 2026",
    "type": "Results release",
-   "title": "H1 2026 press release (web)",
+   "title": "H1 2026 press release",
    "url": "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-sales-growth-in-the-first-half-of-2026/01f2af93-fa3e-4872-b3f8-514ab22ba0e0_en"
   },
   {
@@ -3411,13 +3762,6 @@ window.CW = {
   },
   {
    "co": "xylem",
-   "p": "Q1 2026",
-   "type": "Presentation",
-   "title": "Q1 2026 results slides",
-   "url": "https://xyleminc.gcs-web.com/static-files/b7ba322b-6ff8-450f-bfa7-2df9d270fcf1"
-  },
-  {
-   "co": "xylem",
    "p": "Q2 2026",
    "type": "Results release",
    "title": "Q2 2026 earnings release",
@@ -3443,6 +3787,69 @@ window.CW = {
    "type": "Quarterly report",
    "title": "Q3 2026 10-Q",
    "url": "https://www.sec.gov/Archives/edgar/data/0001524472/000152447226000148/xyl-20260930.htm"
+  },
+  {
+   "co": "xylem",
+   "p": "Q1 2025",
+   "type": "Presentation",
+   "title": "Q1 2025 earnings package",
+   "url": "https://investors.xylem.com/",
+   "file": "reports/xylem/Q1-2025_earnings-package.pdf",
+   "bytes": 1990076
+  },
+  {
+   "co": "xylem",
+   "p": "Q2 2025",
+   "type": "Presentation",
+   "title": "Q2 2025 earnings package",
+   "url": "https://investors.xylem.com/",
+   "file": "reports/xylem/Q2-2025_earnings-package.pdf",
+   "bytes": 2516225
+  },
+  {
+   "co": "xylem",
+   "p": "Q3 2025",
+   "type": "Presentation",
+   "title": "Q3 2025 earnings package",
+   "url": "https://investors.xylem.com/",
+   "file": "reports/xylem/Q3-2025_earnings-package.pdf",
+   "bytes": 2333904
+  },
+  {
+   "co": "xylem",
+   "p": "Q4 2025",
+   "type": "Presentation",
+   "title": "Q4 2025 earnings package",
+   "url": "https://investors.xylem.com/",
+   "file": "reports/xylem/Q4-2025_earnings-package.pdf",
+   "bytes": 1780569
+  },
+  {
+   "co": "xylem",
+   "p": "Q1 2026",
+   "type": "Presentation",
+   "title": "Q1 2026 earnings package",
+   "url": "https://investors.xylem.com/",
+   "file": "reports/xylem/Q1-2026_earnings-package.pdf",
+   "bytes": 1212939
+  },
+  {
+   "co": "xylem",
+   "p": "Q2 2026",
+   "type": "Presentation",
+   "title": "Q2 2026 earnings package",
+   "url": "https://investors.xylem.com/",
+   "file": "reports/xylem/Q2-2026_earnings-package.pdf",
+   "bytes": 1468414
+  },
+  {
+   "co": "xylem",
+   "p": "Q3 2026",
+   "type": "Presentation",
+   "title": "Q3 2026 earnings package",
+   "url": "https://investors.xylem.com/",
+   "file": "reports/xylem/Q3-2026_earnings-package.pdf",
+   "bytes": 2240173
   },
   {
    "co": "ecolab",
@@ -3716,13 +4123,6 @@ window.CW = {
    "type": "Presentation",
    "title": "H1 2026 results presentation",
    "url": "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/mid-year-report-2026/en/mid-year-report-2026-presentation-en.pdf"
-  },
-  {
-   "co": "gf",
-   "p": "Q2 2026",
-   "type": "Half-year report",
-   "title": "Mid-year report 2026 (web)",
-   "url": "https://www.georgfischer.com/en/investors/reports-and-presentations/mid-year-report.html"
   },
   {
    "co": "pentair",

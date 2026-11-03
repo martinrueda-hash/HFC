@@ -106,12 +106,12 @@ window.CW_REPORTS = {
    "path": "reports/aalberts/Q2-2026_h1-2026-presentation.pdf"
   },
   "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-growth-in-2025/295f5591-80dd-4287-b3ff-f149c4acf182_en": {
-   "bytes": 177145,
-   "path": "reports/belimo/Q4-2025_fy-2025-press-release-web.html"
+   "bytes": 206939,
+   "path": "reports/belimo/Q4-2025_fy-2025-press-release.pdf"
   },
   "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-sales-growth-in-the-first-half-of-2026/01f2af93-fa3e-4872-b3f8-514ab22ba0e0_en": {
-   "bytes": 164647,
-   "path": "reports/belimo/Q2-2026_h1-2026-press-release-web.html"
+   "bytes": 163523,
+   "path": "reports/belimo/Q2-2026_h1-2026-press-release.pdf"
   },
   "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/annual-report/annual-report-2025/en/annual-report-2025-full-version-en.pdf": {
    "bytes": 17108427,
@@ -128,10 +128,6 @@ window.CW_REPORTS = {
   "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/mid-year-report-2026/en/mid-year-report-2026-presentation-en.pdf": {
    "bytes": 2234059,
    "path": "reports/gf/Q2-2026_h1-2026-results-presentation.pdf"
-  },
-  "https://www.georgfischer.com/en/investors/reports-and-presentations/mid-year-report.html": {
-   "bytes": 177412,
-   "path": "reports/gf/Q2-2026_mid-year-report-2026-web.html"
   },
   "https://www.globenewswire.com/news-release/2026/10/22/3386031/0/en/aalberts-n-v-aalberts-reports-third-quarter-2026-results.html": {
    "bytes": 59595,
