@@ -3187,7 +3187,7 @@ window.CW = {
     "report": "Fiscal Q2 2025 (Jan–Mar 2025)",
     "date": "2025-05-07",
     "rev": 4432,
-    "revChg": 1,
+    "revChg": 1.3,
     "org": 2,
     "orgLbl": "Underlying growth",
     "mgnLbl": "Adj. segment EBITA margin",
@@ -3195,7 +3195,7 @@ window.CW = {
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.48",
-     "c": "+9%"
+     "c": "+9% vs $1.36"
     },
     "cash": {
      "l": "Free cash flow",
@@ -3204,16 +3204,110 @@ window.CW = {
     },
     "src": [
      [
-      "Fiscal Q2 2025 release",
-      "https://ir.emerson.com/_assets/_10ad2d822f6d4902fd020ca535f9805e/emerson/news/2025-05-07_Emerson_Reports_Second_Quarter_2025_Results_8.pdf"
+      "Fiscal Q2 2025 Form 10-Q (PDF)",
+      "reports/emerson/FQ2-2025_10-q.pdf"
      ]
-    ]
+    ],
+    "revPy": 4376,
+    "prof": 1240,
+    "profPy": 1139,
+    "mgnPy": 26.0,
+    "seg": [
+     {
+      "n": "Intelligent Devices",
+      "rev": 3029,
+      "revPy": 3061,
+      "org": 0,
+      "prof": 781,
+      "profPy": 783,
+      "mgn": 25.8,
+      "mgnPy": 25.6
+     },
+     {
+      "n": "· Final Control",
+      "rev": 1073,
+      "revPy": 1051,
+      "org": 3,
+      "sub": true,
+      "note": "Power end markets, esp. Middle East & Africa"
+     },
+     {
+      "n": "· Measurement & Analytical",
+      "rev": 1002,
+      "revPy": 1013,
+      "org": 0,
+      "sub": true
+     },
+     {
+      "n": "· Discrete Automation",
+      "rev": 615,
+      "revPy": 632,
+      "org": -1,
+      "sub": true
+     },
+     {
+      "n": "· Safety & Productivity",
+      "rev": 339,
+      "revPy": 365,
+      "org": -6,
+      "sub": true,
+      "note": "Softness in all regions"
+     },
+     {
+      "n": "Software and Control",
+      "rev": 1421,
+      "revPy": 1332,
+      "org": 7,
+      "prof": 459,
+      "profPy": 356,
+      "mgn": 32.3,
+      "mgnPy": 26.7
+     },
+     {
+      "n": "· Control Systems & Software",
+      "rev": 1062,
+      "revPy": 965,
+      "org": 11,
+      "sub": true,
+      "note": "Robust growth at AspenTech"
+     },
+     {
+      "n": "· Test & Measurement",
+      "rev": 359,
+      "revPy": 367,
+      "org": -1,
+      "sub": true
+     }
+    ],
+    "geo": [
+     {
+      "n": "Americas",
+      "rev": 2252,
+      "revPy": 2192,
+      "org": 3
+     },
+     {
+      "n": "Asia, Middle East & Africa",
+      "rev": 1331,
+      "revPy": 1306,
+      "org": 3,
+      "note": "China −8%"
+     },
+     {
+      "n": "Europe",
+      "rev": 867,
+      "revPy": 895,
+      "org": -1
+     }
+    ],
+    "segNote": "Software and Control +7% underlying (Control Systems & Software +11%, AspenTech) with adj. EBITA margin 32.3% (+560 bps); Intelligent Devices flat with Safety & Productivity −6%. Americas and AMEA +3%, Europe −1%. AspenTech buy-out completed 12 Mar 2025 (~USD 7.2bn). Old segment structure (before the fiscal 2026 change).",
+    "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
    "Q2 2025": {
     "report": "Fiscal Q3 2025 (Apr–Jun 2025)",
     "date": "2025-08-06",
     "rev": 4553,
-    "revChg": 4,
+    "revChg": 3.9,
     "org": 3,
     "orgLbl": "Underlying growth",
     "mgnLbl": "Adj. segment EBITA margin",
@@ -3221,7 +3315,7 @@ window.CW = {
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.52",
-     "c": "+6%"
+     "c": "+6% vs $1.43"
     },
     "cash": {
      "l": "Free cash flow",
@@ -3231,14 +3325,105 @@ window.CW = {
     "guide": "FY 2025 adj. EPS ~$6.00, free cash flow ~USD 3.2bn.",
     "src": [
      [
-      "Fiscal Q3 2025 release",
-      "https://ir.emerson.com/_assets/_83c3777b7a2a1deaf1f9f1ccca620065/emerson/news/2025-08-06_Emerson_Reports_Third_Quarter_2025_Results_612.pdf"
+      "Fiscal Q3 2025 Form 10-Q (PDF)",
+      "reports/emerson/FQ3-2025_10-q.pdf"
      ]
     ],
-    "prof": 1234,
-    "derived": [
-     "prof"
-    ]
+    "prof": 1232,
+    "revPy": 4380,
+    "profPy": 1189,
+    "mgnPy": 27.1,
+    "seg": [
+     {
+      "n": "Intelligent Devices",
+      "rev": 3125,
+      "revPy": 2997,
+      "org": 3,
+      "prof": 763,
+      "profPy": 765,
+      "mgn": 24.4,
+      "mgnPy": 25.5
+     },
+     {
+      "n": "· Final Control",
+      "rev": 1116,
+      "revPy": 1046,
+      "org": 5,
+      "sub": true,
+      "note": "Power, esp. Americas"
+     },
+     {
+      "n": "· Measurement & Analytical",
+      "rev": 1014,
+      "revPy": 982,
+      "org": 2,
+      "sub": true
+     },
+     {
+      "n": "· Discrete Automation",
+      "rev": 649,
+      "revPy": 618,
+      "org": 3,
+      "sub": true
+     },
+     {
+      "n": "· Safety & Productivity",
+      "rev": 346,
+      "revPy": 351,
+      "org": -2,
+      "sub": true
+     },
+     {
+      "n": "Software and Control",
+      "rev": 1444,
+      "revPy": 1398,
+      "org": 2,
+      "prof": 469,
+      "profPy": 424,
+      "mgn": 32.6,
+      "mgnPy": 30.3
+     },
+     {
+      "n": "· Control Systems & Software",
+      "rev": 1083,
+      "revPy": 1043,
+      "org": 3,
+      "sub": true,
+      "note": "Power globally, process in the Americas"
+     },
+     {
+      "n": "· Test & Measurement",
+      "rev": 361,
+      "revPy": 355,
+      "org": -1,
+      "sub": true,
+      "note": "Early recovery in discrete markets"
+     }
+    ],
+    "geo": [
+     {
+      "n": "Americas",
+      "rev": 2357,
+      "revPy": 2206,
+      "org": 7,
+      "note": "US +10%"
+     },
+     {
+      "n": "Asia, Middle East & Africa",
+      "rev": 1356,
+      "revPy": 1312,
+      "org": 2,
+      "note": "China flat"
+     },
+     {
+      "n": "Europe",
+      "rev": 856,
+      "revPy": 877,
+      "org": -7
+     }
+    ],
+    "segNote": "Intelligent Devices +3% underlying led by Final Control (+5%, power); margin −110 bps on FX and tariffs. Software and Control +2% with adj. EBITA margin 32.6% (+230 bps). Americas +7% (US +10%), Europe −7%. Old segment structure.",
+    "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
    "Q3 2025": {
     "report": "Fiscal Q4 2025 (Jul–Sep 2025)",
@@ -3286,13 +3471,13 @@ window.CW = {
     "report": "Fiscal Q1 2026 (Oct–Dec 2025)",
     "date": "2026-02-03",
     "rev": 4346,
-    "revChg": 4,
+    "revChg": 4.1,
     "org": 2,
     "orgLbl": "Underlying growth",
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.46",
-     "c": "+6%; GAAP $1.07"
+     "c": "+6% vs $1.38; GAAP $1.07"
     },
     "cash": {
      "l": "Free cash flow",
@@ -3306,10 +3491,103 @@ window.CW = {
     "guide": "FY 2026 adj. EPS midpoint raised: $6.40–6.55.",
     "src": [
      [
-      "Fiscal Q1 2026 release",
-      "https://ir.emerson.com/_assets/_0dfcd1db8f1e0a2d66af142d1b1193f5/emerson/news/2026-02-03_Emerson_Reports_First_Quarter_2026_Results_623.pdf"
+      "Fiscal Q1 2026 Form 10-Q (PDF)",
+      "reports/emerson/FQ1-2026_10-q.pdf"
      ]
-    ]
+    ],
+    "revPy": 4175,
+    "prof": 1203,
+    "profPy": 1169,
+    "mgnLbl": "Adj. segment EBITA margin",
+    "mgn": 27.7,
+    "mgnPy": 28.0,
+    "seg": [
+     {
+      "n": "Software & Systems",
+      "rev": 1453,
+      "revPy": 1382,
+      "org": 3,
+      "prof": 455,
+      "profPy": 428,
+      "mgn": 31.3,
+      "mgnPy": 31.1
+     },
+     {
+      "n": "· Control Systems & Software",
+      "rev": 1044,
+      "revPy": 1023,
+      "org": 0,
+      "sub": true,
+      "note": "Power and life sciences offset by software-renewal timing"
+     },
+     {
+      "n": "· Test & Measurement",
+      "rev": 409,
+      "revPy": 359,
+      "org": 11,
+      "sub": true,
+      "note": "Aerospace & defence, semiconductor"
+     },
+     {
+      "n": "Intelligent Devices",
+      "rev": 2390,
+      "revPy": 2306,
+      "org": 2,
+      "prof": 643,
+      "profPy": 637,
+      "mgn": 26.9,
+      "mgnPy": 27.6
+     },
+     {
+      "n": "· Sensors",
+      "rev": 996,
+      "revPy": 972,
+      "org": 1,
+      "sub": true
+     },
+     {
+      "n": "· Final Control",
+      "rev": 1394,
+      "revPy": 1334,
+      "org": 2,
+      "sub": true,
+      "note": "Power, Americas"
+     },
+     {
+      "n": "Safety & Productivity",
+      "rev": 503,
+      "revPy": 487,
+      "org": 1,
+      "prof": 105,
+      "profPy": 104,
+      "mgn": 20.9,
+      "mgnPy": 21.3
+     }
+    ],
+    "geo": [
+     {
+      "n": "Americas",
+      "rev": 2201,
+      "revPy": 2124,
+      "org": 3,
+      "note": "US +6%"
+     },
+     {
+      "n": "Asia, Middle East & Africa",
+      "rev": 1273,
+      "revPy": 1275,
+      "org": 0,
+      "note": "China −5%"
+     },
+     {
+      "n": "Europe",
+      "rev": 872,
+      "revPy": 776,
+      "org": 3
+     }
+    ],
+    "segNote": "New structure from fiscal 2026 (prior year restated). Test & Measurement +11% underlying (aerospace & defence, semiconductor); Software & Systems margin 31.3% despite ~2 pts drag from software-renewal timing. Intelligent Devices +2%, margin −70 bps; Safety & Productivity +1%.",
+    "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
    "Q1 2026": {
     "report": "Fiscal Q2 2026 (Jan–Mar 2026)",
@@ -3318,11 +3596,10 @@ window.CW = {
     "orgLbl": "Underlying growth",
     "mgnLbl": "Adj. segment EBITA margin",
     "mgn": 27.6,
-    "mgnChg": -40,
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.54",
-     "c": "+4%; GAAP $1.10"
+     "c": "+4% vs $1.48; GAAP $1.10"
     },
     "orders": {
      "l": "Underlying orders",
@@ -3333,25 +3610,118 @@ window.CW = {
     "guide": "FY 2026: underlying +3%, reported +4.5%, adj. EPS $6.45–6.55, FCF USD 3.5–3.6bn.",
     "src": [
      [
-      "Fiscal Q2 2026 release",
-      "https://ir.emerson.com/_assets/_f6e5597605579b03df2f9ddcfe39bf0a/emerson/news/2026-05-05_Emerson_Reports_Second_Quarter_2026_Results_629.pdf"
+      "Fiscal Q2 2026 Form 10-Q (PDF)",
+      "reports/emerson/FQ2-2026_10-q.pdf"
      ]
-    ]
+    ],
+    "rev": 4562,
+    "revPy": 4432,
+    "revChg": 2.9,
+    "prof": 1258,
+    "profPy": 1240,
+    "mgnPy": 28.0,
+    "seg": [
+     {
+      "n": "Software & Systems",
+      "rev": 1503,
+      "revPy": 1451,
+      "org": 1,
+      "prof": 438,
+      "profPy": 462,
+      "mgn": 29.2,
+      "mgnPy": 31.7
+     },
+     {
+      "n": "· Control Systems & Software",
+      "rev": 1089,
+      "revPy": 1093,
+      "org": -2,
+      "sub": true,
+      "note": "Software-renewal timing; strong power and life sciences"
+     },
+     {
+      "n": "· Test & Measurement",
+      "rev": 414,
+      "revPy": 358,
+      "org": 12,
+      "sub": true,
+      "note": "Aerospace & defence, semiconductor"
+     },
+     {
+      "n": "Intelligent Devices",
+      "rev": 2512,
+      "revPy": 2459,
+      "org": -1,
+      "prof": 701,
+      "profPy": 665,
+      "mgn": 27.9,
+      "mgnPy": 27.1
+     },
+     {
+      "n": "· Sensors",
+      "rev": 1024,
+      "revPy": 1000,
+      "org": 0,
+      "sub": true,
+      "note": "Middle East conflict offset by Americas"
+     },
+     {
+      "n": "· Final Control",
+      "rev": 1488,
+      "revPy": 1459,
+      "org": -1,
+      "sub": true,
+      "note": "Power and LNG in the Americas"
+     },
+     {
+      "n": "Safety & Productivity",
+      "rev": 547,
+      "revPy": 522,
+      "org": 2,
+      "prof": 119,
+      "profPy": 113,
+      "mgn": 21.7,
+      "mgnPy": 21.8
+     }
+    ],
+    "geo": [
+     {
+      "n": "Americas",
+      "rev": 2371,
+      "revPy": 2235,
+      "org": 5,
+      "note": "US +9%"
+     },
+     {
+      "n": "Asia, Middle East & Africa",
+      "rev": 1293,
+      "revPy": 1331,
+      "org": -5,
+      "note": "China −9%"
+     },
+     {
+      "n": "Europe",
+      "rev": 898,
+      "revPy": 866,
+      "org": -4
+     }
+    ],
+    "segNote": "Underlying +0.5%: price +3.5% but volume −3% from software-renewal timing (−2 pts) and the Middle East conflict (−1 pt). Software & Systems margin 29.2% (−250 bps, ~3 pts renewal timing); Intelligent Devices margin +80 bps to 27.9%. US +9%, international −5%.",
+    "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
    "Q2 2026": {
     "report": "Fiscal Q3 2026 (Apr–Jun 2026)",
     "date": "2026-08-04",
     "rev": 4873,
-    "revChg": 7,
+    "revChg": 7.0,
     "org": 6,
     "orgLbl": "Underlying growth",
     "mgnLbl": "Adj. segment EBITA margin",
     "mgn": 28.5,
-    "mgnChg": 140,
     "eps": {
      "l": "Adj. EPS",
      "v": "$1.71",
-     "c": "+13%, above guidance"
+     "c": "+13% vs $1.52"
     },
     "cash": {
      "l": "Free cash flow",
@@ -3375,42 +3745,72 @@ window.CW = {
     "seg": [
      {
       "n": "Software & Systems",
-      "rev": 1640,
-      "chg": 11,
-      "org": 10
+      "rev": 1644,
+      "revPy": 1480,
+      "org": 11,
+      "prof": 523,
+      "profPy": 474,
+      "mgn": 31.8,
+      "mgnPy": 32.1
+     },
+     {
+      "n": "· Control Systems & Software",
+      "rev": 1199,
+      "revPy": 1120,
+      "org": 7,
+      "sub": true,
+      "note": "Strong demand in power (Ovation)"
      },
      {
       "n": "· Test & Measurement",
+      "rev": 445,
+      "revPy": 360,
       "org": 23,
-      "sub": true
-     },
-     {
-      "n": "· Ovation (power)",
-      "org": 23,
-      "sub": true
+      "sub": true,
+      "note": "Semiconductor, aerospace & defence"
      },
      {
       "n": "Intelligent Devices",
-      "rev": 2680,
-      "chg": 6,
-      "org": 5
+      "rev": 2677,
+      "revPy": 2535,
+      "org": 5,
+      "prof": 747,
+      "profPy": 648,
+      "mgn": 27.9,
+      "mgnPy": 25.5
+     },
+     {
+      "n": "· Sensors",
+      "rev": 1091,
+      "revPy": 1013,
+      "org": 7,
+      "sub": true,
+      "note": "Power and LNG in the Americas"
+     },
+     {
+      "n": "· Final Control",
+      "rev": 1586,
+      "revPy": 1522,
+      "org": 3,
+      "sub": true,
+      "note": "AMEA and Americas, power"
      },
      {
       "n": "Safety & Productivity",
-      "rev": 553,
+      "rev": 552,
+      "revPy": 538,
       "org": 2,
-      "mgn": 21.2
+      "prof": 117,
+      "profPy": 110,
+      "mgn": 21.2,
+      "mgnPy": 20.4
      }
     ],
     "guide": "FY 2026 raised: net sales ~+5%, underlying ~+3.5%, adj. EPS ~$6.55, FCF ~USD 3.6bn, adj. segment EBITA margin ~28%.",
     "src": [
      [
-      "Fiscal Q3 2026 release",
-      "https://ir.emerson.com/_assets/_c0388696e3a69f59a3ee43598053c60c/emerson/news/2026-08-04_Emerson_Reports_Third_Quarter_2026_Results_Raises__642.pdf"
-     ],
-     [
-      "Fiscal Q3 2026 presentation",
-      "https://ir.emerson.com/_assets/_39b9c4b55c1314921bb642cd27956a1b/emerson/db/938/10242/presentation/Emerson+2026+Q3+Earnings+Presentation.pdf"
+      "Fiscal Q3 2026 Form 10-Q (PDF)",
+      "reports/emerson/FQ3-2026_10-q.pdf"
      ]
     ],
     "revPy": 4553,
@@ -3419,23 +3819,28 @@ window.CW = {
     "geo": [
      {
       "n": "Americas",
+      "rev": 2537,
+      "revPy": 2341,
       "org": 8,
-      "note": "US ~+10%"
-     },
-     {
-      "n": "Europe",
-      "org": -1
+      "note": "US +10%"
      },
      {
       "n": "Asia, Middle East & Africa",
+      "rev": 1475,
+      "revPy": 1356,
       "org": 8,
-      "note": "China ~−3%"
+      "note": "China −3%"
+     },
+     {
+      "n": "Europe",
+      "rev": 861,
+      "revPy": 856,
+      "org": -1
      }
     ],
-    "derived": [
-     "seg.Safety & Productivity.rev"
-    ],
-    "segNote": "Software & Systems +10% underlying, led by Test & Measurement and Ovation (+23% each) on semiconductor and power demand. Intelligent Devices +5%; Safety & Productivity +2% with the lowest margin (21.2%). Americas and AMEA ~+8%, Europe −1%."
+    "segNote": "Underlying +6%: Software & Systems +11% (Test & Measurement +23%), Intelligent Devices +5% with margin +240 bps to 27.9%, Safety & Productivity +2%. Americas and AMEA +8%, Europe −1%. Adj. EBITA includes no IEEPA refund (USD 82m excluded).",
+    "mgnPy": 27.1,
+    "segLbl": "By business group and segment; margin = adj. EBITA margin; growth = underlying"
    },
    "Q3 2026": {
     "report": "Fiscal Q4 2026 (Jul–Sep 2026) — due 4 Nov 2026",
@@ -4071,12 +4476,8 @@ window.CW = {
    ],
    "src": [
     [
-     "Fiscal Q3 2026 release",
-     "https://ir.emerson.com/_assets/_c0388696e3a69f59a3ee43598053c60c/emerson/news/2026-08-04_Emerson_Reports_Third_Quarter_2026_Results_Raises__642.pdf"
-    ],
-    [
-     "Q3 call highlights",
-     "https://finance.yahoo.com/markets/stocks/articles/emerson-electric-co-emr-q3-050620952.html"
+     "Fiscal Q3 2026 Form 10-Q (PDF)",
+     "reports/emerson/FQ3-2026_10-q.pdf"
     ]
    ]
   },
@@ -4468,94 +4869,57 @@ window.CW = {
   },
   {
    "co": "emerson",
-   "p": "Q1 2025",
-   "type": "Results release",
-   "title": "Fiscal Q2 2025 results",
-   "url": "https://ir.emerson.com/_assets/_10ad2d822f6d4902fd020ca535f9805e/emerson/news/2025-05-07_Emerson_Reports_Second_Quarter_2025_Results_8.pdf"
+   "p": "Q4 2024",
+   "type": "Quarterly report",
+   "title": "Fiscal Q1 2025 Form 10-Q (Oct–Dec 2024)",
+   "url": "https://ir.emerson.com/",
+   "file": "reports/emerson/FQ1-2025_10-q.pdf",
+   "bytes": 1809246
   },
   {
    "co": "emerson",
    "p": "Q1 2025",
-   "type": "Presentation",
-   "title": "Fiscal Q2 2025 presentation",
-   "url": "https://ir.emerson.com/_assets/_83c3777b7a2a1deaf1f9f1ccca620065/emerson/db/938/9581/presentation/emerson-2025-q2-earnings-presentation-en-us-11737160.pdf"
+   "type": "Quarterly report",
+   "title": "Fiscal Q2 2025 Form 10-Q",
+   "url": "https://ir.emerson.com/",
+   "file": "reports/emerson/FQ2-2025_10-q.pdf",
+   "bytes": 2733467
   },
   {
    "co": "emerson",
    "p": "Q2 2025",
-   "type": "Results release",
-   "title": "Fiscal Q3 2025 results",
-   "url": "https://ir.emerson.com/_assets/_83c3777b7a2a1deaf1f9f1ccca620065/emerson/news/2025-08-06_Emerson_Reports_Third_Quarter_2025_Results_612.pdf"
-  },
-  {
-   "co": "emerson",
-   "p": "Q2 2025",
-   "type": "Presentation",
-   "title": "Fiscal Q3 2025 presentation",
-   "url": "https://ir.emerson.com/_assets/_21ac9392165fd390cbc5231cf185e4d4/emerson/db/938/10098/presentation/Emerson+2025+Q3+Earnings+Presentation.pdf"
-  },
-  {
-   "co": "emerson",
-   "p": "Q3 2025",
-   "type": "Results release",
-   "title": "Fiscal Q4 / FY 2025 results",
-   "url": "https://ir.emerson.com/_assets/_80fc1c2bd9b6b4b0e1f3c778904be7d7/emerson/news/2025-11-05_Emerson_Reports_Fourth_Quarter_and_Full_Year_2025__617.pdf"
-  },
-  {
-   "co": "emerson",
-   "p": "Q3 2025",
-   "type": "Presentation",
-   "title": "Fiscal Q4 / FY 2025 presentation",
-   "url": "https://ir.emerson.com/_assets/_b0268256875b876312545fa5fd0c95ef/emerson/db/938/10115/presentation/Emerson+2025+Q4+and+Full+Year+Earnings+Presentation.pdf"
-  },
-  {
-   "co": "emerson",
-   "p": "Q3 2025",
-   "type": "Annual report",
-   "title": "10-K fiscal 2025",
-   "url": "https://ir.emerson.com/sec-filings/all-sec-filings/content/0000032604-25-000087/0000032604-25-000087.pdf"
+   "type": "Quarterly report",
+   "title": "Fiscal Q3 2025 Form 10-Q",
+   "url": "https://ir.emerson.com/",
+   "file": "reports/emerson/FQ3-2025_10-q.pdf",
+   "bytes": 2718105
   },
   {
    "co": "emerson",
    "p": "Q4 2025",
-   "type": "Results release",
-   "title": "Fiscal Q1 2026 results",
-   "url": "https://ir.emerson.com/_assets/_0dfcd1db8f1e0a2d66af142d1b1193f5/emerson/news/2026-02-03_Emerson_Reports_First_Quarter_2026_Results_623.pdf"
-  },
-  {
-   "co": "emerson",
-   "p": "Q4 2025",
-   "type": "Presentation",
-   "title": "Fiscal Q1 2026 presentation",
-   "url": "https://ir.emerson.com/_assets/_10ad2d822f6d4902fd020ca535f9805e/emerson/db/938/10134/presentation/Emerson+2026+Q1+Earnings+Presentation.pdf"
+   "type": "Quarterly report",
+   "title": "Fiscal Q1 2026 Form 10-Q",
+   "url": "https://ir.emerson.com/",
+   "file": "reports/emerson/FQ1-2026_10-q.pdf",
+   "bytes": 1915301
   },
   {
    "co": "emerson",
    "p": "Q1 2026",
-   "type": "Results release",
-   "title": "Fiscal Q2 2026 results",
-   "url": "https://ir.emerson.com/_assets/_f6e5597605579b03df2f9ddcfe39bf0a/emerson/news/2026-05-05_Emerson_Reports_Second_Quarter_2026_Results_629.pdf"
-  },
-  {
-   "co": "emerson",
-   "p": "Q1 2026",
-   "type": "Presentation",
-   "title": "Fiscal Q2 2026 presentation",
-   "url": "https://ir.emerson.com/_assets/_92938d7656e1748428814c75f21183f6/emerson/db/938/10208/presentation/Emerson+2026+Q2+Earnings+Presentation.pdf"
+   "type": "Quarterly report",
+   "title": "Fiscal Q2 2026 Form 10-Q",
+   "url": "https://ir.emerson.com/",
+   "file": "reports/emerson/FQ2-2026_10-q.pdf",
+   "bytes": 2615076
   },
   {
    "co": "emerson",
    "p": "Q2 2026",
-   "type": "Results release",
-   "title": "Fiscal Q3 2026 results",
-   "url": "https://ir.emerson.com/_assets/_c0388696e3a69f59a3ee43598053c60c/emerson/news/2026-08-04_Emerson_Reports_Third_Quarter_2026_Results_Raises__642.pdf"
-  },
-  {
-   "co": "emerson",
-   "p": "Q2 2026",
-   "type": "Presentation",
-   "title": "Fiscal Q3 2026 presentation",
-   "url": "https://ir.emerson.com/_assets/_39b9c4b55c1314921bb642cd27956a1b/emerson/db/938/10242/presentation/Emerson+2026+Q3+Earnings+Presentation.pdf"
+   "type": "Quarterly report",
+   "title": "Fiscal Q3 2026 Form 10-Q",
+   "url": "https://ir.emerson.com/",
+   "file": "reports/emerson/FQ3-2026_10-q.pdf",
+   "bytes": 2653206
   },
   {
    "co": "gf",

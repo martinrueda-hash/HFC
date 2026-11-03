@@ -13,58 +13,6 @@ window.CW_REPORTS = {
    "bytes": 1747131,
    "path": "reports/aalberts/Q2-2025_h1-2025-presentation.pdf"
   },
-  "https://ir.emerson.com/_assets/_0dfcd1db8f1e0a2d66af142d1b1193f5/emerson/news/2026-02-03_Emerson_Reports_First_Quarter_2026_Results_623.pdf": {
-   "bytes": 671038,
-   "path": "reports/emerson/Q4-2025_fiscal-q1-2026-results.pdf"
-  },
-  "https://ir.emerson.com/_assets/_10ad2d822f6d4902fd020ca535f9805e/emerson/db/938/10134/presentation/Emerson+2026+Q1+Earnings+Presentation.pdf": {
-   "bytes": 1463944,
-   "path": "reports/emerson/Q4-2025_fiscal-q1-2026-presentation.pdf"
-  },
-  "https://ir.emerson.com/_assets/_10ad2d822f6d4902fd020ca535f9805e/emerson/news/2025-05-07_Emerson_Reports_Second_Quarter_2025_Results_8.pdf": {
-   "bytes": 855488,
-   "path": "reports/emerson/Q1-2025_fiscal-q2-2025-results.pdf"
-  },
-  "https://ir.emerson.com/_assets/_21ac9392165fd390cbc5231cf185e4d4/emerson/db/938/10098/presentation/Emerson+2025+Q3+Earnings+Presentation.pdf": {
-   "bytes": 1248532,
-   "path": "reports/emerson/Q2-2025_fiscal-q3-2025-presentation.pdf"
-  },
-  "https://ir.emerson.com/_assets/_39b9c4b55c1314921bb642cd27956a1b/emerson/db/938/10242/presentation/Emerson+2026+Q3+Earnings+Presentation.pdf": {
-   "bytes": 896598,
-   "path": "reports/emerson/Q2-2026_fiscal-q3-2026-presentation.pdf"
-  },
-  "https://ir.emerson.com/_assets/_80fc1c2bd9b6b4b0e1f3c778904be7d7/emerson/news/2025-11-05_Emerson_Reports_Fourth_Quarter_and_Full_Year_2025__617.pdf": {
-   "bytes": 1182978,
-   "path": "reports/emerson/Q3-2025_fiscal-q4-fy-2025-results.pdf"
-  },
-  "https://ir.emerson.com/_assets/_83c3777b7a2a1deaf1f9f1ccca620065/emerson/db/938/9581/presentation/emerson-2025-q2-earnings-presentation-en-us-11737160.pdf": {
-   "bytes": 988862,
-   "path": "reports/emerson/Q1-2025_fiscal-q2-2025-presentation.pdf"
-  },
-  "https://ir.emerson.com/_assets/_83c3777b7a2a1deaf1f9f1ccca620065/emerson/news/2025-08-06_Emerson_Reports_Third_Quarter_2025_Results_612.pdf": {
-   "bytes": 846103,
-   "path": "reports/emerson/Q2-2025_fiscal-q3-2025-results.pdf"
-  },
-  "https://ir.emerson.com/_assets/_92938d7656e1748428814c75f21183f6/emerson/db/938/10208/presentation/Emerson+2026+Q2+Earnings+Presentation.pdf": {
-   "bytes": 891334,
-   "path": "reports/emerson/Q1-2026_fiscal-q2-2026-presentation.pdf"
-  },
-  "https://ir.emerson.com/_assets/_b0268256875b876312545fa5fd0c95ef/emerson/db/938/10115/presentation/Emerson+2025+Q4+and+Full+Year+Earnings+Presentation.pdf": {
-   "bytes": 1266822,
-   "path": "reports/emerson/Q3-2025_fiscal-q4-fy-2025-presentation.pdf"
-  },
-  "https://ir.emerson.com/_assets/_c0388696e3a69f59a3ee43598053c60c/emerson/news/2026-08-04_Emerson_Reports_Third_Quarter_2026_Results_Raises__642.pdf": {
-   "bytes": 788873,
-   "path": "reports/emerson/Q2-2026_fiscal-q3-2026-results.pdf"
-  },
-  "https://ir.emerson.com/_assets/_f6e5597605579b03df2f9ddcfe39bf0a/emerson/news/2026-05-05_Emerson_Reports_Second_Quarter_2026_Results_629.pdf": {
-   "bytes": 756384,
-   "path": "reports/emerson/Q1-2026_fiscal-q2-2026-results.pdf"
-  },
-  "https://ir.emerson.com/sec-filings/all-sec-filings/content/0000032604-25-000087/0000032604-25-000087.pdf": {
-   "bytes": 5875502,
-   "path": "reports/emerson/Q3-2025_10-k-fiscal-2025.pdf"
-  },
   "https://report.belimo.com/ar25/app/uploads/Annual-Report-2025.pdf": {
    "bytes": 14956339,
    "path": "reports/belimo/Q4-2025_annual-report-2025.pdf"
