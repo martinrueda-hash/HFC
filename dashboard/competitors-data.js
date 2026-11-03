@@ -378,6 +378,26 @@ window.CW = {
    "event": "Q4 / FY 2026 results",
    "status": "estimated",
    "note": "Not announced yet; Pentair usually reports Q4 in early February"
+  },
+  {
+   "co": "imi",
+   "date": "2026-03-06",
+   "event": "FY 2025 results"
+  },
+  {
+   "co": "imi",
+   "date": "2025-05-08",
+   "event": "Q1 2025 trading update"
+  },
+  {
+   "co": "imi",
+   "date": "2025-08-01",
+   "event": "H1 2025 results"
+  },
+  {
+   "co": "imi",
+   "date": "2025-11-06",
+   "event": "Q3 2025 trading update"
   }
  ],
  "results": {
@@ -704,46 +724,154 @@ window.CW = {
   "imi": {
    "Q2 2025": {
     "report": "H1 2025 results (6 months)",
+    "date": "2025-08-01",
     "rev": 1091,
+    "revPy": 1098,
+    "revChg": -1,
     "org": 2,
     "mgnLbl": "Adj. operating margin",
     "mgn": 18.2,
+    "mgnPy": 17.9,
+    "prof": 198,
+    "profPy": 196,
+    "eps": {
+     "l": "Adj. basic EPS",
+     "v": "56.1p",
+     "c": "+3% vs 54.7p"
+    },
     "cash": {
      "l": "Free cash flow",
-     "v": "30"
+     "v": "30",
+     "c": "65 in H1 2024; cyber incident and pension loan"
     },
-    "extra": [
+    "orders": {
+     "l": "Process Automation orders",
+     "v": "530",
+     "c": "flat organic; aftermarket +10%; order book 904 (+5%)"
+    },
+    "seg": [
      {
-      "l": "Organic adj. operating profit",
-      "v": "+5%"
+      "n": "Automation",
+      "rev": 691,
+      "revPy": 684,
+      "org": 3,
+      "prof": 127,
+      "profPy": 126,
+      "mgn": 18.4,
+      "mgnPy": 18.4
+     },
+     {
+      "n": "· Process Automation",
+      "org": 8,
+      "sub": true,
+      "rev": 446,
+      "revPy": 422,
+      "note": "Aftermarket orders 332 (+10% organic); new construction orders 198 (−13%)"
+     },
+     {
+      "n": "· Industrial Automation",
+      "org": -4,
+      "sub": true,
+      "rev": 245,
+      "revPy": 262,
+      "note": "Rebuilding after the cyber incident"
+     },
+     {
+      "n": "Life Technology",
+      "rev": 400,
+      "revPy": 414,
+      "org": -1,
+      "prof": 71,
+      "profPy": 70,
+      "mgn": 17.8,
+      "mgnPy": 17.0
+     },
+     {
+      "n": "· Climate Control",
+      "org": 5,
+      "sub": true,
+      "rev": 204,
+      "revPy": 196,
+      "note": "Strong demand for energy-saving solutions"
+     },
+     {
+      "n": "· Life Science & Fluid Control",
+      "org": -5,
+      "sub": true,
+      "rev": 112,
+      "revPy": 123
+     },
+     {
+      "n": "· Transport",
+      "org": -9,
+      "sub": true,
+      "rev": 84,
+      "revPy": 95
      }
     ],
-    "note": "Statutory revenue slightly lower because of currency.",
-    "derived": [
-     "mgn"
-    ],
+    "segNote": "Process Automation +8% organic (aftermarket orders +10%) and Climate Control +5% offset Industrial Automation (−4%, cyber incident), Life Science & Fluid Control (−5%) and Transport (−9%). Life Technology margin +80 bps to 17.8% despite lower sales; Automation margin flat at 18.4%.",
+    "guide": "FY 2025 adj. basic EPS 129p–136p reconfirmed; fourth year of mid-single-digit organic growth on track.",
     "src": [
      [
-      "Interim results 2025",
-      "https://www.imiplc.com/media/41bkpiqj/imi-plc-interim-results-2025-press-release.pdf"
+      "H1 2025 interim results (PDF)",
+      "reports/imi/Q2-2025_h1-2025-interim-results.pdf"
      ]
     ]
    },
    "Q3 2025": {
     "report": "Q3 2025 trading update",
     "date": "2025-11-06",
+    "revChg": 11,
     "org": 12,
-    "extra": [
+    "mgnLbl": "Adj. operating margin",
+    "seg": [
      {
-      "l": "Organic growth, year to date",
-      "v": "+5%"
+      "n": "Automation",
+      "org": 17,
+      "note": "Year to date +8%"
+     },
+     {
+      "n": "· Process Automation",
+      "org": 26,
+      "sub": true,
+      "note": "YTD +14%; aftermarket orders +7% YTD; total orders flat YTD (+5% excl. a £33m Marine order last year)"
+     },
+     {
+      "n": "· Industrial Automation",
+      "org": 2,
+      "sub": true,
+      "note": "Catch-up shipments after the Q1 cyber incident"
+     },
+     {
+      "n": "Life Technology",
+      "org": 4,
+      "note": "Year to date +1%"
+     },
+     {
+      "n": "· Climate Control",
+      "org": 5,
+      "sub": true,
+      "note": "Energy-saving building products and data-centre cooling"
+     },
+     {
+      "n": "· Life Science & Fluid Control",
+      "org": 13,
+      "sub": true,
+      "note": "Improved demand and catch-up shipments; YTD +1%"
+     },
+     {
+      "n": "· Transport",
+      "org": -9,
+      "sub": true,
+      "note": "In line with the heavy-duty truck market; strategic review progressing"
      }
     ],
-    "note": "On track for a fourth consecutive year of mid-single-digit organic revenue growth.",
+    "segNote": "Process Automation (+26%) drove an excellent quarter on order-book phasing; Life Science & Fluid Control +13% on catch-up shipments; Transport −9% with the truck market. Group +12% organic, +5% year to date.",
+    "guide": "FY 2025 adj. basic EPS 129p–136p reconfirmed; fourth consecutive year of mid-single-digit organic growth on track.",
     "src": [
      [
-      "Results, reports and presentations",
-      "https://www.imiplc.com/en/investors/results-reports-presentations/"
+      "Q3 2025 trading update (PDF)",
+      "reports/imi/Q3-2025_q3-2025-trading-update.pdf"
      ]
     ]
    },
@@ -817,153 +945,287 @@ window.CW = {
    "Q1 2026": {
     "report": "Q1 2026 trading update",
     "date": "2026-05-12",
+    "revChg": 6,
     "org": 5,
+    "mgnLbl": "Adj. operating margin",
     "seg": [
      {
       "n": "Automation",
       "org": 6
      },
      {
+      "n": "· Process Automation",
+      "org": 6,
+      "sub": true,
+      "note": "Orders −2% against a strong comparator; aftermarket orders −1%"
+     },
+     {
+      "n": "· Industrial Automation",
+      "org": 6,
+      "sub": true,
+      "note": "Easier comparator after the Q1 2025 cyber incident"
+     },
+     {
       "n": "Life Technology",
       "org": 4
+     },
+     {
+      "n": "· Climate Control",
+      "org": 4,
+      "sub": true,
+      "note": "Strength in data-centre direct liquid cooling"
+     },
+     {
+      "n": "· Life Science & Fluid Control",
+      "org": 1,
+      "sub": true,
+      "note": "Resilient healthcare; mixed Fluid Control"
+     },
+     {
+      "n": "· Transport",
+      "org": 9,
+      "sub": true,
+      "note": "In line with heavy-duty truck market; strategic review progressing"
      }
     ],
-    "guide": "Full-year guidance reconfirmed; on track for a sixth year of mid-single-digit organic growth.",
+    "segNote": "Organic growth across all six business lines. Automation +6% (Process and Industrial both +6%); Life Technology +4% with Transport +9% and Climate Control +4%. Middle East = 6% of 2025 revenue; limited impact on orders and sales so far.",
+    "guide": "FY 2026 adj. basic EPS 136p–142p reconfirmed; sixth year of mid-single-digit organic growth on track.",
     "src": [
      [
-      "Q1 2026 trading update",
-      "https://www.imiplc.com/media/32hieuvz/imi-plc-trading-update-q1-2026.pdf"
+      "Q1 2026 trading update (PDF)",
+      "reports/imi/Q1-2026_q1-2026-trading-update.pdf"
      ]
-    ],
-    "segNote": "Automation +6% and Life Technology +4% organic."
+    ]
    },
    "Q2 2026": {
     "report": "H1 2026 results (6 months)",
     "date": "2026-07-31",
     "rev": 1159,
+    "revPy": 1091,
     "revChg": 6,
     "org": 5,
     "mgnLbl": "Adj. operating margin",
     "mgn": 18.7,
-    "mgnChg": 50,
+    "mgnPy": 18.2,
+    "prof": 217,
+    "profPy": 198,
     "eps": {
      "l": "Adj. basic EPS",
      "v": "63.4p",
-     "c": "+13%"
+     "c": "+13% vs 56.1p"
     },
     "cash": {
      "l": "Free cash flow",
      "v": "171",
-     "c": "30 in H1 2025; cash conversion 96%"
+     "c": "30 in H1 2025; adj. operating cash flow 208 (+32%)"
     },
-    "extra": [
-     {
-      "l": "Adj. operating profit",
-      "v": "217",
-      "c": "+10%"
-     },
-     {
-      "l": "Interim dividend",
-      "v": "12.1p",
-      "c": "+10%"
-     },
-     {
-      "l": "Returned to shareholders",
-      "v": "> 300",
-      "c": "GBP 250m of the 500m buyback done"
-     }
-    ],
+    "orders": {
+     "l": "Process Automation orders",
+     "v": "596",
+     "c": "+12% organic; order book 993 (+10%)"
+    },
     "seg": [
      {
       "n": "Automation",
       "rev": 732,
       "revPy": 691,
       "org": 5,
-      "prof": 142.0,
-      "profPy": 127.1,
+      "prof": 142,
+      "profPy": 127,
       "mgn": 19.4,
       "mgnPy": 18.4
+     },
+     {
+      "n": "· Process Automation",
+      "org": 5,
+      "sub": true,
+      "rev": 473,
+      "revPy": 446,
+      "note": "Aftermarket orders 355 (+7%), new construction 241 (+20% organic) incl. £48m nuclear order"
+     },
+     {
+      "n": "· Industrial Automation",
+      "org": 5,
+      "sub": true,
+      "rev": 259,
+      "revPy": 245
      },
      {
       "n": "Life Technology",
       "rev": 427,
       "revPy": 400,
       "org": 5,
-      "prof": 75.2,
-      "profPy": 71.2,
+      "prof": 75,
+      "profPy": 71,
       "mgn": 17.6,
       "mgnPy": 17.8
      },
      {
-      "n": "· Transport",
-      "org": 8,
-      "sub": true
-     },
-     {
       "n": "· Climate Control",
       "org": 4,
-      "sub": true
+      "sub": true,
+      "rev": 218,
+      "revPy": 204,
+      "note": "Data-centre orders £18m (£6m)"
+     },
+     {
+      "n": "· Life Science & Fluid Control",
+      "org": 5,
+      "sub": true,
+      "rev": 115,
+      "revPy": 112
+     },
+     {
+      "n": "· Transport",
+      "org": 8,
+      "sub": true,
+      "rev": 94,
+      "revPy": 84,
+      "note": "£3m moved in from Life Science & Fluid Control; organic like-for-like"
      }
     ],
-    "guide": "2026 adj. basic EPS 136p–142p reaffirmed.",
+    "segNote": "Automation margin +100 bps to 19.4% on operating leverage and Process Automation aftermarket mix; Process Automation orders +12% (nuclear, power, LNG). Life Technology +5% organic led by Transport (+8%) and Life Science & Fluid Control (+5%); margin −20 bps on cyber-security and data-centre investment. Statutory operating margin 17.3% (14.5%).",
+    "guide": "FY 2026 adj. basic EPS 136p–142p reaffirmed; adj. operating margin flat to slightly up; net debt / EBITDA 1.2x.",
     "src": [
      [
-      "H1 2026 press release",
-      "https://www.imiplc.com/media/uk3m0s4a/imi-plc-half-year-results-2026-press-release.pdf"
-     ],
-     [
-      "H1 2026 transcript",
-      "https://www.imiplc.com/media/tqcfj3qx/imi-plc-half-year-results-2026-transcript.pdf"
+      "H1 2026 results (PDF)",
+      "reports/imi/Q2-2026_h1-2026-results-press-release.pdf"
      ]
-    ],
-    "prof": 217,
-    "profPy": 198.6,
-    "derived": [
-     "profPy",
-     "seg.Automation.prof",
-     "seg.Automation.profPy",
-     "seg.Life Technology.prof",
-     "seg.Life Technology.profPy"
-    ],
-    "segNote": "Automation lifted margin 100 bps to 19.4% on Process Automation aftermarket mix, with orders +12%. Life Technology grew at the same pace (+5% organic; Transport +8% as heavy-duty truck markets recover) but margin dipped 20 bps on cyber-security and data-centre investment.",
-    "orgPy": 2
+    ]
    },
    "Q3 2026": {
     "report": "Q3 2026 trading update",
     "date": "2026-10-29",
+    "revChg": 3,
     "org": 2,
-    "extra": [
-     {
-      "l": "Organic growth, year to date",
-      "v": "+4%"
-     },
-     {
-      "l": "Prior-year comparator",
-      "v": "+12%",
-      "c": "Q3 2025 organic growth"
-     }
-    ],
+    "orgPy": 12,
+    "mgnLbl": "Adj. operating margin",
+    "orders": {
+     "l": "Process Automation orders",
+     "v": "+19%",
+     "c": "organic in Q3; +14% YTD (excl. Truflo Marine)"
+    },
     "seg": [
      {
       "n": "Automation",
       "org": -3,
-      "note": "Year to date +2%; shipment timing in Process Automation"
+      "orgPy": 17,
+      "note": "Year to date +2%"
+     },
+     {
+      "n": "· Process Automation",
+      "org": -6,
+      "sub": true,
+      "orgPy": 26,
+      "note": "Shipment timing; YTD +1%. Orders +19% in Q3; YTD new construction +27%, aftermarket +7%"
+     },
+     {
+      "n": "· Industrial Automation",
+      "org": 2,
+      "sub": true,
+      "orgPy": 2,
+      "note": "YTD +4%"
      },
      {
       "n": "Life Technology",
       "org": 11,
+      "orgPy": 4,
       "note": "Year to date +7%"
+     },
+     {
+      "n": "· Climate Control",
+      "org": 13,
+      "sub": true,
+      "orgPy": 5,
+      "note": "YTD +7%; data-centre orders £25m YTD (£9m)"
+     },
+     {
+      "n": "· Life Science & Fluid Control",
+      "org": 2,
+      "sub": true,
+      "orgPy": 13,
+      "note": "YTD +4%"
+     },
+     {
+      "n": "· Transport",
+      "org": 19,
+      "sub": true,
+      "orgPy": -9,
+      "note": "YTD +10%; FY now high-single-digit; strategic review ongoing"
      }
     ],
-    "guide": "2026 adj. basic EPS raised to 137p–143p (136p–142p). Transport now high-single-digit organic growth (mid-single-digit).",
+    "segNote": "Life Technology +11% organic, with Transport +19% (truck market recovery) and Climate Control +13% (data-centre shipments). Automation −3%: Process Automation −6% on shipment timing against +26% last year, while its orders rose 19%. Group +2% against a +12% comparator; +4% year to date.",
+    "guide": "FY 2026 adj. basic EPS raised to 137p–143p (136p–142p), mainly Truflo Marine's extra contribution before its Q4 disposal and stronger Transport. 2027: net interest ~£23m, ~231m shares.",
     "src": [
      [
-      "Q3 2026 trading update",
+      "Q3 2026 trading update (PDF)",
+      "reports/imi/Q3-2026_q3-2026-trading-update.pdf"
+     ],
+     [
+      "Q3 2026 trading update (web)",
       "https://www.investegate.co.uk/announcement/rns/imi--imi/trading-update/9846878"
      ]
+    ]
+   },
+   "Q1 2025": {
+    "report": "Q1 2025 trading update",
+    "date": "2025-05-08",
+    "revChg": -5,
+    "org": -3,
+    "mgnLbl": "Adj. operating margin",
+    "orders": {
+     "l": "Process Automation orders",
+     "v": "+7%",
+     "c": "organic; aftermarket +19% incl. large nuclear orders; order book +13%"
+    },
+    "seg": [
+     {
+      "n": "Automation",
+      "org": -4,
+      "note": "Temporary disruption from the cyber incident"
+     },
+     {
+      "n": "· Process Automation",
+      "org": -1,
+      "sub": true,
+      "note": "Against +27% a year earlier; project phasing"
+     },
+     {
+      "n": "· Industrial Automation",
+      "org": -7,
+      "sub": true,
+      "note": "Cyber incident and subdued industrial demand in Europe and the Americas"
+     },
+     {
+      "n": "Life Technology",
+      "org": -2
+     },
+     {
+      "n": "· Climate Control",
+      "org": 4,
+      "sub": true,
+      "note": "Good demand for energy-efficient products"
+     },
+     {
+      "n": "· Life Science & Fluid Control",
+      "org": 0,
+      "sub": true
+     },
+     {
+      "n": "· Transport",
+      "org": -16,
+      "sub": true,
+      "note": "Against +19% a year earlier"
+     }
     ],
-    "segNote": "Life Technology carried the quarter (+11% organic, +7% YTD). Automation −3% on Process Automation shipment timing (+2% YTD) against a strong +12% group comparator.",
-    "orgPy": 12
+    "segNote": "Organic revenue −3% as expected (reported −5% with currency and the IMF disposal), but group margins improved. Process Automation orders +7% and aftermarket orders +19%; Climate Control +4%. Industrial Automation −7% from the cyber incident; Transport −16% against a strong comparator.",
+    "guide": "FY 2025 guidance reconfirmed: mid-single-digit organic growth; ~2% currency headwind partly offset by fewer shares (~249m).",
+    "src": [
+     [
+      "Q1 2025 trading update (PDF)",
+      "reports/imi/Q1-2025_q1-2025-trading-update.pdf"
+     ]
+    ]
    }
   },
   "belimo": {
@@ -2615,8 +2877,7 @@ window.CW = {
  },
  "noReport": {
   "belimo": "Belimo publishes half-year and full-year results only (no Q1 or Q3 figures).",
-  "gf": "Georg Fischer publishes half-year and full-year results only (no Q1 or Q3 figures).",
-  "imi": "Q1 2025 trading update: figures not captured yet; see IMI's results page."
+  "gf": "Georg Fischer publishes half-year and full-year results only (no Q1 or Q3 figures)."
  },
  "qual": {
   "aalberts": {
@@ -2653,28 +2914,30 @@ window.CW = {
    "period": "Q3 2026",
    "title": "Q3 2026 trading update, 29 Oct 2026",
    "perf": [
-    "Organic revenue +2% in Q3 against a strong +12% comparator; +4% year to date.",
-    "Life Technology +11% organic in Q3 (+7% YTD); Automation −3% (+2% YTD) on Process Automation shipment timing.",
-    "Transport outlook lifted to high-single-digit organic growth for 2026.",
-    "Full-year adj. EPS guidance raised to 137p–143p (136p–142p); sixth year of mid-single-digit organic growth still on track."
+    "Organic revenue +2% in Q3 against +12% a year ago; +4% year to date. Statutory revenue +3%.",
+    "Process Automation orders +19% organic in Q3 (+14% YTD; new construction +27%, aftermarket +7%); revenue −6% on shipment timing.",
+    "Climate Control +13% (data-centre orders £25m YTD vs £9m) and Transport +19% drove Life Technology +11%.",
+    "2026 walk: Q1 +5% › H1 +5% (margin 18.7%, +50 bps) › Q3 +2%. FY adj. EPS guidance raised to 137p–143p."
    ],
    "ma": [
-    "Acquisition of iSMA CONTROLLI (building automation controls) for EUR 63m announced 7 Oct 2026.",
-    "Disposal of Truflo Marine now expected to complete in Q4 2026 (previously Q3); its extra contribution is the main reason for the higher EPS guidance.",
-    "Management flags further targeted bolt-on acquisitions."
+    "Agreed acquisition of iSMA CONTROLLI (Oct 2026): a bolt-on in smart-connected building controls for small and medium-sized commercial buildings.",
+    "Disposal of Truflo Marine now expected to complete in Q4 2026 (previously Q3); its extra contribution lifts 2026 EPS guidance.",
+    "Strategic review of Transport ongoing. Over £400m spent on bolt-ons since 2019; pipeline strong."
    ],
    "other": [
-    "GBP 500m share buyback in progress (GBP 250m done by H1).",
-    "H1 data centre orders GBP 18m (GBP 6m a year earlier); ~GBP 48m multi-year nuclear order in Automation."
+    "£500m share buyback (£250m done by June); interim dividend +10% to 12.1p.",
+    "Innovation: Growth Hub orders £78m in H1 (+22%) after a record £206m in 2025; AI-enabled valve design in Korea cut design time by >90%.",
+    "Aftermarket ~45% of revenue; installed base of 200,000+ severe-service valves backs an expanding aftermarket sales force.",
+    "Middle East shipments in line with plan; 2027 assumptions: net interest ~£23m, ~231m shares."
    ],
    "src": [
     [
-     "Q3 2026 trading update",
-     "https://www.investegate.co.uk/announcement/rns/imi--imi/trading-update/9846878"
+     "Q3 2026 trading update (PDF)",
+     "reports/imi/Q3-2026_q3-2026-trading-update.pdf"
     ],
     [
-     "H1 2026 transcript",
-     "https://www.imiplc.com/media/tqcfj3qx/imi-plc-half-year-results-2026-transcript.pdf"
+     "H1 2026 results (PDF)",
+     "reports/imi/Q2-2026_h1-2026-results-press-release.pdf"
     ]
    ]
   },
@@ -2955,8 +3218,10 @@ window.CW = {
    "co": "imi",
    "p": "Q2 2025",
    "type": "Results release",
-   "title": "Interim results 2025",
-   "url": "https://www.imiplc.com/media/41bkpiqj/imi-plc-interim-results-2025-press-release.pdf"
+   "title": "H1 2025 interim results",
+   "url": "https://www.imiplc.com/media/41bkpiqj/imi-plc-interim-results-2025-press-release.pdf",
+   "file": "reports/imi/Q2-2025_h1-2025-interim-results.pdf",
+   "bytes": 639461
   },
   {
    "co": "imi",
@@ -2984,14 +3249,18 @@ window.CW = {
    "p": "Q1 2026",
    "type": "Trading update",
    "title": "Q1 2026 trading update",
-   "url": "https://www.imiplc.com/media/32hieuvz/imi-plc-trading-update-q1-2026.pdf"
+   "url": "https://www.imiplc.com/media/32hieuvz/imi-plc-trading-update-q1-2026.pdf",
+   "file": "reports/imi/Q1-2026_q1-2026-trading-update.pdf",
+   "bytes": 122252
   },
   {
    "co": "imi",
    "p": "Q2 2026",
    "type": "Results release",
    "title": "H1 2026 results press release",
-   "url": "https://www.imiplc.com/media/uk3m0s4a/imi-plc-half-year-results-2026-press-release.pdf"
+   "url": "https://www.imiplc.com/media/uk3m0s4a/imi-plc-half-year-results-2026-press-release.pdf",
+   "file": "reports/imi/Q2-2026_h1-2026-results-press-release.pdf",
+   "bytes": 6677741
   },
   {
    "co": "imi",
@@ -3006,6 +3275,33 @@ window.CW = {
    "type": "Trading update",
    "title": "Q3 2026 trading update (web)",
    "url": "https://www.investegate.co.uk/announcement/rns/imi--imi/trading-update/9846878"
+  },
+  {
+   "co": "imi",
+   "p": "Q3 2026",
+   "type": "Trading update",
+   "title": "Q3 2026 trading update (PDF)",
+   "url": "https://www.imiplc.com/en/investors/results-reports-presentations/",
+   "file": "reports/imi/Q3-2026_q3-2026-trading-update.pdf",
+   "bytes": 95896
+  },
+  {
+   "co": "imi",
+   "p": "Q3 2025",
+   "type": "Trading update",
+   "title": "Q3 2025 trading update",
+   "url": "https://www.imiplc.com/en/investors/results-reports-presentations/",
+   "file": "reports/imi/Q3-2025_q3-2025-trading-update.pdf",
+   "bytes": 93803
+  },
+  {
+   "co": "imi",
+   "p": "Q1 2025",
+   "type": "Trading update",
+   "title": "Q1 2025 trading update",
+   "url": "https://www.imiplc.com/en/investors/results-reports-presentations/",
+   "file": "reports/imi/Q1-2025_q1-2025-trading-update.pdf",
+   "bytes": 96130
   },
   {
    "co": "belimo",

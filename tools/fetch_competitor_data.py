@@ -147,6 +147,8 @@ def fetch_reports(data):
         t = REPORTS_JS.read_text(encoding="utf-8")
         index = json.loads(t[re.search(r"^window\.CW_REPORTS =", t, re.M).end():].strip().rstrip(";")).get("files", {})
     for d in data["docs"]:
+        if d.get("file"):  # stored by hand (e.g. a PDF the user supplied); nothing to download
+            continue
         url = d["url"]
         is_pdf = url.lower().split("?")[0].endswith(".pdf")
         base = f"{d['p'].replace(' ', '-')}_{slug(d['title'])}"
