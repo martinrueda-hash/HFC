@@ -1390,12 +1390,12 @@ window.CW = {
     "eps": {
      "l": "Net income",
      "v": "124.9",
-     "c": "+23.3%"
+     "c": "+23.3%; EPS CHF 10.15"
     },
     "cash": {
      "l": "Free cash flow (excl. term deposits)",
      "v": "38.7",
-     "c": "−26.7%; capex 45.4"
+     "c": "52.8 in H1 2025; capex 45.4 (40.9); net debt 27.7"
     },
     "extra": [
      {
@@ -1418,64 +1418,69 @@ window.CW = {
      {
       "n": "Control valves",
       "rev": 389.3,
-      "org": 48.3,
       "revPy": 284.1,
-      "orgPy": 23.3
+      "org": 48.3,
+      "orgPy": 23.3,
+      "note": "Energy Valve, characterized control valves, shift to pressure-independent valves"
      },
      {
       "n": "Damper actuators",
-      "rev": 254,
-      "org": 7.6,
+      "rev": 253.8,
       "revPy": 251.8,
-      "orgPy": 18.1
+      "org": 7.6,
+      "orgPy": 18.1,
+      "note": "Fire & smoke applications"
      },
      {
       "n": "Sensors and meters",
-      "rev": 33,
-      "org": 39.2,
+      "rev": 33.3,
       "revPy": 25.6,
-      "orgPy": 16.3
+      "org": 39.2,
+      "orgPy": 16.3,
+      "note": "Customers consolidating field-device suppliers with Belimo"
      }
     ],
     "guide": "EBIT margin above 20% in 2026; H2 growth faces a higher base and annualised price increases.",
     "src": [
      [
-      "H1 2026 report",
-      "https://report.belimo.com/HY26/en/management-report"
+      "Semiannual report 2026 (PDF)",
+      "reports/belimo/Q2-2026_semiannual-report-2026.pdf"
      ],
      [
-      "H1 2026 press release",
-      "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-sales-growth-in-the-first-half-of-2026/01f2af93-fa3e-4872-b3f8-514ab22ba0e0_en"
+      "H1 2026 report (online)",
+      "https://report.belimo.com/HY26/en/management-report"
      ]
     ],
     "revPy": 561.5,
     "prof": 152.5,
     "profPy": 128.1,
-    "derived": [],
     "geo": [
      {
       "n": "Americas",
       "rev": 341.3,
       "org": 35.1,
       "revPy": 280.0,
-      "orgPy": 30.1
+      "orgPy": 30.1,
+      "note": "AI data centres (air and direct-to-chip liquid cooling); also life sciences, healthcare, semiconductors"
      },
      {
       "n": "EMEA",
       "rev": 240.3,
       "org": 14.1,
       "revPy": 216.3,
-      "orgPy": 9.9
+      "orgPy": 9.9,
+      "note": "Renovation via RetroFIT+; health, education and industrial buildings; fire & smoke"
      },
      {
       "n": "Asia Pacific",
       "rev": 94.8,
       "org": 58.0,
       "revPy": 65.3,
-      "orgPy": 21.3
+      "orgPy": 21.3,
+      "note": "Strongest growth of all regions"
      }
     ],
-    "segNote": "Control valves (Energy Valve in data-centre cooling) +48% in local currencies, now ~58% of sales; sensors and meters +39%; damper actuators +7.6% helped by fire and smoke applications. By region Asia Pacific (+58%) and the Americas (+35%) led, EMEA +14%.",
+    "segNote": "Data-centre cooling delivered slightly more than half of the absolute sales growth; all regions accelerated. Control valves +48.3% in local currencies (now 58% of sales); sensors and meters +39.2%; damper actuators +7.6%. Americas +35.1% and Asia Pacific +58.0% on data centres; EMEA +14.1% on renovation. EBIT margin 22.5% (22.8%): currency headwind partly offset by operating leverage, pricing and mix.",
     "segLbl": "By product line",
     "orgPy": 20.6
    }
@@ -3287,27 +3292,6 @@ window.CW = {
   },
   {
    "co": "imi",
-   "p": "Q4 2025",
-   "type": "Results release",
-   "title": "FY 2025 results press release",
-   "url": "https://www.imiplc.com/media/zoonx1ed/imi-plc-full-year-results-2025-press-release.pdf"
-  },
-  {
-   "co": "imi",
-   "p": "Q4 2025",
-   "type": "Presentation",
-   "title": "FY 2025 results presentation",
-   "url": "https://www.imiplc.com/media/qvugs2u0/imi-plc-full-year-results-2025-presentation.pdf"
-  },
-  {
-   "co": "imi",
-   "p": "Q4 2025",
-   "type": "Annual report",
-   "title": "Annual report 2025",
-   "url": "https://www.imiplc.com/media/1i2ddtki/imi_ar_2025.pdf"
-  },
-  {
-   "co": "imi",
    "p": "Q1 2026",
    "type": "Trading update",
    "title": "Q1 2026 trading update",
@@ -3326,23 +3310,9 @@ window.CW = {
   },
   {
    "co": "imi",
-   "p": "Q2 2026",
-   "type": "Transcript",
-   "title": "H1 2026 results call transcript",
-   "url": "https://www.imiplc.com/media/tqcfj3qx/imi-plc-half-year-results-2026-transcript.pdf"
-  },
-  {
-   "co": "imi",
    "p": "Q3 2026",
    "type": "Trading update",
-   "title": "Q3 2026 trading update (web)",
-   "url": "https://www.investegate.co.uk/announcement/rns/imi--imi/trading-update/9846878"
-  },
-  {
-   "co": "imi",
-   "p": "Q3 2026",
-   "type": "Trading update",
-   "title": "Q3 2026 trading update (PDF)",
+   "title": "Q3 2026 trading update",
    "url": "https://www.imiplc.com/en/investors/results-reports-presentations/",
    "file": "reports/imi/Q3-2026_q3-2026-trading-update.pdf",
    "bytes": 95896
@@ -3377,20 +3347,6 @@ window.CW = {
   {
    "co": "belimo",
    "p": "Q4 2025",
-   "type": "Presentation",
-   "title": "Financial results 2025 presentation",
-   "url": "https://www.belimo.com/mam/corporate-communications/investor-relations/Reports%20and%20Presentations/2026_02_Presentation_of_Financial_Results__2025_.pdf"
-  },
-  {
-   "co": "belimo",
-   "p": "Q4 2025",
-   "type": "Annual report",
-   "title": "Annual report 2025 (online)",
-   "url": "https://report.belimo.com/ar25/en/management-report"
-  },
-  {
-   "co": "belimo",
-   "p": "Q4 2025",
    "type": "Results release",
    "title": "FY 2025 press release (web)",
    "url": "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-growth-in-2025/295f5591-80dd-4287-b3ff-f149c4acf182_en"
@@ -3404,17 +3360,19 @@ window.CW = {
   },
   {
    "co": "belimo",
-   "p": "Q2 2026",
-   "type": "Half-year report",
-   "title": "Half-year report 2026 (online)",
-   "url": "https://report.belimo.com/HY26/en/management-report"
+   "p": "Q4 2025",
+   "type": "Annual report",
+   "title": "Annual report 2025",
+   "url": "https://report.belimo.com/ar25/app/uploads/Annual-Report-2025.pdf"
   },
   {
    "co": "belimo",
-   "p": "Q4 2025",
-   "type": "Annual report",
-   "title": "Annual report 2025 (PDF)",
-   "url": "https://report.belimo.com/ar25/app/uploads/Annual-Report-2025.pdf"
+   "p": "Q2 2026",
+   "type": "Half-year report",
+   "title": "Semiannual report 2026",
+   "url": "https://report.belimo.com/HY26/",
+   "file": "reports/belimo/Q2-2026_semiannual-report-2026.pdf",
+   "bytes": 1394244
   },
   {
    "co": "xylem",

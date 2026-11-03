@@ -65,14 +65,6 @@ window.CW_REPORTS = {
    "bytes": 5875502,
    "path": "reports/emerson/Q3-2025_10-k-fiscal-2025.pdf"
   },
-  "https://report.belimo.com/HY26/en/management-report": {
-   "bytes": 77633,
-   "path": "reports/belimo/Q2-2026_half-year-report-2026-online.html"
-  },
-  "https://report.belimo.com/ar25/en/management-report": {
-   "bytes": 145829,
-   "path": "reports/belimo/Q4-2025_annual-report-2025-online.html"
-  },
   "https://s29.q4cdn.com/117128878/files/doc_financials/2026/q1/Watts-Water-Technologies-UPDATED-Q1-26-Earnings-Deck-050626-Earnings-Presentation-for-May-7.pdf": {
    "bytes": 623931,
    "path": "reports/watts/Q1-2026_q1-2026-earnings-deck.pdf"
@@ -140,10 +132,6 @@ window.CW_REPORTS = {
   "https://www.globenewswire.com/news-release/2026/10/22/3386031/0/en/aalberts-n-v-aalberts-reports-third-quarter-2026-results.html": {
    "bytes": 59595,
    "path": "reports/aalberts/Q3-2026_q3-2026-press-release.pdf"
-  },
-  "https://www.investegate.co.uk/announcement/rns/imi--imi/trading-update/9846878": {
-   "bytes": 94539,
-   "path": "reports/imi/Q3-2026_q3-2026-trading-update-web.html"
   }
  },
  "updated": "2026-11-03 14:52 UTC"
