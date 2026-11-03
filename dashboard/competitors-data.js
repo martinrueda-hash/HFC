@@ -398,6 +398,11 @@ window.CW = {
    "co": "imi",
    "date": "2025-11-06",
    "event": "Q3 2025 trading update"
+  },
+  {
+   "co": "belimo",
+   "date": "2026-02-23",
+   "event": "FY 2025 results and annual report"
   }
  ],
  "results": {
@@ -1231,36 +1236,86 @@ window.CW = {
   "belimo": {
    "Q2 2025": {
     "report": "H1 2025 results (6 months)",
-    "rev": 561.3,
+    "date": "2025-07-21",
+    "rev": 561.5,
+    "revPy": 473.5,
+    "revChg": 18.6,
+    "org": 20.6,
+    "orgPy": 9.7,
+    "orgLbl": "Growth in local currencies",
     "mgnLbl": "EBIT margin",
     "mgn": 22.8,
+    "mgnPy": 19.6,
+    "prof": 128.1,
+    "profPy": 93.0,
+    "eps": {
+     "l": "Net income",
+     "v": "101.3",
+     "c": "77.2 in H1 2024; EPS CHF 8.23"
+    },
     "cash": {
      "l": "Free cash flow (excl. term deposits)",
-     "v": "52.8"
+     "v": "52.8",
+     "c": "69.8 in H1 2024; capex 35.9 (14.4)"
     },
-    "extra": [
+    "segLbl": "By product line",
+    "seg": [
      {
-      "l": "EBIT",
-      "v": "128.0"
+      "n": "Control valves",
+      "rev": 284.1,
+      "revPy": 234.1,
+      "org": 23.3,
+      "orgPy": 11.9
      },
      {
-      "l": "Operating cash flow",
-      "v": "93.5"
+      "n": "Damper actuators",
+      "rev": 251.8,
+      "revPy": 216.9,
+      "org": 18.1,
+      "orgPy": 5.8
+     },
+     {
+      "n": "Sensors and meters",
+      "rev": 25.6,
+      "revPy": 22.5,
+      "org": 16.3,
+      "orgPy": 28.6
      }
     ],
-    "derived": [
-     "rev",
-     "cash",
-     "prof"
+    "geo": [
+     {
+      "n": "Americas",
+      "rev": 280.0,
+      "revPy": 219.2,
+      "org": 30.1,
+      "orgPy": 17.6,
+      "note": "Data centres, next-generation server cooling, strong OEM accounts; US and Canada"
+     },
+     {
+      "n": "EMEA",
+      "rev": 216.3,
+      "revPy": 199.6,
+      "org": 9.9,
+      "orgPy": 2.0,
+      "note": "OEM recovery and RetroFIT+ despite weak new non-residential construction"
+     },
+     {
+      "n": "Asia Pacific",
+      "rev": 65.3,
+      "revPy": 54.7,
+      "org": 21.3,
+      "orgPy": 9.9,
+      "note": "China and India: data centres, semiconductors, district energy"
+     }
     ],
-    "note": "Derived from the H1 2026 report's growth rates against H1 2025.",
+    "segNote": "Growth ahead of plan in all regions. Americas +30.1% in local currencies on data centres; Asia Pacific +21.3% (China, India); EMEA +9.9% on OEM and retrofit. Control valves +23.3%, damper actuators +18.1%, sensors and meters +16.3%. Data-centre sales up more than 50%. EBIT margin 22.8% (19.6%) on operating leverage and mix; EBITDA 147.1 (26.2%).",
+    "guide": "FY 2025 confirmed: sales growth of 15–20% in local currencies; EBIT margin above 20%.",
     "src": [
      [
-      "Semiannual report 2025",
-      "https://www.belimo.com/mam/corporate-communications/investor-relations/Reports%20and%20Presentations/2025_07_Semiannual_Report_2025_EN.pdf"
+      "Semiannual report 2025 (PDF)",
+      "reports/belimo/Q2-2025_semiannual-report-2025.pdf"
      ]
-    ],
-    "prof": 128.0
+    ]
    },
    "Q4 2025": {
     "report": "FY 2025 results (12 months)",
@@ -1363,17 +1418,23 @@ window.CW = {
      {
       "n": "Control valves",
       "rev": 389.3,
-      "org": 48.3
+      "org": 48.3,
+      "revPy": 284.1,
+      "orgPy": 23.3
      },
      {
       "n": "Damper actuators",
       "rev": 254,
-      "org": 7.6
+      "org": 7.6,
+      "revPy": 251.8,
+      "orgPy": 18.1
      },
      {
       "n": "Sensors and meters",
       "rev": 33,
-      "org": 39.2
+      "org": 39.2,
+      "revPy": 25.6,
+      "orgPy": 16.3
      }
     ],
     "guide": "EBIT margin above 20% in 2026; H2 growth faces a higher base and annualised price increases.",
@@ -1387,35 +1448,36 @@ window.CW = {
       "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-sales-growth-in-the-first-half-of-2026/01f2af93-fa3e-4872-b3f8-514ab22ba0e0_en"
      ]
     ],
-    "revPy": 561.3,
+    "revPy": 561.5,
     "prof": 152.5,
-    "profPy": 128.0,
-    "derived": [
-     "revPy",
-     "profPy"
-    ],
+    "profPy": 128.1,
+    "derived": [],
     "geo": [
      {
       "n": "Americas",
       "rev": 341.3,
-      "chg": 21.9,
-      "org": 35.1
+      "org": 35.1,
+      "revPy": 280.0,
+      "orgPy": 30.1
      },
      {
       "n": "EMEA",
       "rev": 240.3,
-      "chg": 11.1,
-      "org": 14.1
+      "org": 14.1,
+      "revPy": 216.3,
+      "orgPy": 9.9
      },
      {
       "n": "Asia Pacific",
       "rev": 94.8,
-      "chg": 45.4,
-      "org": 58.0
+      "org": 58.0,
+      "revPy": 65.3,
+      "orgPy": 21.3
      }
     ],
     "segNote": "Control valves (Energy Valve in data-centre cooling) +48% in local currencies, now ~58% of sales; sensors and meters +39%; damper actuators +7.6% helped by fire and smoke applications. By region Asia Pacific (+58%) and the Americas (+35%) led, EMEA +14%.",
-    "segLbl": "By product line"
+    "segLbl": "By product line",
+    "orgPy": 20.6
    }
   },
   "xylem": {
@@ -3308,7 +3370,9 @@ window.CW = {
    "p": "Q2 2025",
    "type": "Results release",
    "title": "Semiannual report 2025",
-   "url": "https://www.belimo.com/mam/corporate-communications/investor-relations/Reports%20and%20Presentations/2025_07_Semiannual_Report_2025_EN.pdf"
+   "url": "https://www.belimo.com/mam/corporate-communications/investor-relations/Reports%20and%20Presentations/2025_07_Semiannual_Report_2025_EN.pdf",
+   "file": "reports/belimo/Q2-2025_semiannual-report-2025.pdf",
+   "bytes": 1390356
   },
   {
    "co": "belimo",
@@ -3344,6 +3408,13 @@ window.CW = {
    "type": "Half-year report",
    "title": "Half-year report 2026 (online)",
    "url": "https://report.belimo.com/HY26/en/management-report"
+  },
+  {
+   "co": "belimo",
+   "p": "Q4 2025",
+   "type": "Annual report",
+   "title": "Annual report 2025 (PDF)",
+   "url": "https://report.belimo.com/ar25/app/uploads/Annual-Report-2025.pdf"
   },
   {
    "co": "xylem",
