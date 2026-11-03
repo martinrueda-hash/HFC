@@ -5307,20 +5307,6 @@ window.CW = {
    "bytes": 1227710
   },
   {
-   "co": "pentair",
-   "p": "Q4 2025",
-   "type": "Annual report",
-   "title": "2025 annual report (incl. Form 10-K)",
-   "url": "https://investors.pentair.com/static-files/47275fb3-6d2b-41e3-a33a-545c38f36e64"
-  },
-  {
-   "co": "pentair",
-   "p": "Q4 2025",
-   "type": "Annual report",
-   "title": "FY 2025 Form 10-K",
-   "url": "https://pentair.gcs-web.com/static-files/11b1bf56-568a-49b3-bf96-0362f91ae219"
-  },
-  {
    "co": "gf",
    "p": "Q4 2025",
    "type": "Annual report",
