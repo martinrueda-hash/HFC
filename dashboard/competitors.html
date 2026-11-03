@@ -503,7 +503,7 @@ function colLabels(r, p) {
 }
 function finTable(c, r) {
   const [cur, prev] = colLabels(r, selP);
-  const segM = c.id === "watts" ? "Segment operating margin" : c.id === "ecolab" ? "Operating margin" : (r.mgnLbl || defMgn(c.id)).replace(/^Organic /, "");
+  const segM = c.id === "watts" ? "Segment operating margin" : c.id === "pentair" ? "Segment return on sales" : c.id === "ecolab" ? "Operating margin" : (r.mgnLbl || defMgn(c.id)).replace(/^Organic /, "");
   const orgL = (r.orgLbl || "Organic growth").replace(/, Flow Solutions$/, "");
   const n1 = v => Math.abs(v) >= 1000 ? Math.round(v).toLocaleString("en-US") : v.toFixed(1);
   const row = (lbl, a, b, ch, path, fmtA = n1) => `<tr><td class="l">${lbl}</td><td class="cur">${a == null ? "–" : fmtA(a) + (path ? der(r, path) : "")}</td><td>${b == null ? "" : fmtA(b) + (path ? der(r, path + "Py") : "")}</td><td class="${cls(typeof ch === "number" ? ch : null)}">${ch == null ? "" : typeof ch === "number" ? pct(ch) : ch}</td></tr>`;
@@ -515,14 +515,14 @@ function finTable(c, r) {
     let h = `<tr class="g${o.sub ? " sub" : ""}"><td class="l" colspan="4">${esc(name)}</td></tr>`, n = 0;
     if (o.rev != null || revPy != null) { h += row(`revenue (${c.ccy} m)`, o.rev, revPy, revCh, pfx + "rev").replace(/(<td>[^<]+)(<\/td>)/, o.revPy == null && revPy != null && !isDer(r, pfx + "revPy") ? '$1 <span class="dv" title="Derived from the reported growth rate">≈</span>$2' : "$1$2"); n++; }
     if (o.org != null) { h += row(esc(orgL.toLowerCase()) + " (%)", o.org, o.orgPy, null, "", v => pct(v)); n++; }
-    if (o.prof != null || o.profPy != null) { h += row(`${esc(profName(ml))} (${c.ccy} m)`, o.prof, o.profPy, o.prof != null && o.profPy ? (o.prof / o.profPy - 1) * 100 : null, pfx + "prof"); n++; }
+    if (o.prof != null || o.profPy != null) { h += row(`${esc(opts.pLbl || profName(ml))} (${c.ccy} m)`, o.prof, o.profPy, o.prof != null && o.profPy ? (o.prof / o.profPy - 1) * 100 : null, pfx + "prof"); n++; }
     if (o.mgn != null || mPy != null) { h += row(esc(ml) + " (%)", o.mgn, mPy, o.mgn != null && mPy != null ? bps(Math.round((o.mgn - mPy) * 100)) : null, pfx + "mgn", v => v.toFixed(1)); n++; }
     if (o.note) h += `<tr><td class="nt" colspan="4">${esc(o.note)}</td></tr>`;
     return n || o.note ? h.replace(/<tr>(?!.*<tr>)/s, '<tr class="end">') : "";
   };
   const g = { rev: r.rev, revPy: r.revPy, chg: r.revChg, org: r.org, orgPy: r.orgPy, prof: r.prof, profPy: r.profPy, mgn: r.mgn, mgnPy: r.mgnPy, mgnChg: r.mgnChg };
-  let h = block(g, c.name, "", { mLbl: r.mgnLbl || defMgn(c.id) });
-  if (r.seg && r.seg.length) h += `<tr class="sec"><td class="l" colspan="4">${esc(r.segLbl || "By reporting segment")}</td></tr>` + r.seg.map(s => block(s, s.n.replace(/^· /, ""), "seg." + s.n + ".", { mLbl: segM })).join("");
+  let h = block(g, c.name, "", { mLbl: r.mgnLbl || defMgn(c.id), pLbl: c.profLbl });
+  if (r.seg && r.seg.length) h += `<tr class="sec"><td class="l" colspan="4">${esc(r.segLbl || "By reporting segment")}</td></tr>` + r.seg.map(s => block(s, s.n.replace(/^· /, ""), "seg." + s.n + ".", { mLbl: segM, pLbl: c.id === "pentair" ? "Segment income" : null })).join("");
   if (r.geo && r.geo.length) h += `<tr class="sec"><td class="l" colspan="4">By region</td></tr>` + r.geo.map(s => block(s, s.n, "geo." + s.n + ".", { mLbl: segM })).join("");
   if (!(r.seg && r.seg.length) && !(r.geo && r.geo.length)) h += `<tr><td class="nt" colspan="4">No segment or regional split in this report.</td></tr>`;
   return `<table class="fin"><thead><tr><th class="l">in ${c.ccy} million unless stated</th><th class="cur">${cur}</th><th>${prev}</th><th>change</th></tr></thead><tbody>${h}</tbody></table>`;
