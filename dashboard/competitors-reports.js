@@ -69,14 +69,6 @@ window.CW_REPORTS = {
    "bytes": 14956339,
    "path": "reports/belimo/Q4-2025_annual-report-2025.pdf"
   },
-  "https://s29.q4cdn.com/117128878/files/doc_financials/2026/q1/Watts-Water-Technologies-UPDATED-Q1-26-Earnings-Deck-050626-Earnings-Presentation-for-May-7.pdf": {
-   "bytes": 623931,
-   "path": "reports/watts/Q1-2026_q1-2026-earnings-deck.pdf"
-  },
-  "https://s29.q4cdn.com/117128878/files/doc_financials/2026/q2/Watts-Water-Technologies-Q2-26-Earnings-Deck_final-Presentation-for-August-6-2026.pdf": {
-   "bytes": 716986,
-   "path": "reports/watts/Q2-2026_q2-2026-earnings-deck.pdf"
-  },
   "https://s3.eu-west-1.amazonaws.com/aalberts-website/media/App/Models/Download/000/000/569/attachment/original/Q3%202025.pdf": {
    "bytes": 127160,
    "path": "reports/aalberts/Q3-2025_q3-2025-press-release.pdf"

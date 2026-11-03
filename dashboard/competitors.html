@@ -154,7 +154,7 @@ table.fin td.cur, table.fin th.cur { background: #f2f2f2; color: var(--ink-stron
 table.fin tr.g td { font-weight: 700; color: var(--ink-strong); padding-top: 12px; }
 table.fin tr.g.sub td { font-weight: 600; font-style: italic; }
 table.fin tr.end td { border-bottom: 1px solid #a8a8a8; padding-bottom: 8px; }
-table.fin tr.sec td { color: var(--red); font-weight: 700; font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; padding-top: 18px; background: var(--bg); }
+table.fin tr.sec td { white-space: normal; color: var(--red); font-weight: 700; font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; padding-top: 18px; background: var(--bg); }
 table.fin td.nt { font-size: 10.5px; color: var(--muted); text-align: left; white-space: normal; padding-top: 0; }
 .box { background: var(--tint); border: 1px solid var(--blush); border-radius: 4px; padding: 10px 12px; font-size: 12px; }
 .box h4 { margin: 0 0 4px; font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: .05em; }
@@ -504,7 +504,7 @@ function colLabels(r, p) {
 }
 function finTable(c, r) {
   const [cur, prev] = colLabels(r, selP);
-  const segM = c.id === "watts" ? "Segment operating margin" : c.id === "pentair" ? "Segment return on sales" : c.id === "ecolab" ? "Operating margin" : (r.mgnLbl || defMgn(c.id)).replace(/^Organic /, "");
+  const segM = c.id === "watts" ? "Segment earnings margin" : c.id === "pentair" ? "Segment return on sales" : c.id === "ecolab" ? "Operating margin" : (r.mgnLbl || defMgn(c.id)).replace(/^Organic /, "");
   const orgL = (r.orgLbl || "Organic growth").replace(/, Flow Solutions$/, "");
   const n1 = v => Math.abs(v) >= 1000 ? Math.round(v).toLocaleString("en-US") : v.toFixed(1);
   const row = (lbl, a, b, ch, path, fmtA = n1) => `<tr><td class="l">${lbl}</td><td class="cur">${a == null ? "–" : fmtA(a) + (path ? der(r, path) : "")}</td><td>${b == null ? "" : fmtA(b) + (path ? der(r, path + "Py") : "")}</td><td class="${cls(typeof ch === "number" ? ch : null)}">${ch == null ? "" : typeof ch === "number" ? pct(ch) : ch}</td></tr>`;
@@ -523,7 +523,7 @@ function finTable(c, r) {
   };
   const g = { rev: r.rev, revPy: r.revPy, chg: r.revChg, org: r.org, orgPy: r.orgPy, prof: r.prof, profPy: r.profPy, mgn: r.mgn, mgnPy: r.mgnPy, mgnChg: r.mgnChg };
   let h = block(g, c.name, "", { mLbl: r.mgnLbl || defMgn(c.id), pLbl: c.profLbl });
-  if (r.seg && r.seg.length) h += `<tr class="sec"><td class="l" colspan="4">${esc(r.segLbl || "By reporting segment")}</td></tr>` + r.seg.map(s => block(s, s.n.replace(/^· /, ""), "seg." + s.n + ".", { mLbl: segM, pLbl: c.id === "pentair" ? "Segment income" : c.id === "ecolab" ? "Operating income" : null })).join("");
+  if (r.seg && r.seg.length) h += `<tr class="sec"><td class="l" colspan="4">${esc(r.segLbl || "By reporting segment")}</td></tr>` + r.seg.map(s => block(s, s.n.replace(/^· /, ""), "seg." + s.n + ".", { mLbl: segM, pLbl: c.id === "pentair" ? "Segment income" : c.id === "ecolab" ? "Operating income" : c.id === "watts" ? "Segment earnings" : null })).join("");
   if (r.geo && r.geo.length) h += `<tr class="sec"><td class="l" colspan="4">By region</td></tr>` + r.geo.map(s => block(s, s.n, "geo." + s.n + ".", { mLbl: segM })).join("");
   if (!(r.seg && r.seg.length) && !(r.geo && r.geo.length)) h += `<tr><td class="nt" colspan="4">No segment or regional split in this report.</td></tr>`;
   return `<table class="fin"><thead><tr><th class="l">in ${c.ccy} million unless stated</th><th class="cur">${cur}</th><th>${prev}</th><th>change</th></tr></thead><tbody>${h}</tbody></table>`;
@@ -554,7 +554,7 @@ function drawResults() {
       const comment = r.segNote || r.note;
       body.innerHTML = `<div class="kpi-row">${k}</div><div class="res-grid"><div class="table-scroll">${finTable(c, r)}</div>` +
         `<div style="display:grid;gap:10px;align-content:start;min-width:0">${comment ? `<div class="box"><h4>Segment growth</h4>${esc(comment)}</div>` : ""}${r.guide ? `<div class="box"><h4>Outlook</h4>${esc(r.guide)}</div>` : ""}</div></div>` +
-        `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived ? " · ≈ derived from reported figures and growth rates, not reported as such" : ""}</p>`;
+        `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived && r.derived.length ? " · ≈ derived from reported figures and growth rates, not reported as such" : ""}</p>`;
     }
   }
   drawQual(); drawPeers(); drawHeat();

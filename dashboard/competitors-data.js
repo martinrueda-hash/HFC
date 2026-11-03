@@ -122,7 +122,7 @@ window.CW = {
    "cadence": "Quarterly",
    "ir": "https://investors.watts.com/",
    "color": "#e87ba4",
-   "profLbl": "Adj. operating income"
+   "profLbl": "Operating income (GAAP)"
   },
   {
    "id": "emerson",
@@ -2763,7 +2763,7 @@ window.CW = {
   "watts": {
    "Q1 2025": {
     "report": "Q1 2025 results",
-    "rev": 559,
+    "rev": 558.0,
     "mgnLbl": "Adj. operating margin",
     "mgn": 19.0,
     "eps": {
@@ -2775,21 +2775,61 @@ window.CW = {
      "v": "46"
     },
     "derived": [
-     "rev",
      "mgn",
      "eps"
     ],
-    "note": "Derived from the Q1 2026 release's growth rates.",
     "src": [
      [
-      "Watts investor relations",
-      "https://investors.watts.com/"
+      "Q1 2025 Form 10-Q (PDF)",
+      "reports/watts/Q1-2025_10-q.pdf"
      ]
-    ]
+    ],
+    "revPy": 570.9,
+    "revChg": -2.3,
+    "org": -2.1,
+    "prof": 87.7,
+    "profPy": 96.7,
+    "seg": [
+     {
+      "n": "Americas",
+      "rev": 418.1,
+      "revPy": 418.8,
+      "org": -1.1,
+      "prof": 97.8,
+      "profPy": 92.7,
+      "mgn": 23.4,
+      "mgnPy": 22.1,
+      "note": "Fewer shipping days (~3 pts); acquisitions +USD 5.0m; segment earnings +5.6% organic"
+     },
+     {
+      "n": "Europe",
+      "rev": 108.4,
+      "revPy": 123.3,
+      "org": -9.2,
+      "prof": 15.1,
+      "profPy": 19.4,
+      "mgn": 13.9,
+      "mgnPy": 15.7,
+      "note": "Volume decline; weak heat-pump and boiler markets; segment earnings -20.1% organic"
+     },
+     {
+      "n": "APMEA",
+      "rev": 31.5,
+      "revPy": 28.8,
+      "org": 13.2,
+      "prof": 5.5,
+      "profPy": 5.2,
+      "mgn": 17.5,
+      "mgnPy": 18.1,
+      "note": "Price and volume; segment earnings +9.6% organic"
+     }
+    ],
+    "segLbl": "By reporting segment (regions); sales to external customers; margin = segment earnings / sales",
+    "segNote": "Organic −2.1%, mostly from ~3 pts fewer shipping days: Americas −1.1%, Europe −9.2%; APMEA +13.2%. Americas segment earnings still +5.6% organic on price; Europe earnings −20%."
    },
    "Q2 2025": {
     "report": "Q2 2025 results",
-    "rev": 641,
+    "rev": 643.7,
     "mgnLbl": "Adj. operating margin",
     "mgn": 21.6,
     "eps": {
@@ -2803,23 +2843,59 @@ window.CW = {
     "seg": [
      {
       "n": "Americas",
-      "rev": 499,
-      "chg": 11,
-      "org": 10,
-      "note": "Price, volume and pull-forward demand"
+      "rev": 498.5,
+      "revPy": 448.1,
+      "org": 9.8,
+      "prof": 135.8,
+      "profPy": 108.8,
+      "mgn": 27.2,
+      "mgnPy": 24.3,
+      "note": "Price, volume and tariff-related pull-forward demand; acquisitions +USD 7.0m; segment earnings +23.3% organic"
+     },
+     {
+      "n": "Europe",
+      "rev": 111.0,
+      "revPy": 114.1,
+      "org": -7.6,
+      "prof": 13.0,
+      "profPy": 11.4,
+      "mgn": 11.7,
+      "mgnPy": 10.0,
+      "note": "Lower volumes; segment earnings +7.9% organic"
+     },
+     {
+      "n": "APMEA",
+      "rev": 34.2,
+      "revPy": 35.1,
+      "org": -1.1,
+      "prof": 6.5,
+      "profPy": 6.6,
+      "mgn": 19.0,
+      "mgnPy": 18.8,
+      "note": "segment earnings -1.5% organic"
      }
     ],
     "derived": [
-     "rev",
      "mgn",
      "eps"
     ],
     "src": [
      [
+      "Q2 2025 Form 10-Q (PDF)",
+      "reports/watts/Q2-2025_10-q.pdf"
+     ],
+     [
       "Q2 2025 earnings release",
       "https://www.sec.gov/Archives/edgar/data/795403/000155837025010556/wts-20250806xex99d1.htm"
      ]
-    ]
+    ],
+    "revPy": 597.3,
+    "revChg": 7.8,
+    "org": 5.8,
+    "prof": 135.3,
+    "profPy": 111.5,
+    "segLbl": "By reporting segment (regions); sales to external customers; margin = segment earnings / sales",
+    "segNote": "Organic +5.8%: Americas +9.8% on price, volume and tariff pull-forward; Europe −7.6% and APMEA −1.1% on lower volume. Americas segment earnings +23% organic, margin 27.2%."
    },
    "Q3 2025": {
     "report": "Q3 2025 results",
@@ -2838,32 +2914,55 @@ window.CW = {
     "seg": [
      {
       "n": "Americas",
-      "rev": 464,
-      "org": 13
+      "rev": 464.1,
+      "revPy": 400.0,
+      "org": 13.3,
+      "prof": 110.0,
+      "profPy": 87.6,
+      "mgn": 23.7,
+      "mgnPy": 21.9,
+      "note": "Price and volume incl. tariff pull-forward; acquisitions +USD 11.1m; segment earnings +23.6% organic"
      },
      {
       "n": "Europe",
-      "rev": 112,
-      "chg": 4,
-      "org": -2
+      "rev": 111.6,
+      "revPy": 107.3,
+      "org": -2.3,
+      "prof": 13.6,
+      "profPy": 11.3,
+      "mgn": 12.2,
+      "mgnPy": 10.5,
+      "note": "Lower volumes; segment earnings +13.3% organic"
      },
      {
       "n": "APMEA",
-      "org": 0
+      "rev": 36.0,
+      "revPy": 36.3,
+      "org": 0.3,
+      "prof": 7.0,
+      "profPy": 6.7,
+      "mgn": 19.4,
+      "mgnPy": 18.5,
+      "note": "segment earnings +4.5% organic"
      }
     ],
     "guide": "Full-year 2025 sales and margin outlook raised.",
     "src": [
      [
+      "Q3 2025 Form 10-Q (PDF)",
+      "reports/watts/Q3-2025_10-q.pdf"
+     ],
+     [
       "Q3 2025 earnings release",
       "https://www.sec.gov/Archives/edgar/data/795403/000110465925107038/wts-20251105xex99d1.htm"
      ]
     ],
-    "segNote": "Americas +13% organic carried the group; Europe −2% and APMEA flat.",
-    "prof": 113.2,
-    "derived": [
-     "prof"
-    ]
+    "segNote": "Organic +9.4%: Americas +13.3% (price, volume, tariff pull-forward), APMEA +0.3%, Europe −2.3%. Americas segment earnings +24% organic, margin 23.7%; Europe earnings +13%.",
+    "prof": 111.4,
+    "derived": [],
+    "revPy": 543.6,
+    "profPy": 93.2,
+    "segLbl": "By reporting segment (regions); sales to external customers; margin = segment earnings / sales"
    },
    "Q4 2025": {
     "report": "Q4 2025 results",
@@ -2917,9 +3016,9 @@ window.CW = {
    "Q1 2026": {
     "report": "Q1 2026 results",
     "date": "2026-05-06",
-    "rev": 677,
-    "revChg": 21,
-    "org": 12,
+    "rev": 677.3,
+    "revChg": 21.4,
+    "org": 11.9,
     "mgnLbl": "Adj. operating margin",
     "mgn": 20.1,
     "mgnChg": 110,
@@ -2936,26 +3035,63 @@ window.CW = {
     "guide": "Full-year 2026 outlook maintained.",
     "src": [
      [
-      "Q1 2026 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/0000795403/000110465926056325/wts-20260506xex99d1.htm"
+      "Q1 2026 Form 10-Q (PDF)",
+      "reports/watts/Q1-2026_10-q.pdf"
      ],
      [
-      "Q1 2026 slides",
-      "https://s29.q4cdn.com/117128878/files/doc_financials/2026/q1/Watts-Water-Technologies-UPDATED-Q1-26-Earnings-Deck-050626-Earnings-Presentation-for-May-7.pdf"
+      "Q1 2026 earnings release",
+      "https://www.sec.gov/Archives/edgar/data/0000795403/000110465926056325/wts-20260506xex99d1.htm"
      ]
     ],
-    "prof": 136.1,
-    "derived": [
-     "prof"
+    "prof": 133.0,
+    "derived": [],
+    "orgPy": null,
+    "revPy": 558.0,
+    "profPy": 87.7,
+    "seg": [
+     {
+      "n": "Americas",
+      "rev": 515.1,
+      "revPy": 418.1,
+      "org": 15.5,
+      "prof": 124.5,
+      "profPy": 97.8,
+      "mgn": 24.2,
+      "mgnPy": 23.4,
+      "note": "Price and data-centre volume; acquisitions +USD 30.7m; segment earnings +26.9% organic"
+     },
+     {
+      "n": "Europe",
+      "rev": 121.4,
+      "revPy": 108.4,
+      "org": 0.5,
+      "prof": 16.7,
+      "profPy": 15.1,
+      "mgn": 13.8,
+      "mgnPy": 13.9,
+      "note": "segment earnings -0.7% organic"
+     },
+     {
+      "n": "APMEA",
+      "rev": 40.8,
+      "revPy": 31.5,
+      "org": 3.4,
+      "prof": 7.5,
+      "profPy": 5.5,
+      "mgn": 18.4,
+      "mgnPy": 17.5,
+      "note": "Acquisitions +USD 5.9m; segment earnings +56.4% organic"
+     }
     ],
-    "orgPy": null
+    "segLbl": "By reporting segment (regions); sales to external customers; margin = segment earnings / sales",
+    "segNote": "Organic +11.9%: Americas +15.5% on price and data-centre volume; Europe +0.5%, APMEA +3.4%. Acquisitions added 6.6 pts. Americas segment earnings +27% organic; GAAP operating income +52%."
    },
    "Q2 2026": {
     "report": "Q2 2026 results",
     "date": "2026-08-05",
-    "rev": 763,
-    "revChg": 19,
-    "org": 12,
+    "rev": 763.2,
+    "revChg": 18.6,
+    "org": 12.2,
     "mgnLbl": "Adj. operating margin",
     "mgn": 21.0,
     "mgnChg": -60,
@@ -2984,52 +3120,55 @@ window.CW = {
     "seg": [
      {
       "n": "Americas",
-      "rev": 585,
-      "chg": 17,
-      "org": 12,
+      "rev": 585.0,
+      "revPy": 498.5,
+      "org": 11.6,
+      "prof": 150.1,
+      "profPy": 135.8,
       "mgn": 25.7,
-      "mgnPy": 27.2
+      "mgnPy": 27.2,
+      "note": "Price and data-centre volume; acquisitions +USD 28.4m; segment earnings +10.5% organic"
      },
      {
       "n": "Europe",
-      "rev": 125,
-      "chg": 12,
-      "org": 9,
+      "rev": 124.6,
+      "revPy": 111.0,
+      "org": 9.2,
+      "prof": 16.6,
+      "profPy": 13.0,
       "mgn": 13.3,
-      "mgnPy": 11.7
+      "mgnPy": 11.7,
+      "note": "segment earnings +23.8% organic"
      },
      {
       "n": "APMEA",
-      "rev": 54,
-      "chg": 57,
-      "org": 31,
-      "mgn": 19.9,
-      "mgnPy": 18.9
+      "rev": 53.6,
+      "revPy": 34.2,
+      "org": 30.7,
+      "prof": 10.6,
+      "profPy": 6.5,
+      "mgn": 19.8,
+      "mgnPy": 19.0,
+      "note": "Data centres in China; acquisitions +USD 5.9m; segment earnings +66.2% organic"
      }
     ],
     "guide": "2026 raised: organic +8–11%, reported +14–17%, adj. operating margin +20 to +80 bps.",
     "src": [
      [
-      "Q2 2026 earnings release",
-      "https://www.sec.gov/Archives/edgar/data/0000795403/000110465926091165/wts-20260805xex99d1.htm"
+      "Q2 2026 Form 10-Q (PDF)",
+      "reports/watts/Q2-2026_10-q.pdf"
      ],
      [
-      "Q2 2026 slides",
-      "https://s29.q4cdn.com/117128878/files/doc_financials/2026/q2/Watts-Water-Technologies-Q2-26-Earnings-Deck_final-Presentation-for-August-6-2026.pdf"
+      "Q2 2026 earnings release",
+      "https://www.sec.gov/Archives/edgar/data/0000795403/000110465926091165/wts-20260805xex99d1.htm"
      ]
     ],
-    "revPy": 641,
-    "prof": 160,
-    "profPy": 139.1,
-    "derived": [
-     "revPy",
-     "profPy",
-     "seg.Americas.mgnPy",
-     "seg.Europe.mgnPy",
-     "seg.APMEA.mgnPy"
-    ],
-    "segLbl": "Segments (= regions); margin = segment operating margin",
-    "segNote": "APMEA +31% organic on data centres in China; Americas +12% organic on price and data centres, but margin −150 bps on acquisition dilution, tariffs and a tough comparison; Europe +9% organic with margin +160 bps to 13.3%."
+    "revPy": 643.7,
+    "prof": 154.0,
+    "profPy": 135.3,
+    "derived": [],
+    "segLbl": "By reporting segment (regions); sales to external customers; margin = segment earnings / sales",
+    "segNote": "Organic +12.2%: APMEA +30.7% (data centres in China), Americas +11.6%, Europe +9.2%. Acquisitions added 5.3 pts. Americas margin fell to 25.7% (27.2%) on acquisition dilution, inflation and tariffs; Europe margin 13.3% (11.7%)."
    },
    "Q3 2026": {
     "report": "Q3 2026 results — due 4 Nov 2026",
@@ -4284,73 +4423,48 @@ window.CW = {
   },
   {
    "co": "watts",
+   "p": "Q1 2025",
+   "type": "Quarterly report",
+   "title": "Q1 2025 Form 10-Q",
+   "url": "https://investors.watts.com/",
+   "file": "reports/watts/Q1-2025_10-q.pdf",
+   "bytes": 468518
+  },
+  {
+   "co": "watts",
    "p": "Q2 2025",
-   "type": "Results release",
-   "title": "Q2 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/795403/000155837025010556/wts-20250806xex99d1.htm"
-  },
-  {
-   "co": "watts",
-   "p": "Q3 2025",
-   "type": "Results release",
-   "title": "Q3 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/795403/000110465925107038/wts-20251105xex99d1.htm"
+   "type": "Quarterly report",
+   "title": "Q2 2025 Form 10-Q",
+   "url": "https://investors.watts.com/",
+   "file": "reports/watts/Q2-2025_10-q.pdf",
+   "bytes": 535371
   },
   {
    "co": "watts",
    "p": "Q3 2025",
    "type": "Quarterly report",
-   "title": "Q3 2025 10-Q",
-   "url": "https://www.sec.gov/Archives/edgar/data/795403/000110465925107489/wts-20250928x10q.htm"
-  },
-  {
-   "co": "watts",
-   "p": "Q4 2025",
-   "type": "Results release",
-   "title": "Q4 / FY 2025 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/795403/000110465926013437/wts-20260211xex99d1.htm"
-  },
-  {
-   "co": "watts",
-   "p": "Q1 2026",
-   "type": "Results release",
-   "title": "Q1 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000795403/000110465926056325/wts-20260506xex99d1.htm"
-  },
-  {
-   "co": "watts",
-   "p": "Q1 2026",
-   "type": "Presentation",
-   "title": "Q1 2026 earnings deck",
-   "url": "https://s29.q4cdn.com/117128878/files/doc_financials/2026/q1/Watts-Water-Technologies-UPDATED-Q1-26-Earnings-Deck-050626-Earnings-Presentation-for-May-7.pdf"
+   "title": "Q3 2025 Form 10-Q",
+   "url": "https://investors.watts.com/",
+   "file": "reports/watts/Q3-2025_10-q.pdf",
+   "bytes": 534532
   },
   {
    "co": "watts",
    "p": "Q1 2026",
    "type": "Quarterly report",
-   "title": "Q1 2026 10-Q",
-   "url": "https://www.sec.gov/Archives/edgar/data/795403/000110465926056817/wts-20260329x10q.htm"
-  },
-  {
-   "co": "watts",
-   "p": "Q2 2026",
-   "type": "Results release",
-   "title": "Q2 2026 earnings release",
-   "url": "https://www.sec.gov/Archives/edgar/data/0000795403/000110465926091165/wts-20260805xex99d1.htm"
-  },
-  {
-   "co": "watts",
-   "p": "Q2 2026",
-   "type": "Presentation",
-   "title": "Q2 2026 earnings deck",
-   "url": "https://s29.q4cdn.com/117128878/files/doc_financials/2026/q2/Watts-Water-Technologies-Q2-26-Earnings-Deck_final-Presentation-for-August-6-2026.pdf"
+   "title": "Q1 2026 Form 10-Q",
+   "url": "https://investors.watts.com/",
+   "file": "reports/watts/Q1-2026_10-q.pdf",
+   "bytes": 488495
   },
   {
    "co": "watts",
    "p": "Q2 2026",
    "type": "Quarterly report",
-   "title": "Q2 2026 10-Q",
-   "url": "https://www.sec.gov/Archives/edgar/data/795403/000110465926091726/wts-20260628x10q.htm"
+   "title": "Q2 2026 Form 10-Q",
+   "url": "https://investors.watts.com/",
+   "file": "reports/watts/Q2-2026_10-q.pdf",
+   "bytes": 508032
   },
   {
    "co": "emerson",
