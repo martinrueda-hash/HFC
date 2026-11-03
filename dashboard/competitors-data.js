@@ -1364,12 +1364,8 @@ window.CW = {
     "note": "Data centres the main growth driver; capex elevated by capacity expansion in Switzerland and the US.",
     "src": [
      [
-      "FY 2025 press release",
-      "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-growth-in-2025/295f5591-80dd-4287-b3ff-f149c4acf182_en"
-     ],
-     [
-      "FY 2025 presentation",
-      "https://www.belimo.com/mam/corporate-communications/investor-relations/Reports%20and%20Presentations/2026_02_Presentation_of_Financial_Results__2025_.pdf"
+      "Annual report 2025 (PDF)",
+      "reports/belimo/Q4-2025_annual-report-2025.pdf"
      ]
     ],
     "prof": 232.9,
@@ -3694,20 +3690,6 @@ window.CW = {
    "url": "https://www.belimo.com/mam/corporate-communications/investor-relations/Reports%20and%20Presentations/2025_07_Semiannual_Report_2025_EN.pdf",
    "file": "reports/belimo/Q2-2025_semiannual-report-2025.pdf",
    "bytes": 1390356
-  },
-  {
-   "co": "belimo",
-   "p": "Q4 2025",
-   "type": "Results release",
-   "title": "FY 2025 press release",
-   "url": "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-growth-in-2025/295f5591-80dd-4287-b3ff-f149c4acf182_en"
-  },
-  {
-   "co": "belimo",
-   "p": "Q2 2026",
-   "type": "Results release",
-   "title": "H1 2026 press release",
-   "url": "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-sales-growth-in-the-first-half-of-2026/01f2af93-fa3e-4872-b3f8-514ab22ba0e0_en"
   },
   {
    "co": "belimo",

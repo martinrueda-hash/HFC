@@ -105,14 +105,6 @@ window.CW_REPORTS = {
    "bytes": 14854195,
    "path": "reports/aalberts/Q2-2026_h1-2026-presentation.pdf"
   },
-  "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-growth-in-2025/295f5591-80dd-4287-b3ff-f149c4acf182_en": {
-   "bytes": 206939,
-   "path": "reports/belimo/Q4-2025_fy-2025-press-release.pdf"
-  },
-  "https://www.eqs-news.com/news/ad-hoc/belimo-accelerated-sales-growth-in-the-first-half-of-2026/01f2af93-fa3e-4872-b3f8-514ab22ba0e0_en": {
-   "bytes": 163523,
-   "path": "reports/belimo/Q2-2026_h1-2026-press-release.pdf"
-  },
   "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/annual-report/annual-report-2025/en/annual-report-2025-full-version-en.pdf": {
    "bytes": 17108427,
    "path": "reports/gf/Q4-2025_annual-report-2025.pdf"
