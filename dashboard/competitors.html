@@ -168,7 +168,12 @@ table.fin td.nt { font-size: 10.5px; color: var(--muted); text-align: left; whit
 .cell-pos { background: var(--good-tint) !important; }
 .cell-neg { background: var(--bad-tint) !important; }
 .cell-na { color: var(--axis) !important; }
-.cell-sel { outline: 2px solid var(--red); outline-offset: -2px; }
+/* selected quarter: one outline around the whole column */
+#mgnTbl td.h, #mgnTbl thead th:not(.l) { min-width: 96px; }
+#mgnTbl td:last-child { max-width: 230px; font-size: 10.5px; }
+table.heat .col-sel { border-left: 2px solid var(--red); border-right: 2px solid var(--red); }
+table.heat thead .col-sel { border-top: 2px solid var(--red); }
+table.heat tbody tr:last-child .col-sel { border-bottom: 2px solid var(--red); }
 
 .pdf-link { font-size: 12px; font-weight: 700; color: #fff; background: var(--red); border-radius: 3px; padding: 7px 12px; text-decoration: none; white-space: nowrap; }
 .pdf-link:hover { filter: brightness(1.1); }
@@ -256,13 +261,13 @@ table.fin td.nt { font-size: 10.5px; color: var(--muted); text-align: left; whit
     <div class="table-scroll"><table class="mi" id="peerTbl"></table></div>
     <p class="note" id="peerNote"></p>
 
-    <span class="subhead" id="mgnHead">Reported margin comparison</span>
-    <div class="chart-box" id="mgnBox"><svg class="px" id="mgnChart" role="img" aria-label="Reported margin by company for the selected quarter"></svg></div>
-    <p class="note" id="mgnNote"></p>
-
     <span class="subhead">Organic growth by quarter</span>
     <div class="table-scroll"><table class="mi heat" id="heatTbl"></table></div>
     <p class="note">Organic growth as each company defines it: Belimo = growth in local currencies, Emerson = underlying growth, Pentair = core sales growth, GF = Flow Solutions. For half-year reporters Q2 = H1. FY 2025 = full-year results for every company. Click a row or a cell to open that company in the deep dive.</p>
+
+    <span class="subhead">Reported margin by quarter</span>
+    <div class="table-scroll"><table class="mi heat" id="mgnTbl"></table></div>
+    <p class="note" id="mgnNote"></p>
   </section>
 
   <!-- 3. Company deep dive -->
@@ -588,33 +593,30 @@ function drawOverview() {
   // summaries sit in reports/summaries in the repository and next to the page when published
   $("pdfLink").href = (REPO === "../" ? "../reports/" : "") + "summaries/" + selQ.replace(" ", "-") + "_summary.pdf";
   $("pdfLink").textContent = "PDF summary, " + pl(selQ) + " ›";
-  drawPeers(); drawMargins(); drawHeat();
+  drawPeers(); drawHeat(); drawMargins();
 }
 $("qoCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; selQ = b.dataset.p; store.set("q", selQ); drawOverview(); });
 function openDeep(co, p) { selCo = co; selP = p; store.set("co", selCo); store.set("p", selP); drawResults(); $("results").scrollIntoView({ behavior: "smooth", block: "start" }); }
 
 function drawMargins() {
-  // one bar per company for the selected quarter, each in the company's own margin measure
-  const rows = D.companies.map(c => ({ c, r: res(c.id, selQ) })).map(o => ({ ...o, v: o.r && !o.r.pending && o.r.mgn != null ? o.r.mgn : null }));
-  const vals = rows.filter(o => o.v != null);
-  $("mgnHead").textContent = `Reported margin comparison, ${pl(selQ)}`;
-  const svg = $("mgnChart"), W = 900, rh = 30, lw = 150, rw = 330, top = 6;
-  const H = top + rows.length * rh + 4, hi = Math.ceil(Math.max(30, ...vals.map(o => o.v)) / 5) * 5;
-  const x = v => lw + v / hi * (W - lw - rw);
-  let g = "";
-  rows.forEach((o, i) => {
-    const y = top + i * rh, self = o.c.self;
-    g += `<text x="${lw - 10}" y="${y + rh / 2 + 4}" text-anchor="end" font-size="12" font-weight="${self ? 700 : 500}" fill="${self ? "#ce0e2d" : "#191919"}">${esc(o.c.name)}${o.c.fyNote ? "*" : ""}</text>`;
-    if (o.v == null) { g += `<text x="${lw + 4}" y="${y + rh / 2 + 4}" font-size="11" fill="#8c8c8c">${o.r ? (o.r.pending ? "not published yet" : "margin not disclosed in this report") : "no report for this period"}</text>`; return; }
-    const prev = o.r.mgnPy != null ? o.r.mgnPy : o.r.mgnChg != null ? o.v - o.r.mgnChg / 100 : null;
-    g += `<rect x="${lw}" y="${y + 6}" width="${x(o.v) - lw}" height="${rh - 12}" rx="3" fill="${self ? "#ce0e2d" : "#e49587"}"><title>${esc(o.r.mgnLbl || "")}: ${o.v.toFixed(1)}%</title></rect>`;
-    if (prev != null) g += `<line x1="${x(prev)}" x2="${x(prev)}" y1="${y + 3}" y2="${y + rh - 3}" stroke="#191919" stroke-width="2"><title>Prior year ${prev.toFixed(1)}%</title></line>`;
-    const ch = prev != null ? Math.round((o.v - prev) * 100) : null;
-    g += `<text x="${Math.max(x(o.v), prev != null ? x(prev) : 0) + 8}" y="${y + rh / 2 + 4}" font-size="11.5" font-weight="700" fill="#191919">${o.v.toFixed(1)}%<tspan font-weight="400" fill="#505050">${ch != null ? "  " + bps(ch) : ""}  ${esc(o.r.mgnLbl || "")}</tspan></text>`;
-  });
-  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g;
-  $("mgnNote").innerHTML = "Each company's own reported margin measure, so levels are not like-for-like (EBITA, EBITDA, EBIT, operating margin, return on sales). Black tick = same period last year. Half-year reporters: Q2 = H1." + (D.companies.some(c => c.fyNote) ? " " + fyNotes() : "");
+  // same layout as the organic growth grid: each company's own reported margin per period, shaded by change vs prior year
+  const mPrev = r => r.mgnPy != null ? r.mgnPy : r.mgnChg != null ? r.mgn - r.mgnChg / 100 : null;
+  $("mgnTbl").innerHTML = `<thead><tr><th class="l">Company</th>${D.periods.map(p => `<th class="${p === selQ ? "col-sel" : ""}">${pl(p)}</th>`).join("")}<th class="l">Margin measure</th></tr></thead><tbody>` +
+    D.companies.map(c => {
+      const lbls = [];
+      const cells = D.periods.map(p => {
+        const r = res(c.id, p), v = r && !r.pending ? r.mgn : null;
+        if (v != null && r.mgnLbl && !lbls.includes(r.mgnLbl)) lbls.push(r.mgnLbl);
+        const pv = v != null ? mPrev(r) : null, ch = pv != null ? Math.round((v - pv) * 100) : null;
+        const k = v == null ? "cell-na" : ch == null ? "" : ch > 0 ? "cell-pos" : ch < 0 ? "cell-neg" : "";
+        const tip = v == null ? (r ? (r.pending ? "not published yet" : "margin not disclosed") : "no report") : `${r.mgnLbl || ""}: ${v.toFixed(1)}%${ch != null ? " (" + bps(ch) + " y/y)" : ""}`;
+        return `<td class="h ${k}${p === selQ ? " col-sel" : ""}" data-co="${c.id}" data-p="${p}" style="cursor:pointer" title="${esc(tip)}">${v == null ? (r && r.pending ? "due" : "–") : v.toFixed(1) + "%"}${ch != null ? `<span class="u" style="display:block;font-size:10px;color:#505050">${bps(ch)}</span>` : ""}</td>`;
+      }).join("");
+      return `<tr class="${c.self ? "self" : ""}"><td class="l">${nm(c)}</td>${cells}<td class="l muted" style="white-space:normal;min-width:160px">${lbls.map(esc).join("; ")}</td></tr>`;
+    }).join("") + "</tbody>";
+  $("mgnNote").innerHTML = "Each company's own reported margin measure (see last column), so levels are not like-for-like. Green / red = margin up / down versus the same period last year (change in bps under the value). Half-year reporters: Q2 = H1. Click a cell to open that company in the deep dive." + (D.companies.some(c => c.fyNote) ? " " + fyNotes() : "");
 }
+$("mgnTbl").addEventListener("click", e => { const td = e.target.closest("td[data-co]"); if (!td) return; openDeep(td.dataset.co, td.dataset.p); });
 function drawQual() {
   const q = D.qual[selCo], c = CO[selCo];
   if (!q) { $("qual").innerHTML = ""; $("qualSrc").textContent = ""; return; }
@@ -640,11 +642,11 @@ function drawPeers() {
 $("peerTbl").addEventListener("click", e => { const tr = e.target.closest("tr[data-co]"); if (!tr) return; openDeep(tr.dataset.co, selQ); });
 
 function drawHeat() {
-  $("heatTbl").innerHTML = `<thead><tr><th class="l">Company</th>${D.periods.map(p => `<th>${pl(p)}</th>`).join("")}</tr></thead><tbody>` +
+  $("heatTbl").innerHTML = `<thead><tr><th class="l">Company</th>${D.periods.map(p => `<th class="${p === selQ ? "col-sel" : ""}">${pl(p)}</th>`).join("")}</tr></thead><tbody>` +
     D.companies.map(c => `<tr class="${c.self ? "self" : ""}"><td class="l">${nm(c)}</td>${D.periods.map(p => {
       const r = res(c.id, p), v = r && !r.pending ? r.org : null;
       const k = v == null ? "cell-na" : v > 0 ? "cell-pos" : v < 0 ? "cell-neg" : "";
-      return `<td class="h ${k}${p === selQ ? " cell-sel" : ""}" data-co="${c.id}" data-p="${p}" style="cursor:pointer" title="${esc(r ? r.report : "no report")}">${v == null ? (r && r.pending ? "due" : "–") : pct(v)}</td>`;
+      return `<td class="h ${k}${p === selQ ? " col-sel" : ""}" data-co="${c.id}" data-p="${p}" style="cursor:pointer" title="${esc(r ? r.report : "no report")}">${v == null ? (r && r.pending ? "due" : "–") : pct(v)}</td>`;
     }).join("")}</tr>`).join("") + "</tbody>";
 }
 $("heatTbl").addEventListener("click", e => { const td = e.target.closest("td[data-co]"); if (!td) return; openDeep(td.dataset.co, td.dataset.p); });
