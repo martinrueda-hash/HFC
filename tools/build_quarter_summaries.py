@@ -53,6 +53,13 @@ def mark(c):
     return SUP[[x["id"] for x in DATA["companies"] if x.get("fyNote")].index(c["id"]) + 1]
 
 
+def omark(D, o):
+    """Numbered footnote mark for private competitors with a note (page 3 has its own numbering: Siemens ¹)."""
+    if not o.get("fyNote"):
+        return ""
+    return SUP[[x["id"] for x in D.get("others", []) if x.get("fyNote")].index(o["id"]) + 1]
+
+
 def name(c):
     return e(c["name"]) + mark(c)
 
@@ -107,10 +114,10 @@ def grid(D, p, kind):
             meas = f'<td class="nt">{e(next((l for l in reversed(labels) if l), ""))}</td>'
         rows += f'<tr class="{"self" if c.get("self") else ""}"><td>{name(c)}</td>{tds}{meas}</tr>'
     title = "Organic growth by quarter" if kind == "org" else "Reported margin by quarter"
-    note = ("Organic growth as each company defines it. Green / red = growth / decline." if kind == "org" else
+    note = ("Organic growth as each company defines it." if kind == "org" else
             "Each company's own margin measure (last column), so levels are not like-for-like. Change versus the same period last year in bps; green / red = margin up / down.")
     return (f'<div style="break-inside:avoid"><h2>{title}</h2><table class="grid"><tr><th>Company</th>{head}{"<th>Margin measure</th>" if kind == "mgn" else ""}</tr>{rows}</table>'
-            + (f'<p class="m"><b>Notes:</b> {note[0].lower() + note[1:]} The outlined column is {lab(p)}.</p>' if kind == "org" else "") + '</div>')
+            + (f'<p class="m"><b>Notes:</b> {note[0].lower() + note[1:]}</p>' if kind == "org" else "") + '</div>')
 
 
 def first_sentence(t, limit=300):
@@ -207,11 +214,10 @@ def page(D, p, scale=1.0):
         for k in CL:
             ks = [i for i in its if i["c"] == k]
             cells += "<td>" + "<br>".join(e(first_sentence(i["t"], 320)) for i in ks[:2]) + "</td>"
-        rows += f'<tr><td><b>{e(o["name"])}</b>{"*" if o.get("fyNote") else ""}<br><span class="m">{REL[o["rel"]]} ({o["rel"]}/5)</span></td>{cells}</tr>'
+        rows += f'<tr><td><b>{e(o["name"])}</b>{omark(D, o)}<br><span class="m">{REL[o["rel"]]} ({o["rel"]}/5)</span></td>{cells}</tr>'
     priv = (f'<table class="pv"><tr><th style="width:17%">Company (relevance)</th><th>{CL["perf"]}</th><th>{CL["ma"]}</th><th>{CL["other"]}</th></tr>{rows}</table>'
             if rows else '<p class="m">No dated public information found for this period.</p>')
-    priv += f'<p class="m">No dated public information found for this period: {", ".join(empty)}.</p>' if empty and rows else ""
-    fy = " ".join(f"* {e(o['name'])}: {e(o['fyNote'])}" for o in D.get("others", []) if o.get("fyNote"))
+    fy = " ".join(f"{omark(D, o)} {e(o['name'])}: {e(o['fyNote'])}" for o in D.get("others", []) if o.get("fyNote"))
     f = lambda pt: f"{pt * scale:.2f}pt"
     logo = '<img class="logo" alt="Aalberts" src="data:image/png;base64,' + base64.b64encode(LOGO.read_bytes()).decode() + '">' 
     return f"""<!doctype html><html><head><meta charset="utf-8"><title>Competitor watch {e(label)}</title><style>
@@ -229,8 +235,8 @@ table.pv td{{font-size:{f(7.6)}}} .foot{{color:#666;font-size:{f(7)};margin-top:
 <div class="pg">{logo}<h1>Competitor watch · {e(label)}</h1><p class="m">Aalberts and listed peers · figures in each company's reporting currency, millions unless stated · data as of {e(D["asOf"])}</p>
 <h2>Peer comparison: listed companies</h2><table><tr><th>Company</th><th>Report</th><th style="text-align:right">Revenue</th><th style="text-align:right">Reported</th><th style="text-align:right">Organic</th><th style="text-align:right">Margin</th><th style="text-align:right">Change</th><th>Margin measure</th></tr>{peer}</table>
 {grids}<p class="foot"><b>Notes:</b> {" ".join(f"{mark(c)} {e(c['fyNote'])}" for c in cos if c.get("fyNote"))}</p></div>
-<div class="pg">{logo}<h1>Key messages: listed companies · {e(label)}</h1><p class="m">Executive summary of the main messages per company, in three clusters.</p>{exec_sum}<p class="foot"><b>Sources:</b> each company's report for the period (see the dashboard's report library).</p></div>
-<div class="pg">{logo}<h1>Other key competitors · {e(label)}</h1><p class="m">Private companies and divisions, by relevance to HFC; dated public information for this period (press releases, trade press, filings).</p>{priv}
+<div class="pg">{logo}<h1>Key messages: listed companies · {e(label)}</h1>{exec_sum}<p class="foot"><b>Sources:</b> each company's report for the period.</p></div>
+<div class="pg">{logo}<h1>Other key competitors · {e(label)}</h1><p class="m">Private companies and divisions, by relevance to HFC.</p>{priv}
 {f'<p class="foot"><b>Notes:</b> {fy}</p>' if fy.strip() else ""}</div>
 </body></html>"""
 
