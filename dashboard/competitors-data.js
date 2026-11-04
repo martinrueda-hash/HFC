@@ -444,19 +444,57 @@ window.CW = {
     "org": -3.3,
     "mgnLbl": "EBITA margin",
     "mgn": 13.6,
-    "extra": [
-     {
-      "l": "EBITA",
-      "v": "105.7"
-     }
-    ],
     "src": [
      [
-      "Q1 2025 press release",
-      "https://aalberts-website.s3.eu-west-1.amazonaws.com/media/App/Models/Download/000/000/536/attachment/original/1Q-2025-press%20release.pdf"
+      "Q1 2025 press release (PDF)",
+      "reports/aalberts/Q1-2025_q1-2025-press-release.pdf"
      ]
     ],
-    "prof": 105.7
+    "prof": 105.7,
+    "revPy": 810.1,
+    "revChg": -3.9,
+    "orgPy": -5.1,
+    "profPy": 115.0,
+    "mgnPy": 14.2,
+    "seg": [
+     {
+      "n": "Building",
+      "rev": 408.5,
+      "revPy": 412.7,
+      "org": 1.7,
+      "orgPy": -8.8,
+      "prof": 54.0,
+      "profPy": 49.9,
+      "mgn": 13.2,
+      "mgnPy": 12.1
+     },
+     {
+      "n": "Industry",
+      "rev": 262.6,
+      "revPy": 276.1,
+      "org": -6.9,
+      "orgPy": -6.1,
+      "prof": 42.8,
+      "profPy": 50.4,
+      "mgn": 16.3,
+      "mgnPy": 18.2,
+      "note": "Automotive and machine building weak; aerospace, maritime, power and defence growing"
+     },
+     {
+      "n": "Semicon",
+      "rev": 111.6,
+      "revPy": 125.8,
+      "org": -11.3,
+      "orgPy": 12.6,
+      "prof": 11.1,
+      "profPy": 18.0,
+      "mgn": 10.0,
+      "mgnPy": 14.4,
+      "note": "Customer inventory adjustments"
+     }
+    ],
+    "segNote": "Building returned to growth (+1.7% organic) with margin +110 bps to 13.2%. Industry −6.9% (weak automotive, machine building, Germany and France) and semicon −11.3% (customer destocking) pulled margins down to 16.3% and 10.0%.",
+    "segLbl": "By reporting segment; margin = EBITA margin (before exceptionals)"
    },
    "Q2 2025": {
     "report": "H1 2025 results (6 months)",
@@ -465,20 +503,66 @@ window.CW = {
     "org": -3.2,
     "mgnLbl": "EBITA margin",
     "mgn": 13.5,
-    "extra": [
-     {
-      "l": "EBITA",
-      "v": "210"
-     }
-    ],
     "guide": "Full-year EBITA margin outlook cut to 13–14%; no improvement in organic growth expected in H2.",
     "src": [
      [
-      "H1 2025 press release",
-      "https://aalberts-website.s3.eu-west-1.amazonaws.com/media/App/Models/Download/000/000/555/attachment/original/1H2025.pdf"
+      "H1 2025 press release (PDF)",
+      "reports/aalberts/Q2-2025_h1-2025-press-release.pdf"
      ]
     ],
-    "prof": 210
+    "prof": 210,
+    "revPy": 1619,
+    "revChg": -3.8,
+    "orgPy": -3.9,
+    "profPy": 242,
+    "mgnPy": 15.0,
+    "seg": [
+     {
+      "n": "Building",
+      "rev": 800.7,
+      "revPy": 824.1,
+      "org": 1.4,
+      "orgPy": -5.9,
+      "prof": 103.4,
+      "profPy": 106.8,
+      "mgn": 12.9,
+      "mgnPy": 13.0
+     },
+     {
+      "n": "Industry",
+      "rev": 546.1,
+      "revPy": 548.7,
+      "org": -4.9,
+      "orgPy": -6.4,
+      "prof": 91.6,
+      "profPy": 102.4,
+      "mgn": 16.8,
+      "mgnPy": 18.7
+     },
+     {
+      "n": "Semicon",
+      "rev": 219.8,
+      "revPy": 254.0,
+      "org": -13.4,
+      "orgPy": 10.0,
+      "prof": 25.2,
+      "profPy": 36.6,
+      "mgn": 11.5,
+      "mgnPy": 14.4
+     }
+    ],
+    "segNote": "Building +1.4% organic with a stable 12.9% margin. Industry −4.9% and semicon −13.4% on trade-policy uncertainty; semicon EBITA −31%. Added value margin held at 63.3%.",
+    "segLbl": "By reporting segment; margin = EBITA margin (before exceptionals)",
+    "eps": {
+     "l": "EPS before amortisation",
+     "v": "EUR 1.38",
+     "c": "EUR 1.61 in H1 2024"
+    },
+    "cash": {
+     "l": "Free cash flow",
+     "v": "56",
+     "c": "48 in H1 2024"
+    }
    },
    "Q3 2025": {
     "report": "Q3 2025 trading update",
@@ -486,17 +570,11 @@ window.CW = {
     "org": -1.9,
     "mgnLbl": "EBITA margin",
     "mgn": 12.5,
-    "extra": [
-     {
-      "l": "EBITA",
-      "v": "96.3"
-     }
-    ],
     "note": "Margin remained under pressure, especially in the building segment.",
     "src": [
      [
-      "Q3 2025 press release",
-      "https://s3.eu-west-1.amazonaws.com/aalberts-website/media/App/Models/Download/000/000/569/attachment/original/Q3%202025.pdf"
+      "Q3 2025 press release (PDF)",
+      "reports/aalberts/Q3-2025_q3-2025-press-release.pdf"
      ]
     ],
     "prof": 96.3,
@@ -504,26 +582,47 @@ window.CW = {
      {
       "n": "Building",
       "rev": 389.4,
+      "revPy": 385.4,
       "org": 3.2,
+      "orgPy": -1.6,
       "prof": 42.0,
-      "mgn": 10.8
+      "profPy": 44.6,
+      "mgn": 10.8,
+      "mgnPy": 11.6,
+      "note": "Margin under pressure"
      },
      {
       "n": "Industry",
       "rev": 280.3,
+      "revPy": 260.5,
       "org": -1.1,
+      "orgPy": -8.3,
       "prof": 49.6,
-      "mgn": 17.7
+      "profPy": 46.2,
+      "mgn": 17.7,
+      "mgnPy": 17.7,
+      "note": "Additional footprint optimisation; aerospace, maritime, power and defence growing"
      },
      {
       "n": "Semicon",
       "rev": 107.8,
+      "revPy": 131.3,
       "org": -17.8,
+      "orgPy": 10.8,
       "prof": 14.2,
-      "mgn": 13.2
+      "profPy": 18.8,
+      "mgn": 13.2,
+      "mgnPy": 14.3,
+      "note": "Lower demand; long-term AI-driven fundamentals intact"
      }
     ],
-    "segNote": "Semicon (−17.8% organic) weighed on the quarter. Building grew 3.2% organically but its margin stayed low at 10.8%; Industry −1.1% organic at a 17.7% margin."
+    "segNote": "Building +3.2% organic but margin down to 10.8%; industry stable margin at 17.7% with acquisitions lifting revenue; semicon −17.8% organic.",
+    "revPy": 772.9,
+    "revChg": -0.1,
+    "orgPy": -2.1,
+    "profPy": 106.2,
+    "mgnPy": 13.7,
+    "segLbl": "By reporting segment; margin = EBITA margin (before exceptionals)"
    },
    "Q4 2025": {
     "report": "FY 2025 results (12 months)",
@@ -533,7 +632,6 @@ window.CW = {
     "org": -2.5,
     "mgnLbl": "EBITA margin",
     "mgn": 13.2,
-    "mgnChg": -180,
     "eps": {
      "l": "EPS before amortisation",
      "v": "EUR 2.61",
@@ -544,70 +642,117 @@ window.CW = {
      "v": "361",
      "c": "334 in 2024"
     },
-    "extra": [
-     {
-      "l": "EBITA",
-      "v": "410",
-      "c": "471 in 2024"
-     },
-     {
-      "l": "Dividend",
-      "v": "EUR 1.15"
-     },
-     {
-      "l": "Inventory",
-      "v": "−155",
-      "c": "DIO 82 days"
-     }
-    ],
     "guide": "Improvement in organic growth and EBITA margin expected in 2026. EUR 75m share buyback (27 Feb – 9 Oct 2026).",
     "src": [
      [
-      "FY 2025 press release",
-      "https://s3.eu-west-1.amazonaws.com/aalberts-website/media/App/Models/Download/000/000/574/attachment/original/FY2025%20(3).pdf"
-     ],
-     [
-      "FY 2025 presentation",
-      "https://s3.eu-west-1.amazonaws.com/aalberts-website/media/App/Models/Download/000/000/582/attachment/original/FY2025%20results%20-%20presentation.pdf"
+      "FY 2025 press release (PDF)",
+      "reports/aalberts/Q4-2025_fy-2025-press-release.pdf"
      ]
     ],
     "prof": 410,
     "profPy": 471,
     "revPy": 3149,
-    "orgPy": -3.4
+    "orgPy": -3.4,
+    "mgnPy": 15.0,
+    "seg": [
+     {
+      "n": "Building",
+      "rev": 1565.1,
+      "revPy": 1602.5,
+      "org": 1.3,
+      "orgPy": -3.0,
+      "prof": 183.5,
+      "profPy": 206.5,
+      "mgn": 11.7,
+      "mgnPy": 12.9
+     },
+     {
+      "n": "Industry",
+      "rev": 1085.6,
+      "revPy": 1060.9,
+      "org": -2.8,
+      "orgPy": -7.5,
+      "prof": 186.3,
+      "profPy": 197.2,
+      "mgn": 17.2,
+      "mgnPy": 18.6
+     },
+     {
+      "n": "Semicon",
+      "rev": 459.6,
+      "revPy": 501.3,
+      "org": -13.8,
+      "orgPy": 4.7,
+      "prof": 54.5,
+      "profPy": 71.4,
+      "mgn": 11.9,
+      "mgnPy": 14.2
+     }
+    ],
+    "segNote": "Building the only segment growing organically (+1.3%) but margin −120 bps to 11.7%. Industry −2.8% organic (revenue +2% with acquisitions), margin 17.2%. Semicon −13.8% organic, EBITA −24%, margin 11.9%.",
+    "segLbl": "By reporting segment; margin = EBITA margin (before exceptionals)"
    },
    "Q1 2026": {
     "report": "Q1 2026 trading update",
     "date": "2026-05-01",
-    "rev": 772,
+    "rev": 771.9,
     "org": 2.8,
     "mgnLbl": "EBITA margin",
     "mgn": 14.2,
-    "mgnChg": 60,
-    "extra": [
-     {
-      "l": "EBITA",
-      "v": "109.7",
-      "c": "105.7 in Q1 2025"
-     },
-     {
-      "l": "Buyback in Q1",
-      "v": "31.3",
-      "c": "994,341 shares"
-     }
-    ],
     "note": "Return to organic growth; positive organic growth and better EBITA margin in all three segments. Broen (Denmark) divested on 12 March 2026.",
     "guide": "Further improvement in organic growth and EBITA margin expected in 2026.",
     "src": [
      [
-      "Q1 2026 press release",
-      "https://s3.eu-west-1.amazonaws.com/aalberts-website/media/App/Models/Download/000/000/601/attachment/original/Q1%202026%20results.pdf"
+      "Q1 2026 press release (PDF)",
+      "reports/aalberts/Q1-2026_q1-2026-press-release.pdf"
      ]
     ],
     "prof": 109.7,
     "profPy": 105.7,
     "revPy": 778.3,
-    "orgPy": -3.3
+    "orgPy": -3.3,
+    "revChg": -0.8,
+    "mgnPy": 13.6,
+    "seg": [
+     {
+      "n": "Building",
+      "rev": 369.4,
+      "revPy": 408.5,
+      "org": 1.3,
+      "orgPy": 1.7,
+      "prof": 53.7,
+      "profPy": 54.0,
+      "mgn": 14.5,
+      "mgnPy": 13.2,
+      "note": "High organic growth in the USA; Europe weak (France, Germany); data-centre order book growing"
+     },
+     {
+      "n": "Industry",
+      "rev": 247.9,
+      "revPy": 262.6,
+      "org": 5.8,
+      "orgPy": -6.9,
+      "prof": 42.3,
+      "profPy": 42.8,
+      "mgn": 17.1,
+      "mgnPy": 16.3,
+      "note": "Business development and geographical expansion"
+     },
+     {
+      "n": "Semicon",
+      "rev": 159.0,
+      "revPy": 111.6,
+      "org": 2.2,
+      "orgPy": -11.3,
+      "prof": 21.1,
+      "profPy": 11.1,
+      "mgn": 13.3,
+      "mgnPy": 10.0,
+      "note": "Revenue +42% incl. acquisitions"
+     }
+    ],
+    "segNote": "Growth returned in all three segments: industry +5.8% organic, semicon +2.2% (revenue +42% with acquisitions, EBITA almost doubled), building +1.3% with margin +130 bps to 14.5% despite divestments (revenue −10%).",
+    "segLbl": "By reporting segment; margin = EBITA margin (before exceptionals)"
    },
    "Q2 2026": {
     "report": "H1 2026 results (6 months)",
@@ -617,29 +762,12 @@ window.CW = {
     "org": 5.0,
     "mgnLbl": "EBITA margin",
     "mgn": 14.4,
-    "mgnChg": 90,
-    "extra": [
-     {
-      "l": "EBITA",
-      "v": "225",
-      "c": "210 in H1 2025"
-     },
-     {
-      "l": "Portfolio effect",
-      "v": "+135 / −178",
-      "c": "acquisitions / divestments; FX −21"
-     }
-    ],
     "note": "All three segments improved. Positive end-market dynamics in data centres, aerospace, power generation, defence and semicon; stable automotive and residential building.",
     "guide": "Confident of a full year with improved organic growth and EBITA margin versus 2025.",
     "src": [
      [
-      "H1 2026 press release",
-      "https://s3.eu-west-1.amazonaws.com/aalberts-website/media/App/Models/Download/000/000/609/attachment/original/Aalberts%20press%20release%201H2026.pdf"
-     ],
-     [
-      "H1 2026 presentation",
-      "https://s3.eu-west-1.amazonaws.com/aalberts-website/media/App/Models/Download/000/000/610/attachment/original/Aalberts%20-%20first%20half-year%20results%202026%20presentation.pdf"
+      "H1 2026 press release (PDF)",
+      "reports/aalberts/Q2-2026_h1-2026-press-release.pdf"
      ]
     ],
     "prof": 225,
@@ -648,37 +776,52 @@ window.CW = {
     "seg": [
      {
       "n": "Building",
+      "rev": 743.0,
+      "revPy": 800.7,
       "org": 2.9,
+      "orgPy": 1.4,
+      "prof": 100.4,
+      "profPy": 103.4,
       "mgn": 13.5,
-      "mgnPy": 12.9,
-      "note": "Organic growth as quoted on the call (may refer to Q2)"
+      "mgnPy": 12.9
      },
      {
       "n": "Industry",
-      "rev": 489,
+      "rev": 489.1,
+      "revPy": 546.1,
+      "org": 6.4,
+      "orgPy": -4.9,
       "prof": 90.9,
-      "profPy": 91.8,
+      "profPy": 91.6,
       "mgn": 18.6,
       "mgnPy": 16.8
      },
      {
       "n": "Semicon",
-      "rev": 334,
+      "rev": 335.7,
+      "revPy": 219.8,
       "org": 9.2,
+      "orgPy": -13.4,
       "prof": 47.5,
-      "profPy": 25.3,
+      "profPy": 25.2,
       "mgn": 14.2,
       "mgnPy": 11.5
      }
     ],
-    "derived": [
-     "seg.Industry.rev",
-     "seg.Industry.profPy",
-     "seg.Semicon.rev",
-     "seg.Semicon.profPy"
-    ],
-    "segNote": "Semicon EBITA +88% with the margin up 270 bps to 14.2%; Q2 organic growth ~16% and a high order book. Industry margin +180 bps to 18.6% with EBITA stable after divestments. Building margin 13.5% (12.9%). Segment split from press coverage of the release; check the presentation.",
-    "orgPy": -3.2
+    "segNote": "All segments grew organically and improved margins. Semicon +9.2% organic (revenue +53% with acquisitions, EBITA +88%, margin 14.2%); industry +6.4% with margin +180 bps to 18.6%; building +2.9%, margin 13.5%. Divestments cut building and industry revenue by 7–10%.",
+    "orgPy": -3.2,
+    "mgnPy": 13.5,
+    "segLbl": "By reporting segment; margin = EBITA margin (before exceptionals)",
+    "eps": {
+     "l": "EPS before amortisation",
+     "v": "EUR 1.47",
+     "c": "EUR 1.38 in H1 2025"
+    },
+    "cash": {
+     "l": "Free cash flow",
+     "v": "89",
+     "c": "56 in H1 2025; capex 71 (100)"
+    }
    },
    "Q3 2026": {
     "report": "Q3 2026 trading update",
@@ -754,7 +897,8 @@ window.CW = {
     "profPy": 96.3,
     "revPy": 772.5,
     "segNote": "All three segments improved organic growth and EBITA margin. Semicon +34.1% organic (revenue nearly doubled, EBITA 31.2 vs 14.2, margin 15.5%) on accelerating AI-related demand. Building +9.3% organic and margin 12.1% (+130 bps), but revenue −2.2m after divestments. Industry +8.6% organic, margin 19.1% (+140 bps); revenue −42.0m from divestments.",
-    "orgPy": -1.9
+    "orgPy": -1.9,
+    "segLbl": "By reporting segment; margin = EBITA margin (before exceptionals)"
    }
   },
   "imi": {
