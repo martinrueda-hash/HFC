@@ -170,6 +170,10 @@ table.fin td.nt { font-size: 10.5px; color: var(--muted); text-align: left; whit
 .cell-na { color: var(--axis) !important; }
 .cell-sel { outline: 2px solid var(--red); outline-offset: -2px; }
 
+.pdf-link { font-size: 12px; font-weight: 700; color: #fff; background: var(--red); border-radius: 3px; padding: 7px 12px; text-decoration: none; white-space: nowrap; }
+.pdf-link:hover { filter: brightness(1.1); }
+#mgnChart { max-width: 900px; }
+
 /* Library */
 .lib-filters { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
 .tag { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 1px 7px; border-radius: 3px; border: 1px solid var(--rose); color: var(--ink-strong); background: var(--bg); }
@@ -194,7 +198,8 @@ table.fin td.nt { font-size: 10.5px; color: var(--muted); text-align: left; whit
 
   <nav class="controls" aria-label="Sections">
     <a href="#market">Market view</a>
-    <a href="#results">Results by quarter</a>
+    <a href="#overview">Quarterly overview</a>
+    <a href="#results">Company deep dive</a>
     <a href="#library">Report library</a>
     <span class="spacer"></span>
     <a class="back" href="index.html">Market intelligence dashboard ›</a>
@@ -238,28 +243,42 @@ table.fin td.nt { font-size: 10.5px; color: var(--muted); text-align: left; whit
     <p class="source" id="pxSource"></p>
   </section>
 
-  <!-- 2. Results -->
-  <section class="slide" id="results" aria-labelledby="resTitle">
+  <!-- 2. Quarterly overview -->
+  <section class="slide" id="overview" aria-labelledby="ovTitle">
     <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
-    <h2 class="stitle" id="resTitle"><b>Financials and key messages</b></h2>
-    <div class="filters" role="toolbar" aria-label="Results filters">
-      <div class="ctl">Company <div class="seg" id="coCtl"></div></div>
-      <div class="ctl">Quarter <div class="seg" id="qCtl"></div></div>
+    <h2 class="stitle" id="ovTitle"><b>Quarterly overview</b><span class="pipe">|</span>all companies</h2>
+    <div class="filters" role="toolbar" aria-label="Overview filter">
+      <div class="ctl">Quarter <div class="seg" id="qoCtl"></div></div>
+      <span class="spacer" style="flex:1"></span>
+      <a class="pdf-link" id="pdfLink" target="_blank" rel="noopener"></a>
     </div>
-    <div class="rep-line" id="repLine"></div>
-    <div id="resBody" style="display:grid;gap:16px"></div>
-
-    <span class="subhead" id="qualHead">Key messages</span>
-    <div class="qual" id="qual"></div>
-    <p class="source" id="qualSrc"></p>
-
     <span class="subhead" id="peerHead">Peer comparison</span>
     <div class="table-scroll"><table class="mi" id="peerTbl"></table></div>
     <p class="note" id="peerNote"></p>
 
     <span class="subhead">Organic growth by quarter</span>
     <div class="table-scroll"><table class="mi heat" id="heatTbl"></table></div>
-    <p class="note">Organic growth as each company defines it: Belimo = growth in local currencies, Emerson = underlying growth, GF 2026 = Flow Solutions. For half-year reporters Q2 = H1. FY 2025 = full-year results for every company. ≈ = derived from reported growth rates, not reported as such. Click a cell to open that report. <span id="heatFy"></span></p>
+    <p class="note">Organic growth as each company defines it: Belimo = growth in local currencies, Emerson = underlying growth, Pentair = core sales growth, GF = Flow Solutions. For half-year reporters Q2 = H1. FY 2025 = full-year results for every company. Click a row or a cell to open that company in the deep dive.</p>
+  </section>
+
+  <!-- 3. Company deep dive -->
+  <section class="slide" id="results" aria-labelledby="resTitle">
+    <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
+    <h2 class="stitle" id="resTitle"><b>Company deep dive</b><span class="pipe">|</span>financials, segments and key messages</h2>
+    <div class="filters" role="toolbar" aria-label="Deep dive filters">
+      <div class="ctl">Company <div class="seg" id="coCtl"></div></div>
+      <div class="ctl">Quarter <div class="seg" id="qCtl"></div></div>
+    </div>
+    <div class="rep-line" id="repLine"></div>
+    <div id="resBody" style="display:grid;gap:16px"></div>
+
+    <span class="subhead" id="mgnHead">Reported margin per quarter</span>
+    <div class="chart-box" id="mgnBox"><svg class="px" id="mgnChart" role="img" aria-label="Reported margin per quarter"></svg></div>
+    <p class="note" id="mgnNote"></p>
+
+    <span class="subhead" id="qualHead">Key messages</span>
+    <div class="qual" id="qual"></div>
+    <p class="source" id="qualSrc"></p>
   </section>
 
   <!-- 3. Library -->
@@ -485,9 +504,10 @@ function drawCal() {
 }
 
 /* ---------- 2. Results ---------- */
-let selCo = store.get("co", "imi"), selP = store.get("p", D.periods[D.periods.length - 1]);
+let selCo = store.get("co", "imi"), selP = store.get("p", D.periods[D.periods.length - 1]), selQ = store.get("q", D.periods[D.periods.length - 1]);
 if (!CO[selCo]) selCo = "imi";
 if (!D.periods.includes(selP)) selP = D.periods[D.periods.length - 1];
+if (!D.periods.includes(selQ)) selQ = D.periods[D.periods.length - 1];
 const res = (co, p) => (D.results[co] || {})[p];
 
 function drawFilters() {
@@ -549,7 +569,7 @@ function drawResults() {
     } else {
       let k = "";
       const mLbl = r.mgnLbl || defMgn(selCo);
-      k += kpi("Revenue", r.rev != null ? num(r.rev) + der(r, "rev") : "–", r.revChg != null ? `${pct(r.revChg)} reported${der(r, "revChg")}` : "", r.rev == null);
+      k += kpi("Revenue", r.rev != null ? num(r.rev) + der(r, "rev") : "–", r.revChg != null ? `${pct(r.revChg)} reported${der(r, "revChg")}` : r.rev != null && r.revPy ? `${pct((r.rev / r.revPy - 1) * 100)} reported` : "", r.rev == null);
       k += kpi(esc(r.orgLbl || "Organic growth"), r.org != null ? pct(r.org) : "–", "", r.org == null);
       k += kpi("Profitability: " + esc(mLbl), r.mgn != null ? r.mgn.toFixed(1) + "%" + der(r, "mgn") : "–", r.mgn == null ? "not disclosed in this report" : bps(r.mgnChg) ? bps(r.mgnChg) + " year on year" : "", r.mgn == null);
       if (r.eps) k += kpi(esc(r.eps.l), esc(r.eps.v) + der(r, "eps"), esc(r.eps.c || ""));
@@ -561,9 +581,39 @@ function drawResults() {
         (c.fyNote ? `<p class="note"><b>*</b> ${esc(c.fyNote)}</p>` : "") + `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived && r.derived.length ? " · ≈ derived from reported figures and growth rates, not reported as such" : ""}</p>`;
     }
   }
-  drawQual(); drawPeers(); drawHeat();
+  drawQual(); drawMargins();
 }
+function drawOverview() {
+  $("qoCtl").innerHTML = D.periods.map(p => `<button type="button" data-p="${p}" aria-pressed="${p === selQ}">${pl(p)}</button>`).join("");
+  $("pdfLink").href = REPO + "reports/summaries/" + selQ.replace(" ", "-") + "_summary.pdf";
+  $("pdfLink").textContent = "PDF summary, " + pl(selQ) + " ›";
+  drawPeers(); drawHeat();
+}
+$("qoCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; selQ = b.dataset.p; store.set("q", selQ); drawOverview(); });
+function openDeep(co, p) { selCo = co; selP = p; store.set("co", selCo); store.set("p", selP); drawResults(); $("results").scrollIntoView({ behavior: "smooth", block: "start" }); }
 
+function drawMargins() {
+  const c = CO[selCo];
+  const pts = D.periods.map(p => ({ p, r: res(selCo, p) })).map(o => ({ ...o, v: o.r && !o.r.pending && o.r.mgn != null ? o.r.mgn : null, l: o.r && o.r.mgnLbl }));
+  const vals = pts.filter(o => o.v != null);
+  $("mgnHead").textContent = `Reported margin per quarter: ${c.name}${c.fyNote ? "*" : ""}`;
+  const svg = $("mgnChart");
+  if (!vals.length) { svg.setAttribute("viewBox", "0 0 900 60"); svg.innerHTML = `<text x="0" y="30" font-size="12" fill="#8c8c8c">No margin reported for ${esc(c.name)} in this period range.</text>`; $("mgnNote").textContent = ""; return; }
+  const W = 900, H = 210, m = { l: 10, r: 10, t: 26, b: 44 }, n = pts.length, bw = (W - m.l - m.r) / n;
+  const hi = Math.ceil(Math.max(...vals.map(o => o.v)) / 5) * 5, y = v => m.t + (1 - v / hi) * (H - m.t - m.b);
+  const common = vals.map(o => o.l).sort((a, b) => vals.filter(o => o.l === b).length - vals.filter(o => o.l === a).length)[0];
+  let g = `<line x1="${m.l}" x2="${W - m.r}" y1="${y(0)}" y2="${y(0)}" stroke="#bdbdbd"/>`;
+  pts.forEach((o, i) => {
+    const x = m.l + i * bw + bw * 0.22, w = bw * 0.56, sel = o.p === selP;
+    g += `<text x="${x + w / 2}" y="${H - m.b + 16}" text-anchor="middle" font-size="11" fill="${sel ? "#ce0e2d" : "#505050"}" font-weight="${sel ? 700 : 500}">${pl(o.p)}</text>`;
+    if (o.v == null) { g += `<text x="${x + w / 2}" y="${y(0) - 6}" text-anchor="middle" font-size="10.5" fill="#bdbdbd">n/a</text>`; return; }
+    g += `<rect x="${x}" y="${y(o.v)}" width="${w}" height="${y(0) - y(o.v)}" rx="3" fill="${sel ? "#ce0e2d" : "#e49587"}"><title>${esc(o.l || "")}: ${o.v.toFixed(1)}%</title></rect><text x="${x + w / 2}" y="${y(o.v) - 6}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#191919">${o.v.toFixed(1)}%</text>`;
+    if (o.l && o.l !== common) g += `<text x="${x + w / 2}" y="${H - m.b + 30}" text-anchor="middle" font-size="9.5" fill="#8c8c8c">${esc(o.l.replace(/ margin.*$/i, "").replace("Organic operating", "organic op.").replace("Adj. operating", "adj. op."))}*</text>`;
+  });
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g;
+  const others = [...new Set(vals.filter(o => o.l !== common).map(o => o.l))];
+  $("mgnNote").innerHTML = `Measure: ${esc(common)}.` + (others.length ? ` Bars marked * use a different measure (${others.map(esc).join("; ")}).` : "") + " Half-year reporters show H1 in the Q2 slot and the full year in FY 2025; trading updates without a margin show n/a." + (c.fyNote ? ` <b>*</b> ${esc(c.fyNote)}` : "");
+}
 function drawQual() {
   const q = D.qual[selCo], c = CO[selCo];
   if (!q) { $("qual").innerHTML = ""; $("qualSrc").textContent = ""; return; }
@@ -576,27 +626,27 @@ function drawQual() {
 function fyNotes() { return D.companies.filter(c => c.fyNote).map(c => `<b>*</b> ${esc(c.fyNote)}`).join(" "); }
 function drawPeers() {
   $("peerNote").innerHTML = fyNotes();
-  $("peerHead").textContent = `Peer comparison, ${pl(selP)}`;
+  $("peerHead").textContent = `Peer comparison, ${pl(selQ)}`;
   $("peerTbl").innerHTML = `<thead><tr><th class="l">Company</th><th class="l">Report</th><th>Revenue<span class="u">m, own currency</span></th><th>Reported<span class="u">growth</span></th><th>Organic<span class="u">growth</span></th><th>Margin</th><th>Change<span class="u">y/y</span></th><th class="l">Margin measure</th></tr></thead><tbody>` +
     D.companies.map(c => {
-      const r = res(c.id, selP);
-      const cl = `click${c.self ? " self" : ""}${c.id === selCo ? " pick" : ""}`;
+      const r = res(c.id, selQ);
+      const cl = `click${c.self ? " self" : ""}`;
       if (!r || r.pending) return `<tr class="${cl}" data-co="${c.id}"><td class="l">${nm(c)}</td><td class="l muted">${r ? esc(r.report) : "no report"}</td><td>–</td><td>–</td><td>–</td><td>–</td><td></td><td class="l"></td></tr>`;
-      return `<tr class="${cl}" data-co="${c.id}"><td class="l">${nm(c)}</td><td class="l">${esc(r.report)}</td><td>${r.rev != null ? num(r.rev) + " " + c.ccy + der(r, "rev") : "–"}</td><td class="${cls(r.revChg)}">${pct(r.revChg)}</td><td class="${cls(r.org)}">${pct(r.org)}</td><td>${r.mgn != null ? r.mgn.toFixed(1) + "%" + der(r, "mgn") : "–"}</td><td>${bps(r.mgnChg)}</td><td class="l muted">${esc(r.mgnLbl || "")}</td></tr>`;
+      const rc = r.revChg != null ? r.revChg : r.rev != null && r.revPy ? (r.rev / r.revPy - 1) * 100 : null;
+      return `<tr class="${cl}" data-co="${c.id}"><td class="l">${nm(c)}</td><td class="l">${esc(r.report)}</td><td>${r.rev != null ? num(r.rev) + " " + c.ccy + der(r, "rev") : "–"}</td><td class="${cls(rc)}">${pct(rc)}</td><td class="${cls(r.org)}">${pct(r.org)}</td><td>${r.mgn != null ? r.mgn.toFixed(1) + "%" + der(r, "mgn") : "–"}</td><td>${bps(r.mgnChg != null ? r.mgnChg : r.mgn != null && r.mgnPy != null ? Math.round((r.mgn - r.mgnPy) * 100) : null)}</td><td class="l muted">${esc(r.mgnLbl || "")}</td></tr>`;
     }).join("") + "</tbody>";
 }
-$("peerTbl").addEventListener("click", e => { const tr = e.target.closest("tr[data-co]"); if (!tr) return; selCo = tr.dataset.co; store.set("co", selCo); drawResults(); });
+$("peerTbl").addEventListener("click", e => { const tr = e.target.closest("tr[data-co]"); if (!tr) return; openDeep(tr.dataset.co, selQ); });
 
 function drawHeat() {
-  $("heatFy").innerHTML = fyNotes();
   $("heatTbl").innerHTML = `<thead><tr><th class="l">Company</th>${D.periods.map(p => `<th>${pl(p)}</th>`).join("")}</tr></thead><tbody>` +
     D.companies.map(c => `<tr class="${c.self ? "self" : ""}"><td class="l">${nm(c)}</td>${D.periods.map(p => {
       const r = res(c.id, p), v = r && !r.pending ? r.org : null;
       const k = v == null ? "cell-na" : v > 0 ? "cell-pos" : v < 0 ? "cell-neg" : "";
-      return `<td class="h ${k}${c.id === selCo && p === selP ? " cell-sel" : ""}" data-co="${c.id}" data-p="${p}" style="cursor:pointer" title="${esc(r ? r.report : "no report")}">${v == null ? (r && r.pending ? "due" : "–") : pct(v)}</td>`;
+      return `<td class="h ${k}${p === selQ ? " cell-sel" : ""}" data-co="${c.id}" data-p="${p}" style="cursor:pointer" title="${esc(r ? r.report : "no report")}">${v == null ? (r && r.pending ? "due" : "–") : pct(v)}</td>`;
     }).join("")}</tr>`).join("") + "</tbody>";
 }
-$("heatTbl").addEventListener("click", e => { const td = e.target.closest("td[data-co]"); if (!td) return; selCo = td.dataset.co; selP = td.dataset.p; store.set("co", selCo); store.set("p", selP); drawResults(); });
+$("heatTbl").addEventListener("click", e => { const td = e.target.closest("td[data-co]"); if (!td) return; openDeep(td.dataset.co, td.dataset.p); });
 
 /* ---------- 3. Library ---------- */
 function drawLibFilters() {
@@ -618,7 +668,7 @@ function drawLib() {
 ["libCo", "libP", "libT"].forEach(id => $(id).addEventListener("change", drawLib));
 $("libQ").addEventListener("input", drawLib);
 
-drawPx(); drawNext(); drawCal(); drawResults(); drawLibFilters(); drawLib();
+drawPx(); drawNext(); drawCal(); drawOverview(); drawResults(); drawLibFilters(); drawLib();
 })();
 </script>
 </body>

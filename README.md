@@ -69,3 +69,5 @@ Notes on the figures (in `dashboard/competitors-data.js`):
 - Watts (Q3) and Emerson (fiscal Q4) report on 4 Nov 2026; Xylem and Ecolab Q4 dates are estimates until announced.
 
 Share prices and report copies come from the GitHub Action **Competitor data** (`.github/workflows/competitor-data.yml`), which runs `tools/fetch_competitor_data.py` on weekdays, when the data file changes, or on demand from the Actions tab. It fetches daily closes from Yahoo Finance into `dashboard/competitors-prices.js`, downloads any listed document not stored yet into `reports/`, and commits the result. You can also run it locally: `python3 tools/fetch_competitor_data.py`. To add a report, add a line to `docs` in `competitors-data.js`; to add a quarter, add an entry under `results` and the period to `periods`.
+
+PDF summaries per period (all companies) are in `reports/summaries/`, linked from the Quarterly overview. Rebuild them after changing `competitors-data.js` with `python3 tools/build_quarter_summaries.py` (needs Node.js with Playwright).

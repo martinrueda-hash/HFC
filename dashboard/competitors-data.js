@@ -4,7 +4,7 @@
 // For half-year reporters, Q2 shows the H1 report and Q4 the full-year report; Q1 and Q3 show trading updates.
 // "derived" lists figures calculated from reported growth rates and the current-year figure, not reported directly.
 window.CW = {
- "asOf": "2026-10-30",
+ "asOf": "2026-11-04",
  "periods": [
   "Q1 2025",
   "Q2 2025",
