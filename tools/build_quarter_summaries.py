@@ -77,6 +77,16 @@ def page(D, p):
         peer += (f'<tr class="{"self" if c.get("self") else ""}"><td>{name(c)}</td><td>{e(r["report"])}</td><td>{num(r.get("rev")) + " " + c["ccy"] if r.get("rev") is not None else "–"}</td>'
                  f'<td>{pct(rc)}</td><td>{pct(r.get("org"))}</td><td>{"–" if r.get("mgn") is None else f"{r["mgn"]:.1f}%"}</td>'
                  f'<td>{bps(r)}</td><td class="m">{e(r.get("mgnLbl", ""))}</td></tr>')
+    bars = ""
+    vals = [(c, D["results"].get(c["id"], {}).get(p)) for c in cos]
+    top = max([r["mgn"] for c, r in vals if r and not r.get("pending") and r.get("mgn") is not None] + [30])
+    for c, r in vals:
+        if not r or r.get("pending") or r.get("mgn") is None:
+            bars += f'<tr><td>{name(c)}</td><td class="m" colspan="2">{"not published yet" if r and r.get("pending") else "no margin disclosed" if r else "no report"}</td></tr>'
+            continue
+        w = r["mgn"] / top * 100
+        bars += (f'<tr><td>{name(c)}</td><td style="width:45%"><div style="background:{"#ce0e2d" if c.get("self") else "#e49587"};height:9pt;width:{w:.0f}%;border-radius:2pt"></div></td>'
+                 f'<td><b>{r["mgn"]:.1f}%</b> {bps(r)} <span class="m">{e(r.get("mgnLbl", ""))}</span></td></tr>')
     blocks = ""
     for c in cos:
         r = D["results"].get(c["id"], {}).get(p)
@@ -107,6 +117,7 @@ tr.sec td{{color:#ce0e2d;font-weight:bold;font-size:8pt;text-transform:uppercase
 </style></head><body>
 <h1>Competitor watch · {e(label)}</h1><p class="m">Aalberts and listed peers · figures in each company's reporting currency, millions unless stated · data as of {e(D["asOf"])}</p>
 <h2>Peer comparison</h2><table><tr><th>Company</th><th>Report</th><th>Revenue</th><th>Reported</th><th>Organic</th><th>Margin</th><th>Change</th><th>Margin measure</th></tr>{peer}</table>
+<h2>Reported margin comparison</h2><table>{bars}</table><p class="m">Each company's own margin measure; levels are not like-for-like.</p>
 <h2>Company detail</h2>{blocks}
 <p class="foot">{fy} For half-year reporters Q2 = H1; FY 2025 = full-year results. Organic growth as each company defines it (Belimo: local currencies; Emerson: underlying; Pentair: core).</p>
 </body></html>"""
