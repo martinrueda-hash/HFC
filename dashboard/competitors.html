@@ -687,7 +687,7 @@ function drawQual() {
   $("qualHead").textContent = `Key messages: ${c.name}${fm(c)}, ${q.title}`;
   const card = (n, t, items) => `<div class="qcard"><h3><i>${n}</i>${t}</h3><ul>${items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`;
   $("qual").innerHTML = card(1, "Overall performance and walk through the results", q.perf) + card(2, "M&amp;A moves", q.ma) + card(3, "Operations, innovation, partnerships and production", q.other);
-  $("qualSrc").innerHTML = (q.period !== selP ? `Based on the latest report (${esc(q.title)}), whatever quarter is selected above. ` : "") + "Source: " + q.src.map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ");
+  $("qualSrc").innerHTML = "Source: " + q.src.map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ");
 }
 
 function fyNotes() { return D.companies.filter(c => c.fyNote).map(c => `<b>${fm(c)}</b> ${esc(c.fyNote)}`).join(" "); }
