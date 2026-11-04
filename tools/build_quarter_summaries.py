@@ -4,6 +4,7 @@ Usage:  python3 tools/build_quarter_summaries.py
 Writes reports/summaries/<period>_summary.pdf, linked from the dashboard's "Quarterly overview".
 Needs Node.js with Playwright (Chromium) installed; rerun after changing competitors-data.js.
 """
+import base64
 import html
 import json
 import re
@@ -14,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA_JS = ROOT / "dashboard" / "competitors-data.js"
 OUT = ROOT / "reports" / "summaries"
+LOGO = ROOT / "dashboard" / "assets" / "aalberts-logo-red.png"
 
 
 def load():
@@ -211,11 +213,12 @@ def page(D, p, scale=1.0):
     priv += f'<p class="m">No dated public information found for this period: {", ".join(empty)}.</p>' if empty and rows else ""
     fy = " ".join(f"* {e(o['name'])}: {e(o['fyNote'])}" for o in D.get("others", []) if o.get("fyNote"))
     f = lambda pt: f"{pt * scale:.2f}pt"
+    logo = '<img class="logo" alt="Aalberts" src="data:image/png;base64,' + base64.b64encode(LOGO.read_bytes()).decode() + '">' 
     return f"""<!doctype html><html><head><meta charset="utf-8"><title>Competitor watch {e(label)}</title><style>
 body{{font:{f(8.6)}/1.32 Helvetica,Arial,sans-serif;color:#333;margin:0}} h1{{color:#ce0e2d;font-size:16pt;margin:0 0 1pt}} h2{{color:#ce0e2d;font-size:{f(11)};margin:{f(8)} 0 {f(3)}}}
 h3{{font-size:{f(9.6)};margin:{f(7)} 0 {f(2)};color:#ce0e2d}} table{{border-collapse:collapse;width:100%}} th{{text-align:left;color:#ce0e2d;border-bottom:1.2pt solid #ce0e2d;padding:{f(2)} 3pt;font-size:{f(7.8)}}}
 td{{padding:{f(1.6)} 3pt;border-bottom:.5pt solid #e4e4e4;vertical-align:top}} td.r{{text-align:right;white-space:nowrap}} tr.norep td{{background:#f3f3f3;color:#8c8c8c}} tr.due td.m{{font-style:italic}} tr.self td{{background:#fcf1f1;font-weight:bold}} .m{{color:#8c8c8c}} .nt{{color:#666;font-size:{f(7.2)}}}
-p{{margin:{f(2)} 0}} .pg{{break-after:page}} .pg:last-child{{break-after:auto}}
+p{{margin:{f(2)} 0}} .pg{{break-after:page;position:relative}} .logo{{position:absolute;top:0;right:0;height:26pt}} h1{{padding-right:60pt}} .pg:last-child{{break-after:auto}}
 table.grid td.g{{text-align:right;white-space:nowrap}} table.grid th{{text-align:right}} table.grid th:first-child,table.grid th:last-child{{text-align:left}}
 td.up{{background:#e5f1e8}} td.dn{{background:#fbe3e3}} td.na{{color:#b0b0b0}} td small{{color:#666;font-size:{f(6.6)}}}
 table.grid .sel{{border-left:1.5pt solid #ce0e2d;border-right:1.5pt solid #ce0e2d}} table.grid th.sel{{border-top:1.5pt solid #ce0e2d}} table.grid td.sel.last{{border-bottom:1.5pt solid #ce0e2d}}
@@ -223,11 +226,11 @@ table.grid tr.self td{{background:#fcf1f1}} table.grid tr.self td.up{{background
 ul.es{{margin:0;padding:0 0 0 11pt}} ul.es li{{margin:0 0 {f(2.2)}}} b.co{{color:#191919}}
 table.pv td{{font-size:{f(7.6)}}} .foot{{color:#666;font-size:{f(7)};margin-top:{f(6)}}}
 </style></head><body>
-<div class="pg"><h1>Competitor watch · {e(label)}</h1><p class="m">Aalberts and listed peers · figures in each company's reporting currency, millions unless stated · data as of {e(D["asOf"])}</p>
+<div class="pg">{logo}<h1>Competitor watch · {e(label)}</h1><p class="m">Aalberts and listed peers · figures in each company's reporting currency, millions unless stated · data as of {e(D["asOf"])}</p>
 <h2>Peer comparison: listed companies</h2><table><tr><th>Company</th><th>Report</th><th style="text-align:right">Revenue</th><th style="text-align:right">Reported</th><th style="text-align:right">Organic</th><th style="text-align:right">Margin</th><th style="text-align:right">Change</th><th>Margin measure</th></tr>{peer}</table>
 {grids}<p class="foot">{" ".join(f"{mark(c)} {e(c['fyNote'])}" for c in cos if c.get("fyNote"))} For half-year reporters Q2 = H1; FY 2025 = full-year results.</p></div>
-<div class="pg"><h1>Key messages: listed companies · {e(label)}</h1><p class="m">Executive summary of the main messages per company, in three clusters. Sources: each company's report for the period (see the dashboard's report library).</p>{exec_sum}</div>
-<div class="pg"><h1>Other key competitors · {e(label)}</h1><p class="m">Private companies and divisions, by relevance to HFC; dated public information for this period (press releases, trade press, filings).</p>{priv}
+<div class="pg">{logo}<h1>Key messages: listed companies · {e(label)}</h1><p class="m">Executive summary of the main messages per company, in three clusters. Sources: each company's report for the period (see the dashboard's report library).</p>{exec_sum}</div>
+<div class="pg">{logo}<h1>Other key competitors · {e(label)}</h1><p class="m">Private companies and divisions, by relevance to HFC; dated public information for this period (press releases, trade press, filings).</p>{priv}
 <p class="foot">{fy}</p></div>
 </body></html>"""
 
