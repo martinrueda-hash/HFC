@@ -110,7 +110,7 @@ def grid(D, p, kind):
     note = ("Organic growth as each company defines it. Green / red = growth / decline." if kind == "org" else
             "Each company's own margin measure (last column), so levels are not like-for-like. Change versus the same period last year in bps; green / red = margin up / down.")
     return (f'<div style="break-inside:avoid"><h2>{title}</h2><table class="grid"><tr><th>Company</th>{head}{"<th>Margin measure</th>" if kind == "mgn" else ""}</tr>{rows}</table>'
-            f'<p class="m"><b>Notes:</b> {note[0].lower() + note[1:]} The outlined column is {lab(p)}.</p></div>')
+            + (f'<p class="m"><b>Notes:</b> {note[0].lower() + note[1:]} The outlined column is {lab(p)}.</p>' if kind == "org" else "") + '</div>')
 
 
 def first_sentence(t, limit=300):

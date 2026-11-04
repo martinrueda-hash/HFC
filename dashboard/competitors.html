@@ -646,7 +646,7 @@ function drawMargins() {
       }).join("");
       return `<tr class="${c.self ? "self" : ""}"><td class="l">${nm(c)}</td>${cells}<td class="l muted" style="white-space:normal;min-width:160px">${lbls.map(esc).join("; ")}</td></tr>`;
     }).join("") + "</tbody>";
-  $("mgnNote").innerHTML = "<b>Notes:</b> each company's own reported margin measure (see last column), so levels are not like-for-like. Green / red = margin up / down versus the same period last year (change in bps under the value)." + (D.companies.some(c => c.fyNote) ? " " + fyNotes() : "");
+  $("mgnNote").innerHTML = D.companies.some(c => c.fyNote) ? "<b>Notes:</b> " + fyNotes() : "";
 }
 $("mgnTbl").addEventListener("click", e => { const td = e.target.closest("td[data-co]"); if (!td) return; openDeep(td.dataset.co, td.dataset.p); });
 /* ---------- Other key competitors ---------- */
