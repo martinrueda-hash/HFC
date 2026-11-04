@@ -6398,6 +6398,17 @@ window.CW = {
        "https://www.insideindianabusiness.com/articles/greenwood-tank-manufacturer-expanding-ohio-operations"
       ]
      ]
+    },
+    {
+     "q": "context",
+     "c": "other",
+     "t": "Investing >USD 10m to expand the Tiffin, Ohio campus (large-tank division, 'Wessels East') with a new pressure-vessel factory, >40 jobs and a second shift planned for 2026.",
+     "src": [
+      [
+       "Inside Indiana Business",
+       "https://www.insideindianabusiness.com/articles/greenwood-tank-manufacturer-expanding-ohio-operations"
+      ]
+     ]
     }
    ]
   },
@@ -6420,6 +6431,17 @@ window.CW = {
        "https://www.phcppros.com/articles/20376-always-moving-forward"
       ]
      ]
+    },
+    {
+     "q": "context",
+     "c": "other",
+     "t": "Zilmet USA's first US plant in South Carolina: USD 32.7m investment, 150,000 sq ft, ~50 jobs, making expansion tanks and heat exchangers for North America.",
+     "src": [
+      [
+       "ACR Journal",
+       "https://www.acrjournal.uk/international/zilmet-opens-first-us-plant"
+      ]
+     ]
     }
    ]
   },
@@ -6433,9 +6455,42 @@ window.CW = {
    "fte": "n/d",
    "items": [
     {
+     "q": "Q2 2025",
+     "c": "perf",
+     "t": "Genuit H1 2025: Climate Management Solutions (incl. ADEY) revenue GBP 87.6m (+7.9%), with strong performances from Nuaire and ADEY.",
+     "src": [
+      [
+       "Genuit H1 2025 results (PDF)",
+       "https://www.genuitgroup.com/wp-content/uploads/2025/08/Genuit-Group-plc-June-H1-25-Final.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "Genuit FY 2025: Climate Management Solutions revenue GBP 178.9m (+10.7%), underlying margin 13.6% (14.9%) on weaker underfloor heating; group revenue GBP 602.1m (+7.3%).",
+     "src": [
+      [
+       "Genuit FY 2025 results (PDF)",
+       "https://www.genuitgroup.com/wp-content/uploads/2026/03/RNS-Genuit-FY25-Final.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "perf",
+     "t": "Genuit H1 2026: group revenue GBP 307.8m (+3.4%, −4.8% like-for-like), underlying operating margin 14.3% (−70 bps); now reported as Water and Climate divisions, so ADEY is no longer shown separately.",
+     "src": [
+      [
+       "Genuit H1 2026 results (RNS)",
+       "https://data.fca.org.uk/artefacts/NSM/RNS/db9a1309-36aa-47a8-b994-4da8944d950b.html"
+      ]
+     ]
+    },
+    {
      "q": "context",
      "c": "other",
-     "t": "MagnaClean magnetic filters installed in >4 million UK homes; current range includes MagnaClean Professional 2XP. No dated 2025–2026 news found.",
+     "t": "MagnaClean magnetic filters installed in >4 million UK homes; range includes MagnaClean Professional 2XP and the MagnaClean HP filter for heat pumps and low-temperature systems.",
      "src": [
       [
        "Gradcracker / Genuit",
@@ -6499,6 +6554,17 @@ window.CW = {
       [
        "InstallerSHOW",
        "https://www.installershow.com/news/fernox-commercial-solutions-range"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "perf",
+     "t": "Element Solutions Q3 2026: Specialties segment (incl. Fernox) net sales USD 216m (+13%, +1% organic); group USD 995m (+52%, +13% organic), FY adj. EBITDA guide raised to ~USD 720m.",
+     "src": [
+      [
+       "Element Solutions Q3 2026 release (PDF)",
+       "https://s201.q4cdn.com/946831106/files/content_files/ESI-Q3-2026-Earnings-Release-vF.pdf"
       ]
      ]
     }
@@ -6584,6 +6650,21 @@ window.CW = {
    "fte": "n/d",
    "items": [
     {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "Parent Stiebel Eltron: 2025 sales ~EUR 954m (~50% export, ~5,000 employees), below the EUR 1bn+ reached in the 2022 heat-pump boom.",
+     "src": [
+      [
+       "Baulinks company profile",
+       "https://www.baulinks.de/firmen/stiebel-eltron"
+      ],
+      [
+       "Stiebel Eltron facts (PDF)",
+       "https://www.stiebel-eltron.de/content/dam/ste/de/privatkunden/de/unternehmen/presse/presse-daten-fakten.pdf"
+      ]
+     ]
+    },
+    {
      "q": "context",
      "c": "ma",
      "t": "Pump and valve groups, heating circuit and flat stations for OEMs and wholesalers; acquired by Stiebel Eltron (2022) and run as an independent brand. No 2025–2026 news found.",
@@ -6606,13 +6687,28 @@ window.CW = {
    "fte": "n/d",
    "items": [
     {
-     "q": "context",
+     "q": "Q3 2025",
      "c": "other",
-     "t": "NIBE added Cetetherm heat interface units (Pioneer HIU) and district-heating substations to its UK portfolio, combining heat-pump-led and heat-network offers.",
+     "t": "NIBE launched Cetetherm Pioneer heat interface units and district-heating substations in the UK (30 Jul 2025): smart control via myUplink, BESA and UK Reg4 approval, for heat-pump-led and central heat networks; new UK heat-networks team.",
      "src": [
+      [
+       "NIBE UK news",
+       "https://www.nibe.eu/en-gb/about-nibe/nibe-news/nibe-adds-heat-network-solutions-to-uk-portfolio-with-cetetherm-pioneer-hiu-and-substations"
+      ],
       [
        "Heating & Ventilating",
        "https://www.heatingandventilating.net/nibe-adds-heat-network-solutions-to-uk-portfolio-with-cetetherm-pioneer-hiu-and-substations"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "perf",
+     "t": "Parent NIBE Q2 2026: net sales SEK 10,849m (+7.6%), operating margin 11.4% (9.4%); Climate Solutions margin target kept at 13–15%.",
+     "src": [
+      [
+       "NIBE Q2 2026 CEO comment",
+       "https://www.placera.se/pressmeddelanden/nibe-industrier-ceo-and-md-gerteric-lindquist-comments-on-the-interim-report-2-2026-20260821"
       ]
      ]
     }
@@ -6631,6 +6727,50 @@ window.CW = {
    ],
    "fte": "n/d",
    "items": [
+    {
+     "q": "Q1 2025",
+     "c": "perf",
+     "t": "Q1 2025: order intake SEK 16.8bn (−3% organic), net sales SEK 16.5bn (+10%), adj. EBITA margin 17.7%.",
+     "src": [
+      [
+       "Alfa Laval interim report",
+       "https://www.finanzen.net/nachricht/aktien/alfa-laval-ab-publ-interim-report-1-january-31-march-2025-14431222"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "c": "perf",
+     "t": "Q2 2025: order intake SEK 16.3bn (−8% organic), net sales SEK 16.8bn (+2% organic), adj. EBITA margin 17.8% (16.7%).",
+     "src": [
+      [
+       "Alfa Laval interim report",
+       "https://www.placera.se/pressmeddelanden/alfa-laval-alfa-laval-ab-publ-interim-report-april-1-june-30-2025-20250722"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "c": "perf",
+     "t": "Q3 2025: order intake SEK 16.6bn (−10% organic), net sales SEK 17.2bn (+8% organic), adj. EBITA margin 18.4% (17.3%).",
+     "src": [
+      [
+       "Alfa Laval interim report",
+       "https://www.barchart.com/story/news/35721425/alfa-laval-ab-publ-interim-report-1-july-30-september-2025"
+      ]
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "FY 2025: order intake SEK 66.7bn (−6% organic), record net sales SEK 69.7bn (+8% organic), adj. EBITA margin 17.7% (16.6%); Q4 sales +11% organic, margin 16.9%.",
+     "src": [
+      [
+       "Alfa Laval interim report",
+       "https://www.inderes.fi/en/releases/alfa-laval-publ-fourth-quarter-and-full-year-2025"
+      ]
+     ]
+    },
     {
      "q": "Q1 2026",
      "c": "perf",
@@ -6792,6 +6932,28 @@ window.CW = {
      ]
     },
     {
+     "q": "Q3 2025",
+     "c": "perf",
+     "t": "Q3 2025: Products & Solutions (Honeywell Home) revenue USD 661m (+2%), gross margin 43.0% (+80 bps), operating income USD 140m; group revenue USD 1,864m, adj. EBITDA USD 229m (+21%).",
+     "src": [
+      [
+       "Resideo Q3 2025 release",
+       "https://investor.resideo.com/news/news-details/2025/Resideo-Announces-Third-Quarter-2025-Financial-Results/default.aspx"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "c": "other",
+     "t": "Launched ElitePRO premium smart thermostats; ADI / Products & Solutions separation planned for H2 2026.",
+     "src": [
+      [
+       "Resideo Q3 2025 release",
+       "https://investor.resideo.com/news/news-details/2025/Resideo-Announces-Third-Quarter-2025-Financial-Results/default.aspx"
+      ]
+     ]
+    },
+    {
      "q": "Q4 2025",
      "c": "perf",
      "t": "FY 2025: record revenue USD 7.5bn (+11%), adj. EBITDA USD 833m (+20%); GAAP net loss USD 527m after a USD 1.59bn payment to end the Honeywell indemnification agreement. 2026 guide: USD 7.8–7.9bn.",
@@ -6799,6 +6961,21 @@ window.CW = {
       [
        "MarketBeat Q4 2025 call",
        "https://www.marketbeat.com/instant-alerts/resideo-technologies-q4-earnings-call-highlights-2026-02-25/?.tsrc=rss"
+      ]
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "c": "perf",
+     "t": "Q1 2026: group revenue USD 1.91bn (+8%); Products & Solutions USD 706m (+9%), gross margin 41.8%, adj. EBITDA USD 177m (+12%); four extra sales days added ~3 pts.",
+     "src": [
+      [
+       "Resideo Q1 2026 release",
+       "https://www.barchart.com/story/news/1886084/resideo-announces-first-quarter-2026-financial-results"
+      ],
+      [
+       "Security Systems News",
+       "https://www.securitysystemsnews.com/article/resideo-q1-revenue-climbs-8-as-earnings-surge-adi-spin-off-nears"
       ]
      ]
     },
@@ -6836,6 +7013,61 @@ window.CW = {
    "fte": "n/d",
    "fyNote": "Siemens' fiscal year ends 30 September; quarters are shown as Siemens labels them.",
    "items": [
+    {
+     "q": "Q1 2025",
+     "c": "perf",
+     "t": "Fiscal Q1 2025 (Oct–Dec 2024): orders EUR 6.2bn (+6%), revenue EUR 5.3bn (+10%), profit EUR 891m (~16.9% margin, from ~18.3%).",
+     "src": [
+      [
+       "Siemens Q1 FY2025 release (PDF)",
+       "https://assets.new.siemens.com/siemens/assets/api/uuid:9edba210-5544-47e6-a880-53be62aaad4a/HQPR202502077093EN.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "c": "perf",
+     "t": "Fiscal Q2 2025: orders EUR 6.0bn (−2%), revenue EUR 5.7bn (+12%), profit EUR 1.38bn, margin 24.0% (16.6%) incl. a ~EUR 0.3bn gain from exiting a business.",
+     "src": [
+      [
+       "Siemens Q2 FY2025 release (PDF)",
+       "https://assets.new.siemens.com/siemens/assets/api/uuid:251f53a7-d44f-40f5-b768-4de665f92e0d/HQCOPR202505127162EN.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "c": "ma",
+     "t": "Exited the wiring accessories business, booking a ~EUR 0.3bn gain in Smart Infrastructure.",
+     "src": [
+      [
+       "Siemens Q2 FY2025 release (PDF)",
+       "https://assets.new.siemens.com/siemens/assets/api/uuid:251f53a7-d44f-40f5-b768-4de665f92e0d/HQCOPR202505127162EN.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "c": "perf",
+     "t": "Fiscal Q3 2025: orders EUR 5.7bn (−1% comparable), revenue EUR 5.7bn (+9% comparable), profit EUR 1.07bn, margin 18.8% (17.0%) on capacity utilisation and productivity.",
+     "src": [
+      [
+       "Siemens Q3 FY2025 earnings release (PDF)",
+       "https://assets.new.siemens.com/siemens/assets/api/uuid:4ca2342b-681a-4593-b631-df3c486cbb61/2025-q3-earnings-release-en.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "Fiscal Q4 2025: orders EUR 6.2bn (+5% comparable); profit and profitability up again year on year on higher revenue, utilisation and productivity.",
+     "src": [
+      [
+       "Siemens Q4 FY2025 release (PDF)",
+       "https://assets.new.siemens.com/siemens/assets/api/uuid:3948cdd4-35e0-4c1d-8412-9aed4097b3d0/HQCOPR202511117277EN.pdf"
+      ]
+     ]
+    },
     {
      "q": "Q1 2026",
      "c": "perf",
@@ -6933,13 +7165,25 @@ window.CW = {
    "rel": 3,
    "own": "Private (Giacomini family)",
    "hq": "San Maurizio d'Opaglio, Italy",
-   "rev": "~EUR 212m (database; year n/d, −5.5%)",
-   "revSrc": [
-    "Atoka",
-    "https://atoka.io/public/it/azienda/giacomini-spa/70035b52b989"
-   ],
+   "rev": "EUR 260m (2025, group)",
+   "revSrc": "https://it.giacomini.com/dam/jcr:010bf76a-87e5-4a26-992a-20c90b248426/COMPANY_PROFILE_IP0001_folder.pdf",
    "fte": "~724 (database)",
    "items": [
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "2025 consolidated group revenue EUR 260m (company profile), three production plants in Italy; Cerved data show EUR 212m (−5.5%) for the parent company in 2024.",
+     "src": [
+      [
+       "Giacomini company profile (PDF)",
+       "https://it.giacomini.com/dam/jcr:010bf76a-87e5-4a26-992a-20c90b248426/COMPANY_PROFILE_IP0001_folder.pdf"
+      ],
+      [
+       "Atoka / Cerved",
+       "https://atoka.io/public/it/azienda/giacomini-spa/70035b52b989"
+      ]
+     ]
+    },
     {
      "q": "context",
      "c": "perf",
@@ -7026,6 +7270,21 @@ window.CW = {
       [
        "Wilo 2025 results",
        "https://impeller.net/magazin/wilo-group-continues-to-grow-profitably-and-takes-next-strategic-step-in-its-corporate-development/"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "ma",
+     "t": "Acquired a majority stake in PreFab (Berns Group; industrial prefabrication of building-services modules), announced 22 Jun 2026, for joint modular solutions in data centres.",
+     "src": [
+      [
+       "impeller.net",
+       "https://impeller.net/magazin/solution-expertise-for-the-ai-age-wilo-acquires-majority-stake-in-prefab/"
+      ],
+      [
+       "Wilo news",
+       "https://wilo.com/ph/en/Local-Information/News-and-events/Current-News/Solution-expertise-for-the-AI-age-Wilo-acquires-majority-stake-in-PreFab_7424.html"
       ]
      ]
     },
