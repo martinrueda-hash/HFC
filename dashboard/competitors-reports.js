@@ -57,6 +57,10 @@ window.CW_REPORTS = {
    "bytes": 17108427,
    "path": "reports/gf/Q4-2025_annual-report-2025.pdf"
   },
+  "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/2025-mid-year-report/presentation-mid-year-report-2025-en.pdf": {
+   "bytes": 3857736,
+   "path": "reports/gf/Q2-2025_h1-2025-results-presentation.pdf"
+  },
   "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/mid-year-report-2026/en/mid-year-report-2026-presentation-en.pdf": {
    "bytes": 2234059,
    "path": "reports/gf/Q2-2026_h1-2026-results-presentation.pdf"
@@ -66,5 +70,5 @@ window.CW_REPORTS = {
    "path": "reports/aalberts/Q3-2026_q3-2026-press-release.pdf"
   }
  },
- "updated": "2026-11-03 15:57 UTC"
+ "updated": "2026-11-04 12:31 UTC"
 };
