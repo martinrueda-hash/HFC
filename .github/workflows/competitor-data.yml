@@ -9,6 +9,7 @@ on:
   push:
     paths:
       - "dashboard/competitors-data.js"
+      - "reports/**.pdf"   # PDFs uploaded through the library's upload button
       - "tools/fetch_competitor_data.py"
       - ".github/workflows/competitor-data.yml"
 
