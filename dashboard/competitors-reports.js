@@ -57,10 +57,6 @@ window.CW_REPORTS = {
    "bytes": 188750,
    "path": "reports/danfoss/Q4-2025_annual-report-2025-press-release.pdf"
   },
-  "https://www.danfoss.com/en/about-danfoss/company/financial-information/year-in-review/": {
-   "bytes": 33655075,
-   "path": "reports/danfoss/Q4-2025_annual-report-2025-extract-highlights-segments-financial-review-and-statements.pdf"
-  },
   "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/annual-report/annual-report-2025/en/annual-report-2025-full-version-en.pdf": {
    "bytes": 17108427,
    "path": "reports/gf/Q4-2025_annual-report-2025.pdf"

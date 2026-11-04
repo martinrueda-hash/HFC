@@ -62,6 +62,45 @@ def seg_rows(r):
     return rows
 
 
+def cell_val(r, kind):
+    """(value text, change text, css class) for one company-period in the growth or margin grid."""
+    if not r or r.get("pending"):
+        return ("due" if r else "–"), "", "na"
+    if kind == "org":
+        v = r.get("org")
+        return pct(v), "", ("" if v is None else "up" if v > 0 else "dn" if v < 0 else "")
+    v = r.get("mgn")
+    if v is None:
+        return "–", "", "na"
+    ch = bps(r)
+    return f"{v:.1f}%", ch, ("dn" if ch.startswith("−") else "up" if ch.startswith("+") else "")
+
+
+def grid(D, p, kind):
+    """Organic growth or reported margin by period for all companies, with the selected period outlined."""
+    ps = D["periods"]
+    lab = lambda q: e(D.get("periodLabels", {}).get(q, q))
+    head = "".join(f'<th class="{"sel" if q == p else ""}">{lab(q)}</th>' for q in ps)
+    rows = ""
+    cos = D["companies"]
+    for n, c in enumerate(cos):
+        last = " last" if n == len(cos) - 1 else ""
+        tds = ""
+        for q in ps:
+            v, ch, k = cell_val(D["results"].get(c["id"], {}).get(q), kind)
+            tds += f'<td class="g {k}{" sel" if q == p else ""}{last}">{v}{f"<br><small>{ch}</small>" if ch else ""}</td>'
+        meas = ""
+        if kind == "mgn":
+            labels = [D["results"].get(c["id"], {}).get(q, {}).get("mgnLbl") for q in ps]
+            meas = f'<td class="nt">{e(next((l for l in reversed(labels) if l), ""))}</td>'
+        rows += f'<tr class="{"self" if c.get("self") else ""}"><td>{name(c)}</td>{tds}{meas}</tr>'
+    title = "Organic growth by quarter" if kind == "org" else "Reported margin by quarter"
+    note = ("Organic growth as each company defines it. Green / red = growth / decline." if kind == "org" else
+            "Each company's own margin measure (last column), so levels are not like-for-like. Change versus the same period last year in bps; green / red = margin up / down.")
+    return (f'<div style="break-inside:avoid"><h2>{title}</h2><table class="grid"><tr><th>Company</th>{head}{"<th>Margin measure</th>" if kind == "mgn" else ""}</tr>{rows}</table>'
+            f'<p class="m">{note} The outlined column is {lab(p)}.</p></div>')
+
+
 def page(D, p):
     label = D.get("periodLabels", {}).get(p, p)
     cos = D["companies"]
@@ -77,16 +116,7 @@ def page(D, p):
         peer += (f'<tr class="{"self" if c.get("self") else ""}"><td>{name(c)}</td><td>{e(r["report"])}</td><td>{num(r.get("rev")) + " " + c["ccy"] if r.get("rev") is not None else "–"}</td>'
                  f'<td>{pct(rc)}</td><td>{pct(r.get("org"))}</td><td>{"–" if r.get("mgn") is None else f"{r["mgn"]:.1f}%"}</td>'
                  f'<td>{bps(r)}</td><td class="m">{e(r.get("mgnLbl", ""))}</td></tr>')
-    bars = ""
-    vals = [(c, D["results"].get(c["id"], {}).get(p)) for c in cos]
-    top = max([r["mgn"] for c, r in vals if r and not r.get("pending") and r.get("mgn") is not None] + [30])
-    for c, r in vals:
-        if not r or r.get("pending") or r.get("mgn") is None:
-            bars += f'<tr><td>{name(c)}</td><td class="m" colspan="2">{"not published yet" if r and r.get("pending") else "no margin disclosed" if r else "no report"}</td></tr>'
-            continue
-        w = r["mgn"] / top * 100
-        bars += (f'<tr><td>{name(c)}</td><td style="width:45%"><div style="background:{"#ce0e2d" if c.get("self") else "#e49587"};height:9pt;width:{w:.0f}%;border-radius:2pt"></div></td>'
-                 f'<td><b>{r["mgn"]:.1f}%</b> {bps(r)} <span class="m">{e(r.get("mgnLbl", ""))}</span></td></tr>')
+    grids = grid(D, p, "org") + grid(D, p, "mgn")
     blocks = ""
     for c in cos:
         r = D["results"].get(c["id"], {}).get(p)
@@ -126,10 +156,14 @@ td{{padding:2.5pt 4pt;border-bottom:.5pt solid #e4e4e4;vertical-align:top}} tr.s
 tr.sec td{{color:#ce0e2d;font-weight:bold;font-size:8pt;text-transform:uppercase;border-bottom:none;padding-top:6pt}} tr.sub td:first-child{{padding-left:12pt;font-style:italic}}
 .co{{break-inside:avoid;border-top:1.5pt solid #ce0e2d;padding-top:6pt;margin-top:10pt}} .kp{{margin:0 0 4pt}} .src{{color:#8c8c8c;font-size:8pt}} p{{margin:3pt 0}}
 .foot{{color:#666;font-size:8pt;margin-top:10pt}}
+table.grid td.g{{text-align:right;white-space:nowrap}} table.grid th{{text-align:right}} table.grid th:first-child,table.grid th:last-child{{text-align:left}}
+td.up{{background:#e5f1e8}} td.dn{{background:#fbe3e3}} td.na{{color:#b0b0b0}} td small{{color:#666;font-size:7pt}}
+table.grid .sel{{border-left:1.5pt solid #ce0e2d;border-right:1.5pt solid #ce0e2d}} table.grid th.sel{{border-top:1.5pt solid #ce0e2d}} table.grid td.sel.last{{border-bottom:1.5pt solid #ce0e2d}}
+table.grid tr.self td{{background:#fcf1f1}} table.grid tr.self td.up{{background:#d9ecdf}} table.grid tr.self td.dn{{background:#f7d5d5}}
 </style></head><body>
 <h1>Competitor watch · {e(label)}</h1><p class="m">Aalberts and listed peers · figures in each company's reporting currency, millions unless stated · data as of {e(D["asOf"])}</p>
 <h2>Peer comparison</h2><table><tr><th>Company</th><th>Report</th><th>Revenue</th><th>Reported</th><th>Organic</th><th>Margin</th><th>Change</th><th>Margin measure</th></tr>{peer}</table>
-<h2>Reported margin comparison</h2><table>{bars}</table><p class="m">Each company's own margin measure; levels are not like-for-like.</p>
+{grids}
 <h2>Company detail</h2>{blocks}
 <h2>Other key competitors (relevance to HFC 1–5)</h2>{others}
 <p class="foot">{fy} For half-year reporters Q2 = H1; FY 2025 = full-year results. Organic growth as each company defines it (Belimo: local currencies; Emerson: underlying; Pentair: core).</p>

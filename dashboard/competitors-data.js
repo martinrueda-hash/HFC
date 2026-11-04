@@ -4946,17 +4946,90 @@ window.CW = {
      "v": "734",
      "c": "467 in 2024; record"
     },
-    "segNote": "Organic +3% (H1 −3%, H2 +9%). Climate Solutions delivered a strong and resilient year (North America +26% organic on data centres); data-centre sales ~7% of group, almost doubling. Hydro Holding acquired for Power Solutions.",
+    "segNote": "Organic +3% (H1 −3%, H2 +9%); a weaker US dollar cut sales by ~3%. Climate Solutions, the segment closest to HFC, grew 9% organic to EUR 3.2bn at a 16.2% operational EBITA margin (North America +26% on data centres). Power Solutions +3%, Power Electronics and Drives −6%. Data-centre sales ~7% of group, almost doubling.",
     "guide": "FY 2026: sales EUR 9.1–10.6bn; operational EBITA margin 12.8–14.3% (raised in August to 14.6–15.6%).",
     "src": [
      [
-      "FY 2025 release",
-      "https://www.danfoss.com/en/about-danfoss/news/cf/financial-performance-strengthening-with-record-high-cash-flow/"
+      "Annual report 2025 extract (PDF)",
+      "reports/danfoss/Q4-2025_annual-report-2025-extract.pdf"
      ],
      [
-      "Cooling Post",
-      "https://www.coolingpost.com/world-news/danfoss-reports-record-high-cash-flow/"
+      "Annual report 2025 press release (PDF)",
+      "reports/danfoss/Q4-2025_annual-report-2025-press-release.pdf"
      ]
+    ],
+    "eps": {
+     "l": "Net profit",
+     "v": "446",
+     "c": "370 in 2024 (+21%)"
+    },
+    "extra": [
+     {
+      "l": "R&D",
+      "v": "503",
+      "c": "5.3% of sales"
+     },
+     {
+      "l": "Capex excl. M&A",
+      "v": "342",
+      "c": "3.6% of sales"
+     },
+     {
+      "l": "Net interest-bearing debt / EBITDA",
+      "v": "1.3x",
+      "c": "1.9x"
+     },
+     {
+      "l": "Employees",
+      "v": "39,353"
+     }
+    ],
+    "segLbl": "By segment",
+    "seg": [
+     {
+      "n": "Danfoss Power Solutions",
+      "rev": 4090,
+      "revPy": 4095,
+      "org": 3,
+      "mgn": 11.7,
+      "note": "Data centres offset the agriculture downturn; Hydro Holding (hoses and fittings) acquired Dec 2025"
+     },
+     {
+      "n": "Danfoss Climate Solutions",
+      "rev": 3232,
+      "revPy": 3044,
+      "org": 9,
+      "mgn": 16.2,
+      "note": "Heating, cooling, heat recovery; data centres and industrial decarbonisation; North America +26% organic"
+     },
+     {
+      "n": "Danfoss Power Electronics and Drives",
+      "rev": 2051,
+      "revPy": 2240,
+      "org": -6,
+      "mgn": 12.8,
+      "note": "Drives robust; softer power-semiconductor market; Automotive Electrification moved to discontinued operations"
+     }
+    ],
+    "geo": [
+     {
+      "n": "Europe",
+      "rev": 3731,
+      "revPy": 3852,
+      "note": "−2% growth; recovery less pronounced"
+     },
+     {
+      "n": "Americas",
+      "rev": 3454,
+      "revPy": 3491,
+      "note": "US EUR 2,754m; weaker US dollar cost ~3% of group sales"
+     },
+     {
+      "n": "Asia Pacific",
+      "rev": 2245,
+      "revPy": 2153,
+      "note": "China EUR 1,218m, +13% growth"
+     }
     ]
    },
    "Q2 2026": {
@@ -5837,10 +5910,10 @@ window.CW = {
    "co": "danfoss",
    "p": "Q4 2025",
    "type": "Annual report",
-   "title": "Annual report 2025 (extract: highlights, segments, financial review and statements)",
-   "url": "https://www.danfoss.com/en/about-danfoss/company/financial-information/year-in-review/",
-   "find": "annual[-_ ]?report[-_ ]?2025",
-   "pages": "1,3-5,8-13,32-39,127-139,154-155,206"
+   "title": "Annual report 2025 (extract, 34 of 206 pages)",
+   "url": "https://assets.danfoss.com/documents/latest/579092/AH553954278717en-000101.pdf",
+   "file": "reports/danfoss/Q4-2025_annual-report-2025-extract.pdf",
+   "bytes": 9167551
   },
   {
    "co": "danfoss",
@@ -6275,183 +6348,6 @@ window.CW = {
       [
        "iGrow News",
        "https://igrownews.com/grundfos-latest-news/"
-      ]
-     ]
-    }
-   ]
-  },
-  {
-   "id": "taco",
-   "name": "Taco Comfort Solutions",
-   "rel": 4,
-   "own": "Pentair (NYSE: PNR) since 1 Oct 2026; previously family-owned",
-   "hq": "Cranston, Rhode Island, US",
-   "rev": "~USD 560m (2026e, Pentair)",
-   "revSrc": [
-    "Pentair Q3 2026 presentation (PDF)",
-    "reports/pentair/Q3-2026_earnings-presentation.pdf"
-   ],
-   "fte": "n/d (estimates 350–1,000)",
-   "items": [
-    {
-     "q": "Q4 2025",
-     "c": "other",
-     "t": "Completed a 50,000 sq ft expansion at its Fall River, MA facility during 2025 and leased extra space.",
-     "src": [
-      [
-       "Yahoo Finance / Providence Journal",
-       "https://finance.yahoo.com/markets/stocks/articles/fall-river-hvac-manufacturer-taco-200314218.html"
-      ]
-     ]
-    },
-    {
-     "q": "Q3 2026",
-     "c": "ma",
-     "t": "Pentair agreed (28 Jul 2026) to acquire Taco Group Holdings for ~USD 1.4bn; closed 1 Oct 2026. Pentair cites hydronic and data-centre HVAC exposure (schools, hospitals, commercial buildings).",
-     "src": [
-      [
-       "Taco press release",
-       "https://www.tacocomfort.com/news/pentair-to-acquire-taco/"
-      ],
-      [
-       "Pentair Q3 2026 presentation (PDF)",
-       "reports/pentair/Q3-2026_earnings-presentation.pdf"
-      ]
-     ]
-    },
-    {
-     "q": "Q3 2026",
-     "c": "perf",
-     "t": "Taco expected 2026 sales of ~USD 560m (growth >10%), above Pentair's previous expectation; Pentair expects EPS accretion in 2027.",
-     "src": [
-      [
-       "Pentair Q3 2026 presentation (PDF)",
-       "reports/pentair/Q3-2026_earnings-presentation.pdf"
-      ]
-     ]
-    },
-    {
-     "q": "Q3 2026",
-     "c": "other",
-     "t": "Lubbock, Texas site earned two industry certifications (Aug 2026); new owner committed to keeping a major presence in Cranston.",
-     "src": [
-      [
-       "RI News Today",
-       "https://rinewstoday.com/taco-assures-mayor-continued-investment-in-cranston/"
-      ]
-     ]
-    }
-   ]
-  },
-  {
-   "id": "bg",
-   "name": "Bell & Gossett (Xylem)",
-   "rel": 4,
-   "own": "Xylem (NYSE: XYL), Applied Water segment",
-   "hq": "Morton Grove, Illinois, US",
-   "rev": "Applied Water segment USD 1,849m (2025)",
-   "revSrc": [
-    "Xylem Q4 2025 earnings package (PDF)",
-    "reports/xylem/Q4-2025_earnings-package.pdf"
-   ],
-   "fte": "n/d (part of Xylem)",
-   "items": [
-    {
-     "q": "Q1 2025",
-     "c": "perf",
-     "t": "Xylem Applied Water Q1 2025 (incl. Bell & Gossett): revenue USD 435m (+1% organic), adj. EBITDA margin 19.5% (+300 bps); orders USD 486m (+3%).",
-     "src": [
-      [
-       "Xylem Q1 2025 earnings package (PDF)",
-       "reports/xylem/Q1-2025_earnings-package.pdf"
-      ]
-     ]
-    },
-    {
-     "q": "Q2 2025",
-     "c": "perf",
-     "t": "Applied Water Q2 2025: revenue USD 483m (+5% organic), adj. EBITDA margin 21.7% (+420 bps); orders USD 488m (+4%).",
-     "src": [
-      [
-       "Xylem Q2 2025 earnings package (PDF)",
-       "reports/xylem/Q2-2025_earnings-package.pdf"
-      ]
-     ]
-    },
-    {
-     "q": "Q3 2025",
-     "c": "perf",
-     "t": "Applied Water Q3 2025: revenue USD 456m (+1% organic), adj. EBITDA margin 21.7% (+310 bps); orders flat at USD 445m.",
-     "src": [
-      [
-       "Xylem Q3 2025 earnings package (PDF)",
-       "reports/xylem/Q3-2025_earnings-package.pdf"
-      ]
-     ]
-    },
-    {
-     "q": "Q4 2025",
-     "c": "perf",
-     "t": "FY 2025 Applied Water (incl. Bell & Gossett): revenue USD 1,849m (+2% organic), adj. EBITDA margin 20.4% (+270 bps).",
-     "src": [
-      [
-       "Xylem Q4 2025 earnings package (PDF)",
-       "reports/xylem/Q4-2025_earnings-package.pdf"
-      ]
-     ]
-    },
-    {
-     "q": "Q1 2026",
-     "c": "other",
-     "t": "AHR Expo 2026: launched the e-80SCX pump with Hydrovar X drive (up to 4,000 rpm, sensorless control) and next-generation plate heat exchangers, with a data-centre cooling focus; BPX brazed plate heat exchanger at CMPX 2026.",
-     "src": [
-      [
-       "Xylem / B&G news",
-       "https://www.xylem.com/en-tw/resources/blog-posts/bell-gossett-industry-news/xylem-showcases-solutions/"
-      ]
-     ]
-    },
-    {
-     "q": "Q1 2026",
-     "c": "perf",
-     "t": "Applied Water Q1 2026: revenue USD 448m (0% organic), adj. EBITDA margin 19.6% (19.5%); orders USD 512m (+2%).",
-     "src": [
-      [
-       "Xylem Q1 2026 earnings package (PDF)",
-       "reports/xylem/Q1-2026_earnings-package.pdf"
-      ]
-     ]
-    },
-    {
-     "q": "Q2 2026",
-     "c": "perf",
-     "t": "Applied Water Q2 2026: revenue USD 501m (+3% organic), adj. EBITDA margin 21.2%; orders +9% on data-centre wins.",
-     "src": [
-      [
-       "Xylem Q2 2026 earnings package (PDF)",
-       "reports/xylem/Q2-2026_earnings-package.pdf"
-      ]
-     ]
-    },
-    {
-     "q": "Q3 2026",
-     "c": "perf",
-     "t": "Applied Water Q3 2026: revenue USD 489m (+9% organic), orders +15% on North American data centres and commercial buildings; adj. EBITDA margin 21.3% (21.7%).",
-     "src": [
-      [
-       "Xylem Q3 2026 earnings package (PDF)",
-       "reports/xylem/Q3-2026_earnings-package.pdf"
-      ]
-     ]
-    },
-    {
-     "q": "Q3 2026",
-     "c": "ma",
-     "t": "Xylem plans to divest AW International (Europe, MEA, APAC) and Specialty Flow Control; AW Americas (Bell & Gossett) joins the new Flow Solutions segment from 1 Jan 2027.",
-     "src": [
-      [
-       "Xylem Q3 2026 earnings package (PDF)",
-       "reports/xylem/Q3-2026_earnings-package.pdf"
       ]
      ]
     }
