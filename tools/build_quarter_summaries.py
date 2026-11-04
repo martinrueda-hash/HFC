@@ -158,7 +158,7 @@ def page(D, p, scale=1.0):
     for c in cos:
         r = D["results"].get(c["id"], {}).get(p)
         if not r or r.get("pending"):
-            peer += f'<tr class="norep"><td>{name(c)}</td><td class="m" colspan="7">{e(r["report"]) if r else "no report for this period"}</td></tr>'
+            peer += f'<tr class="{"due" if r else "norep"}"><td>{name(c)}</td><td class="m" colspan="7">{e(r["report"]) if r else "no report for this period"}</td></tr>'
             continue
         rc = r.get("revChg")
         if rc is None and r.get("rev") and r.get("revPy"):
@@ -214,7 +214,7 @@ def page(D, p, scale=1.0):
     return f"""<!doctype html><html><head><meta charset="utf-8"><title>Competitor watch {e(label)}</title><style>
 body{{font:{f(8.6)}/1.32 Helvetica,Arial,sans-serif;color:#333;margin:0}} h1{{color:#ce0e2d;font-size:16pt;margin:0 0 1pt}} h2{{color:#ce0e2d;font-size:{f(11)};margin:{f(8)} 0 {f(3)}}}
 h3{{font-size:{f(9.6)};margin:{f(7)} 0 {f(2)};color:#ce0e2d}} table{{border-collapse:collapse;width:100%}} th{{text-align:left;color:#ce0e2d;border-bottom:1.2pt solid #ce0e2d;padding:{f(2)} 3pt;font-size:{f(7.8)}}}
-td{{padding:{f(1.6)} 3pt;border-bottom:.5pt solid #e4e4e4;vertical-align:top}} td.r{{text-align:right;white-space:nowrap}} tr.norep td{{background:#f3f3f3;color:#8c8c8c}} tr.self td{{background:#fcf1f1;font-weight:bold}} .m{{color:#8c8c8c}} .nt{{color:#666;font-size:{f(7.2)}}}
+td{{padding:{f(1.6)} 3pt;border-bottom:.5pt solid #e4e4e4;vertical-align:top}} td.r{{text-align:right;white-space:nowrap}} tr.norep td{{background:#f3f3f3;color:#8c8c8c}} tr.due td.m{{font-style:italic}} tr.self td{{background:#fcf1f1;font-weight:bold}} .m{{color:#8c8c8c}} .nt{{color:#666;font-size:{f(7.2)}}}
 p{{margin:{f(2)} 0}} .pg{{break-after:page}} .pg:last-child{{break-after:auto}}
 table.grid td.g{{text-align:right;white-space:nowrap}} table.grid th{{text-align:right}} table.grid th:first-child,table.grid th:last-child{{text-align:left}}
 td.up{{background:#e5f1e8}} td.dn{{background:#fbe3e3}} td.na{{color:#b0b0b0}} td small{{color:#666;font-size:{f(6.6)}}}

@@ -177,6 +177,7 @@ table.heat tbody tr:last-child .col-sel { border-bottom: 2px solid var(--red); }
 .rel { color: var(--red); letter-spacing: 1px; font-size: 10px; margin-left: 4px; }
 /* peer table: companies without a report for the quarter */
 #peerTbl tr.norep td { background: #f3f3f3; color: var(--muted); }
+#peerTbl tr.due td.muted { font-style: italic; } /* report announced but not out yet: normal row */
 /* relevance filter: one row per level, trapezoid narrowing from very high to low */
 .rel-grid { display: grid; grid-template-columns: 34px 118px minmax(0, 1fr); gap: 6px 10px; align-items: center; flex: 1; min-width: 0; }
 .rel-tri { grid-column: 1; grid-row: 1 / span var(--rows); align-self: stretch; background: linear-gradient(var(--red), var(--salmon)); clip-path: polygon(0 0, 100% 0, 72% 100%, 28% 100%); min-height: 60px; }
@@ -495,7 +496,7 @@ function mark(type, cx, cy, r, st) {
   return `<circle cx="${cx}" cy="${cy}" r="${r}" ${st}/>`;
 }
 function drawCal() {
-  const start = Date.UTC(2026, 0, 1), end = Date.UTC(2027, 7, 1);
+  const start = Date.UTC(2026, 0, 1), end = Date.UTC(2027, 8, 1);
   const W = 1000, lw = 112, rh = 30, top = 24, rows = D.companies;
   const H = top + rows.length * rh + 8;
   const x = t => lw + (t - start) / (end - start) * (W - lw - 10);
@@ -698,7 +699,7 @@ function drawPeers() {
     D.companies.map(c => {
       const r = res(c.id, selQ);
       const cl = `click${c.self ? " self" : ""}`;
-      if (!r || r.pending) return `<tr class="${cl} norep" data-co="${c.id}"><td class="l">${nm(c)}</td><td class="l muted">${r ? esc(r.report) : "no report"}</td><td>–</td><td>–</td><td>–</td><td>–</td><td></td><td class="l"></td></tr>`;
+      if (!r || r.pending) return `<tr class="${cl}${r ? " due" : " norep"}" data-co="${c.id}"><td class="l">${nm(c)}</td><td class="l muted">${r ? esc(r.report) : "no report"}</td><td>–</td><td>–</td><td>–</td><td>–</td><td></td><td class="l"></td></tr>`;
       const rc = r.revChg != null ? r.revChg : r.rev != null && r.revPy ? (r.rev / r.revPy - 1) * 100 : null;
       return `<tr class="${cl}" data-co="${c.id}"><td class="l">${nm(c)}</td><td class="l">${esc(r.report)}</td><td>${r.rev != null ? num(r.rev) + " " + c.ccy + der(r, "rev") : "–"}</td><td class="${cls(rc)}">${pct(rc)}</td><td class="${cls(r.org)}">${pct(r.org)}</td><td>${r.mgn != null ? r.mgn.toFixed(1) + "%" + der(r, "mgn") : "–"}</td><td>${bps(r.mgnChg != null ? r.mgnChg : r.mgn != null && r.mgnPy != null ? Math.round((r.mgn - r.mgnPy) * 100) : null)}</td><td class="l muted">${esc(r.mgnLbl || "")}</td></tr>`;
     }).join("") + "</tbody>";

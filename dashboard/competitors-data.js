@@ -461,6 +461,26 @@ window.CW = {
    "date": "2027-08-19",
    "event": "H1 2027 results",
    "status": "estimated"
+  },
+  {
+   "co": "gf",
+   "date": "2026-02-25",
+   "event": "FY 2025 results and annual report"
+  },
+  {
+   "co": "gf",
+   "date": "2026-07-17",
+   "event": "H1 2026 results"
+  },
+  {
+   "co": "danfoss",
+   "date": "2026-03-03",
+   "event": "FY 2025 results and annual report"
+  },
+  {
+   "co": "danfoss",
+   "date": "2026-08-20",
+   "event": "H1 2026 results"
   }
  ],
  "results": {
@@ -4366,7 +4386,8 @@ window.CW = {
      }
     ],
     "segNote": "Flow Solutions +0.6% organic with comparable EBIT margin down to 10.0%; Industry & Infrastructure +1.9% and the Americas +3.5% offset Europe (more than −2%).",
-    "prof": 467
+    "prof": 467,
+    "date": "2026-02-25"
    },
    "Q2 2026": {
     "report": "H1 2026 results (6 months)",
@@ -4429,7 +4450,8 @@ window.CW = {
      ]
     ],
     "revPy": 2255,
-    "segNote": "Industry & Infrastructure revenue +9% with comparable EBITDA up to CHF 144m, though margin eased to 14.4%. Building +3.3% organic (−2% in CHF), margin 12.6% (12.5%). Group revenue −25% after the casting exit."
+    "segNote": "Industry & Infrastructure revenue +9% with comparable EBITDA up to CHF 144m, though margin eased to 14.4%. Building +3.3% organic (−2% in CHF), margin 12.6% (12.5%). Group revenue −25% after the casting exit.",
+    "date": "2026-07-17"
    }
   },
   "pentair": {
