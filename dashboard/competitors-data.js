@@ -6713,51 +6713,6 @@ window.CW = {
      ]
     }
    ]
-  },
-  {
-   "id": "vrf",
-   "name": "VRF / refrigerant-based & all-electric systems",
-   "rel": 2,
-   "own": "Technology theme (Daikin, Mitsubishi Electric, LG, Samsung, Carrier…)",
-   "hq": "–",
-   "rev": "Global VRF market ~USD 28bn (2026e)",
-   "revSrc": [
-    "Future Market Insights",
-    "https://www.futuremarketinsights.com/reports/variable-refrigerant-flow-vrf-systems-market"
-   ],
-   "fte": "–",
-   "items": [
-    {
-     "q": "Q4 2025",
-     "c": "perf",
-     "t": "European heat pump sales ~3 million units in 2025, up from ~2.2 million in 2024, still behind the REPowerEU pace; Daikin ~15.5% share of European air-to-water.",
-     "src": [
-      [
-       "Earth Energy Log",
-       "https://earthenergylog.com/articles/heat-pumps-europe-rollout-2026"
-      ],
-      [
-       "GM Insights",
-       "https://www.gminsights.com/industry-analysis/europe-air-to-water-heat-pump-market"
-      ]
-     ]
-    },
-    {
-     "q": "context",
-     "c": "other",
-     "t": "F-gas Regulation (EU) 2024/573 phase-down pushes natural refrigerants: Daikin launched R-290 heat pumps in Europe and builds locally (~EUR 300m plant in Łódź, Poland). VRF forecast to grow to ~USD 82bn by 2036 as codes tighten.",
-     "src": [
-      [
-       "Future Market Insights",
-       "https://www.futuremarketinsights.com/reports/variable-refrigerant-flow-vrf-systems-market"
-      ],
-      [
-       "Earth Energy Log",
-       "https://earthenergylog.com/articles/heat-pumps-europe-rollout-2026"
-      ]
-     ]
-    }
-   ]
   }
  ]
 };
