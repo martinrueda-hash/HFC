@@ -585,7 +585,8 @@ function drawResults() {
 }
 function drawOverview() {
   $("qoCtl").innerHTML = D.periods.map(p => `<button type="button" data-p="${p}" aria-pressed="${p === selQ}">${pl(p)}</button>`).join("");
-  $("pdfLink").href = REPO + "reports/summaries/" + selQ.replace(" ", "-") + "_summary.pdf";
+  // summaries sit in reports/summaries in the repository and next to the page when published
+  $("pdfLink").href = (REPO === "../" ? "../reports/" : "") + "summaries/" + selQ.replace(" ", "-") + "_summary.pdf";
   $("pdfLink").textContent = "PDF summary, " + pl(selQ) + " ›";
   drawPeers(); drawHeat();
 }
