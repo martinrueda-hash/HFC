@@ -106,7 +106,19 @@ def page(D, p):
                    + (f'<p><b>Segment growth:</b> {e(r.get("segNote") or r.get("note"))}</p>' if (r.get("segNote") or r.get("note")) else "")
                    + (f'<p><b>Outlook:</b> {e(r["guide"])}</p>' if r.get("guide") else "")
                    + f'<p class="src">Source: {" · ".join(e(s[0]) for s in r.get("src", []))}</p></div>')
+    CL = {"perf": "Performance", "ma": "M&A", "other": "Operations, innovation, partnerships, production"}
+    others, empty = "", []
+    for o in sorted(D.get("others", []), key=lambda x: (-x["rel"], x["name"])):
+        its = [i for i in o["items"] if i["q"] == p]
+        if not its:
+            empty.append(f'{e(o["name"])} ({o["rel"]})')
+            continue
+        lis = "".join(f'<li><b>{CL[i["c"]]}:</b> {e(i["t"])} <span class="src">[{" · ".join(e(s[0]) for s in i["src"])}]</span></li>' for i in sorted(its, key=lambda i: list(CL).index(i["c"])))
+        others += (f'<div class="co"><h3>{e(o["name"])}{"*" if o.get("fyNote") else ""} · relevance {o["rel"]}/5</h3>'
+                   f'<p class="kp m">{e(o["own"])} · revenue {e(o["rev"])} · FTEs {e(o["fte"])}</p><ul style="margin:2pt 0 0 12pt;padding:0">{lis}</ul></div>')
+    others += f'<p class="m">No dated public information found for this period: {", ".join(empty) or "–"}.</p>' if empty else ""
     fy = " ".join(f"* {e(c['fyNote'])}" for c in cos if c.get("fyNote"))
+    fy += " " + " ".join(f"* {e(o['name'])}: {e(o['fyNote'])}" for o in D.get("others", []) if o.get("fyNote"))
     return f"""<!doctype html><html><head><meta charset="utf-8"><title>Competitor watch {e(label)}</title><style>
 body{{font:9.5pt/1.4 Helvetica,Arial,sans-serif;color:#333;margin:0}} h1{{color:#ce0e2d;font-size:18pt;margin:0 0 2pt}} h2{{color:#ce0e2d;font-size:12pt;margin:14pt 0 4pt}}
 h3{{font-size:10.5pt;margin:0 0 3pt;color:#191919}} table{{border-collapse:collapse;width:100%}} th{{text-align:left;color:#ce0e2d;border-bottom:1.2pt solid #ce0e2d;padding:3pt 4pt;font-size:8.5pt}}
@@ -119,6 +131,7 @@ tr.sec td{{color:#ce0e2d;font-weight:bold;font-size:8pt;text-transform:uppercase
 <h2>Peer comparison</h2><table><tr><th>Company</th><th>Report</th><th>Revenue</th><th>Reported</th><th>Organic</th><th>Margin</th><th>Change</th><th>Margin measure</th></tr>{peer}</table>
 <h2>Reported margin comparison</h2><table>{bars}</table><p class="m">Each company's own margin measure; levels are not like-for-like.</p>
 <h2>Company detail</h2>{blocks}
+<h2>Other key competitors (relevance to HFC 1–5)</h2>{others}
 <p class="foot">{fy} For half-year reporters Q2 = H1; FY 2025 = full-year results. Organic growth as each company defines it (Belimo: local currencies; Emerson: underlying; Pentair: core).</p>
 </body></html>"""
 

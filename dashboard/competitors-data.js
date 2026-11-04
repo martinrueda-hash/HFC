@@ -5551,5 +5551,1213 @@ window.CW = {
  ],
  "periodLabels": {
   "Q4 2025": "FY 2025"
- }
+ },
+ "others": [
+  {
+   "id": "danfoss",
+   "name": "Danfoss",
+   "rel": 5,
+   "own": "Private (Danfoss family / Bitten & Mads Clausen Foundation)",
+   "hq": "Nordborg, Denmark",
+   "rev": "EUR 9.43bn (2025)",
+   "revSrc": [
+    "Danfoss FY 2025 results",
+    "https://www.danfoss.com/en/about-danfoss/news/cf/financial-performance-strengthening-with-record-high-cash-flow/"
+   ],
+   "fte": "~39,300 (H1 2026 report)",
+   "fteSrc": [
+    "Danfoss H1 2026 report",
+    "https://assets.danfoss.com/documents/latest/601268/AD571023657432en-000101.pdf"
+   ],
+   "items": [
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "FY 2025: sales EUR 9.43bn, organic +3% (H1 −3%, H2 +9%); operational EBITA EUR 1,213m, margin 12.9% (12.5%); record cash flow EUR 734m (+57%). Data-centre sales ~7% of group, almost doubling.",
+     "src": [
+      [
+       "Danfoss FY 2025 release",
+       "https://www.danfoss.com/en/about-danfoss/news/cf/financial-performance-strengthening-with-record-high-cash-flow/"
+      ],
+      [
+       "Cooling Post",
+       "https://www.coolingpost.com/world-news/danfoss-reports-record-high-cash-flow/"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "perf",
+     "t": "H1 2026: sales EUR 5,254m, organic +15%; operational EBITA EUR 802m (+44%), margin 15.3%. Climate Solutions (incl. heating/hydronic) EUR 1,803m (1,587m), organic +18%, margin 18.1% (15.8%) on data centres and heat pumps in buildings and industry.",
+     "src": [
+      [
+       "Danfoss H1 2026 report",
+       "https://assets.danfoss.com/documents/latest/601268/AD571023657432en-000101.pdf"
+      ],
+      [
+       "Megaproject",
+       "https://megaproject.com/news/HVAC/danfoss-reports-18-organic-growth-in-climate-solutions-in-h1-2026"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "perf",
+     "t": "Outlook raised: 2026 sales in the upper half of EUR 9.1–10.6bn; operational EBITA margin 14.6–15.6% (from 12.8–14.3%).",
+     "src": [
+      [
+       "Power Progress",
+       "https://www.powerprogress.com/news/danfoss-reports-strong-organic-growth-over-first-half-of-2026/8129450.article"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "ma",
+     "t": "Completed purchase of the remaining shares in Semikron Danfoss; agreed to acquire Alfagomma (hydraulic hoses, ~4,500 employees). Neither deal is heating-related.",
+     "src": [
+      [
+       "Refindustry",
+       "https://refindustry.com/news/danfoss-reports-18-organic-growth-in-climate-solutions-in-h1-2026/"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "reflex",
+   "name": "Reflex Winkelmann (reflexGroup)",
+   "rel": 5,
+   "own": "Private (Winkelmann Group, family-owned)",
+   "hq": "Ahlen, Germany",
+   "rev": "n/d (not published)",
+   "fte": ">2,100 (company)",
+   "fteSrc": [
+    "Reflex Winkelmann news",
+    "https://reflex-winkelmann.com/en/about-reflex/news"
+   ],
+   "items": [
+    {
+     "q": "Q2 2025",
+     "c": "ma",
+     "t": "Winkelmann Group sharpened its focus on building technology: sold Winkelmann Automotive Poland to AURELIUS (agreed June 2025) and Winkelmann Powertrain Mexico to Sanoh (~EUR 15m).",
+     "src": [
+      [
+       "MarketScreener",
+       "https://www.marketscreener.com/news/aurelius-equity-opportunities-se-co-kgaa-agreed-to-acquire-winkelmann-automotive-poland-spolka-z-ce7e58dbda81f623"
+      ],
+      [
+       "MergerLinks",
+       "https://app.mergerlinks.com/transactions/2025-06-06-winkelmann-powertrain-mexico"
+      ]
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "c": "ma",
+     "t": "Acquired Elbi S.p.A. (Italy; expansion vessels, heating/cooling/solar storage tanks) on 7 Nov 2025; terms undisclosed, Elbi keeps its structure and management. Strengthens Reflex in the European heating and cooling market.",
+     "src": [
+      [
+       "Reflex: Elbi acquisition",
+       "https://reflex-winkelmann.com/en/about-reflex/news/reflex-acquired-elbi"
+      ],
+      [
+       "Finance Community",
+       "https://financecommunity.it/ethica-group-con-elbi-nella-cessione-a-reflex-winkelmann/"
+      ]
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "c": "other",
+     "t": "From 1 Jan 2026 Winkelmann Building+Industry became reflexGroup, bringing Reflex, Elbi and Nema under one umbrella; Sinus products to be sold under the Reflex brand.",
+     "src": [
+      [
+       "reflexGroup announcement",
+       "https://reflex-winkelmann.com/en/about-reflex/news/wbi-becomes-reflexgroup"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "other",
+     "t": "Opened a new production site for heating and cooling storage tanks in Rimavská Sobota, Slovakia (17 Jun 2026), Winkelmann's largest single investment; workforce to grow by ~450 from 2026.",
+     "src": [
+      [
+       "Slovak Spectator",
+       "https://spectator.sme.sk/business/c/the-german-factory-bringing-heat-to-a-cold-jobs-market"
+      ],
+      [
+       "Reflex news",
+       "https://reflex-winkelmann.com/en/about-reflex/news"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "spirotech",
+   "name": "Spirotech",
+   "rel": 4,
+   "own": "Private (family-owned)",
+   "hq": "Helmond, Netherlands",
+   "rev": "n/d (not published)",
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "Q1 2026",
+     "c": "other",
+     "t": "Launched SpiroTrap HPF, a dirt separator designed to protect heat pumps (3 Feb 2026).",
+     "src": [
+      [
+       "Installatie & Bouw company index",
+       "https://installatieenbouw.nl/bedrijven/bedrijf/spirotech/"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "other",
+     "t": "Signed the construction contract for a new headquarters in Helmond (8 May 2026); construction Aug 2026 – Oct 2027, described as the basis for further growth.",
+     "src": [
+      [
+       "Spirotech news",
+       "https://www.spirotech.nl/over-ons/nieuws/nieuw-hoofdkantoor/"
+      ],
+      [
+       "Installatie.nl",
+       "https://www.installatie.nl/nieuws/spirotech-bouwt-nieuw-hoofdkantoor-in-helmond/"
+      ]
+     ]
+    },
+    {
+     "q": "context",
+     "c": "ma",
+     "t": "Acquired the pressurisation technology, know-how and services of Austrian EDER to broaden its system-water-quality range (date not confirmed).",
+     "src": [
+      [
+       "Heating & Ventilating",
+       "https://www.heatingandventilating.net/spirotech-acquires-austrian-firm-for-pressurisation-in-hvac-installations"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "caleffi",
+   "name": "Caleffi",
+   "rel": 5,
+   "own": "Private (Caleffi family)",
+   "hq": "Fontaneto d'Agogna, Italy",
+   "rev": "n/d (last published EUR 317m, 2017)",
+   "revSrc": [
+    "Caleffi company profile",
+    "https://www.caleffi.com/en-us/company/corporate"
+   ],
+   "fte": "~1,600; 13 plants in Italy (company)",
+   "fteSrc": [
+    "Caleffi corporate page",
+    "https://www.caleffi.com/en-us/company/corporate"
+   ],
+   "items": [
+    {
+     "q": "Q1 2026",
+     "c": "other",
+     "t": "Exhibited its hydronic range at AHR Expo 2026 (US), supporting North American growth.",
+     "src": [
+      [
+       "Impianti News",
+       "https://www.impiantinews.it/gt/speciale-innovazione/caleffi-la-ricerca-volta-allinnovazione/"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "other",
+     "t": "Logistics automation (SSI Schäfer) at Fontaneto d'Agogna and Gattico-Veruno: >7,000 catalogue codes and >40 million products made per year (case study, Apr 2026).",
+     "src": [
+      [
+       "Il Giornale della Logistica",
+       "https://ilgiornaledellalogistica.it/case-history/incas-ssi-schafer-per-caleffi-hydronic-solutions/"
+      ]
+     ]
+    },
+    {
+     "q": "context",
+     "c": "perf",
+     "t": "No 2025–2026 financials published; Caleffi S.p.A. listed in Milan is a different (home-textiles) company.",
+     "src": [
+      [
+       "Note",
+       "https://www.caleffi.com/en-us/company/corporate"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "oventrop",
+   "name": "Oventrop",
+   "rel": 4,
+   "own": "Private (family-owned)",
+   "hq": "Olsberg, Germany",
+   "rev": "~EUR 273m (Wikipedia; year n/d)",
+   "revSrc": [
+    "Wikipedia",
+    "https://de.wikipedia.org/wiki/Oventrop_(Unternehmen)"
+   ],
+   "fte": "~1,000 in Olsberg/Brilon; group ~1,355",
+   "fteSrc": [
+    "Oventrop company page",
+    "https://www.oventrop.com/de-DE/unternehmennews/%C3%BCberuns/dassindwir"
+   ],
+   "items": [
+    {
+     "q": "Q3 2025",
+     "c": "ma",
+     "t": "PitchBook records an Aug 2025 buyout of Oventrop Energy & Network (Haiger), with Oventrop and TMT as investors; role of Oventrop not confirmed.",
+     "src": [
+      [
+       "PitchBook",
+       "https://pitchbook.com/profiles/company/871680-79"
+      ]
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "Headcount ~532 per Revelio Labs (Dec 2025, −3.5% y/y), a narrower scope than the company's ~1,000 figure.",
+     "src": [
+      [
+       "Revelio Labs",
+       "https://www.reveliolabs.com/companies/oventrop/employees/"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "grundfos",
+   "name": "Grundfos",
+   "rel": 4,
+   "own": "Private (Poul Due Jensen Foundation)",
+   "hq": "Bjerringbro, Denmark",
+   "rev": "DKK 34.7bn / ~EUR 4.7bn (2025)",
+   "revSrc": [
+    "Grundfos Annual Report 2025",
+    "https://www.grundfos.com/media/reports/grundfos-annual-report-2025"
+   ],
+   "fte": "21,433 (end-2025)",
+   "fteSrc": [
+    "Grundfos Annual Report 2025",
+    "https://www.grundfos.com/content/dam/global/page-assets/about-us/annual-reports/Grundfos-Annual-Report-2025.pdf"
+   ],
+   "items": [
+    {
+     "q": "Q2 2025",
+     "c": "perf",
+     "t": "H1 2025: revenue DKK 17.2bn, EBIT before special items DKK 2.1bn.",
+     "src": [
+      [
+       "Grundfos H1 2025",
+       "https://www.grundfos.com/media/latest-news/grundfos-reports-half-year-result-continued-strong-sales-growth-and-strategic-progress"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "c": "ma",
+     "t": "Acquired Newterra (US water and wastewater treatment) from Frontenac (Aug 2025).",
+     "src": [
+      [
+       "GlobalData",
+       "https://www.globaldata.com/company-profile/grundfos-holding-as/"
+      ]
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "FY 2025: revenue DKK 34.7bn (+5.7%), EBIT before special items 10.6% of revenue; US sales +15%, strong data-centre demand.",
+     "src": [
+      [
+       "Grundfos FY 2025 release",
+       "https://www.grundfos.com/media/latest-news/grundfos-delivers-robust-2025-results-with-us-and-data-centres-a"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "perf",
+     "t": "H1 2026: sales +7.7% in local currency to DKK 17.9bn; US >+20%; return to strong growth in Southern and Central Europe; FY growth outlook raised to 7–8%.",
+     "src": [
+      [
+       "Grundfos H1 2026",
+       "https://www.grundfos.com/media/latest-news/grundfos-reports-strong-growth-in-first-half-of-2026"
+      ],
+      [
+       "Teleborsa",
+       "https://www.teleborsa.it/News/2026/08/19/grundfos-solida-semestrale-con-vendite-in-crescita-del-7-7percent-25.html"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "other",
+     "t": "Expanding its Texas plant; efficiency programmes at plants in Mexico and Hungary.",
+     "src": [
+      [
+       "Teleborsa",
+       "https://www.teleborsa.it/News/2026/08/19/grundfos-solida-semestrale-con-vendite-in-crescita-del-7-7percent-25.html"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "taco",
+   "name": "Taco Comfort Solutions",
+   "rel": 4,
+   "own": "Pentair (NYSE: PNR) since 1 Oct 2026; previously family-owned",
+   "hq": "Cranston, Rhode Island, US",
+   "rev": "~USD 560m (2026e, Pentair)",
+   "revSrc": [
+    "Pentair Q3 2026 presentation (PDF)",
+    "reports/pentair/Q3-2026_earnings-presentation.pdf"
+   ],
+   "fte": "n/d (estimates 350–1,000)",
+   "items": [
+    {
+     "q": "Q4 2025",
+     "c": "other",
+     "t": "Completed a 50,000 sq ft expansion at its Fall River, MA facility during 2025 and leased extra space.",
+     "src": [
+      [
+       "Yahoo Finance / Providence Journal",
+       "https://finance.yahoo.com/markets/stocks/articles/fall-river-hvac-manufacturer-taco-200314218.html"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "ma",
+     "t": "Pentair agreed (28 Jul 2026) to acquire Taco Group Holdings for ~USD 1.4bn; closed 1 Oct 2026. Pentair cites hydronic and data-centre HVAC exposure (schools, hospitals, commercial buildings).",
+     "src": [
+      [
+       "Taco press release",
+       "https://www.tacocomfort.com/news/pentair-to-acquire-taco/"
+      ],
+      [
+       "Pentair Q3 2026 presentation (PDF)",
+       "reports/pentair/Q3-2026_earnings-presentation.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "perf",
+     "t": "Taco expected 2026 sales of ~USD 560m (growth >10%), above Pentair's previous expectation; Pentair expects EPS accretion in 2027.",
+     "src": [
+      [
+       "Pentair Q3 2026 presentation (PDF)",
+       "reports/pentair/Q3-2026_earnings-presentation.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "other",
+     "t": "Lubbock, Texas site earned two industry certifications (Aug 2026); new owner committed to keeping a major presence in Cranston.",
+     "src": [
+      [
+       "RI News Today",
+       "https://rinewstoday.com/taco-assures-mayor-continued-investment-in-cranston/"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "bg",
+   "name": "Bell & Gossett (Xylem)",
+   "rel": 4,
+   "own": "Xylem (NYSE: XYL), Applied Water segment",
+   "hq": "Morton Grove, Illinois, US",
+   "rev": "Applied Water segment USD 1,849m (2025)",
+   "revSrc": [
+    "Xylem Q4 2025 earnings package (PDF)",
+    "reports/xylem/Q4-2025_earnings-package.pdf"
+   ],
+   "fte": "n/d (part of Xylem)",
+   "items": [
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "FY 2025 Applied Water (incl. Bell & Gossett): revenue USD 1,849m (+2% organic), adj. EBITDA margin 20.4% (+270 bps).",
+     "src": [
+      [
+       "Xylem Q4 2025 earnings package (PDF)",
+       "reports/xylem/Q4-2025_earnings-package.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "c": "other",
+     "t": "AHR Expo 2026: launched the e-80SCX pump with Hydrovar X drive (up to 4,000 rpm, sensorless control) and next-generation plate heat exchangers, with a data-centre cooling focus; BPX brazed plate heat exchanger at CMPX 2026.",
+     "src": [
+      [
+       "Xylem / B&G news",
+       "https://www.xylem.com/en-tw/resources/blog-posts/bell-gossett-industry-news/xylem-showcases-solutions/"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "perf",
+     "t": "Applied Water Q2 2026: revenue USD 501m (+3% organic), adj. EBITDA margin 21.2%; orders +9% on data-centre wins.",
+     "src": [
+      [
+       "Xylem Q2 2026 earnings package (PDF)",
+       "reports/xylem/Q2-2026_earnings-package.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "perf",
+     "t": "Applied Water Q3 2026: revenue USD 489m (+9% organic), orders +15% on North American data centres and commercial buildings.",
+     "src": [
+      [
+       "Xylem Q3 2026 earnings package (PDF)",
+       "reports/xylem/Q3-2026_earnings-package.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "ma",
+     "t": "Xylem plans to divest AW International (Europe, MEA, APAC) and Specialty Flow Control; AW Americas (Bell & Gossett) joins the new Flow Solutions segment from 1 Jan 2027.",
+     "src": [
+      [
+       "Xylem Q3 2026 earnings package (PDF)",
+       "reports/xylem/Q3-2026_earnings-package.pdf"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "wessels",
+   "name": "Wessels Company",
+   "rel": 3,
+   "own": "Private (NM Group Global)",
+   "hq": "Greenwood, Indiana, US",
+   "rev": "n/d",
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "Q2 2025",
+     "c": "other",
+     "t": "Announced a new factory in Tiffin, Ohio for oversized tanks, citing data-centre demand (Apr 2025).",
+     "src": [
+      [
+       "13abc",
+       "https://www.13abc.com/2025/04/30/new-factory-specialized-tanks-planned-tiffin-data-centers-driving-demand/"
+      ],
+      [
+       "Inside Indiana Business",
+       "https://www.insideindianabusiness.com/articles/greenwood-tank-manufacturer-expanding-ohio-operations"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "zilmet",
+   "name": "Zilmet",
+   "rel": 3,
+   "own": "Private",
+   "hq": "Limena (Padova), Italy",
+   "rev": "n/d",
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "Q2 2025",
+     "c": "other",
+     "t": "Zilmet USA building a highly automated expansion-tank plant in Georgetown, South Carolina, targeted to open by end of Q2 2025.",
+     "src": [
+      [
+       "PHC News",
+       "https://www.phcppros.com/articles/20376-always-moving-forward"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "adey",
+   "name": "ADEY",
+   "rel": 3,
+   "own": "Genuit Group (LSE: GEN)",
+   "hq": "Stonehouse, Gloucestershire, UK",
+   "rev": "n/d (not split out by Genuit)",
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "context",
+     "c": "other",
+     "t": "MagnaClean magnetic filters installed in >4 million UK homes; current range includes MagnaClean Professional 2XP. No dated 2025–2026 news found.",
+     "src": [
+      [
+       "Gradcracker / Genuit",
+       "https://www.gradcracker.com/hub/804/genuit-group/additional-content/4730/adey"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "fernox",
+   "name": "Fernox",
+   "rel": 3,
+   "own": "Element Solutions (NYSE: ESI)",
+   "hq": "Woking, UK",
+   "rev": "n/d",
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "Q1 2025",
+     "c": "other",
+     "t": "Exhibited at ISH 2025, Frankfurt (Mar 2025).",
+     "src": [
+      [
+       "Fernox news",
+       "https://fernox.com/2025/02/21/"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "c": "other",
+     "t": "Charel Marais became General Manager on 1 Apr 2025, succeeding Ernie McDonald.",
+     "src": [
+      [
+       "Fernox news",
+       "https://fernox.com/news-press"
+      ]
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "c": "other",
+     "t": "Exhibited at MCE 2026 Milan and CMPX 2026 (Mar 2026); launched a Renewables Product Selector for heat-pump water treatment.",
+     "src": [
+      [
+       "Heating & Ventilating",
+       "https://www.heatingandventilating.net/fernox-to-exhibit-at-mostra-convegno-expocomfort-2026-1"
+      ],
+      [
+       "MODBS",
+       "https://modbs.co.uk/news/fullstory.php/aid/20603/Fernox_launches_new_Product_Selector_tool_for_its_expanding_renewables_range.html"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "other",
+     "t": "Launched an enhanced commercial water-treatment range, shown at InstallerSHOW 2026 (Jun 2026).",
+     "src": [
+      [
+       "InstallerSHOW",
+       "https://www.installershow.com/news/fernox-commercial-solutions-range"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pewo",
+   "name": "PEWO Energietechnik",
+   "rel": 3,
+   "own": "Viessmann Group subsidiary",
+   "hq": "Elsterheide, Germany",
+   "rev": "n/d",
+   "fte": "51–200 (database estimate)",
+   "fteSrc": [
+    "Implisense",
+    "https://implisense.com/en/companies/pewo-energietechnik-gmbh-elsterheide-ot-neuwiese-DERHO1LXYY80"
+   ],
+   "items": [
+    {
+     "q": "context",
+     "c": "ma",
+     "t": "District-heating transfer stations; majority stake in MB-Brassen Fernwärmetechnik (2021). No 2025–2026 news found.",
+     "src": [
+      [
+       "CB Insights",
+       "https://www.cbinsights.com/investor/pewo-energietechnik"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "esbe",
+   "name": "ESBE",
+   "rel": 3,
+   "own": "Private",
+   "hq": "Reftele, Sweden",
+   "rev": "n/d",
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "Q1 2025",
+     "c": "other",
+     "t": "Set up a UK subsidiary.",
+     "src": [
+      [
+       "ESBE news",
+       "https://www.esbe.eu/gb/en/news"
+      ]
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "c": "other",
+     "t": "Updated Flexi circulation units (new insulation, adjustable bracket; Feb 2026), new GxF200 and VTN200 valves plus a circulation-unit selector tool (Mar 2026); named Entrepreneur of the Year in Gislaved.",
+     "src": [
+      [
+       "ESBE news",
+       "https://www.esbe.eu/group/news"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "other",
+     "t": "Invested in a transfer machine for lead-free brass, bringing more production back to Sweden (Jun 2026); named one of Sweden's best-managed companies (May 2026).",
+     "src": [
+      [
+       "ESBE news",
+       "https://www.esbe.eu/group/news"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "paw",
+   "name": "PAW",
+   "rel": 3,
+   "own": "Stiebel Eltron (acquisition announced 2022)",
+   "hq": "Hameln, Germany",
+   "rev": "n/d",
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "context",
+     "c": "ma",
+     "t": "Pump and valve groups, heating circuit and flat stations for OEMs and wholesalers; acquired by Stiebel Eltron (2022) and run as an independent brand. No 2025–2026 news found.",
+     "src": [
+      [
+       "Stiebel Eltron press release (PDF)",
+       "https://www.stiebel-eltron.de/content/dam/ste/de/de/Presse/220222_paw/220201_PAW_final.pdf"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cetetherm",
+   "name": "Cetetherm",
+   "rel": 3,
+   "own": "NIBE Group",
+   "hq": "Ronneby, Sweden",
+   "rev": "n/d",
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "context",
+     "c": "other",
+     "t": "NIBE added Cetetherm heat interface units (Pioneer HIU) and district-heating substations to its UK portfolio, combining heat-pump-led and heat-network offers.",
+     "src": [
+      [
+       "Heating & Ventilating",
+       "https://www.heatingandventilating.net/nibe-adds-heat-network-solutions-to-uk-portfolio-with-cetetherm-pioneer-hiu-and-substations"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "alfalaval",
+   "name": "Alfa Laval",
+   "rel": 2,
+   "own": "Listed (Nasdaq Stockholm: ALFA)",
+   "hq": "Lund, Sweden",
+   "rev": "SEK 52.6bn (9M 2026)",
+   "revSrc": [
+    "Alfa Laval Q3 2026 report",
+    "https://www.alfalaval.com/media/news/investors/2026/alfa-laval-ab-publ-interim-report-1-july-30-september-2026/"
+   ],
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "Q1 2026",
+     "c": "perf",
+     "t": "Q1 2026: order intake SEK 17.6bn (+6% organic), net sales SEK 15.9bn (+2% organic), adj. EBITA margin 18.1%.",
+     "src": [
+      [
+       "Alfa Laval Q1 2026 report",
+       "https://www.alfalaval.com/media/news/investors/2026/alfa-laval-ab-publ-interim-report-1-january-31-march-2026/"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "perf",
+     "t": "Q2 2026: order intake SEK 22.2bn (+29% organic), net sales SEK 18.1bn, adj. EBITA margin 17.0% (17.8%).",
+     "src": [
+      [
+       "Alfa Laval Q2 2026 report",
+       "https://www.alfalaval.com/media/news/investors/2026/alfa-laval-ab-publ-interim-report-1-april-30-june-2026/"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "perf",
+     "t": "Q3 2026: record order intake SEK 23.2bn (+33% organic), net sales SEK 18.6bn (~+6% organic), adj. EBITA margin 18.1% (18.4%); data-centre orders ~SEK 2bn in the quarter.",
+     "src": [
+      [
+       "Alfa Laval Q3 2026 report",
+       "https://www.alfalaval.com/media/news/investors/2026/alfa-laval-ab-publ-interim-report-1-july-30-september-2026/"
+      ],
+      [
+       "Investing.com",
+       "https://www.investing.com/news/transcripts/earnings-call-transcript-alfa-laval-posts-record-q3-2026-orders-shares-rise-145-93CH-4974612"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "armstrong",
+   "name": "Armstrong Fluid Technology",
+   "rel": 3,
+   "own": "Private (Armstrong family)",
+   "hq": "Toronto, Canada",
+   "rev": "n/d",
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "Q1 2026",
+     "c": "other",
+     "t": "Launched the Systems Envelope Fluid Management Station (SE-FMS) (20 Jan 2026); appointed a Global Director of Offering Management and an MD for APAC & India.",
+     "src": [
+      [
+       "Armstrong press release (PDF)",
+       "https://armstrongfluidtechnology.com/~/media/documents/press-releases/pr-2026-01-09.pdf"
+      ],
+      [
+       "Megaproject",
+       "https://www.megaproject.com/news/plumbing/armstrong-fluid-technology-launches-systems-envelope-fluid-management-station"
+      ]
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "c": "perf",
+     "t": "Appointed Danilo Elez as CEO (30 Mar 2026) to lead the next phase of growth; also named a new global head for data centres.",
+     "src": [
+      [
+       "Armstrong press release (PDF)",
+       "https://armstrongfluidtechnology.com/~/media/documents/press-releases/pr-2026-03-31.pdf"
+      ],
+      [
+       "Supply House Times",
+       "https://www.supplyht.com/articles/107142-armstrong-fluid-technology-appoints-danilo-elez-as-ceo"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "other",
+     "t": "Showcased HVAC and intelligent fluid-flow solutions at BEX Asia, Singapore (Sep 2026).",
+     "src": [
+      [
+       "Trade Arabia",
+       "https://www.tradearabia.com/tag/Armstrong-Fluid-Technology"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "victaulic",
+   "name": "Victaulic",
+   "rel": 2,
+   "own": "Private",
+   "hq": "Easton, Pennsylvania, US",
+   "rev": "~USD 5.1bn (2026, IBISWorld estimate)",
+   "revSrc": [
+    "IBISWorld",
+    "https://www.ibisworld.com/united-states/supplieriq/victaulic-company/423099/"
+   ],
+   "fte": "n/d",
+   "items": [
+    {
+     "q": "Q2 2026",
+     "c": "other",
+     "t": "Marked 100 years since its first mechanical pipe-joining patent (4 Apr 2026); 309,000 sq ft distribution centre in Halfway, Maryland due to open in H1 2026.",
+     "src": [
+      [
+       "ACR News",
+       "https://www.acr-news.com/victaulic-celebrates-100-years-of-innovation"
+      ],
+      [
+       "Modern Distribution Management",
+       "https://www.mdm.com/news/top-distributor-sectors/industrial-pvf/pipe-joining-supplier-victaulic-adding-dc-in-maryland/"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "ma",
+     "t": "Acquired Arumani to expand European modular construction and mechanical assemblies (Aug 2026); Core Pipe Products reported as acquired (Sep 2026, unconfirmed).",
+     "src": [
+      [
+       "finanznachrichten.de",
+       "https://www.finanznachrichten.de/nachrichten-2026-08/69225009-victaulic-expands-european-modular-construction-capabilities-with-acquisition-of-arumani-008.htm"
+      ],
+      [
+       "Signalbase",
+       "https://www.trysignalbase.com/news/acquisitions/core-pipe-products-acquired-by-victaulic-acquisition"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "resideo",
+   "name": "Resideo (Honeywell Home)",
+   "rel": 2,
+   "own": "Listed (NYSE: REZI)",
+   "hq": "Scottsdale, Arizona, US",
+   "rev": "USD 7.5bn (2025, incl. ADI)",
+   "revSrc": [
+    "Resideo Q4 2025",
+    "https://quartr.com/events/resideo-technologies-inc-rezi-q4-2025_ofDN0sWM"
+   ],
+   "fte": "~14,600 (data aggregator)",
+   "items": [
+    {
+     "q": "Q1 2025",
+     "c": "perf",
+     "t": "Products & Solutions (Honeywell Home) Q1 2025 revenue USD 649m (+5%).",
+     "src": [
+      [
+       "Resideo Q1 2025 release",
+       "https://investor.resideo.com/news/news-details/2025/Resideo-Announces-First-Quarter-2025-Financial-Results-Reaffirms-2025-Outlook/default.aspx"
+      ]
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "FY 2025: record revenue USD 7.5bn (+11%), adj. EBITDA USD 833m (+20%); GAAP net loss USD 527m after a USD 1.59bn payment to end the Honeywell indemnification agreement. 2026 guide: USD 7.8–7.9bn.",
+     "src": [
+      [
+       "MarketBeat Q4 2025 call",
+       "https://www.marketbeat.com/instant-alerts/resideo-technologies-q4-earnings-call-highlights-2026-02-25/?.tsrc=rss"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "perf",
+     "t": "Q2 2026: revenue ~USD 1.98bn (+2%), Products & Solutions +4%; input-cost pressure (memory, metals, PCBs) expected to peak in Q3.",
+     "src": [
+      [
+       "GuruFocus",
+       "https://www.gurufocus.com/news/9039264/resideo-technologies-inc-rezi-q2-2026-earnings-call-highlights-record-revenue-and-ebitda-amid-strategic-transformation"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "ma",
+     "t": "Completed the separation of ADI (distribution) on 3 Aug 2026; standalone Q3 guide USD 705–730m revenue; Q3 results due 10 Nov 2026.",
+     "src": [
+      [
+       "MarketBeat",
+       "https://www.marketbeat.com/instant-alerts/upcoming-resideo-technologies-rezi-set-to-announce-earnings-on-tuesday-2026-11-03/"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "siemens",
+   "name": "Siemens Smart Infrastructure",
+   "rel": 3,
+   "own": "Listed (Siemens AG), segment",
+   "hq": "Zug, Switzerland",
+   "rev": "~EUR 23bn run-rate (FY 2026 quarters)",
+   "fte": "n/d",
+   "fyNote": "Siemens' fiscal year ends 30 September; quarters are shown as Siemens labels them (Q1 = October–December).",
+   "items": [
+    {
+     "q": "Q1 2026",
+     "c": "perf",
+     "t": "Fiscal Q1 2026 (Oct–Dec 2025): record orders EUR 7.2bn, revenue EUR 5.5bn, profit EUR 1.05bn (19.0% margin).",
+     "src": [
+      [
+       "Siemens Q1 FY2026 release (PDF)",
+       "https://assets.ctfassets.net/17si5cpawjzf/1liUz1NDLySSAIx9eMEu9D/26247a6526b6e3e9e2a4cf3e3549363e/2026-q1-earnings-release-en.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "perf",
+     "t": "Fiscal Q2 2026: revenue ~EUR 5.9bn, profit EUR 1.1bn (18.6%); record data-centre orders EUR 1.9bn; H1 data-centre revenue +45% to EUR 1.8bn.",
+     "src": [
+      [
+       "TED Magazine",
+       "https://tedmag.com/siemens-releases-q2-fy-2026-earnings-results/"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "perf",
+     "t": "Fiscal Q3 2026: orders EUR 8.0bn (+42%, record), revenue EUR 6.4bn (+13% comparable), profit EUR 1.3bn (20.0%); backlog EUR 23.7bn; FY 2026 outlook raised to +10–11% revenue, 18.5–19.5% margin.",
+     "src": [
+      [
+       "Siemens Q3 FY2026 release (PDF)",
+       "https://assets.new.siemens.com/siemens/assets/api/uuid:a659b574-caac-4ea1-a94f-a9d624fe0b7f/2026-q3-earnings-release-en.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "context",
+     "c": "other",
+     "t": "Investing EUR 300m in Germany to expand electrification and electrical-products capacity.",
+     "src": [
+      [
+       "Siemens press release",
+       "https://press.siemens.com/global/en/pressrelease/siemens-invest-eu300-million-germany-build-electrical-backbone-tomorrows-industries"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "frese",
+   "name": "Frese",
+   "rel": 3,
+   "own": "Vexve (Finland) since Feb 2025",
+   "hq": "Slagelse, Denmark",
+   "rev": "n/d (Vexve group ~EUR 200m combined)",
+   "revSrc": [
+    "Vexve",
+    "https://vexve.com/en/articles/vexve-has-completed-the-acquisition-of-frese-a-s"
+   ],
+   "fte": "~250 (at acquisition)",
+   "fteSrc": [
+    "Vexve",
+    "https://vexve.com/en/articles/vexve-has-completed-the-acquisition-of-frese-a-s"
+   ],
+   "items": [
+    {
+     "q": "Q1 2025",
+     "c": "ma",
+     "t": "Vexve completed the acquisition of Frese from the founding family (3 Feb 2025), creating a ~EUR 200m hydronic-network valve group.",
+     "src": [
+      [
+       "Vexve",
+       "https://vexve.com/en/articles/vexve-has-completed-the-acquisition-of-frese-a-s"
+      ],
+      [
+       "Valve World",
+       "https://valve-world.net/?p=254199"
+      ]
+     ]
+    },
+    {
+     "q": "context",
+     "c": "other",
+     "t": "Rebranded under Vexve with a modernised Frese identity; dynamic balancing and PICV range continues.",
+     "src": [
+      [
+       "Vexve",
+       "https://www.vexve.com/en/articles/strengthening-vexve-brand-with-frese"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "giacomini",
+   "name": "Giacomini",
+   "rel": 3,
+   "own": "Private (Giacomini family)",
+   "hq": "San Maurizio d'Opaglio, Italy",
+   "rev": "~EUR 212m (database; year n/d, −5.5%)",
+   "revSrc": [
+    "Atoka",
+    "https://atoka.io/public/it/azienda/giacomini-spa/70035b52b989"
+   ],
+   "fte": "~724 (database)",
+   "items": [
+    {
+     "q": "context",
+     "c": "perf",
+     "t": "Unions reported internal tensions within the ownership; the mayor of San Maurizio d'Opaglio commented publicly (date not stated). No 2025–2026 financials found.",
+     "src": [
+      [
+       "NewsNovara (PDF)",
+       "https://www.newsnovara.it/fileadmin/archivio/newsnovara/comunicato_stampa_sindaco_ronchi.pdf"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "herz",
+   "name": "HERZ Armaturen",
+   "rel": 3,
+   "own": "Private; moving to the non-profit HERZ foundation",
+   "hq": "Vienna, Austria",
+   "rev": "n/d",
+   "fte": "~3,100 (group)",
+   "fteSrc": [
+    "HERZ",
+    "https://herz-armaturen.at/news/130-years-of-herz/"
+   ],
+   "items": [
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "2025 review: weak Austria (red tape, weak economy, changed boiler rules) hit valves and boilers, with fierce price competition; better internationally, e.g. Indonesia (data centres) and Thailand.",
+     "src": [
+      [
+       "HERZ: That was 2025",
+       "https://herz-armaturen.at/news/our-heart-beats-globally-br-that-was-2025/"
+      ]
+     ]
+    },
+    {
+     "q": "context",
+     "c": "ma",
+     "t": "The non-profit HERZ foundation is to become owner of the group after sale talks (incl. Chinese bidders) did not proceed.",
+     "src": [
+      [
+       "MeinBezirk",
+       "https://www.meinbezirk.at/oberwart/c-wirtschaft/gemeinnuetzige-herz-stiftung-als-zukuenftiger-konzern-eigentuemer_a7542089"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "wilo",
+   "name": "Wilo",
+   "rel": 3,
+   "own": "Private (Wilo-Foundation)",
+   "hq": "Dortmund, Germany",
+   "rev": "EUR 1,918.7m (2025)",
+   "revSrc": [
+    "Wilo 2025 results",
+    "https://wilo.com/id/en/About-Wilo-Indonesia/Current-News/Wilo-Group-continues-to-grow-profitably-and-takes-next-strategic-step-in-its-corporate-development_3392.html"
+   ],
+   "fte": "~9,000 (2025)",
+   "fteSrc": [
+    "Wilo Annual Report 2025",
+    "https://wilo-group.com/en/Company/Annual-and-sustainability-report/"
+   ],
+   "items": [
+    {
+     "q": "Q1 2025",
+     "c": "other",
+     "t": "Expanded its Dubai plant to double production capacity (Mar 2025).",
+     "src": [
+      [
+       "ME Construction News",
+       "https://meconstructionnews.com/topics/wilo"
+      ]
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "FY 2025: sales EUR 1,918.7m (+4.5% currency-adjusted), EBITDA EUR 212m (+39%), margin 11.1%; net income EUR 65m; free cash flow EUR 66.4m (+80%); regional 'region-for-region' organisation.",
+     "src": [
+      [
+       "Wilo 2025 results",
+       "https://impeller.net/magazin/wilo-group-continues-to-grow-profitably-and-takes-next-strategic-step-in-its-corporate-development/"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "other",
+     "t": "Established Wilo Japan (Aug 2026), targeting data centres.",
+     "src": [
+      [
+       "MONOist",
+       "https://monoist.itmedia.co.jp/mn/spv/2609/01/news017.html"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "vrf",
+   "name": "VRF / refrigerant-based & all-electric systems",
+   "rel": 2,
+   "own": "Technology theme (Daikin, Mitsubishi Electric, LG, Samsung, Carrier…)",
+   "hq": "–",
+   "rev": "Global VRF market ~USD 28bn (2026e)",
+   "revSrc": [
+    "Future Market Insights",
+    "https://www.futuremarketinsights.com/reports/variable-refrigerant-flow-vrf-systems-market"
+   ],
+   "fte": "–",
+   "items": [
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "European heat pump sales ~3 million units in 2025, up from ~2.2 million in 2024, still behind the REPowerEU pace; Daikin ~15.5% share of European air-to-water.",
+     "src": [
+      [
+       "Earth Energy Log",
+       "https://earthenergylog.com/articles/heat-pumps-europe-rollout-2026"
+      ],
+      [
+       "GM Insights",
+       "https://www.gminsights.com/industry-analysis/europe-air-to-water-heat-pump-market"
+      ]
+     ]
+    },
+    {
+     "q": "context",
+     "c": "other",
+     "t": "F-gas Regulation (EU) 2024/573 phase-down pushes natural refrigerants: Daikin launched R-290 heat pumps in Europe and builds locally (~EUR 300m plant in Łódź, Poland). VRF forecast to grow to ~USD 82bn by 2036 as codes tighten.",
+     "src": [
+      [
+       "Future Market Insights",
+       "https://www.futuremarketinsights.com/reports/variable-refrigerant-flow-vrf-systems-market"
+      ],
+      [
+       "Earth Energy Log",
+       "https://earthenergylog.com/articles/heat-pumps-europe-rollout-2026"
+      ]
+     ]
+    }
+   ]
+  }
+ ]
 };

@@ -175,6 +175,12 @@ table.heat .col-sel { border-left: 2px solid var(--red); border-right: 2px solid
 table.heat thead .col-sel { border-top: 2px solid var(--red); }
 table.heat tbody tr:last-child .col-sel { border-bottom: 2px solid var(--red); }
 
+.rel { color: var(--red); letter-spacing: 1px; font-size: 10px; margin-left: 4px; }
+.seg button[aria-pressed="true"] .rel { color: #fff; }
+.qcard li .src { display: block; font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+.qcard li .src a { color: var(--muted); }
+.qcard li.ctx { color: var(--ink); font-style: italic; }
+.qcard .none { color: var(--muted); font-size: 12px; margin: 0; }
 .pdf-link { font-size: 12px; font-weight: 700; color: #fff; background: var(--red); border-radius: 3px; padding: 7px 12px; text-decoration: none; white-space: nowrap; }
 .pdf-link:hover { filter: brightness(1.1); }
 #mgnChart { max-width: 900px; }
@@ -204,7 +210,8 @@ table.heat tbody tr:last-child .col-sel { border-bottom: 2px solid var(--red); }
   <nav class="controls" aria-label="Sections">
     <a href="#market">Market view</a>
     <a href="#overview">Quarterly overview</a>
-    <a href="#results">Company deep dive</a>
+    <a href="#results">Listed company deep dives</a>
+    <a href="#others">Other key competitors</a>
     <a href="#library">Report library</a>
     <span class="spacer"></span>
     <a class="back" href="index.html">Market intelligence dashboard ›</a>
@@ -273,7 +280,7 @@ table.heat tbody tr:last-child .col-sel { border-bottom: 2px solid var(--red); }
   <!-- 3. Company deep dive -->
   <section class="slide" id="results" aria-labelledby="resTitle">
     <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
-    <h2 class="stitle" id="resTitle"><b>Company deep dive</b><span class="pipe">|</span>financials, segments and key messages</h2>
+    <h2 class="stitle" id="resTitle"><b>Public listed company deep dives</b><span class="pipe">|</span>financials, segments and key messages</h2>
     <div class="filters" role="toolbar" aria-label="Deep dive filters">
       <div class="ctl">Company <div class="seg" id="coCtl"></div></div>
       <div class="ctl">Quarter <div class="seg" id="qCtl"></div></div>
@@ -284,6 +291,21 @@ table.heat tbody tr:last-child .col-sel { border-bottom: 2px solid var(--red); }
     <span class="subhead" id="qualHead">Key messages</span>
     <div class="qual" id="qual"></div>
     <p class="source" id="qualSrc"></p>
+  </section>
+
+  <!-- 4. Other key competitors -->
+  <section class="slide" id="others" aria-labelledby="othTitle">
+    <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
+    <h2 class="stitle" id="othTitle"><b>Other key competitors deep dives</b><span class="pipe">|</span>private companies, divisions and technologies</h2>
+    <div class="filters" role="toolbar" aria-label="Other competitors filters">
+      <div class="ctl">Company <div class="seg" id="ocCtl"></div></div>
+      <div class="ctl">Quarter <div class="seg" id="oqCtl"></div></div>
+    </div>
+    <div class="rep-line" id="oLine"></div>
+    <div class="kpi-row" id="oProfile"></div>
+    <span class="subhead" id="oHead">Key messages</span>
+    <div class="qual" id="oQual"></div>
+    <p class="note" id="oNote"></p>
   </section>
 
   <!-- 3. Library -->
@@ -617,6 +639,35 @@ function drawMargins() {
   $("mgnNote").innerHTML = "Each company's own reported margin measure (see last column), so levels are not like-for-like. Green / red = margin up / down versus the same period last year (change in bps under the value). Half-year reporters: Q2 = H1. Click a cell to open that company in the deep dive." + (D.companies.some(c => c.fyNote) ? " " + fyNotes() : "");
 }
 $("mgnTbl").addEventListener("click", e => { const td = e.target.closest("td[data-co]"); if (!td) return; openDeep(td.dataset.co, td.dataset.p); });
+/* ---------- Other key competitors ---------- */
+const OC = D.others || [];
+const OSORT = [...OC].sort((a, b) => b.rel - a.rel || a.name.localeCompare(b.name));
+let oSel = store.get("oc", OSORT.length ? OSORT[0].id : null), oP = store.get("op", D.periods[D.periods.length - 1]);
+if (!OC.some(o => o.id === oSel) && OSORT.length) oSel = OSORT[0].id;
+if (!D.periods.includes(oP)) oP = D.periods[D.periods.length - 1];
+const dots = n => "●".repeat(n) + "○".repeat(5 - n);
+const srcLinks = list => list.map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ");
+function drawOthers() {
+  if (!OC.length) return;
+  const o = OC.find(x => x.id === oSel);
+  $("ocCtl").innerHTML = OSORT.map(x => `<button type="button" data-oc="${x.id}" aria-pressed="${x.id === oSel}" title="Relevance to HFC ${x.rel}/5">${esc(x.name)}${x.fyNote ? "*" : ""}<span class="rel">${x.rel}</span></button>`).join("");
+  $("oqCtl").innerHTML = D.periods.map(p => { const n = o.items.filter(i => i.q === p).length; return `<button type="button" data-p="${p}" aria-pressed="${p === oP}" class="${n ? "" : "nodata"}" title="${n} item(s)">${pl(p)}</button>`; }).join("");
+  $("oLine").innerHTML = `<b>${esc(o.name)}${o.fyNote ? "*" : ""} · ${pl(oP)}</b><span>${esc(o.own)} · ${esc(o.hq)}</span>`;
+  const tile = (l, v, src, extra) => `<div class="kpi"><span class="lbl">${l}</span><span class="val" style="font-size:18px">${esc(v)}</span><span class="cmp">${extra || ""}${src ? `<a href="${esc(href(src[1]))}" target="_blank" rel="noopener">${esc(src[0])}</a>` : "&nbsp;"}</span></div>`;
+  $("oProfile").innerHTML = tile("Relevance to HFC", `${o.rel} / 5`, null, `<span class="rel" style="font-size:14px;margin:0">${dots(o.rel)}</span>`) + tile("Estimated revenue", o.rev, o.revSrc) + tile("FTEs", o.fte, o.fteSrc);
+  $("oHead").textContent = `Key messages: ${o.name}${o.fyNote ? "*" : ""}, ${pl(oP)}`;
+  const CL = [["perf", "Overall performance and walk through the results"], ["ma", "M&amp;A moves"], ["other", "Operations, innovation, partnerships and production"]];
+  $("oQual").innerHTML = CL.map(([k, t], i) => {
+    const q = o.items.filter(x => x.c === k && x.q === oP), ctx = o.items.filter(x => x.c === k && x.q === "context");
+    const li = x => `<li class="${x.q === "context" ? "ctx" : ""}">${x.q === "context" ? "Background: " : ""}${esc(x.t)}<span class="src">${srcLinks(x.src)}</span></li>`;
+    return `<div class="qcard"><h3><i>${i + 1}</i>${t}</h3>${q.length || ctx.length ? `<ul>${q.map(li).join("")}${ctx.map(li).join("")}</ul>` : `<p class="none">No public information found for ${pl(oP)}.</p>`}</div>`;
+  }).join("");
+  const has = D.periods.filter(p => o.items.some(i => i.q === p)).map(pl);
+  $("oNote").innerHTML = `Quarters with published information for ${esc(o.name)}: ${has.length ? has.join(", ") : "none dated"} (faded buttons = nothing found). Revenue and FTEs are the latest available estimates and do not change with the quarter filter. Relevance to HFC scored 1–5.` + (o.fyNote ? ` <b>*</b> ${esc(o.fyNote)}` : "");
+}
+$("ocCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; oSel = b.dataset.oc; store.set("oc", oSel); drawOthers(); });
+$("oqCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; oP = b.dataset.p; store.set("op", oP); drawOthers(); });
+
 function drawQual() {
   const q = D.qual[selCo], c = CO[selCo];
   if (!q) { $("qual").innerHTML = ""; $("qualSrc").textContent = ""; return; }
@@ -671,7 +722,7 @@ function drawLib() {
 ["libCo", "libP", "libT"].forEach(id => $(id).addEventListener("change", drawLib));
 $("libQ").addEventListener("input", drawLib);
 
-drawPx(); drawNext(); drawCal(); drawOverview(); drawResults(); drawLibFilters(); drawLib();
+drawPx(); drawNext(); drawCal(); drawOverview(); drawResults(); drawOthers(); drawLibFilters(); drawLib();
 })();
 </script>
 </body>
