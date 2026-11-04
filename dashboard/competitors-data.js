@@ -4033,17 +4033,101 @@ window.CW = {
   "gf": {
    "Q2 2025": {
     "report": "H1 2025 results (6 months)",
-    "rev": 2255,
+    "date": "2025-07-24",
+    "rev": 1546,
+    "revChg": -3.0,
+    "org": 0.1,
+    "orgLbl": "Organic growth, Flow Solutions",
+    "mgnLbl": "Comparable EBIT margin, Flow Solutions",
+    "mgn": 10.4,
+    "mgnPy": 11.7,
     "eps": {
      "l": "Net profit to shareholders",
      "v": "160",
-     "c": "incl. book gain on Machining Solutions sale"
+     "c": "97 in H1 2024 (+65%); incl. gain on Machining Solutions sale"
     },
-    "note": "Group figures still include GF Casting Solutions; GF Machining Solutions divested effective 30 June 2025.",
+    "orders": {
+     "l": "Order intake, Flow Solutions",
+     "v": "1,511",
+     "c": "1,487 in H1 2024; +4.6% organic"
+    },
+    "cash": {
+     "l": "Net debt",
+     "v": "1,572",
+     "c": "2.5x EBITDA (3.4x at end-2024)"
+    },
+    "segLbl": "By division; margin = comparable EBIT margin; revenue = Flow Solutions (group incl. Casting CHF ~1.9bn)",
+    "seg": [
+     {
+      "n": "Industry & Infrastructure Flow Solutions",
+      "org": 1.6,
+      "mLbl": "Comparable EBIT margin",
+      "rev": 960,
+      "chg": -1.4,
+      "mgn": 11.5,
+      "mgnPy": 13.7,
+      "note": "Strong infrastructure in Europe and the Middle East; industry hit by tariff uncertainty; margin down on mix, FX and tariffs"
+     },
+     {
+      "n": "· Water Distribution",
+      "org": 8,
+      "mLbl": "Comparable EBIT margin",
+      "sub": true
+     },
+     {
+      "n": "· Water Treatment",
+      "org": 3,
+      "mLbl": "Comparable EBIT margin",
+      "sub": true
+     },
+     {
+      "n": "· Microelectronics",
+      "org": -16,
+      "mLbl": "Comparable EBIT margin",
+      "sub": true,
+      "note": "Lower semiconductor sales; healthy project pipeline"
+     },
+     {
+      "n": "Building Flow Solutions",
+      "org": -1.6,
+      "mLbl": "Comparable EBIT margin",
+      "rev": 586,
+      "chg": -5.6,
+      "mgn": 9.7,
+      "mgnPy": 9.2,
+      "note": "Organic growth adjusted for phased-out products; margin up on cost savings"
+     },
+     {
+      "n": "· Europe",
+      "org": -2,
+      "mLbl": "Comparable EBIT margin",
+      "sub": true,
+      "note": "Signs of stabilisation in DACH and Eastern Europe"
+     },
+     {
+      "n": "· North America",
+      "org": -0.5,
+      "mLbl": "Comparable EBIT margin",
+      "sub": true,
+      "note": "Flat despite declining markets"
+     },
+     {
+      "n": "Casting Solutions (being divested)",
+      "org": -14.1,
+      "mLbl": "Comparable EBIT margin",
+      "rev": 388,
+      "chg": -16.0,
+      "mgn": 4.9,
+      "mgnPy": 8.8,
+      "note": "Weak European premium automotive; aerospace and gas turbines solid"
+     }
+    ],
+    "segNote": "Flow Solutions sales CHF ~1.5bn (−3.0%, +0.1% organic) with comparable EBIT margin 10.4% (11.7%). Infrastructure grew (water distribution +8%) but industry and microelectronics (−16%) were weak; Building Flow Solutions −1.6% organic with margin up to 9.7%. Orders +4.6% organic.",
+    "guide": "2025 Flow Solutions: flat to low-single-digit organic growth; comparable EBIT margin 10.5–12.5%. Capital Markets Day on 4 Nov 2025.",
     "src": [
      [
-      "Reports and presentations",
-      "https://www.georgfischer.com/en/investors/reports-and-presentations.html"
+      "H1 2025 results presentation (PDF)",
+      "reports/gf/Q2-2025_h1-2025-results-presentation.pdf"
      ]
     ]
    },
@@ -4096,12 +4180,8 @@ window.CW = {
     ],
     "src": [
      [
-      "Annual report 2025",
-      "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/annual-report/annual-report-2025/en/annual-report-2025-full-version-en.pdf"
-     ],
-     [
-      "FY 2025 presentation",
-      "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/annual-report/annual-report-2025/en/presentation-analyst-and-media-conference-2026-en.pdf"
+      "Annual report 2025 (PDF)",
+      "reports/gf/Q4-2025_annual-report-2025.pdf"
      ]
     ],
     "geo": [
@@ -4173,12 +4253,8 @@ window.CW = {
     ],
     "src": [
      [
-      "H1 2026 ad hoc announcement",
-      "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/mid-year-report-2026/en/ad-hoc-announcement-en-mid-year-report-2026.pdf"
-     ],
-     [
-      "H1 2026 presentation",
-      "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/mid-year-report-2026/en/mid-year-report-2026-presentation-en.pdf"
+      "H1 2026 results presentation (PDF)",
+      "reports/gf/Q2-2026_h1-2026-results-presentation.pdf"
      ]
     ],
     "revPy": 2255,
@@ -4809,7 +4885,8 @@ window.CW = {
    ],
    "ma": [
     "Majority of GF Casting Solutions sold in February 2026; Precicast (aerospace and gas-turbine casting, CH and RO) sold to Consolidated Precision Products for CHF 215m, closed 30 Sep 2026; proceeds to reduce net debt.",
-    "GF Machining Solutions divested effective 30 June 2025; Uponor integration continues."
+    "GF Machining Solutions divested effective 30 June 2025; Uponor integration continues.",
+    "H1 2025: VAG-Group acquisition signed (water infrastructure valves, ~CHF 190m sales, ~CHF 200m value); GF Machining Solutions sale closed (CHF 630m)."
    ],
    "other": [
     "Net debt CHF 1,684m at end-2025 after the transformation; FY 2025 free cash flow before M&A only CHF 21m.",
@@ -4817,8 +4894,8 @@ window.CW = {
    ],
    "src": [
     [
-     "H1 2026 ad hoc announcement",
-     "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/mid-year-report-2026/en/ad-hoc-announcement-en-mid-year-report-2026.pdf"
+     "H1 2026 results presentation (PDF)",
+     "reports/gf/Q2-2026_h1-2026-results-presentation.pdf"
     ],
     [
      "Precicast sale",
