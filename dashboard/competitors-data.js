@@ -5315,24 +5315,17 @@ window.CW = {
   },
   {
    "co": "gf",
-   "p": "Q4 2025",
-   "type": "Presentation",
-   "title": "FY 2025 analyst and media presentation",
-   "url": "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/annual-report/annual-report-2025/en/presentation-analyst-and-media-conference-2026-en.pdf"
-  },
-  {
-   "co": "gf",
-   "p": "Q2 2026",
-   "type": "Results release",
-   "title": "H1 2026 ad hoc announcement",
-   "url": "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/mid-year-report-2026/en/ad-hoc-announcement-en-mid-year-report-2026.pdf"
-  },
-  {
-   "co": "gf",
    "p": "Q2 2026",
    "type": "Presentation",
    "title": "H1 2026 results presentation",
    "url": "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/mid-year-report-2026/en/mid-year-report-2026-presentation-en.pdf"
+  },
+  {
+   "co": "gf",
+   "p": "Q2 2025",
+   "type": "Presentation",
+   "title": "H1 2025 results presentation",
+   "url": "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/2025-mid-year-report/presentation-mid-year-report-2025-en.pdf"
   }
  ],
  "periodLabels": {
