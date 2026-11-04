@@ -7,6 +7,9 @@ Usage:  python3 tools/fetch_competitor_data.py [--prices] [--reports]   (no flag
 --reports  downloads every document listed under "docs" in dashboard/competitors-data.js into
            reports/<company>/ and writes the index the library uses (dashboard/competitors-reports.js).
            Files already on disk are kept; files above MAX_MB are skipped and stay link-only.
+           Optional per document: "find" (regex) = "url" is a web page, download the first PDF link on it
+           matching the regex; "pages" (e.g. "1-12,40-44") = keep only those pages (needs pypdf), for
+           reports too big to store whole; "pages": "index" only prints each page's opening words to the log.
 
 Runs from the GitHub Action .github/workflows/competitor-data.yml (scheduled and on demand), or locally.
 Set SEC_USER_AGENT (e.g. "Your Name your@email") to identify yourself to sec.gov, as SEC asks.
@@ -115,7 +118,7 @@ def fetch_prices(data):
     out = {}
     for co in data["companies"]:
         got = None
-        for sym in co["yahoo"]:
+        for sym in co.get("yahoo", []):  # unlisted companies have no ticker
             got = yfinance_closes(sym) or yahoo_closes(sym)
             if got:
                 break
@@ -140,6 +143,44 @@ def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
 
 
+def find_pdf(page_url, pattern, ua):
+    """First link on a web page whose URL or link text matches the regex pattern."""
+    raw, _ = get(page_url, ua=ua)
+    html = raw.decode("utf-8", "replace")
+    links = [(u, re.sub(r"<[^>]+>|\s+", " ", txt).strip())
+             for u, txt in re.findall(r'<a\b[^>]*?href="([^"]+)"[^>]*>(.*?)</a>', html, re.S | re.I)]
+    for u, txt in links:
+        full = urllib.parse.urljoin(page_url, u.replace("&amp;", "&"))
+        if re.search(pattern, full + " " + txt, re.I):
+            return full
+    for u, txt in links:  # help pick a better pattern next time
+        if ".pdf" in u.lower() or "report" in (u + txt).lower():
+            print(f"  candidate: {txt[:60]!r} -> {u}")
+    raise RuntimeError(f"no link matching {pattern!r} on {page_url} ({len(links)} links)")
+
+
+def keep_pages(raw, spec, label):
+    """Return a PDF with only the pages in spec ("1-12,40"); spec "index" prints the page list instead."""
+    import io
+    from pypdf import PdfReader, PdfWriter
+    rd = PdfReader(io.BytesIO(raw))
+    if spec == "index":
+        print(f"{label}: {len(rd.pages)} pages")
+        for i, pg in enumerate(rd.pages, 1):
+            txt = " ".join((pg.extract_text() or "").split())[:160]
+            print(f"  p{i}: {txt}")
+        return None
+    wr = PdfWriter()
+    for part in spec.split(","):
+        a, _, b = part.partition("-")
+        for i in range(int(a), int(b or a) + 1):
+            if i <= len(rd.pages):
+                wr.add_page(rd.pages[i - 1])
+    out = io.BytesIO()
+    wr.write(out)
+    return out.getvalue()
+
+
 def fetch_reports(data):
     sec_ua = os.environ.get("SEC_USER_AGENT") or "HFC competitor dashboard hfc-dashboard@users.noreply.github.com"
     index = {}
@@ -159,7 +200,16 @@ def fetch_reports(data):
             continue
         ua = sec_ua if "sec.gov" in url else BROWSER_UA
         try:
-            raw, ctype = get(url, ua=ua)
+            src = find_pdf(url, d["find"], ua) if d.get("find") else url
+            if src != url:
+                print(f"{d['co']} {d['title']}: found {src}")
+            raw, ctype = get(src, ua=ua)
+            if d.get("pages"):
+                print(f"{d['co']} {d['title']}: full file {len(raw) // 1048576} MB")
+                raw = keep_pages(raw, d["pages"], f"{d['co']} {d['title']}")
+                if raw is None:
+                    continue
+                ctype = "application/pdf"
         except Exception as e:
             print(f"skip {d['co']} {d['title']}: {e}")
             continue

@@ -180,6 +180,21 @@ window.CW = {
    "ir": "https://www.georgfischer.com/en/investors/reports-and-presentations.html",
    "color": "#6250d6",
    "profLbl": "Comparable EBITDA"
+  },
+  {
+   "id": "danfoss",
+   "name": "Danfoss",
+   "ccy": "EUR",
+   "exch": "Not listed (privately owned)",
+   "ticker": "–",
+   "yahoo": [],
+   "stooq": [],
+   "quoteCcy": "EUR",
+   "cadence": "H1 and FY results only (no Q1 or Q3 figures)",
+   "ir": "https://www.danfoss.com/en/about-danfoss/company/financial-information/",
+   "color": "#8a5a2b",
+   "profLbl": "Operational EBITA",
+   "fyNote": "Danfoss is not listed on a stock exchange (owned by the Danfoss family and the Bitten & Mads Clausen Foundation), so it has no share price; it is included because it publishes audited financial results, half-year and full-year only."
   }
  ],
  "calendar": [
@@ -434,6 +449,18 @@ window.CW = {
    "co": "ecolab",
    "date": "2025-10-28",
    "event": "Q3 2025 results"
+  },
+  {
+   "co": "danfoss",
+   "date": "2027-03-02",
+   "event": "FY 2026 results and annual report",
+   "status": "estimated"
+  },
+  {
+   "co": "danfoss",
+   "date": "2027-08-19",
+   "event": "H1 2027 results",
+   "status": "estimated"
   }
  ],
  "results": {
@@ -4814,11 +4841,221 @@ window.CW = {
     ],
     "profLbl": "Adj. operating income"
    }
+  },
+  "danfoss": {
+   "Q2 2025": {
+    "report": "H1 2025 results (6 months)",
+    "date": "2025-08-21",
+    "rev": 4788,
+    "revPy": 5012,
+    "org": -3,
+    "orgLbl": "Organic growth",
+    "mgnLbl": "Operational EBITA margin",
+    "mgn": 10.6,
+    "mgnPy": 11.5,
+    "prof": 509,
+    "profPy": 576,
+    "eps": {
+     "l": "Net profit",
+     "v": "269",
+     "c": "291 in H1 2024"
+    },
+    "cash": {
+     "l": "Free operating cash flow after financial items and tax (before M&A)",
+     "v": "−167",
+     "c": "−118 in H1 2024"
+    },
+    "extra": [
+     {
+      "l": "R&D",
+      "v": "266",
+      "c": "5.6% of sales"
+     },
+     {
+      "l": "Employees",
+      "v": "39,367"
+     }
+    ],
+    "segLbl": "By segment",
+    "seg": [
+     {
+      "n": "Danfoss Power Solutions",
+      "rev": 2086,
+      "revPy": 2235,
+      "org": -6,
+      "mgn": 11.0,
+      "mgnPy": 11.6,
+      "note": "Mobile hydraulics downturn (US agriculture, construction); back to growth by end-Q2 on data centres"
+     },
+     {
+      "n": "Danfoss Climate Solutions",
+      "rev": 1587,
+      "revPy": 1492,
+      "org": 7,
+      "mgn": 15.8,
+      "mgnPy": 14.3,
+      "note": "Heating, cooling, heat recovery; data centres and refrigerant transition"
+     },
+     {
+      "n": "Danfoss Power Electronics and Drives",
+      "rev": 1105,
+      "revPy": 1259,
+      "org": -12,
+      "mgn": 6.6,
+      "mgnPy": 10.5,
+      "note": "Inventory work-downs, weak European automotive; drives strong in data centres, HVAC, water"
+     }
+    ],
+    "geo": [
+     {
+      "n": "Europe",
+      "note": "41% of sales; recovery signs less pronounced"
+     },
+     {
+      "n": "Americas",
+      "note": "37% of sales; North America back to growth in Q2"
+     },
+     {
+      "n": "Asia Pacific",
+      "note": "22% of sales; China high single-digit growth"
+     }
+    ],
+    "segNote": "Organic −3% (Q1 negative, Q2 slightly positive); operational EBITA margin 11.5% in Q2. Climate Solutions (heating and cooling) +7% organic at 15.8% margin, the strongest segment; Power Solutions −6% and Power Electronics and Drives −12%.",
+    "guide": "FY 2025: sales EUR 9.5–11.0bn; operational EBITA margin 10.8–12.3% (confirmed, based on known tariffs).",
+    "src": [
+     [
+      "H1 2025 interim announcement (PDF)",
+      "reports/danfoss/Q2-2025_h1-2025-interim-announcement.pdf"
+     ]
+    ]
+   },
+   "Q4 2025": {
+    "report": "FY 2025 results (12 months)",
+    "date": "2026-03-03",
+    "rev": 9430,
+    "revPy": 9496,
+    "org": 3,
+    "orgLbl": "Organic growth",
+    "mgnLbl": "Operational EBITA margin",
+    "mgn": 12.9,
+    "mgnPy": 12.5,
+    "prof": 1213,
+    "profPy": 1185,
+    "cash": {
+     "l": "Free operating cash flow after financial items and tax (before M&A)",
+     "v": "734",
+     "c": "467 in 2024; record"
+    },
+    "segNote": "Organic +3% (H1 −3%, H2 +9%). Climate Solutions delivered a strong and resilient year (North America +26% organic on data centres); data-centre sales ~7% of group, almost doubling. Hydro Holding acquired for Power Solutions.",
+    "guide": "FY 2026: sales EUR 9.1–10.6bn; operational EBITA margin 12.8–14.3% (raised in August to 14.6–15.6%).",
+    "src": [
+     [
+      "FY 2025 release",
+      "https://www.danfoss.com/en/about-danfoss/news/cf/financial-performance-strengthening-with-record-high-cash-flow/"
+     ],
+     [
+      "Cooling Post",
+      "https://www.coolingpost.com/world-news/danfoss-reports-record-high-cash-flow/"
+     ]
+    ]
+   },
+   "Q2 2026": {
+    "report": "H1 2026 results (6 months)",
+    "date": "2026-08-20",
+    "rev": 5254,
+    "revPy": 4703,
+    "org": 15,
+    "orgLbl": "Organic growth",
+    "mgnLbl": "Operational EBITA margin",
+    "mgn": 15.3,
+    "mgnPy": 11.8,
+    "prof": 802,
+    "profPy": 556,
+    "eps": {
+     "l": "Net profit",
+     "v": "436",
+     "c": "269 in H1 2025"
+    },
+    "cash": {
+     "l": "Free operating cash flow after financial items and tax (before M&A)",
+     "v": "164",
+     "c": "−168 in H1 2025"
+    },
+    "extra": [
+     {
+      "l": "R&D",
+      "v": "257",
+      "c": "4.9% of sales"
+     },
+     {
+      "l": "Net interest-bearing debt / EBITDA",
+      "v": "1.3x",
+      "c": "1.9x"
+     },
+     {
+      "l": "Employees",
+      "v": "39,345"
+     }
+    ],
+    "segLbl": "By segment",
+    "seg": [
+     {
+      "n": "Danfoss Power Solutions",
+      "rev": 2392,
+      "revPy": 2086,
+      "org": 18,
+      "mgn": 16.2,
+      "mgnPy": 11.0,
+      "note": "Data centres, construction and mining; agriculture still soft"
+     },
+     {
+      "n": "Danfoss Climate Solutions",
+      "rev": 1803,
+      "revPy": 1587,
+      "org": 18,
+      "mgn": 18.1,
+      "mgnPy": 15.8,
+      "note": "Data centres and heat pumps in buildings and industry"
+     },
+     {
+      "n": "Danfoss Power Electronics and Drives",
+      "rev": 1054,
+      "revPy": 1020,
+      "org": 5,
+      "mgn": 12.5,
+      "mgnPy": 11.7,
+      "note": "Data centres, electrification, core industrial; prior year restated for discontinued operations"
+     }
+    ],
+    "geo": [
+     {
+      "n": "Americas",
+      "note": "38% of sales; strongest improvement with Asia"
+     },
+     {
+      "n": "Europe",
+      "note": "37% of sales"
+     },
+     {
+      "n": "Asia Pacific",
+      "note": "25% of sales; China and India"
+     }
+    ],
+    "segNote": "Organic +15% with growth and strong orders in all three segments, led by North America and Asia (China, India) and the data-centre build-out. Climate Solutions (heating and cooling) +18% organic, margin 18.1% (15.8%) on data centres and heat pumps; Power Solutions +18%; Power Electronics and Drives +5%. H1 2025 restated for discontinued operations.",
+    "guide": "Raised: FY 2026 sales in the upper half of EUR 9.1–10.6bn; operational EBITA margin 14.6–15.6% (from 12.8–14.3%), based on known tariffs.",
+    "src": [
+     [
+      "H1 2026 interim announcement (PDF)",
+      "reports/danfoss/Q2-2026_h1-2026-interim-announcement.pdf"
+     ]
+    ]
+   }
   }
  },
  "noReport": {
   "belimo": "Belimo publishes half-year and full-year results only (no Q1 or Q3 figures).",
-  "gf": "Georg Fischer publishes half-year and full-year results only (no Q1 or Q3 figures)."
+  "gf": "Georg Fischer publishes half-year and full-year results only (no Q1 or Q3 figures).",
+  "danfoss": "Danfoss is not listed and publishes half-year and full-year results only (no Q1 or Q3 figures)."
  },
  "qual": {
   "aalberts": {
@@ -5073,6 +5310,38 @@ window.CW = {
     [
      "Q3 2026 call highlights",
      "https://www.gurufocus.com/news/9145327/pentair-plc-pnr-q3-2026-earnings-call-highlights-eps-beat-taco-acquisition-and-pool-recovery-in-focus"
+    ]
+   ]
+  },
+  "danfoss": {
+   "period": "Q2 2026",
+   "title": "H1 2026 results, 20 Aug 2026 (no Q3 report) and news to Oct 2026",
+   "perf": [
+    "Sales EUR 5,254m (4,703m), organic +15% led by North America and Asia (China, India); all three segments grew with strong order intake.",
+    "Operational EBITA EUR 802m (+44%), margin 15.3% (+3.5 pts); net profit EUR 436m (269m); free operating cash flow after financial items and tax EUR 164m (−168m).",
+    "Climate Solutions (incl. heating, hydronic and district-energy products, closest to HFC): sales EUR 1,803m, +18% organic, margin 18.1% (15.8%) on data centres and heat pumps in buildings and industry.",
+    "Outlook raised: FY 2026 sales in the upper half of EUR 9.1–10.6bn; operational EBITA margin 14.6–15.6% (from 12.8–14.3%)."
+   ],
+   "ma": [
+    "Bought the remaining 38% of Semikron Danfoss (power semiconductors) in Q1 2026, now 100% owned.",
+    "Definitive agreement (10 Jul 2026) to acquire Alfagomma, Italian hydraulic hoses and fittings: ~EUR 600m sales, ~4,500 employees, 28 sites; bought out of liquidation. ACCC (Australia) approved 9 Oct; closing expected Q4 2026. Not heating-related."
+   ],
+   "other": [
+    "Data centres drive growth in all three segments: air- and liquid-cooling, power conversion, energy storage and heat recovery for hyperscalers and chip makers.",
+    "R&D EUR 257m (4.9% of sales); regionalisation of >100 factories (local-for-local); renewable electricity share 75%; LTIF at a record low of 0.8."
+   ],
+   "src": [
+    [
+     "H1 2026 interim announcement (PDF)",
+     "reports/danfoss/Q2-2026_h1-2026-interim-announcement.pdf"
+    ],
+    [
+     "Danfoss Alfagomma release",
+     "https://www.danfoss.com/en/about-danfoss/news/cf/danfoss-to-create-a-leading-global-player-in-fluid-conveyance/"
+    ],
+    [
+     "ACCC register",
+     "https://www.accc.gov.au/public-registers/acquisitions-and-mergers-registers/acquisitions-register/danfoss-alfagomma"
     ]
    ]
   }
@@ -5547,139 +5816,46 @@ window.CW = {
    "type": "Presentation",
    "title": "H1 2025 results presentation",
    "url": "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/mid-year-reports/2025-mid-year-report/presentation-mid-year-report-2025-en.pdf"
+  },
+  {
+   "co": "danfoss",
+   "p": "Q2 2025",
+   "type": "Half-year report",
+   "title": "H1 2025 interim announcement",
+   "url": "https://assets.danfoss.com/documents/525130/AH534348471381en-000201.pdf",
+   "file": "reports/danfoss/Q2-2025_h1-2025-interim-announcement.pdf",
+   "bytes": 2208823
+  },
+  {
+   "co": "danfoss",
+   "p": "Q4 2025",
+   "type": "Results release",
+   "title": "Annual report 2025 press release",
+   "url": "https://via.ritzau.dk/ir-files/13560641/14815153/17292/ENG%20-%20AR25%20Press%20release.pdf"
+  },
+  {
+   "co": "danfoss",
+   "p": "Q4 2025",
+   "type": "Annual report",
+   "title": "Annual report 2025 (extract)",
+   "url": "https://www.danfoss.com/en/about-danfoss/company/financial-information/year-in-review/",
+   "find": "annual[-_ ]?report[-_ ]?2025",
+   "pages": "index"
+  },
+  {
+   "co": "danfoss",
+   "p": "Q2 2026",
+   "type": "Half-year report",
+   "title": "H1 2026 interim announcement",
+   "url": "https://www.danfoss.com/en/about-danfoss/news/cf/our-h1-2026-results-are-out/",
+   "file": "reports/danfoss/Q2-2026_h1-2026-interim-announcement.pdf",
+   "bytes": 2071006
   }
  ],
  "periodLabels": {
   "Q4 2025": "FY 2025"
  },
  "others": [
-  {
-   "id": "danfoss",
-   "name": "Danfoss",
-   "rel": 5,
-   "own": "Private (Danfoss family / Bitten & Mads Clausen Foundation)",
-   "hq": "Nordborg, Denmark",
-   "rev": "EUR 9.43bn (2025)",
-   "revSrc": [
-    "Danfoss FY 2025 results",
-    "https://www.danfoss.com/en/about-danfoss/news/cf/financial-performance-strengthening-with-record-high-cash-flow/"
-   ],
-   "fte": "~39,300 (H1 2026 report)",
-   "fteSrc": [
-    "Danfoss H1 2026 report",
-    "https://assets.danfoss.com/documents/latest/601268/AD571023657432en-000101.pdf"
-   ],
-   "items": [
-    {
-     "q": "Q1 2025",
-     "c": "perf",
-     "t": "Danfoss reports half-yearly only: Q1 2025 organic growth was negative, before a slightly positive Q2 (per the H1 2025 announcement).",
-     "src": [
-      [
-       "Danfoss H1 2025 announcement",
-       "https://www.danfoss.com/en/about-danfoss/news/cf/first-half-year-2025-announcement/"
-      ]
-     ]
-    },
-    {
-     "q": "Q2 2025",
-     "c": "perf",
-     "t": "H1 2025: sales EUR 4,788m (5,012m), organic −3%; operational EBITA EUR 509m, margin 10.6% (11.5%); R&D EUR 266m (5.6% of sales). FY 2025 sales guidance EUR 9.5–11.0bn confirmed on known tariffs. (Restated in 2026: sales EUR 4,703m, margin 11.8%.)",
-     "src": [
-      [
-       "Danfoss H1 2025 announcement",
-       "https://www.danfoss.com/en/about-danfoss/news/cf/first-half-year-2025-announcement/"
-      ],
-      [
-       "EMR online",
-       "https://www.emr-online.com/?p=12865"
-      ]
-     ]
-    },
-    {
-     "q": "Q4 2025",
-     "c": "perf",
-     "t": "FY 2025: sales EUR 9.43bn, organic +3% (H1 −3%, H2 +9%); operational EBITA EUR 1,213m, margin 12.9% (12.5%); record cash flow EUR 734m (+57%). Data-centre sales ~7% of group, almost doubling.",
-     "src": [
-      [
-       "Danfoss FY 2025 release",
-       "https://www.danfoss.com/en/about-danfoss/news/cf/financial-performance-strengthening-with-record-high-cash-flow/"
-      ],
-      [
-       "Cooling Post",
-       "https://www.coolingpost.com/world-news/danfoss-reports-record-high-cash-flow/"
-      ]
-     ]
-    },
-    {
-     "q": "Q1 2026",
-     "c": "ma",
-     "t": "Bought the remaining 38% of Semikron Danfoss (power electronics) from the German family owners in March 2026, taking ownership to 100%. Not heating-related.",
-     "src": [
-      [
-       "M&A Insights",
-       "https://www.mainsights.io/ma-news/danish-industrial-conglomerate-danfoss-acquires-remaining-shares-in-german-power-electronics-firm-semikron-danfoss"
-      ]
-     ]
-    },
-    {
-     "q": "Q2 2026",
-     "c": "perf",
-     "t": "H1 2026: sales EUR 5,254m, organic +15%; operational EBITA EUR 802m (+44%), margin 15.3%. Climate Solutions (incl. heating/hydronic) EUR 1,803m (1,587m), organic +18%, margin 18.1% (15.8%) on data centres and heat pumps in buildings and industry.",
-     "src": [
-      [
-       "Danfoss H1 2026 report",
-       "https://assets.danfoss.com/documents/latest/601268/AD571023657432en-000101.pdf"
-      ],
-      [
-       "Megaproject",
-       "https://megaproject.com/news/HVAC/danfoss-reports-18-organic-growth-in-climate-solutions-in-h1-2026"
-      ]
-     ]
-    },
-    {
-     "q": "Q2 2026",
-     "c": "perf",
-     "t": "Outlook raised: 2026 sales in the upper half of EUR 9.1–10.6bn; operational EBITA margin 14.6–15.6% (from 12.8–14.3%).",
-     "src": [
-      [
-       "Power Progress",
-       "https://www.powerprogress.com/news/danfoss-reports-strong-organic-growth-over-first-half-of-2026/8129450.article"
-      ]
-     ]
-    },
-    {
-     "q": "Q2 2026",
-     "c": "ma",
-     "t": "Entered exclusive talks (June 2026) to acquire Alfagomma, the Italian hydraulic hose and fittings maker. Not heating-related.",
-     "src": [
-      [
-       "Danfoss exclusivity release",
-       "https://www.danfoss.com/en/about-danfoss/news/cf/danfoss-enters-exclusivity-agreement-regarding-the-acquisition-of-alfagomma/"
-      ]
-     ]
-    },
-    {
-     "q": "Q3 2026",
-     "c": "ma",
-     "t": "Signed the definitive agreement to acquire Alfagomma (10 Jul 2026): ~EUR 600m sales, ~4,500 employees, 28 production and assembly sites; bought out of a court-supervised liquidation, terms undisclosed. Joins the Fluid Conveyance division of Power Solutions; Australian competition clearance (ACCC) filed 9 Sep, approved 9 Oct; closing expected Q4 2026. Not heating-related, but shows Danfoss's appetite for large deals.",
-     "src": [
-      [
-       "Danfoss release",
-       "https://www.danfoss.com/en/about-danfoss/news/cf/danfoss-to-create-a-leading-global-player-in-fluid-conveyance/"
-      ],
-      [
-       "Modern Distribution Management",
-       "https://www.mdm.com/news/top-distributor-sectors/hose-hose-accessories-distribution/danfoss-set-to-acquire-hose-fittings-maker-alfagomma-in-italy/"
-      ],
-      [
-       "ACCC register",
-       "https://www.accc.gov.au/public-registers/acquisitions-and-mergers-registers/acquisitions-register/danfoss-alfagomma"
-      ]
-     ]
-    }
-   ]
-  },
   {
    "id": "reflex",
    "name": "Reflex Winkelmann (reflexGroup)",
