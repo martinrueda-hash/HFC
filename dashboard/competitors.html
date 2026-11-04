@@ -175,6 +175,8 @@ table.heat thead .col-sel { border-top: 2px solid var(--red); }
 table.heat tbody tr:last-child .col-sel { border-bottom: 2px solid var(--red); }
 
 .rel { color: var(--red); letter-spacing: 1px; font-size: 10px; margin-left: 4px; }
+/* peer table: companies without a report for the quarter */
+#peerTbl tr.norep td { background: #f3f3f3; color: var(--muted); }
 /* relevance filter: one row per level, trapezoid narrowing from very high to low */
 .rel-grid { display: grid; grid-template-columns: 34px 118px minmax(0, 1fr); gap: 6px 10px; align-items: center; flex: 1; min-width: 0; }
 .rel-tri { grid-column: 1; grid-row: 1 / span var(--rows); align-self: stretch; background: linear-gradient(var(--red), var(--salmon)); clip-path: polygon(0 0, 100% 0, 72% 100%, 28% 100%); min-height: 60px; }
@@ -339,10 +341,12 @@ const D = window.CW, P = (window.CW_PRICES && window.CW_PRICES.series) || {}, R 
 // Report copies: relative when opened from the repository checkout, the GitHub copy anywhere else.
 const REPO = location.protocol === "file:" || location.hostname === "localhost" ? "../" : "https://github.com/martinrueda-hash/HFC/blob/claude/hopeful-allen-tvjcl3/";
 const href = u => /^https?:/.test(u) ? u : REPO + u;
-// company name with an asterisk when its financial year is not the calendar year (footnote in fyNote)
+// listed companies with a footnote (fyNote) get a numbered superscript: Emerson ¹, Danfoss ²
 // display label of a period, e.g. Q4 2025 is shown as the full year
 const pl = p => (D.periodLabels || {})[p] || p;
-const nm = c => esc(c.name) + (c.fyNote ? "*" : "");
+const FNO = Object.fromEntries(D.companies.filter(c => c.fyNote).map((c, i) => [c.id, i + 1]));
+const fm = c => c.fyNote ? "⁰¹²³⁴⁵⁶⁷⁸⁹"[FNO[c.id]] : "";
+const nm = c => esc(c.name) + fm(c);
 const CO = Object.fromEntries(D.companies.map(c => [c.id, c]));
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
@@ -578,7 +582,7 @@ function finTable(c, r) {
     return n || o.note ? h.replace(/<tr>(?!.*<tr>)/s, '<tr class="end">') : "";
   };
   const g = { rev: r.rev, revPy: r.revPy, chg: r.revChg, org: r.org, orgPy: r.orgPy, prof: r.prof, profPy: r.profPy, mgn: r.mgn, mgnPy: r.mgnPy, mgnChg: r.mgnChg };
-  let h = block(g, c.name + (c.fyNote ? "*" : ""), "", { mLbl: r.mgnLbl || defMgn(c.id), pLbl: r.profLbl || c.profLbl });
+  let h = block(g, c.name + fm(c), "", { mLbl: r.mgnLbl || defMgn(c.id), pLbl: r.profLbl || c.profLbl });
   if (r.seg && r.seg.length) h += `<tr class="sec"><td class="l" colspan="4">${esc(r.segLbl || "By reporting segment")}</td></tr>` + r.seg.map(s => block(s, s.n.replace(/^· /, ""), "seg." + s.n + ".", { mLbl: segM, pLbl: c.id === "pentair" ? "Segment income" : c.id === "ecolab" ? "Operating income" : c.id === "watts" ? "Segment earnings" : null })).join("");
   if (r.geo && r.geo.length) h += `<tr class="sec"><td class="l" colspan="4">By region</td></tr>` + r.geo.map(s => block(s, s.n, "geo." + s.n + ".", { mLbl: segM })).join("");
   if (!(r.seg && r.seg.length) && !(r.geo && r.geo.length)) h += `<tr><td class="nt" colspan="4">No segment or regional split in this report.</td></tr>`;
@@ -610,7 +614,7 @@ function drawResults() {
       const comment = r.segNote || r.note;
       body.innerHTML = `<div class="kpi-row">${k}</div><div class="res-grid"><div class="table-scroll">${finTable(c, r)}</div>` +
         `<div style="display:grid;gap:10px;align-content:start;min-width:0">${comment ? `<div class="box"><h4>Segment growth</h4>${esc(comment)}</div>` : ""}${r.guide ? `<div class="box"><h4>Outlook</h4>${esc(r.guide)}</div>` : ""}</div></div>` +
-        (c.fyNote ? `<p class="note"><b>*</b> ${esc(c.fyNote)}</p>` : "") + `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived && r.derived.length ? " · ≈ derived from reported figures and growth rates, not reported as such" : ""}</p>`;
+        (c.fyNote ? `<p class="note"><b>${fm(c)}</b> ${esc(c.fyNote)}</p>` : "") + `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived && r.derived.length ? " · ≈ derived from reported figures and growth rates, not reported as such" : ""}</p>`;
     }
   }
   drawQual();
@@ -680,13 +684,13 @@ $("oqCtl").addEventListener("click", e => { const b = e.target.closest("button")
 function drawQual() {
   const q = D.qual[selCo], c = CO[selCo];
   if (!q) { $("qual").innerHTML = ""; $("qualSrc").textContent = ""; return; }
-  $("qualHead").textContent = `Key messages: ${c.name}${c.fyNote ? "*" : ""}, ${q.title}`;
+  $("qualHead").textContent = `Key messages: ${c.name}${fm(c)}, ${q.title}`;
   const card = (n, t, items) => `<div class="qcard"><h3><i>${n}</i>${t}</h3><ul>${items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`;
   $("qual").innerHTML = card(1, "Overall performance and walk through the results", q.perf) + card(2, "M&amp;A moves", q.ma) + card(3, "Operations, innovation, partnerships and production", q.other);
   $("qualSrc").innerHTML = (q.period !== selP ? `Based on the latest report (${esc(q.title)}), whatever quarter is selected above. ` : "") + "Source: " + q.src.map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ");
 }
 
-function fyNotes() { return D.companies.filter(c => c.fyNote).map(c => `<b>*</b> ${esc(c.fyNote)}`).join(" "); }
+function fyNotes() { return D.companies.filter(c => c.fyNote).map(c => `<b>${fm(c)}</b> ${esc(c.fyNote)}`).join(" "); }
 function drawPeers() {
   $("peerNote").innerHTML = fyNotes();
   $("peerHead").textContent = `Peer comparison, ${pl(selQ)}`;
@@ -694,7 +698,7 @@ function drawPeers() {
     D.companies.map(c => {
       const r = res(c.id, selQ);
       const cl = `click${c.self ? " self" : ""}`;
-      if (!r || r.pending) return `<tr class="${cl}" data-co="${c.id}"><td class="l">${nm(c)}</td><td class="l muted">${r ? esc(r.report) : "no report"}</td><td>–</td><td>–</td><td>–</td><td>–</td><td></td><td class="l"></td></tr>`;
+      if (!r || r.pending) return `<tr class="${cl} norep" data-co="${c.id}"><td class="l">${nm(c)}</td><td class="l muted">${r ? esc(r.report) : "no report"}</td><td>–</td><td>–</td><td>–</td><td>–</td><td></td><td class="l"></td></tr>`;
       const rc = r.revChg != null ? r.revChg : r.rev != null && r.revPy ? (r.rev / r.revPy - 1) * 100 : null;
       return `<tr class="${cl}" data-co="${c.id}"><td class="l">${nm(c)}</td><td class="l">${esc(r.report)}</td><td>${r.rev != null ? num(r.rev) + " " + c.ccy + der(r, "rev") : "–"}</td><td class="${cls(rc)}">${pct(rc)}</td><td class="${cls(r.org)}">${pct(r.org)}</td><td>${r.mgn != null ? r.mgn.toFixed(1) + "%" + der(r, "mgn") : "–"}</td><td>${bps(r.mgnChg != null ? r.mgnChg : r.mgn != null && r.mgnPy != null ? Math.round((r.mgn - r.mgnPy) * 100) : null)}</td><td class="l muted">${esc(r.mgnLbl || "")}</td></tr>`;
     }).join("") + "</tbody>";
@@ -713,7 +717,7 @@ $("heatTbl").addEventListener("click", e => { const td = e.target.closest("td[da
 
 /* ---------- 3. Library ---------- */
 function drawLibFilters() {
-  $("libCo").innerHTML = `<option value="">All companies</option>` + D.companies.map(c => `<option value="${c.id}">${esc(c.name)}${c.fyNote ? "*" : ""}</option>`).join("");
+  $("libCo").innerHTML = `<option value="">All companies</option>` + D.companies.map(c => `<option value="${c.id}">${esc(c.name)}${fm(c)}</option>`).join("");
   $("libP").innerHTML = `<option value="">All quarters</option>` + D.periods.map(p => `<option value="${p}">${pl(p)}</option>`).join("");
   $("libT").innerHTML = `<option value="">All types</option>` + [...new Set(D.docs.map(d => d.type))].sort().map(t => `<option>${esc(t)}</option>`).join("");
 }
