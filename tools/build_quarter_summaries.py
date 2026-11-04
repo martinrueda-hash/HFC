@@ -110,7 +110,7 @@ def grid(D, p, kind):
     note = ("Organic growth as each company defines it. Green / red = growth / decline." if kind == "org" else
             "Each company's own margin measure (last column), so levels are not like-for-like. Change versus the same period last year in bps; green / red = margin up / down.")
     return (f'<div style="break-inside:avoid"><h2>{title}</h2><table class="grid"><tr><th>Company</th>{head}{"<th>Margin measure</th>" if kind == "mgn" else ""}</tr>{rows}</table>'
-            f'<p class="m">{note} The outlined column is {lab(p)}.</p></div>')
+            f'<p class="m"><b>Notes:</b> {note[0].lower() + note[1:]} The outlined column is {lab(p)}.</p></div>')
 
 
 def first_sentence(t, limit=300):
@@ -228,10 +228,10 @@ table.pv td{{font-size:{f(7.6)}}} .foot{{color:#666;font-size:{f(7)};margin-top:
 </style></head><body>
 <div class="pg">{logo}<h1>Competitor watch · {e(label)}</h1><p class="m">Aalberts and listed peers · figures in each company's reporting currency, millions unless stated · data as of {e(D["asOf"])}</p>
 <h2>Peer comparison: listed companies</h2><table><tr><th>Company</th><th>Report</th><th style="text-align:right">Revenue</th><th style="text-align:right">Reported</th><th style="text-align:right">Organic</th><th style="text-align:right">Margin</th><th style="text-align:right">Change</th><th>Margin measure</th></tr>{peer}</table>
-{grids}<p class="foot">{" ".join(f"{mark(c)} {e(c['fyNote'])}" for c in cos if c.get("fyNote"))} For half-year reporters Q2 = H1; FY 2025 = full-year results.</p></div>
-<div class="pg">{logo}<h1>Key messages: listed companies · {e(label)}</h1><p class="m">Executive summary of the main messages per company, in three clusters. Sources: each company's report for the period (see the dashboard's report library).</p>{exec_sum}</div>
+{grids}<p class="foot"><b>Notes:</b> {" ".join(f"{mark(c)} {e(c['fyNote'])}" for c in cos if c.get("fyNote"))}</p></div>
+<div class="pg">{logo}<h1>Key messages: listed companies · {e(label)}</h1><p class="m">Executive summary of the main messages per company, in three clusters.</p>{exec_sum}<p class="foot"><b>Sources:</b> each company's report for the period (see the dashboard's report library).</p></div>
 <div class="pg">{logo}<h1>Other key competitors · {e(label)}</h1><p class="m">Private companies and divisions, by relevance to HFC; dated public information for this period (press releases, trade press, filings).</p>{priv}
-<p class="foot">{fy}</p></div>
+{f'<p class="foot"><b>Notes:</b> {fy}</p>' if fy.strip() else ""}</div>
 </body></html>"""
 
 

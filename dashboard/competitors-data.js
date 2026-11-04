@@ -141,7 +141,7 @@ window.CW = {
    "ir": "https://ir.emerson.com/",
    "color": "#008300",
    "profLbl": "Adj. segment EBITA",
-   "fyNote": "Emerson's financial year ends on 30 September, so its quarters are offset from the calendar: Q1 = October–December, Q2 = January–March, Q3 = April–June, Q4 = July–September. Quarters are shown as Emerson labels them (e.g. Q1 2026 = October–December 2025)."
+   "fyNote": "Emerson's financial year ends on 30 September, so its quarters are offset from the calendar. Quarters are shown as Emerson labels them."
   },
   {
    "id": "pentair",
@@ -6834,7 +6834,7 @@ window.CW = {
    "hq": "Zug, Switzerland",
    "rev": "~EUR 23bn run-rate (FY 2026 quarters)",
    "fte": "n/d",
-   "fyNote": "Siemens' fiscal year ends 30 September; quarters are shown as Siemens labels them (Q1 = October–December).",
+   "fyNote": "Siemens' fiscal year ends 30 September; quarters are shown as Siemens labels them.",
    "items": [
     {
      "q": "Q1 2026",

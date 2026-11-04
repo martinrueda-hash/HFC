@@ -278,7 +278,7 @@ table.heat tbody tr:last-child .col-sel { border-bottom: 2px solid var(--red); }
 
     <span class="subhead">Organic growth by quarter</span>
     <div class="table-scroll"><table class="mi heat" id="heatTbl"></table></div>
-    <p class="note">Organic growth as each company defines it: Belimo = growth in local currencies, Emerson = underlying growth, Pentair = core sales growth, GF = Flow Solutions. For half-year reporters Q2 = H1. FY 2025 = full-year results for every company. Click a row or a cell to open that company in the deep dive.</p>
+    <p class="note"><b>Notes:</b> organic growth as each company defines it: Belimo = growth in local currencies, Emerson = underlying growth, Pentair = core sales growth, GF = Flow Solutions.</p>
 
     <span class="subhead">Reported margin by quarter</span>
     <div class="table-scroll"><table class="mi heat" id="mgnTbl"></table></div>
@@ -615,7 +615,7 @@ function drawResults() {
       const comment = r.segNote || r.note;
       body.innerHTML = `<div class="kpi-row">${k}</div><div class="res-grid"><div class="table-scroll">${finTable(c, r)}</div>` +
         `<div style="display:grid;gap:10px;align-content:start;min-width:0">${comment ? `<div class="box"><h4>Segment growth</h4>${esc(comment)}</div>` : ""}${r.guide ? `<div class="box"><h4>Outlook</h4>${esc(r.guide)}</div>` : ""}</div></div>` +
-        (c.fyNote ? `<p class="note"><b>${fm(c)}</b> ${esc(c.fyNote)}</p>` : "") + `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived && r.derived.length ? " · ≈ derived from reported figures and growth rates, not reported as such" : ""}</p>`;
+        (c.fyNote ? `<p class="note"><b>Notes:</b> <b>${fm(c)}</b> ${esc(c.fyNote)}</p>` : "") + `<p class="source">Source: ${(r.src || []).map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ")}${r.derived && r.derived.length ? " · ≈ derived from reported figures and growth rates, not reported as such" : ""}</p>`;
     }
   }
   drawQual();
@@ -646,7 +646,7 @@ function drawMargins() {
       }).join("");
       return `<tr class="${c.self ? "self" : ""}"><td class="l">${nm(c)}</td>${cells}<td class="l muted" style="white-space:normal;min-width:160px">${lbls.map(esc).join("; ")}</td></tr>`;
     }).join("") + "</tbody>";
-  $("mgnNote").innerHTML = "Each company's own reported margin measure (see last column), so levels are not like-for-like. Green / red = margin up / down versus the same period last year (change in bps under the value). Half-year reporters: Q2 = H1. Click a cell to open that company in the deep dive." + (D.companies.some(c => c.fyNote) ? " " + fyNotes() : "");
+  $("mgnNote").innerHTML = "<b>Notes:</b> each company's own reported margin measure (see last column), so levels are not like-for-like. Green / red = margin up / down versus the same period last year (change in bps under the value)." + (D.companies.some(c => c.fyNote) ? " " + fyNotes() : "");
 }
 $("mgnTbl").addEventListener("click", e => { const td = e.target.closest("td[data-co]"); if (!td) return; openDeep(td.dataset.co, td.dataset.p); });
 /* ---------- Other key competitors ---------- */
@@ -693,7 +693,7 @@ function drawQual() {
 
 function fyNotes() { return D.companies.filter(c => c.fyNote).map(c => `<b>${fm(c)}</b> ${esc(c.fyNote)}`).join(" "); }
 function drawPeers() {
-  $("peerNote").innerHTML = fyNotes();
+  $("peerNote").innerHTML = "<b>Notes:</b> " + fyNotes();
   $("peerHead").textContent = `Peer comparison, ${pl(selQ)}`;
   $("peerTbl").innerHTML = `<thead><tr><th class="l">Company</th><th class="l">Report</th><th>Revenue<span class="u">m, own currency</span></th><th>Reported<span class="u">growth</span></th><th>Organic<span class="u">growth</span></th><th>Margin</th><th>Change<span class="u">y/y</span></th><th class="l">Margin measure</th></tr></thead><tbody>` +
     D.companies.map(c => {
