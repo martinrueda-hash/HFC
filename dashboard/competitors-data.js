@@ -5571,6 +5571,32 @@ window.CW = {
    ],
    "items": [
     {
+     "q": "Q1 2025",
+     "c": "perf",
+     "t": "Danfoss reports half-yearly only: Q1 2025 organic growth was negative, before a slightly positive Q2 (per the H1 2025 announcement).",
+     "src": [
+      [
+       "Danfoss H1 2025 announcement",
+       "https://www.danfoss.com/en/about-danfoss/news/cf/first-half-year-2025-announcement/"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "c": "perf",
+     "t": "H1 2025: sales EUR 4,788m (5,012m), organic −3%; operational EBITA EUR 509m, margin 10.6% (11.5%); R&D EUR 266m (5.6% of sales). FY 2025 sales guidance EUR 9.5–11.0bn confirmed on known tariffs. (Restated in 2026: sales EUR 4,703m, margin 11.8%.)",
+     "src": [
+      [
+       "Danfoss H1 2025 announcement",
+       "https://www.danfoss.com/en/about-danfoss/news/cf/first-half-year-2025-announcement/"
+      ],
+      [
+       "EMR online",
+       "https://www.emr-online.com/?p=12865"
+      ]
+     ]
+    },
+    {
      "q": "Q4 2025",
      "c": "perf",
      "t": "FY 2025: sales EUR 9.43bn, organic +3% (H1 −3%, H2 +9%); operational EBITA EUR 1,213m, margin 12.9% (12.5%); record cash flow EUR 734m (+57%). Data-centre sales ~7% of group, almost doubling.",
@@ -5582,6 +5608,17 @@ window.CW = {
       [
        "Cooling Post",
        "https://www.coolingpost.com/world-news/danfoss-reports-record-high-cash-flow/"
+      ]
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "c": "ma",
+     "t": "Bought the remaining 38% of Semikron Danfoss (power electronics) from the German family owners in March 2026, taking ownership to 100%. Not heating-related.",
+     "src": [
+      [
+       "M&A Insights",
+       "https://www.mainsights.io/ma-news/danish-industrial-conglomerate-danfoss-acquires-remaining-shares-in-german-power-electronics-firm-semikron-danfoss"
       ]
      ]
     },
@@ -5614,11 +5651,30 @@ window.CW = {
     {
      "q": "Q2 2026",
      "c": "ma",
-     "t": "Completed purchase of the remaining shares in Semikron Danfoss; agreed to acquire Alfagomma (hydraulic hoses, ~4,500 employees). Neither deal is heating-related.",
+     "t": "Entered exclusive talks (June 2026) to acquire Alfagomma, the Italian hydraulic hose and fittings maker. Not heating-related.",
      "src": [
       [
-       "Refindustry",
-       "https://refindustry.com/news/danfoss-reports-18-organic-growth-in-climate-solutions-in-h1-2026/"
+       "Danfoss exclusivity release",
+       "https://www.danfoss.com/en/about-danfoss/news/cf/danfoss-enters-exclusivity-agreement-regarding-the-acquisition-of-alfagomma/"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "ma",
+     "t": "Signed the definitive agreement to acquire Alfagomma (10 Jul 2026): ~EUR 600m sales, ~4,500 employees, 28 production and assembly sites; bought out of a court-supervised liquidation, terms undisclosed. Joins the Fluid Conveyance division of Power Solutions; Australian competition clearance (ACCC) filed 9 Sep, approved 9 Oct; closing expected Q4 2026. Not heating-related, but shows Danfoss's appetite for large deals.",
+     "src": [
+      [
+       "Danfoss release",
+       "https://www.danfoss.com/en/about-danfoss/news/cf/danfoss-to-create-a-leading-global-player-in-fluid-conveyance/"
+      ],
+      [
+       "Modern Distribution Management",
+       "https://www.mdm.com/news/top-distributor-sectors/hose-hose-accessories-distribution/danfoss-set-to-acquire-hose-fittings-maker-alfagomma-in-italy/"
+      ],
+      [
+       "ACCC register",
+       "https://www.accc.gov.au/public-registers/acquisitions-and-mergers-registers/acquisitions-register/danfoss-alfagomma"
       ]
      ]
     }
@@ -5637,6 +5693,17 @@ window.CW = {
     "https://reflex-winkelmann.com/en/about-reflex/news"
    ],
    "items": [
+    {
+     "q": "Q1 2025",
+     "c": "other",
+     "t": "ISH 2025 (Frankfurt, Mar): launched the Reflex Greenbox, a prefabricated unit for filling and treating heating water, alongside Fillset / Fillcontrol Smart with app-based fault diagnosis and the Hydroflow fresh-water station.",
+     "src": [
+      [
+       "Reflex ISH 2025 press release (PDF)",
+       "https://a.storyblok.com/f/180632/x/f562940826/reflex-presseinformation-1_ish-2025_trust-in-reflex-competence.pdf"
+      ]
+     ]
+    },
     {
      "q": "Q2 2025",
      "c": "ma",
@@ -5692,6 +5759,21 @@ window.CW = {
        "https://reflex-winkelmann.com/en/about-reflex/news"
       ]
      ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "other",
+     "t": "Reported 15 Jul 2026: Rimavská Sobota is reflexGroup's eighth production site, adding capacity for domestic hot water and buffer tanks; designed for ~450 employees. Per a third-party event database (unconfirmed): ~300,000 units a year, ~EUR 128m investment.",
+     "src": [
+      [
+       "reflexGroup news",
+       "https://reflex-winkelmann.com/en/about-reflex/news/new-plant-slovakia"
+      ],
+      [
+       "Metroplan project page",
+       "https://www.metroplan.de/en/metroplan/references/reference/new-plant-for-hot-water-storage-tanks-in-slovakia/"
+      ]
+     ]
     }
    ]
   },
@@ -5704,6 +5786,17 @@ window.CW = {
    "rev": "n/d (not published)",
    "fte": "n/d",
    "items": [
+    {
+     "q": "Q1 2025",
+     "c": "other",
+     "t": "ISH 2025 (Frankfurt, Mar): showed new dirt-separation and vacuum-degassing products next to the SpiroVent and SpiroPress ranges.",
+     "src": [
+      [
+       "ISH exhibitor profile",
+       "https://ish.messefrankfurt.com/frankfurt/en/exhibitor-search.detail.html/spirotech-bv-niederlassung-deutschland.html"
+      ]
+     ]
+    },
     {
      "q": "Q1 2026",
      "c": "other",
@@ -5731,6 +5824,17 @@ window.CW = {
      ]
     },
     {
+     "q": "Q2 2026",
+     "c": "other",
+     "t": "With SCHÄFER IT-Systems, launched ProtectaCool Rack (Apr 2026): water treatment, pressure maintenance, degassing and dirt/magnetite separation integrated in a server rack for direct liquid cooling in data centres; first shown at Data Centre World Frankfurt (6–7 May).",
+     "src": [
+      [
+       "SCHÄFER IT-Systems release",
+       "https://www.schaefer-it-systems.com/en/newsroom/detail/schaefer-it-systems-und-spirotech-bv-bringen-gemeinsames-system-fuer-sichere-fluessigkeitskuehlung-in-rechenzentren-auf-den-markt/"
+      ]
+     ]
+    },
+    {
      "q": "context",
      "c": "ma",
      "t": "Acquired the pressurisation technology, know-how and services of Austrian EDER to broaden its system-water-quality range (date not confirmed).",
@@ -5749,11 +5853,8 @@ window.CW = {
    "rel": 5,
    "own": "Private (Caleffi family)",
    "hq": "Fontaneto d'Agogna, Italy",
-   "rev": "n/d (last published EUR 317m, 2017)",
-   "revSrc": [
-    "Caleffi company profile",
-    "https://www.caleffi.com/en-us/company/corporate"
-   ],
+   "rev": "~EUR 273m (2025, Caleffi S.p.A. accounts)",
+   "revSrc": "https://www.aziende.it/caleffi-s-p-a-NO-0",
    "fte": "~1,600; 13 plants in Italy (company)",
    "fteSrc": [
     "Caleffi corporate page",
@@ -5761,13 +5862,35 @@ window.CW = {
    ],
    "items": [
     {
-     "q": "Q1 2026",
+     "q": "Q1 2025",
      "c": "other",
-     "t": "Exhibited its hydronic range at AHR Expo 2026 (US), supporting North American growth.",
+     "t": "ISH 2025 (Frankfurt, Mar): launched PLURIMOD, DISCAL (separators), CALEFFI eCAL and LEGIOMIX evo; stand themed on water management, heat-pump components, sustainable HVAC comfort and water/health protection.",
      "src": [
       [
-       "Impianti News",
-       "https://www.impiantinews.it/gt/speciale-innovazione/caleffi-la-ricerca-volta-allinnovazione/"
+       "Caleffi ISH 2025 news",
+       "https://www.caleffi.com/en-int/node/13438"
+      ]
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "c": "perf",
+     "t": "FY 2025 (Caleffi S.p.A., from filed accounts): revenue ~EUR 272.5m (+2.1%), net profit ~EUR 43.7m (~16% of revenue). Not to be confused with the listed home-textiles Caleffi.",
+     "src": [
+      [
+       "aziende.it (company register data)",
+       "https://www.aziende.it/caleffi-s-p-a-NO-0"
+      ]
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "c": "other",
+     "t": "AHR Expo 2026 (Las Vegas, 2–4 Feb): showed contractor-driven products for North America, including the FLOWMATIC Express Coil Kit, LEGIOMIX and AngleMix mixing valves.",
+     "src": [
+      [
+       "Caleffi AHR 2026 release",
+       "https://www.caleffi.com/en-us/news-events/02-02-2026/caleffi-showcases-contractor-driven-innovation-ahr-expo-2026"
       ]
      ]
     },
@@ -5783,13 +5906,13 @@ window.CW = {
      ]
     },
     {
-     "q": "context",
-     "c": "perf",
-     "t": "No 2025–2026 financials published; Caleffi S.p.A. listed in Milan is a different (home-textiles) company.",
+     "q": "Q3 2026",
+     "c": "other",
+     "t": "INTERCLIMA 2026 (Paris, 28 Sep – 1 Oct): exhibited co-branded with its long-standing French distribution partner Thermador.",
      "src": [
       [
-       "Note",
-       "https://www.caleffi.com/en-us/company/corporate"
+       "Caleffi event page",
+       "https://www.caleffi.com/en-int/news-events/28-09-2026/interclima-2026"
       ]
      ]
     }
@@ -5813,13 +5936,24 @@ window.CW = {
    ],
    "items": [
     {
-     "q": "Q3 2025",
-     "c": "ma",
-     "t": "PitchBook records an Aug 2025 buyout of Oventrop Energy & Network (Haiger), with Oventrop and TMT as investors; role of Oventrop not confirmed.",
+     "q": "Q1 2025",
+     "c": "other",
+     "t": "ISH 2025: Regudis W-HTE GT flat station for replacing old gas boilers in line with the German Buildings Energy Act (GEG); first cloud solution OV+ to connect Regudis H substations.",
      "src": [
       [
-       "PitchBook",
-       "https://pitchbook.com/profiles/company/871680-79"
+       "HaustechnikDialog",
+       "https://www.haustechnikdialog.de/News/30048/Effizient-in-die-Zukunft-Oventrop-auf-der-ISH-2025"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "c": "ma",
+     "t": "HögforsGST (Finland, district-heating substations) took over Oventrop Energy & Network (formerly Kring, Haiger), 13 Aug 2025; in return Oventrop became a shareholder in HögforsGST. The Haiger site and brand are kept.",
+     "src": [
+      [
+       "HaustechnikDialog",
+       "https://www.haustechnikdialog.de/HerstellerKatalog/?content=hersteller&page=hersteller&herstellerid=7&herstellername=Oventrop&site=News"
       ]
      ]
     },
@@ -5831,6 +5965,32 @@ window.CW = {
       [
        "Revelio Labs",
        "https://www.reveliolabs.com/companies/oventrop/employees/"
+      ]
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "c": "other",
+     "t": "Restructuring continued (Nov 2025), citing the weak German construction market: 185 more jobs cut in Brilon, assembly moved to the group's plant in Szydłowiec (Poland); administration, plastics and test lab move from Olsberg to Brilon, with German activity concentrated in Brilon by end-2026.",
+     "src": [
+      [
+       "HaustechnikDialog",
+       "https://www.haustechnikdialog.de/News/SHKszene/30892/Oventrop-setzt-Neustrukturierung-fort"
+      ],
+      [
+       "bigge-online",
+       "https://bigge-online.de/oventrop-baut-185-weitere-stellen-in-brilon-ab-montagearbeitsplaetze-werden-nach-polen-verlegt/"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "c": "other",
+     "t": "IG Metall called a two-hour warning strike at Brilon (20 May 2026) to push for a social collective agreement over the move of assembly to Poland; Olsberg is being closed this year.",
+     "src": [
+      [
+       "Radio Sauerland",
+       "https://www.radiosauerland.de/artikel/warnstreik-beim-unternehmen-oventrop-in-brilon-2654005"
       ]
      ]
     }
@@ -5904,11 +6064,41 @@ window.CW = {
     {
      "q": "Q2 2026",
      "c": "other",
-     "t": "Expanding its Texas plant; efficiency programmes at plants in Mexico and Hungary.",
+     "t": "Broke ground (24 Jun 2026) on a ~143,000 sq ft manufacturing expansion at its US headquarters campus in Brookshire, Texas, completion Q3 2027; efficiency programmes at plants in Mexico and Hungary.",
      "src": [
       [
        "Teleborsa",
        "https://www.teleborsa.it/News/2026/08/19/grundfos-solida-semestrale-con-vendite-in-crescita-del-7-7percent-25.html"
+      ],
+      [
+       "Grundfos release",
+       "https://www.grundfos.com/media/latest-news/grundfos-breaks-ground-on-americas-campus-expansion-to-support-g"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "ma",
+     "t": "Completed the acquisition of EUWA (Gärtringen, Germany; water treatment for breweries and soft drinks, installations in >110 countries), announced mid-July 2026; extends its water-treatment platform after Newterra.",
+     "src": [
+      [
+       "Grundfos release",
+       "https://www.grundfos.com/media/latest-news/grundfos-acquires-german-water-treatment-company-euwa"
+      ],
+      [
+       "Brauwelt",
+       "https://brauwelt.com/en/news/company-news/649559-grundfos-acquires-german-water-treatment-company-euwa"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "c": "other",
+     "t": "WEFTEC 2026 (New Orleans, 26–30 Sep): unveiled a combined water-treatment offer bringing Newterra, MECO and Water Works under the Grundfos brand together with its own pumps.",
+     "src": [
+      [
+       "iGrow News",
+       "https://igrownews.com/grundfos-latest-news/"
       ]
      ]
     }
@@ -5991,6 +6181,39 @@ window.CW = {
    "fte": "n/d (part of Xylem)",
    "items": [
     {
+     "q": "Q1 2025",
+     "c": "perf",
+     "t": "Xylem Applied Water Q1 2025 (incl. Bell & Gossett): revenue USD 435m (+1% organic), adj. EBITDA margin 19.5% (+300 bps); orders USD 486m (+3%).",
+     "src": [
+      [
+       "Xylem Q1 2025 earnings package (PDF)",
+       "reports/xylem/Q1-2025_earnings-package.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "c": "perf",
+     "t": "Applied Water Q2 2025: revenue USD 483m (+5% organic), adj. EBITDA margin 21.7% (+420 bps); orders USD 488m (+4%).",
+     "src": [
+      [
+       "Xylem Q2 2025 earnings package (PDF)",
+       "reports/xylem/Q2-2025_earnings-package.pdf"
+      ]
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "c": "perf",
+     "t": "Applied Water Q3 2025: revenue USD 456m (+1% organic), adj. EBITDA margin 21.7% (+310 bps); orders flat at USD 445m.",
+     "src": [
+      [
+       "Xylem Q3 2025 earnings package (PDF)",
+       "reports/xylem/Q3-2025_earnings-package.pdf"
+      ]
+     ]
+    },
+    {
      "q": "Q4 2025",
      "c": "perf",
      "t": "FY 2025 Applied Water (incl. Bell & Gossett): revenue USD 1,849m (+2% organic), adj. EBITDA margin 20.4% (+270 bps).",
@@ -6013,6 +6236,17 @@ window.CW = {
      ]
     },
     {
+     "q": "Q1 2026",
+     "c": "perf",
+     "t": "Applied Water Q1 2026: revenue USD 448m (0% organic), adj. EBITDA margin 19.6% (19.5%); orders USD 512m (+2%).",
+     "src": [
+      [
+       "Xylem Q1 2026 earnings package (PDF)",
+       "reports/xylem/Q1-2026_earnings-package.pdf"
+      ]
+     ]
+    },
+    {
      "q": "Q2 2026",
      "c": "perf",
      "t": "Applied Water Q2 2026: revenue USD 501m (+3% organic), adj. EBITDA margin 21.2%; orders +9% on data-centre wins.",
@@ -6026,7 +6260,7 @@ window.CW = {
     {
      "q": "Q3 2026",
      "c": "perf",
-     "t": "Applied Water Q3 2026: revenue USD 489m (+9% organic), orders +15% on North American data centres and commercial buildings.",
+     "t": "Applied Water Q3 2026: revenue USD 489m (+9% organic), orders +15% on North American data centres and commercial buildings; adj. EBITDA margin 21.3% (21.7%).",
      "src": [
       [
        "Xylem Q3 2026 earnings package (PDF)",
