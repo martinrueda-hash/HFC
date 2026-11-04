@@ -676,8 +676,7 @@ function drawOthers() {
     const li = x => `<li class="${x.q === "context" ? "ctx" : ""}">${x.q === "context" ? "Background: " : ""}${esc(x.t)}<span class="src">${srcLinks(x.src)}</span></li>`;
     return `<div class="qcard"><h3><i>${i + 1}</i>${t}</h3>${q.length || ctx.length ? `<ul>${q.map(li).join("")}${ctx.map(li).join("")}</ul>` : `<p class="none">No public information found for ${pl(oP)}.</p>`}</div>`;
   }).join("");
-  const has = D.periods.filter(p => o.items.some(i => i.q === p)).map(pl);
-  $("oNote").innerHTML = `Quarters with published information for ${esc(o.name)}: ${has.length ? has.join(", ") : "none dated"} (faded buttons = nothing found). Revenue and FTEs are the latest available estimates and do not change with the quarter filter. Relevance to HFC: 5 very high, 4 high, 3 moderate, 2 low, 1 very low.` + (o.fyNote ? ` <b>*</b> ${esc(o.fyNote)}` : "");
+  $("oNote").innerHTML = o.fyNote ? `<b>Notes:</b> <b>*</b> ${esc(o.fyNote)}` : "";
 }
 $("ocCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; oSel = b.dataset.oc; store.set("oc", oSel); drawOthers(); });
 $("oqCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; oP = b.dataset.p; store.set("op", oP); drawOthers(); });
