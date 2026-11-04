@@ -176,6 +176,14 @@ table.heat thead .col-sel { border-top: 2px solid var(--red); }
 table.heat tbody tr:last-child .col-sel { border-bottom: 2px solid var(--red); }
 
 .rel { color: var(--red); letter-spacing: 1px; font-size: 10px; margin-left: 4px; }
+/* relevance filter: one row per level, triangle narrowing from very high to low */
+.rel-grid { display: grid; grid-template-columns: 34px 118px minmax(0, 1fr); gap: 6px 10px; align-items: center; flex: 1; min-width: 0; }
+.rel-tri { grid-column: 1; grid-row: 1 / span var(--rows); align-self: stretch; background: linear-gradient(var(--red), var(--salmon)); clip-path: polygon(0 0, 100% 0, 50% 100%); min-height: 60px; }
+.rel-lbl { grid-column: 2; font-size: 11.5px; font-weight: 700; color: var(--ink-strong); white-space: nowrap; }
+.rel-lbl small { display: block; font-weight: 500; color: var(--muted); font-size: 10.5px; }
+.rel-row { grid-column: 3; display: flex; flex-wrap: wrap; gap: 6px; }
+.rel-row button { font: inherit; font-size: 12px; border: 1px solid var(--red); background: var(--bg); color: var(--red); border-radius: 3px; padding: 5px 10px; cursor: pointer; }
+.rel-row button[aria-pressed="true"] { background: var(--red); color: #fff; font-weight: 700; }
 .seg button[aria-pressed="true"] .rel { color: #fff; }
 .qcard li .src { display: block; font-size: 10.5px; color: var(--muted); margin-top: 2px; }
 .qcard li .src a { color: var(--muted); }
@@ -298,7 +306,7 @@ table.heat tbody tr:last-child .col-sel { border-bottom: 2px solid var(--red); }
     <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
     <h2 class="stitle" id="othTitle"><b>Other key competitors deep dives</b><span class="pipe">|</span>private companies, divisions and technologies</h2>
     <div class="filters" role="toolbar" aria-label="Other competitors filters">
-      <div class="ctl">Company <div class="seg" id="ocCtl"></div></div>
+      <div class="ctl" style="align-items:flex-start;width:100%">Company <div class="rel-grid" id="ocCtl"></div></div>
       <div class="ctl">Quarter <div class="seg" id="oqCtl"></div></div>
     </div>
     <div class="rep-line" id="oLine"></div>
@@ -612,8 +620,8 @@ function drawResults() {
 }
 function drawOverview() {
   $("qoCtl").innerHTML = D.periods.map(p => `<button type="button" data-p="${p}" aria-pressed="${p === selQ}">${pl(p)}</button>`).join("");
-  // summaries sit in reports/summaries in the repository and next to the page when published
-  $("pdfLink").href = (REPO === "../" ? "../reports/" : "") + "summaries/" + selQ.replace(" ", "-") + "_summary.pdf";
+  // summaries live in reports/summaries; outside the repository checkout the link opens the GitHub copy
+  $("pdfLink").href = REPO + "reports/summaries/" + selQ.replace(" ", "-") + "_summary.pdf";
   $("pdfLink").textContent = "PDF summary, " + pl(selQ) + " ›";
   drawPeers(); drawHeat(); drawMargins();
 }
@@ -645,16 +653,20 @@ const OSORT = [...OC].sort((a, b) => b.rel - a.rel || a.name.localeCompare(b.nam
 let oSel = store.get("oc", OSORT.length ? OSORT[0].id : null), oP = store.get("op", D.periods[D.periods.length - 1]);
 if (!OC.some(o => o.id === oSel) && OSORT.length) oSel = OSORT[0].id;
 if (!D.periods.includes(oP)) oP = D.periods[D.periods.length - 1];
+const RELNAME = { 5: "Very high", 4: "High", 3: "Moderate", 2: "Low", 1: "Very low" };
 const dots = n => "●".repeat(n) + "○".repeat(5 - n);
 const srcLinks = list => list.map(s => `<a href="${esc(href(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join(" · ");
 function drawOthers() {
   if (!OC.length) return;
   const o = OC.find(x => x.id === oSel);
-  $("ocCtl").innerHTML = OSORT.map(x => `<button type="button" data-oc="${x.id}" aria-pressed="${x.id === oSel}" title="Relevance to HFC ${x.rel}/5">${esc(x.name)}${x.fyNote ? "*" : ""}<span class="rel">${x.rel}</span></button>`).join("");
+  const levels = [...new Set(OSORT.map(x => x.rel))].sort((a, b) => b - a);
+  $("ocCtl").style.setProperty("--rows", levels.length);
+  $("ocCtl").innerHTML = `<div class="rel-tri" title="Relevance to HFC: high to low" style="grid-row:1 / span ${levels.length}"></div>` + levels.map((l, i) =>
+    `<div class="rel-lbl" style="grid-row:${i + 1}">${RELNAME[l]}<small>relevance ${l} / 5</small></div><div class="rel-row" style="grid-row:${i + 1}">${OSORT.filter(x => x.rel === l).map(x => `<button type="button" data-oc="${x.id}" aria-pressed="${x.id === oSel}">${esc(x.name)}${x.fyNote ? "*" : ""}</button>`).join("")}</div>`).join("");
   $("oqCtl").innerHTML = D.periods.map(p => { const n = o.items.filter(i => i.q === p).length; return `<button type="button" data-p="${p}" aria-pressed="${p === oP}" class="${n ? "" : "nodata"}" title="${n} item(s)">${pl(p)}</button>`; }).join("");
   $("oLine").innerHTML = `<b>${esc(o.name)}${o.fyNote ? "*" : ""} · ${pl(oP)}</b><span>${esc(o.own)} · ${esc(o.hq)}</span>`;
   const tile = (l, v, src, extra) => `<div class="kpi"><span class="lbl">${l}</span><span class="val" style="font-size:18px">${esc(v)}</span><span class="cmp">${extra || ""}${src ? `<a href="${esc(href(src[1]))}" target="_blank" rel="noopener">${esc(src[0])}</a>` : "&nbsp;"}</span></div>`;
-  $("oProfile").innerHTML = tile("Relevance to HFC", `${o.rel} / 5`, null, `<span class="rel" style="font-size:14px;margin:0">${dots(o.rel)}</span>`) + tile("Estimated revenue", o.rev, o.revSrc) + tile("FTEs", o.fte, o.fteSrc);
+  $("oProfile").innerHTML = tile("Relevance to HFC", `${o.rel} / 5 · ${RELNAME[o.rel]}`, null, `<span class="rel" style="font-size:14px;margin:0">${dots(o.rel)}</span>`) + tile("Estimated revenue", o.rev, o.revSrc) + tile("FTEs", o.fte, o.fteSrc);
   $("oHead").textContent = `Key messages: ${o.name}${o.fyNote ? "*" : ""}, ${pl(oP)}`;
   const CL = [["perf", "Overall performance and walk through the results"], ["ma", "M&amp;A moves"], ["other", "Operations, innovation, partnerships and production"]];
   $("oQual").innerHTML = CL.map(([k, t], i) => {
@@ -663,7 +675,7 @@ function drawOthers() {
     return `<div class="qcard"><h3><i>${i + 1}</i>${t}</h3>${q.length || ctx.length ? `<ul>${q.map(li).join("")}${ctx.map(li).join("")}</ul>` : `<p class="none">No public information found for ${pl(oP)}.</p>`}</div>`;
   }).join("");
   const has = D.periods.filter(p => o.items.some(i => i.q === p)).map(pl);
-  $("oNote").innerHTML = `Quarters with published information for ${esc(o.name)}: ${has.length ? has.join(", ") : "none dated"} (faded buttons = nothing found). Revenue and FTEs are the latest available estimates and do not change with the quarter filter. Relevance to HFC scored 1–5.` + (o.fyNote ? ` <b>*</b> ${esc(o.fyNote)}` : "");
+  $("oNote").innerHTML = `Quarters with published information for ${esc(o.name)}: ${has.length ? has.join(", ") : "none dated"} (faded buttons = nothing found). Revenue and FTEs are the latest available estimates and do not change with the quarter filter. Relevance to HFC: 5 very high, 4 high, 3 moderate, 2 low, 1 very low.` + (o.fyNote ? ` <b>*</b> ${esc(o.fyNote)}` : "");
 }
 $("ocCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; oSel = b.dataset.oc; store.set("oc", oSel); drawOthers(); });
 $("oqCtl").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; oP = b.dataset.p; store.set("op", oP); drawOthers(); });

@@ -114,7 +114,7 @@ def page(D, p):
             empty.append(f'{e(o["name"])} ({o["rel"]})')
             continue
         lis = "".join(f'<li><b>{CL[i["c"]]}:</b> {e(i["t"])} <span class="src">[{" · ".join(e(s[0]) for s in i["src"])}]</span></li>' for i in sorted(its, key=lambda i: list(CL).index(i["c"])))
-        others += (f'<div class="co"><h3>{e(o["name"])}{"*" if o.get("fyNote") else ""} · relevance {o["rel"]}/5</h3>'
+        others += (f'<div class="co"><h3>{e(o["name"])}{"*" if o.get("fyNote") else ""} · relevance {o["rel"]}/5 ({ {5: "very high", 4: "high", 3: "moderate", 2: "low", 1: "very low"}[o["rel"]] })</h3>'
                    f'<p class="kp m">{e(o["own"])} · revenue {e(o["rev"])} · FTEs {e(o["fte"])}</p><ul style="margin:2pt 0 0 12pt;padding:0">{lis}</ul></div>')
     others += f'<p class="m">No dated public information found for this period: {", ".join(empty) or "–"}.</p>' if empty else ""
     fy = " ".join(f"* {e(c['fyNote'])}" for c in cos if c.get("fyNote"))
