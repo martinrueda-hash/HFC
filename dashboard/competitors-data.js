@@ -5837,10 +5837,10 @@ window.CW = {
    "co": "danfoss",
    "p": "Q4 2025",
    "type": "Annual report",
-   "title": "Annual report 2025 (extract)",
+   "title": "Annual report 2025 (extract: highlights, segments, financial review and statements)",
    "url": "https://www.danfoss.com/en/about-danfoss/company/financial-information/year-in-review/",
    "find": "annual[-_ ]?report[-_ ]?2025",
-   "pages": "index"
+   "pages": "1,3-5,8-13,32-39,127-139,154-155,206"
   },
   {
    "co": "danfoss",
