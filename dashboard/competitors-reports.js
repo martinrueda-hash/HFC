@@ -53,6 +53,10 @@ window.CW_REPORTS = {
    "bytes": 14854195,
    "path": "reports/aalberts/Q2-2026_h1-2026-presentation.pdf"
   },
+  "https://via.ritzau.dk/ir-files/13560641/14815153/17292/ENG%20-%20AR25%20Press%20release.pdf": {
+   "bytes": 188750,
+   "path": "reports/danfoss/Q4-2025_annual-report-2025-press-release.pdf"
+  },
   "https://www.georgfischer.com/content/dam/commonassets/corp/documents/reports/annual-report/annual-report-2025/en/annual-report-2025-full-version-en.pdf": {
    "bytes": 17108427,
    "path": "reports/gf/Q4-2025_annual-report-2025.pdf"
@@ -70,5 +74,5 @@ window.CW_REPORTS = {
    "path": "reports/aalberts/Q3-2026_q3-2026-press-release.pdf"
   }
  },
- "updated": "2026-11-04 13:46 UTC"
+ "updated": "2026-11-04 16:38 UTC"
 };
