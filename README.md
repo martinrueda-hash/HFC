@@ -20,14 +20,16 @@ Three filters, end market (Total / Residential / Commercial), application (All /
 
 ## Quarter market outlook (QBR/SBR)
 
-Between the funnel and the country prioritization, one report per quarter (Q1 2025 onwards) rebuilds the two QBR market slides:
+Between the funnel and the country prioritization, one report per quarter (Q1 2025 onwards) rebuilds the two market slides of the QBR deck, **in the deck's own format**:
 
-- **market outlook | growth outlook**: Oxford Economics work done by sector (residential and non-residential, each split into new build and renovation) for the USA, Germany, France, the Netherlands, Europe and China, as ’Y-1 actual, ’Y estimate and the 5-year CAGR; Dodge total construction and non-residential growth for the US; and the variation vs. the previous quarter's report.
-- **Market environment EMEA | HFC performance in key countries**: Oxford Economics market growth (residential + non-residential commercial) for Germany, France, the Netherlands, the UK, Belgium, Poland and the Nordics, next to HFC figures.
+- **market outlook | growth outlook** (world map): Oxford Economics work done by sector (residential and non-residential, each with new build and renovation) for the USA, Germany, France, the Netherlands, Europe and China, as ’Y-1 actual, ’Y estimate and the 5-year CAGR; Dodge total construction and non-residential growth for the US; and the variation vs. the previous report.
+- **Market environment EMEA | HFC performance in key countries**: Oxford Economics market growth (residential + non-residential commercial) for Germany, France, the Netherlands, the UK, Belgium, Poland and the Nordics, with arrows, next to HFC figures.
 
-Each report uses the latest Oxford Economics release and Dodge export dated up to the end of its quarter (or the earliest one available, flagged). A quarter unlocks once a release reaches it. HFC figures are yellow and editable on the page (saved in the browser); data not available yet (US and China in Oxford Economics) and comments are underlined.
+A quarter's report is active only when an Oxford Economics release dated in or before that quarter is available; otherwise the page says which data is missing. Dodge is optional (US cells are underlined without it). HFC figures are yellow and editable on the page (saved in the browser; click an HFC FY arrow to change it); data not available yet (US and China in Oxford Economics) and comments are underlined.
 
-The built-in releases are generated from `data/oxford-economics/` and `data/dodge/` with `python3 tools/build_market_releases.py` (writes `dashboard/releases.js`). On the page, **Upload last Oxford Economics data** and **Upload Dodge data** add releases in the browser; an Oxford Economics upload also refreshes the dashboard's market growth. Dodge figures leave out the subtotal rows of the export, so totals are not double counted.
+**Export to PowerPoint** fills the deck's real slides (`dashboard/qbr_template.js`, built from `templates/qbr/HFC_QBR3_Strategy_2.pptx` by `python3 tools/build_qbr_template.py`) and saves a .pptx that keeps the layout, fonts, world map, flags, arrows and footers. The on-page preview draws the same figures over a background image of each slide.
+
+The built-in releases come from `data/oxford-economics/` and `data/dodge/` (`python3 tools/build_market_releases.py` writes `dashboard/releases.js`). On the page, **Upload last Oxford Economics data** and **Upload Dodge data** add releases in the browser; an Oxford Economics upload also refreshes the dashboard's market growth. Dodge figures leave out the subtotal rows of the export, so totals are not double counted.
 
 ## How the matrix is scored
 

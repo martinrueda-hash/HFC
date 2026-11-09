@@ -244,65 +244,29 @@ sup { font-size: .7em; line-height: 0; }
 .qtabs { display: flex; flex-wrap: wrap; gap: 6px; }
 .qtab { font: inherit; font-size: 12px; border: 1px solid var(--red); background: var(--bg); color: var(--red); padding: 5px 12px; border-radius: 3px; cursor: pointer; }
 .qtab[aria-selected="true"] { background: var(--red); color: #fff; font-weight: 700; }
-.qtab:disabled { border-color: var(--line); color: var(--axis); cursor: not-allowed; }
-.qtab .lk { font-size: 10px; margin-left: 4px; }
-.qbody { display: grid; gap: 16px; }
+.qtab.off { border-color: var(--line); color: var(--axis); background: var(--page); }
+.qtab.off[aria-selected="true"] { background: var(--axis); color: #fff; border-color: var(--axis); }
+.qbody { display: grid; gap: 10px; }
+.qbar { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
 .qmeta { font-size: 11.5px; color: var(--ink); display: flex; flex-wrap: wrap; gap: 4px 14px; }
 .qmeta b { color: var(--ink-strong); }
-.qmeta .flag { color: var(--red); font-weight: 600; }
-.qslide { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; display: grid; background: var(--bg); min-width: 0; }
-.qslide-hd { display: flex; justify-content: space-between; gap: 12px; background: #ececec; color: var(--red); font-size: 12px; padding: 6px 14px; }
-.qslide-bd { padding: 14px 18px 16px; display: grid; gap: 10px; min-width: 0; }
-.qslide-t { font-size: 19px; color: var(--red); line-height: 1.25; border-bottom: 1px solid var(--red); padding-bottom: 4px; }
-.qslide-t b { font-weight: 700; }
-.qslide-sub { font-size: 12px; font-weight: 700; color: var(--ink-strong); }
-.qslide-ft { background: #ececec; font-size: 10.5px; color: var(--ink); padding: 6px 14px; display: grid; gap: 1px; }
-.qscroll { overflow-x: auto; }
-.pos { color: #1e8c4e; } .neg { color: var(--red); } .neu { color: var(--muted); }
-.ph { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; color: var(--ink); }
-.man { background: #fff176; color: var(--ink-strong); padding: 0 4px; border-radius: 2px; outline: none; min-width: 1.6em; display: inline-block; cursor: text; }
-.man:focus { box-shadow: 0 0 0 2px var(--red); }
+.qpreview { display: grid; gap: 14px; }
+.qlocked { padding: 18px; border: 1px dashed var(--axis); border-radius: 6px; font-size: 13px; color: var(--ink); line-height: 1.5; }
+.qlocked b { color: var(--red); }
+/* slide preview: background image of the deck slide + figures placed at the template's positions */
+.qs { position: relative; width: 100%; aspect-ratio: 16 / 9; container-type: inline-size; box-shadow: 0 1px 4px rgba(0,0,0,.18); background: #fff; overflow: hidden; }
+.qs-bg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.qs-layer { position: absolute; inset: 0; font-family: var(--font); color: #191919; line-height: 1.2; }
+.qb { position: absolute; display: flex; flex-direction: column; box-sizing: border-box; }
+.qp { white-space: pre-wrap; }
+.qchip, .qarrow { position: absolute; height: auto; overflow: visible; }
+.qarrow.edit { cursor: pointer; }
+.qarrow.edit.empty { outline: 1px dashed #c9c9c9; }
+.ph { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 2px; }
+.man { background: #ffff00; outline: none; cursor: text; }
 .man.ph { background: transparent; }
+.man:focus { box-shadow: 0 0 0 2px var(--red); }
 .man.ph:focus { background: #fffbe0; }
-/* growth outlook table */
-table.go { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1000px; font-size: 12px; font-variant-numeric: tabular-nums; }
-.go th, .go td { padding: 5px 5px; text-align: center; white-space: nowrap; }
-.go .reg th { font-size: 16px; font-weight: 700; color: var(--ink); padding-top: 2px; }
-.go .regtag th { padding-bottom: 8px; }
-.go .regtag span.t { display: inline-block; background: var(--red); color: #fff; font-weight: 700; font-size: 11px; padding: 3px 12px; border-radius: 3px 10px 3px 10px; }
-.go .regtag .man { background: #fff176; color: var(--ink-strong); }
-.go .ctry th { font-weight: 700; color: var(--ink); font-size: 12.5px; padding-bottom: 0; }
-.go .yrs th { font-size: 11px; color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--line); }
-.go td.l { text-align: left; font-weight: 700; color: var(--ink-strong); padding-right: 12px; }
-.go tr.main td { background: #f4f4f4; font-weight: 600; font-size: 12.5px; }
-.go tr.sub td.l { font-weight: 600; padding-left: 26px; }
-.go tr.gap td { padding: 3px; }
-.go tr.var td { background: #f4f4f4; }
-.go tr.var td.l { color: var(--red); }
-.go tr.dodge td { border-top: 1px solid var(--line); }
-.go .sep { border-left: 1px dashed var(--axis); }
-.vchip { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 700; color: #fff; }
-.vchip.sp { background: #1e6b45; } .vchip.p { background: #8fcf9f; } .vchip.n { background: #9a9a9a; } .vchip.ng { background: #e6979b; } .vchip.sn { background: #8f1a2c; }
-.vlegend { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; justify-content: flex-end; font-size: 11px; color: var(--ink); }
-.vlegend span { display: inline-flex; align-items: center; gap: 6px; }
-/* EMEA performance table */
-.emea-grid { display: grid; grid-template-columns: minmax(0, 2.6fr) minmax(220px, 1fr); gap: 18px; }
-@media (max-width: 980px) { .emea-grid { grid-template-columns: minmax(0, 1fr); } }
-table.emea { border-collapse: separate; border-spacing: 4px; width: 100%; min-width: 760px; font-size: 13px; font-variant-numeric: tabular-nums; }
-.emea th { font-size: 12px; font-weight: 700; color: var(--ink); text-align: center; padding: 2px 6px; vertical-align: bottom; }
-.emea th.yr { text-align: left; font-size: 16px; color: var(--ink-strong); border-bottom: 1px solid var(--ink); }
-.emea td { background: #f2f2f2; text-align: center; padding: 8px 6px; white-space: nowrap; }
-.emea td.cty { background: transparent; text-align: left; font-weight: 700; color: var(--ink-strong); white-space: nowrap; }
-.emea td.cty small { display: block; font-weight: 500; color: var(--muted); font-size: 10.5px; }
-.emea td.cm { text-align: left; font-size: 11px; white-space: normal; min-width: 150px; }
-.emea .vsep { border-left: 1px solid var(--ink); }
-.arr { font-size: 14px; margin-left: 6px; }
-.arr.up { color: #1fa84f; } .arr.dn { color: var(--red); } .arr.fl { color: #f2a900; }
-.kt { border-left: 1px solid var(--ink); padding-left: 16px; display: grid; gap: 10px; align-content: start; }
-.kt h4 { margin: 0; font-size: 17px; text-align: center; color: var(--ink-strong); }
-.kt ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 12.5px; }
-.qbanner { margin-top: 2px; }
-.qlocked { padding: 18px; border: 1px dashed var(--axis); border-radius: 6px; font-size: 13px; color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
@@ -408,7 +372,7 @@ table.emea { border-collapse: separate; border-spacing: 4px; width: 100%; min-wi
     <div class="qtabs" id="qbrTabs" role="tablist" aria-label="Quarterly report"></div>
     <div class="qbody" id="qbrBody"></div>
     <div class="source">
-      <span>Yellow = HFC figures, to be completed manually: click to edit (saved in this browser). Underlined = data not available yet (US and China in Oxford Economics, comments).</span>
+      <span>Yellow = HFC figures to complete: click to edit (saved in this browser), click an HFC FY arrow to change it. Underlined = data not available yet (US and China in Oxford Economics) and comments. The export keeps the deck's layout, fonts and footers.</span>
     </div>
   </section>
 
@@ -467,6 +431,7 @@ table.emea { border-collapse: separate; border-spacing: 4px; width: 100%; min-wi
 
 <script src="data.js"></script>
 <script src="releases.js"></script>
+<script src="qbr_template.js"></script>
 <script>
 (function () {
   "use strict";
@@ -1422,181 +1387,312 @@ table.emea { border-collapse: separate; border-spacing: 4px; width: 100%; min-wi
   }
 
   // ---------- quarterly reports ----------
+  // The two QBR market slides come from tools/build_qbr_template.py: the deck's own slides with every
+  // figure replaced by a marker. The page previews them (slide background + figures at the same
+  // positions) and exports a .pptx by filling the markers in the real template.
+  const TPL = window.HFC_QBR_TEMPLATE || null;
   let QMAN = {};
   try { QMAN = JSON.parse(store.get(LS_QBR) || "{}") || {}; } catch (e) { QMAN = {}; }
-  // HFC figures from the QBR3 2026 deck as starting values (yellow cells, edit on the page)
+  const saveMan = () => store.set(LS_QBR, JSON.stringify(QMAN));
+  // HFC figures from the QBR3 2026 deck as starting values (yellow, edited on the page)
   const HFC_FY25 = { Germany: "106.8", France: "72.8", Netherlands: "44.2", "United Kingdom": "26.9", Belgium: "36.4", Poland: "22.1", Nordics: "12.6" };
+  const HFC_FY25_ARROW = { Germany: "up", France: "down", Netherlands: "up", "United Kingdom": "down", Belgium: "up", Poland: "down", Nordics: "down" };
   const HFC_Q3_26 = { Germany: ["59", "-0.2%", "30%"], France: ["19.9", "+4.7%", "10%"], Netherlands: ["18", "-19.1%", "11%"], "United Kingdom": ["15.4", "-14%", "9%"],
     Belgium: ["8.2", "-3.6%", "4%"], Poland: ["8.3", "+2.5%", "4%"], Nordics: ["7.3", "+7.7%", "3%"] };
   function manDefault(q, id) {
-    const Y = Number(q.slice(0, 4));
-    const [kind, who] = id.split(":");
-    if (Y === 2026) {
-      if (kind === "rev") return { Americas: "10%", Europe: "89%", APAC: "1%" }[who] || null;
-      if (kind === "fy") return HFC_FY25[who] || null;
-      if (q === "2026Q3" && HFC_Q3_26[who]) return { ytd: HFC_Q3_26[who][0], ytdp: HFC_Q3_26[who][1], share: HFC_Q3_26[who][2] }[kind] || null;
-    }
+    const Y = Number(q.slice(0, 4)), [kind, who] = id.split(":");
+    if (Y !== 2026) return null;
+    if (kind === "rev") return { Americas: "10%", Europe: "89%", APAC: "1%" }[who] || null;
+    if (kind === "fy") return HFC_FY25[who] || null;
+    if (kind === "fyarrow") return HFC_FY25_ARROW[who] || null;
+    if (q === "2026Q3" && HFC_Q3_26[who]) return { ytd: HFC_Q3_26[who][0], ytdp: HFC_Q3_26[who][1], share: HFC_Q3_26[who][2] }[kind] || null;
     return null;
   }
-  // editable cell: yellow for HFC figures, underlined "xxx" for comments
-  function man(q, id, opts = {}) {
-    const saved = (QMAN[q] || {})[id];
-    const txt = saved !== undefined ? saved : (manDefault(q, id) ?? (opts.ph || "xx"));
-    return `<span class="man${opts.comment ? " ph" : ""}" contenteditable="true" spellcheck="false" data-q="${q}" data-id="${esc(id)}" role="textbox" aria-label="${esc(opts.label || id)}">${esc(txt)}</span>`;
-  }
-  const missing = (txt = "x.x") => `<span class="ph" title="Data not available yet">${txt}</span>`;
-  const one = v => v === null || !Number.isFinite(v) ? null : (Math.abs(v) < 0.05 ? 0 : v);
-  const gcls = v => v === null ? "neu" : v >= 1 ? "pos" : v < 0 ? "neg" : "neu";
-  const num1 = v => { const x = one(v); return x === null ? missing() : `<span class="${gcls(x)}">${x.toFixed(1)}</span>`; };
-  const pctTxt = v => { const x = one(v); return x === null ? null : (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(1) + "%"; };
-  const arrowFor = v => v === null || !Number.isFinite(v) ? "" : v > 0.5 ? '<span class="arr up">⬆</span>' : v < -0.5 ? '<span class="arr dn">⬇</span>' : '<span class="arr fl">➡</span>';
-  const vChip = d => {
-    if (d === null) return "";
-    const [c, g, t] = d >= 0.5 ? ["sp", "▲", "strongly positive"] : d >= 0.1 ? ["p", "▲", "positive"] : d <= -0.5 ? ["sn", "▼", "strongly negative"] : d <= -0.1 ? ["ng", "▼", "negative"] : ["n", "►", "neutral"];
-    return `<span class="vchip ${c}" title="${t}: ${pp(d)} vs. previous SBR">${g}</span>`;
-  };
+  const manVal = (q, id, ph) => { const s = (QMAN[q] || {})[id]; return s !== undefined ? s : (manDefault(q, id) ?? ph); };
 
+  const EMEA_ROWS = [["Germany", ["Germany"]], ["France", ["France"]], ["Netherlands", ["Netherlands"]], ["United Kingdom", ["United Kingdom"]],
+    ["Belgium", ["Belgium"]], ["Poland", ["Poland"]], ["Nordics", ["Sweden", "Norway", "Denmark", "Finland"]]];
+  const GO_COLS = { us: ["United States", "USA", "US"], de: ["Germany"], fr: ["France"], nl: ["Netherlands"], cn: ["China"] };
+  const GO_ROWS = { res: [OE.res, ""], res_new: [OE.res, "New"], res_reno: [OE.res, "Renovation"], non: [OE.com, ""], non_new: [OE.com, "New"], non_reno: [OE.com, "Renovation"] };
+  const nowQ = () => qKey(qOfDate(new Date().toISOString().slice(0, 10)));
+
+  // a report is available when an Oxford Economics release dated in or before its quarter exists
   function quarterList() {
     const r = releases();
-    const qs = r.oe.map(x => qKey(qOfDate(x.date))).concat(r.dodge.map(x => qKey(x.quarter)));
-    const latest = qs.length ? Math.max(...qs) : -1;
-    const end = Math.max(latest, qKey("2026Q4"));
+    const oeQs = r.oe.map(x => qKey(qOfDate(x.date)));
+    const end = Math.max(qKey("2026Q4"), ...oeQs, ...r.dodge.map(x => qKey(x.quarter)));
     const out = [];
-    for (let k = qKey("2025Q1"); k <= end; k++) out.push({ q: qFromKey(k), unlocked: k <= latest });
+    for (let k = qKey("2025Q1"); k <= end; k++) {
+      const q = qFromKey(k);
+      const ok = oeQs.some(x => x <= k);
+      const dodgeOk = r.dodge.some(x => qKey(x.quarter) <= k);
+      out.push({ q, available: ok, dodge: dodgeOk,
+        why: ok ? "" : `Report ${qLabel(q)} needs an Oxford Economics release dated ${qLabel(q)} or earlier (end of ${MONTH_NAMES[(Number(q.slice(5)) * 3) - 1]} ${q.slice(0, 4)}). ` +
+          (r.oe.length ? `The releases uploaded so far are later: ${r.oe.map(x => fmtDate(x.date)).join(", ")}. ` : "No Oxford Economics release has been uploaded yet. ") +
+          `Upload that release under "Update the data" to activate this report.` + (dodgeOk ? " Dodge data for this quarter is already available." : "") });
+    }
     return out;
   }
-  // latest release up to the end of the quarter; else the earliest one, flagged as later than the quarter
-  function pickRel(list, kind, q) {
-    if (!list.length) return null;
-    const le = list.filter(x => qKey(relQ(kind, x)) <= qKey(q));
-    return le.length ? { rel: le[le.length - 1], later: false } : { rel: list[0], later: true };
+  const pickRel = (list, kind, q) => { const le = list.filter(x => qKey(relQ(kind, x)) <= qKey(q)); return le.length ? le[le.length - 1] : null; };
+
+  // all figures of one report: V = styled values, T = plain texts, chips, arrows
+  function reportData(q, list) {
+    const r = releases();
+    const Y = Number(q.slice(0, 4)), y2 = n => "’" + String(n).slice(2), qn = Number(q.slice(5));
+    const oe = pickRel(r.oe, "oe", q), dodge = pickRel(r.dodge, "dodge", q);
+    const prevQ = list.filter(x => x.available && qKey(x.q) < qKey(q)).pop();
+    const prevOe = prevQ ? pickRel(r.oe, "oe", prevQ.q) : null;
+    const locs = oe ? oeLocs(oe) : [];
+    const cols = Object.assign({}, GO_COLS, { eu: locs.filter(l => !NON_EUROPE.includes(l)) });
+    const has = (rel, l) => rel && l.some(x => oeLocs(rel).includes(x));
+    const V = {}, T = { growth: {}, emea: {} };
+    const num = v => v === null || !Number.isFinite(v) ? { text: "x.x", kind: "missing" } :
+      { text: (Math.abs(v) < 0.05 ? 0 : v).toFixed(1), kind: v < -0.05 ? "neg" : v >= 1 ? "pos" : "neu" };
+    // growth outlook
+    Object.entries(cols).forEach(([c, l]) => Object.entries(GO_ROWS).forEach(([row, [base, kind]]) => {
+      const t = has(oe, l) ? trio(y => oeVal(oe, l, base, kind, y), Y) : [null, null, null];
+      t.forEach((v, k) => { V[`go:${c}:${row}:${k}`] = num(v); });
+    }));
+    const dt = dodge ? trio(y => dodgeVal(dodge, null, y), Y) : [null, null, null];
+    const dn = dodge ? trio(y => dodgeVal(dodge, "nonres", y), Y) : [null, null, null];
+    V["go:us:dodge_total:1"] = num(dt[1]); V["go:us:dodge_non:1"] = num(dn[1]);
+    ["Americas", "Europe", "APAC"].forEach(g => { V["rev:" + g] = { text: manVal(q, "rev:" + g, "xx%"), kind: "man", id: "rev:" + g }; });
+    V["banner:growth"] = { text: manVal(q, "banner:growth", "xxx"), kind: "comment", id: "banner:growth" };
+    const relMonth = rel => rel ? `${MONTH_NAMES[Number(rel.date.slice(5, 7)) - 1]} ${rel.date.slice(0, 4)}` : "";
+    Object.assign(T.growth, { yA: y2(Y - 1) + "A", yE: y2(Y) + "E", yC: y2(Y - 1) + "-" + y2(Y + 4), yP: String(Y - 1),
+      subtitle: `Work done by sector, annual % change, ${relMonth(oe)} release`,
+      src: `Source: Oxford Economics ${relMonth(oe)} release${dodge ? `; Dodge, actuals to ${qLabel(dodge.quarter)}` : ""}; Group strategy and M&A analysis`,
+      notes: "Notes: OE non-residential = commercial (offices, retail, hotels). Europe = European countries in the release. Dodge: US construction spending." });
+    // variation vs. previous SBR (total = residential + non-residential), per column
+    const tot = (rel, l, y) => { const a = oeVal(rel, l, OE.res, "", y), b = oeVal(rel, l, OE.com, "", y); return a !== null && b !== null ? a + b : null; };
+    const chipType = d => d >= 0.5 ? "sp" : d >= 0.1 ? "p" : d <= -0.5 ? "sn" : d <= -0.1 ? "ng" : "n";
+    const chips = {};
+    Object.entries(cols).forEach(([c, l]) => {
+      if (!has(oe, l)) return;
+      const cur = trio(y => tot(oe, l, y), Y);
+      const pre = prevOe && prevOe.id !== oe.id && has(prevOe, l) ? trio(y => tot(prevOe, l, y), Y) : null;
+      [1, 2].forEach(k => { chips[c + ":" + k] = pre && cur[k] !== null && pre[k] !== null ? chipType(cur[k] - pre[k]) : "n"; });
+    });
+    // EMEA performance
+    const arrows = {};
+    const dirOf = v => v === null || !Number.isFinite(v) ? null : v > 0.5 ? "up" : v < -0.5 ? "down" : "flat";
+    EMEA_ROWS.forEach(([name, l]) => {
+      const m = y => has(oe, l) ? growth(tot(oe, l, y), tot(oe, l, y - 1)) : null;
+      [["m1", m(Y - 1)], ["m2", m(Y)]].forEach(([k, v]) => {
+        V[`em:${name}:${k}`] = v === null ? { text: "x.x%", kind: "missing" } : { text: (v > 0.05 ? "+" : "") + (Math.abs(v) < 0.05 ? "0.0" : v.toFixed(1)) + "%", kind: "plain" };
+        arrows[`${name}:${k}`] = dirOf(v);
+      });
+      ["fy", "ytd", "ytdp", "share"].forEach(k => { V[`em:${name}:${k}`] = { text: manVal(q, `${k}:${name}`, "xx"), kind: "man", id: `${k}:${name}` }; });
+      V[`em:${name}:cm`] = { text: manVal(q, `cm:${name}`, "xxx"), kind: "comment", id: `cm:${name}` };
+      const fa = manVal(q, "fyarrow:" + name, null);
+      arrows[`${name}:fy`] = fa === "none" ? null : fa;
+    });
+    [1, 2, 3, 4, "priority"].forEach(i => { V["kt:" + i] = { text: manVal(q, "kt:" + i, "xxx"), kind: "comment", id: "kt:" + i }; });
+    Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2),
+      src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + non-residential commercial).`,
+      notes: `Note: HFC figures to be completed (yellow). 1_ HFC YTD = end of ${MONTH_NAMES[qn * 3 - 1]} ${Y}. Nordics = Sweden, Norway, Denmark, Finland.` });
+    return { q, oe, dodge, prevQ, prevOe, V, T, chips, arrows };
   }
 
-  const EU_COLS = [["Germany", ["Germany"]], ["France", ["France"]], ["Netherlands", ["Netherlands"]]];
-  const EMEA_ROWS = [["Germany", ["Germany"], "DE"], ["France", ["France"], "FR"], ["Netherlands", ["Netherlands"], "NL"], ["United Kingdom", ["United Kingdom"], "UK"],
-    ["Belgium", ["Belgium"], "BE"], ["Poland", ["Poland"], "PL"], ["Nordics", ["Sweden", "Norway", "Denmark", "Finland"], "SE · NO · DK · FI"]];
-
-  function slideGrowth(q, oe, dodge, prevOe) {
-    const Y = Number(q.slice(0, 4)), y2 = n => "’" + String(n).slice(2);
-    const relLocs = oe ? oeLocs(oe.rel) : [];
-    const europe = relLocs.filter(l => !NON_EUROPE.includes(l));
-    const has = locs => locs.some(l => relLocs.includes(l));
-    const cols = [
-      { name: "USA", locs: ["United States", "USA", "US"], reg: "Americas" },
-      ...EU_COLS.map(([n, l]) => ({ name: n, locs: l, reg: "Europe" })),
-      { name: "Europe", locs: europe, reg: "Europe" },
-      { name: "China", locs: ["China"], reg: "APAC" },
-    ];
-    const series = [
-      ["OE | residential", OE.res, "", true], ["OE | resi new build", OE.res, "New"], ["OE | resi renovation", OE.res, "Renovation"],
-      null,
-      ["OE | non-residential", OE.com, "", true], ["OE | non-resi new build", OE.com, "New"], ["OE | non-resi renovation", OE.com, "Renovation"],
-    ];
-    const cell = (c, base, kind) => {
-      if (!oe || !has(c.locs)) return [missing(), missing(), missing()];
-      return trio(y => oeVal(oe.rel, c.locs, base, kind, y), Y).map(num1);
-    };
-    const sepCls = i => i === 1 || i === cols.length - 1 ? " sep" : "";
-    const rows = series.map(s => s === null ? `<tr class="gap"><td colspan="${1 + cols.length * 3}"></td></tr>` :
-      `<tr class="${s[3] ? "main" : "sub"}"><td class="l">${s[0]}</td>${cols.map((c, i) => cell(c, s[1], s[2]).map((v, j) => `<td class="${j === 0 ? sepCls(i).trim() : ""}">${v}</td>`).join("")).join("")}</tr>`).join("");
-    // variation vs previous SBR: change in total construction (residential + non-residential) growth
-    const tot = (rel, locs, y) => { const a = oeVal(rel, locs, OE.res, "", y), b = oeVal(rel, locs, OE.com, "", y); return a !== null && b !== null ? a + b : null; };
-    const varRow = `<tr class="var"><td class="l">Variation vs. previous SBR</td>${cols.map((c, i) => {
-      let e = "", g = "";
-      if (oe && prevOe && has(c.locs) && oeLocs(prevOe.rel).some(l => c.locs.includes(l))) {
-        const cur = trio(y => tot(oe.rel, c.locs, y), Y), pre = trio(y => tot(prevOe.rel, c.locs, y), Y);
-        if (cur[1] !== null && pre[1] !== null) e = vChip(cur[1] - pre[1]);
-        if (cur[2] !== null && pre[2] !== null) g = vChip(cur[2] - pre[2]);
-      }
-      return `<td class="${sepCls(i).trim()}"></td><td>${e}</td><td>${g}</td>`;
-    }).join("")}</tr>`;
-    const dodgeRow = (label, group) => {
-      const v = dodge ? trio(y => dodgeVal(dodge.rel, group, y), Y).map(num1) : [missing(), missing(), missing()];
-      return `<tr class="dodge"><td class="l">${label}</td>${v.map(x => `<td>${x}</td>`).join("")}<td class="sep" colspan="${(cols.length - 1) * 3}"></td></tr>`;
-    };
-    const regs = [["Americas", 1], ["Europe", 4], ["APAC", 1]];
-    const head = `<thead>
-      <tr class="reg"><th></th>${regs.map(([r, n], i) => `<th colspan="${n * 3}" class="${i ? "sep" : ""}">${r}</th>`).join("")}</tr>
-      <tr class="regtag"><th></th>${regs.map(([r, n], i) => `<th colspan="${n * 3}" class="${i ? "sep" : ""}"><span class="t">${man(q, "rev:" + r, { label: r + " share of revenue" })} of ${Y - 1} revenue</span></th>`).join("")}</tr>
-      <tr class="ctry"><th></th>${cols.map((c, i) => `<th colspan="3" class="${sepCls(i).trim()}">${c.name}</th>`).join("")}</tr>
-      <tr class="yrs"><th></th>${cols.map((c, i) => `<th class="${sepCls(i).trim()}">${y2(Y - 1)}A</th><th>${y2(Y)}E</th><th>${y2(Y - 1)}-${y2(Y + 4)}</th>`).join("")}</tr></thead>`;
-    const relName = oe ? `${MONTH_NAMES[Number(oe.rel.date.slice(5, 7)) - 1]} ${oe.rel.date.slice(0, 4)}` : "–";
-    return `<div class="qslide">
-      <div class="qslide-hd"><span>market outlook</span><span>market outlook | growth outlook</span></div>
-      <div class="qslide-bd">
-        <div class="qslide-t"><b>market outlook | growth outlook</b> · ${qLabel(q)}</div>
-        <div class="qslide-sub">Work done by sector, annual % change, ${relName} release</div>
-        <div class="qscroll"><table class="go">${head}<tbody>${rows}${varRow}${dodgeRow("DODGE | total const.", null)}${dodgeRow("DODGE | non-res", "nonres")}</tbody></table></div>
-        <div class="vlegend"><b>legend</b>${[["sp", "▲", "strongly positive"], ["p", "▲", "positive"], ["n", "►", "neutral"], ["ng", "▼", "negative"], ["sn", "▼", "strongly negative"]].map(([c, g, t]) => `<span><span class="vchip ${c}">${g}</span>${t}</span>`).join("")}</div>
-        <div class="takeaway qbanner">${man(q, "banner:growth", { comment: true, ph: "xxx", label: "Key message" })}</div>
-      </div>
-      <div class="qslide-ft"><span>Source: Oxford Economics ${relName} release${oe && oe.later ? " (later than this quarter)" : ""}${dodge ? `; Dodge vertical forecast, actuals to ${qLabel(dodge.rel.quarter)}${dodge.later ? " (later than this quarter)" : ""}` : ""}; Group strategy and M&amp;A analysis</span>
-        <span>Notes: OE non-residential = non-residential building, commercial (offices, retail, hotels), the series in the current export. Europe = all European countries in the Oxford Economics release. Dodge: US construction spending, total and non-residential building; growth in %. Variation vs. previous SBR: change in total (residential + non-residential) growth vs. the previous quarter's release; ▲▼ at ±0.1 pp, strong at ±0.5 pp.</span></div>
-    </div>`;
+  // ---- preview: slide background + figures at the template's positions
+  const VAL_COLOR = { pos: "#04935E", neg: "#CE0E2D", neu: "#747474", missing: "#747474", man: "#191919" };
+  const CHIP = { sp: ["#1a7f55", "M7 12l5-5 5 5"], p: ["#b9e2c4", "M9 8h6v6"], n: ["#bdbdbd", "M10 7l5 5-5 5"], ng: ["#efa3a8", "M9 16h6v-6"], sn: ["#8b1a2b", "M7 10l5 5 5-5"] };
+  const ARROW = { up: ["#00B050", 180], down: ["#CE0E2D", 0], flat: ["#FFC000", 270] };
+  const BOX_ALIAS = { dodge_total: "go:us:dodge_total:1", dodge_non: "go:us:dodge_non:1" };
+  function valHtml(v, q, run) {
+    if (!v) return "";
+    const st = [];
+    if (VAL_COLOR[v.kind]) st.push("color:" + VAL_COLOR[v.kind]);
+    const cls = v.kind === "man" ? "man" : v.kind === "comment" ? "man ph" : v.kind === "missing" ? "ph" : "";
+    const edit = v.id ? ` contenteditable="true" spellcheck="false" data-q="${q}" data-id="${esc(v.id)}" role="textbox" aria-label="${esc(v.id)}"` : "";
+    return `<span class="${cls}"${edit} style="${st.join(";")}">${esc(v.text)}</span>`;
   }
-
-  function slideEmea(q, oe) {
-    const Y = Number(q.slice(0, 4)), qn = Number(q.slice(5));
-    const endMonth = MONTH_NAMES[qn * 3 - 1];
-    const has = locs => oe && locs.some(l => oeLocs(oe.rel).includes(l));
-    const tot = (locs, y) => { const a = oeVal(oe.rel, locs, OE.res, "", y), b = oeVal(oe.rel, locs, OE.com, "", y); return a !== null && b !== null ? a + b : null; };
-    const mk = (locs, y) => has(locs) ? growth(tot(locs, y), tot(locs, y - 1)) : null;
-    const mcell = v => v === null ? missing() : `${pctTxt(v)}${arrowFor(v)}`;
-    const rows = EMEA_ROWS.map(([name, locs, code]) => {
-      const m1 = mk(locs, Y - 1), m2 = mk(locs, Y);
-      const ytdp = (QMAN[q] || {})["ytdp:" + name] ?? manDefault(q, "ytdp:" + name);
-      return `<tr><td class="cty">${name}<small>${code}</small></td>
-        <td>${mcell(m1)}</td><td>${man(q, "fy:" + name, { label: name + " HFC FY" })}</td>
-        <td class="vsep">${mcell(m2)}</td><td>${man(q, "ytd:" + name, { label: name + " HFC YTD" })}</td>
-        <td>${man(q, "ytdp:" + name, { label: name + " HFC YTD %" })}<span class="arr-slot" data-for="${esc(name)}">${arrowFor(toNum(ytdp))}</span></td>
-        <td>${man(q, "share:" + name, { label: name + " share of revenue" })}</td>
-        <td class="cm">${man(q, "cm:" + name, { comment: true, ph: "xxx", label: name + " comment" })}</td></tr>`;
+  function fillText(t, data, key, q) {
+    return esc(t).replace(/\{\{([vt]):([^}]+)\}\}/g, (m, kind, id) => kind === "t" ? esc(data.T[key][id] ?? "") : valHtml(data.V[id], q));
+  }
+  function slidePreview(key, data) {
+    const sl = TPL.slides[key], q = data.q;
+    const boxes = sl.boxes.map(b => {
+      const hasTok = b.paras.some(p => p.runs.some(r => /\{\{/.test(r.t)));
+      const vid = BOX_ALIAS[b.id] || b.id;
+      const paras = b.paras.map(p => {
+        // a value box shows its figure once, in the style of its first run
+        const runList = hasTok ? p.runs : p.runs.slice(0, 1);
+        const runs = runList.map(r => {
+          const sz = r.sz || b.srcSz || 10;
+          const style = `font-size:${(sz / 960 * 100).toFixed(3)}cqw;${r.b ? "font-weight:700;" : ""}${r.c ? "color:#" + r.c + ";" : ""}${r.base ? "vertical-align:super;font-size:" + (sz * 0.6 / 960 * 100).toFixed(3) + "cqw;" : ""}`;
+          const inner = hasTok ? fillText(r.t, data, key, q) : valHtml(data.V[vid], q, r);
+          return `<span style="${style}">${inner}</span>`;
+        }).join("");
+        return `<div class="qp" style="text-align:${{ ctr: "center", r: "right", just: "justify" }[p.algn] || "left"}">${runs || "&nbsp;"}</div>`;
+      }).join("");
+      const just = { ctr: "center", b: "flex-end" }[b.anchor] || "flex-start";
+      return `<div class="qb" style="left:${b.x * 100}%;top:${b.y * 100}%;width:${b.w * 100}%;height:${b.h * 100}%;justify-content:${just};padding:${b.ins[1] * 56.25}cqw ${b.ins[2] * 100}cqw ${b.ins[3] * 56.25}cqw ${b.ins[0] * 100}cqw">${paras}</div>`;
     }).join("");
-    const relName = oe ? `${MONTH_NAMES[Number(oe.rel.date.slice(5, 7)) - 1]} ${oe.rel.date.slice(0, 4)}` : "–";
-    return `<div class="qslide">
-      <div class="qslide-hd"><span>business update</span><span>vertical update</span></div>
-      <div class="qslide-bd">
-        <div class="qslide-t">Market environment EMEA | HFC performance in key countries · ${qLabel(q)}</div>
-        <div class="emea-grid">
-          <div class="qscroll"><table class="emea">
-            <thead><tr><th></th><th colspan="2" class="yr">${Y - 1}</th><th colspan="5" class="yr">${Y}</th></tr>
-            <tr><th></th><th>Market</th><th>HFC FY</th><th class="vsep">Market fcst</th><th colspan="2">HFC YTD<sup>1</sup></th><th>% of total rev. YTD ’${String(Y).slice(2)}</th><th>comments</th></tr></thead>
-            <tbody>${rows}</tbody></table></div>
-          <div class="kt"><h4>Key takeaways</h4><ul>${[1, 2, 3, 4].map(i => `<li>${man(q, "kt:" + i, { comment: true, ph: "xxx", label: "Key takeaway " + i })}</li>`).join("")}</ul>
-            <p><b>Priority:</b> ${man(q, "kt:priority", { comment: true, ph: "xxx", label: "Priority" })}</p></div>
-        </div>
-      </div>
-      <div class="qslide-ft"><span>Source: Oxford Economics ${relName} release${oe && oe.later ? " (later than this quarter)" : ""}, construction work done (residential + non-residential commercial).</span>
-        <span>Note: HFC figures in € m, to be completed manually (yellow). 1_ YTD = end of ${endMonth} ${Y}. Nordics = Sweden, Norway, Denmark, Finland.</span></div>
-    </div>`;
+    let extra = "";
+    if (key === "growth") extra = sl.chips.map(ch => {
+      const t = data.chips[ch.col + ":" + ch.k];
+      if (!t) return "";
+      const [fill, path] = CHIP[t];
+      return `<svg class="qchip" viewBox="0 0 24 24" style="left:${ch.x / TPL.slideW * 100}%;top:${ch.y / TPL.slideH * 100}%;width:${ch.w / TPL.slideW * 100}%" aria-label="${t}"><circle cx="12" cy="12" r="12" fill="${fill}"/><path d="${path}" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    }).join("");
+    else extra = sl.arrows.map(a => {
+      const d = data.arrows[a.row + ":" + a.col];
+      const editable = a.col === "fy";
+      if (!d && !editable) return "";
+      const [fill, rot] = ARROW[d] || ["transparent", 0];
+      return `<svg class="qarrow${editable ? " edit" : ""}${d ? "" : " empty"}" viewBox="0 0 10 16" data-row="${esc(a.row)}" ${editable ? `role="button" tabindex="0" aria-label="${esc(a.row)} HFC FY trend: ${d || "none"} (click to change)"` : ""}
+        style="left:${a.x / TPL.slideW * 100}%;top:${a.y / TPL.slideH * 100}%;width:${a.w / TPL.slideW * 100}%;height:${a.h / TPL.slideH * 100}%;transform:rotate(${rot}deg)"><path d="M3 0h4v9h3l-5 7-5-7h3z" fill="${fill}"/></svg>`;
+    }).join("");
+    return `<div class="qs"><img src="${sl.bg}" alt="" class="qs-bg"><div class="qs-layer">${boxes}${extra}</div></div>`;
+  }
+
+  // ---- export: fill the template and save a .pptx
+  const xmlEsc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  function styledRun(rPr, v) {
+    let open = rPr, inner = "";
+    const m = rPr.match(/^<a:rPr\b([^>]*?)(\/>|>([\s\S]*)<\/a:rPr>)$/);
+    let attrs = m ? m[1] : ' lang="en-GB"';
+    inner = m && m[3] ? m[3] : "";
+    const color = { pos: "04935E", neg: "CE0E2D", neu: "747474", missing: "747474", man: "191919" }[v.kind];
+    if (color) {
+      const fill = `<a:solidFill><a:srgbClr val="${color}"/></a:solidFill>`;
+      if (/<a:solidFill>[\s\S]*?<\/a:solidFill>/.test(inner)) inner = inner.replace(/<a:solidFill>[\s\S]*?<\/a:solidFill>/, fill);
+      else if (/<a:ln\b[\s\S]*?<\/a:ln>|<a:ln\b[^>]*\/>/.test(inner)) inner = inner.replace(/(<a:ln\b[\s\S]*?<\/a:ln>|<a:ln\b[^>]*\/>)/, "$1" + fill);
+      else inner = fill + inner;
+    }
+    if (v.kind === "missing" || v.kind === "comment") attrs = /\bu="[^"]*"/.test(attrs) ? attrs.replace(/\bu="[^"]*"/, 'u="sng"') : attrs + ' u="sng"';
+    if (v.kind === "man") {
+      const hl = '<a:highlight><a:srgbClr val="FFFF00"/></a:highlight>';
+      const at = inner.search(/<a:(uLnTx|uLn|uFillTx|uFill|latin|ea|cs|sym|hlinkClick|hlinkMouseOver|rtl|extLst)\b/);
+      inner = at >= 0 ? inner.slice(0, at) + hl + inner.slice(at) : inner + hl;
+    }
+    open = `<a:rPr${attrs}>${inner}</a:rPr>`;
+    return `<a:r>${open}<a:t>${xmlEsc(v.text)}</a:t></a:r>`;
+  }
+  function fillXml(xml, key, data, ids) {
+    const sl = TPL.slides[key];
+    // a run whose text is a value marker; its rPr is either self-closing or closed within the same run
+    xml = xml.replace(/<a:r>(<a:rPr\b[^>]*?\/>|<a:rPr\b[^>]*(?<!\/)>(?:(?!<\/a:rPr>)[\s\S])*<\/a:rPr>)<a:t>\{\{v:([^}]+)\}\}<\/a:t><\/a:r>/g,
+      (m, rPr, id) => styledRun(rPr, data.V[id] || { text: "", kind: "plain" }));
+    xml = xml.replace(/\{\{t:([^}]+)\}\}/g, (m, id) => xmlEsc(data.T[key][id] ?? ""));
+    xml = xml.replace(/\{\{x:(chip|arrow):([^}]+)\}\}/g, (m, kind, id) => {
+      if (kind === "chip") {
+        const ch = sl.chips[Number(id)], t = data.chips[ch.col + ":" + ch.k];
+        if (!t) return "";
+        return sl.chipXml[t].replace("{{X}}", ch.x).replace("{{Y}}", ch.y).replace(/\{\{ID(\d+)\}\}/g, (mm, n) => ids.base + ids.next(Number(n)));
+      }
+      const [row, col] = id.split(":"), a = sl.arrows.find(x => x.row === row && x.col === col), d = data.arrows[id];
+      if (!d) return "";
+      const rot = { up: ' rot="10800000"', down: "", flat: ' rot="16200000"' }[d], fill = { up: "00B050", down: "CE0E2D", flat: "FFC000" }[d];
+      return sl.arrowXml.replace("{{ROT}}", rot).replace("{{X}}", a.x).replace("{{Y}}", a.y).replace("{{FILL}}", fill).replace(/\{\{ID0\}\}/g, ids.base + ids.next(0));
+    });
+    return xml;
+  }
+  // minimal zip: read all entries, write them back stored (no compression)
+  async function unzipAll(buf) {
+    const dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength), dec = new TextDecoder();
+    let eocd = -1;
+    for (let i = buf.length - 22; i >= Math.max(0, buf.length - 65557); i--) if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+    const out = [];
+    let p = dv.getUint32(eocd + 16, true);
+    for (let k = 0, n = dv.getUint16(eocd + 10, true); k < n; k++) {
+      const method = dv.getUint16(p + 10, true), size = dv.getUint32(p + 20, true), nlen = dv.getUint16(p + 28, true), off = dv.getUint32(p + 42, true);
+      const name = dec.decode(buf.subarray(p + 46, p + 46 + nlen));
+      p += 46 + nlen + dv.getUint16(p + 30, true) + dv.getUint16(p + 32, true);
+      const start = off + 30 + dv.getUint16(off + 26, true) + dv.getUint16(off + 28, true);
+      let data = buf.subarray(start, start + size);
+      if (method === 8) data = new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
+      out.push({ name, data });
+    }
+    return out;
+  }
+  const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  const crc32 = d => { let c = 0xFFFFFFFF; for (let i = 0; i < d.length; i++) c = CRC[(c ^ d[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+  function zipStore(files) {
+    const enc = new TextEncoder(), parts = [], central = [];
+    let offset = 0;
+    files.forEach(f => {
+      const name = enc.encode(f.name), crc = crc32(f.data), h = new DataView(new ArrayBuffer(30));
+      h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(8, 0, true); h.setUint32(14, crc, true);
+      h.setUint32(18, f.data.length, true); h.setUint32(22, f.data.length, true); h.setUint16(26, name.length, true);
+      parts.push(new Uint8Array(h.buffer), name, f.data);
+      const c = new DataView(new ArrayBuffer(46));
+      c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint32(16, crc, true);
+      c.setUint32(20, f.data.length, true); c.setUint32(24, f.data.length, true); c.setUint16(28, name.length, true); c.setUint32(42, offset, true);
+      central.push(new Uint8Array(c.buffer), name);
+      offset += 30 + name.length + f.data.length;
+    });
+    const csize = central.reduce((s, a) => s + a.length, 0), e = new DataView(new ArrayBuffer(22));
+    e.setUint32(0, 0x06054b50, true); e.setUint16(8, files.length, true); e.setUint16(10, files.length, true); e.setUint32(12, csize, true); e.setUint32(16, offset, true);
+    return new Blob(parts.concat(central, [new Uint8Array(e.buffer)]), { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
+  }
+  async function buildPptx(data) {
+    const bin = atob(TPL.pptx), buf = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+    const files = await unzipAll(buf), dec = new TextDecoder(), enc = new TextEncoder();
+    let counter = 0;
+    const ids = { base: 90000, next: () => counter++ };
+    ["growth", "emea"].forEach(key => {
+      const f = files.find(x => x.name === TPL.slides[key].file);
+      f.data = enc.encode(fillXml(dec.decode(f.data), key, data, ids));
+    });
+    return zipStore(files);
+  }
+  async function exportPptx(data) {
+    const msg = document.getElementById("qbrMsg");
+    msg.textContent = "Building the PowerPoint…"; msg.classList.remove("err");
+    let blob;
+    try { blob = await buildPptx(data); } catch (e) { msg.textContent = "The PowerPoint could not be built: " + ((e && e.message) || e); msg.classList.add("err"); return; }
+    const filename = `HFC_QBR_market_outlook_${qLabel(data.q).replace(" ", "_")}.pptx`;
+    const dl = window.claude && window.claude.use ? await window.claude.use("downloads").catch(() => null) : null;
+    if (dl) {
+      try { await dl.save({ filename, data: blob }); msg.textContent = filename + " saved."; }
+      catch (e) { msg.textContent = e && e.code === "declined" ? "Export cancelled." : "This view cannot save files. Open the dashboard in claude.ai or from the repository to export."; msg.classList.toggle("err", !(e && e.code === "declined")); }
+      return;
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    msg.textContent = filename + " downloaded.";
   }
 
   let qTab = store.get(LS_QTAB);
   function renderQbr() {
-    const list = quarterList(), r = releases();
-    const unlocked = list.filter(x => x.unlocked);
-    if (!list.some(x => x.q === qTab && x.unlocked)) qTab = unlocked.length ? unlocked[unlocked.length - 1].q : null;
-    document.getElementById("qbrTabs").innerHTML = list.map(x => `<button type="button" class="qtab" role="tab" data-q="${x.q}" aria-selected="${x.q === qTab}"${x.unlocked ? "" : ` disabled title="Unlocks when a release from ${qLabel(x.q)} or later is uploaded"`}>${qLabel(x.q)}${x.unlocked ? "" : '<span class="lk">locked</span>'}</button>`).join("");
-    document.querySelectorAll("#qbrTabs .qtab:not(:disabled)").forEach(b => b.addEventListener("click", () => { qTab = b.dataset.q; store.set(LS_QTAB, qTab); renderQbr(); }));
+    const list = quarterList();
+    const avail = list.filter(x => x.available);
+    if (!list.some(x => x.q === qTab)) qTab = avail.length ? avail[avail.length - 1].q : list[list.length - 1].q;
+    document.getElementById("qbrTabs").innerHTML = list.map(x =>
+      `<button type="button" class="qtab${x.available ? "" : " off"}" role="tab" data-q="${x.q}" aria-selected="${x.q === qTab}" aria-disabled="${!x.available}"${x.available ? "" : ' title="No data yet for this quarter"'}>${qLabel(x.q)}</button>`).join("");
+    document.querySelectorAll("#qbrTabs .qtab").forEach(b => b.addEventListener("click", () => { qTab = b.dataset.q; store.set(LS_QTAB, qTab); renderQbr(); }));
+    document.getElementById("qbrScope").textContent = `${avail.length} of ${list.length} quarterly reports available: ${avail.length ? avail.map(x => qLabel(x.q)).join(", ") : "none yet"}. The others activate when their data is uploaded.`;
     const body = document.getElementById("qbrBody");
-    document.getElementById("qbrScope").textContent = `Quarterly reports ${qLabel(list[0].q)} – ${qLabel(list[list.length - 1].q)}: ${unlocked.length} available, the others unlock with new data`;
-    if (!qTab) { body.innerHTML = '<div class="qlocked">No report yet: upload an Oxford Economics or Dodge release to unlock the first one.</div>'; return; }
-    const oe = pickRel(r.oe, "oe", qTab), dodge = pickRel(r.dodge, "dodge", qTab);
-    const prevQ = list.filter(x => x.unlocked && qKey(x.q) < qKey(qTab)).pop();
-    const prevOe = prevQ ? pickRel(r.oe, "oe", prevQ.q) : null;
+    const cur = list.find(x => x.q === qTab);
+    if (!TPL) { body.innerHTML = '<div class="qlocked">The slide template (qbr_template.js) is missing.</div>'; return; }
+    if (!cur.available) { body.innerHTML = `<div class="qlocked" role="status"><b>${qLabel(cur.q)} is not available yet.</b> ${esc(cur.why)}</div>`; return; }
+    const data = reportData(qTab, list);
     const meta = `<div class="qmeta"><span>Report <b>${qLabel(qTab)}</b></span>
-      <span>Oxford Economics: <b>${oe ? "release " + fmtDate(oe.rel.date) : "none"}</b>${oe && oe.later ? ' <span class="flag">(no release up to this quarter yet: using a later one)</span>' : ""}</span>
-      <span>Dodge (US): <b>${dodge ? "actuals to " + qLabel(dodge.rel.quarter) : "none"}</b>${dodge && dodge.later ? ' <span class="flag">(later than this quarter)</span>' : ""}</span>
-      <span>Compared with: <b>${prevQ ? qLabel(prevQ.q) : "no previous report"}</b>${prevOe && oe && prevOe.rel.id === oe.rel.id ? " (same Oxford Economics release, so neutral)" : ""}</span></div>`;
-    body.innerHTML = meta + slideGrowth(qTab, oe, dodge, prevOe) + slideEmea(qTab, oe);
-    body.querySelectorAll(".man").forEach(el => {
-      el.addEventListener("input", () => {
-        const q = el.dataset.q, id = el.dataset.id;
-        (QMAN[q] = QMAN[q] || {})[id] = el.textContent.trim();
-        store.set(LS_QBR, JSON.stringify(QMAN));
-        if (id.startsWith("ytdp:")) { const slot = body.querySelector(`.arr-slot[data-for="${CSS.escape(id.slice(5))}"]`); if (slot) slot.innerHTML = arrowFor(toNum(el.textContent)); }
-      });
+      <span>Oxford Economics: <b>release ${fmtDate(data.oe.date)}</b></span>
+      <span>Dodge (US): <b>${data.dodge ? "actuals to " + qLabel(data.dodge.quarter) : "no export up to this quarter"}</b></span>
+      <span>Variation vs.: <b>${data.prevQ ? qLabel(data.prevQ.q) : "no previous report"}</b>${data.prevOe && data.prevOe.id === data.oe.id ? " (same release: neutral)" : ""}</span></div>`;
+    body.innerHTML = `<div class="qbar">${meta}<span class="spacer"></span><button type="button" class="btn primary" id="qbrExport">Export to PowerPoint (.pptx)</button></div>
+      <span class="msg" id="qbrMsg" role="status"></span>
+      <div class="qpreview"><span class="hdr-t">Preview</span>${slidePreview("growth", data)}${slidePreview("emea", data)}</div>`;
+    document.getElementById("qbrExport").addEventListener("click", () => exportPptx(reportData(qTab, quarterList())));
+    body.querySelectorAll("[contenteditable][data-id]").forEach(el => {
+      el.addEventListener("input", () => { (QMAN[el.dataset.q] = QMAN[el.dataset.q] || {})[el.dataset.id] = el.textContent.trim(); saveMan(); });
       el.addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); el.blur(); } });
+    });
+    body.querySelectorAll(".qarrow.edit").forEach(el => {
+      const cycle = () => {
+        const row = el.dataset.row, curDir = manVal(qTab, "fyarrow:" + row, null) || "none";
+        const order = ["up", "flat", "down", "none"];
+        (QMAN[qTab] = QMAN[qTab] || {})["fyarrow:" + row] = order[(order.indexOf(curDir) + 1) % order.length];
+        saveMan(); renderQbr();
+      };
+      el.addEventListener("click", cycle);
+      el.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); cycle(); } });
     });
   }
 
