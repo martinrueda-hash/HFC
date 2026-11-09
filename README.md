@@ -20,7 +20,7 @@ Three filters, end market (Total / Residential / Commercial), application (All /
 
 ## Quarter market outlook (QBR/SBR)
 
-Between the funnel and the country prioritization, one report per quarter (Q1 2025 onwards) rebuilds the two market slides of the QBR deck, **in the deck's own format**:
+Between the funnel and the country prioritization, under the "Update the data" uploads, one report per quarter (Q1 2025 onwards) rebuilds the two market slides of the QBR deck, **in the deck's own format**:
 
 - **market outlook | growth outlook** (world map): Oxford Economics work done by sector (residential and non-residential, each with new build and renovation) for the USA, Germany, France, the Netherlands, Europe and China, as ’Y-1 actual, ’Y estimate and the 5-year CAGR; Dodge total construction and non-residential growth for the US; and the variation vs. the previous report.
 - **Market environment EMEA | HFC performance in key countries**: Oxford Economics market growth (residential + non-residential commercial) for Germany, France, the Netherlands, the UK, Belgium, Poland and the Nordics, with arrows, next to HFC figures.

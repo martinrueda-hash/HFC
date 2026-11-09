@@ -232,6 +232,7 @@ sup { font-size: .7em; line-height: 0; }
 .msg.err { color: var(--bad); font-weight: 600; }
 
 /* Update the data: two upload cards */
+.qdata { display: grid; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; }
 .up-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
 .up-card { border: 1px solid var(--blush); background: var(--tint); border-radius: 6px; padding: 12px 14px; display: grid; gap: 8px; align-content: start; min-width: 0; }
 .up-card h3 { font-size: 13px; font-weight: 700; color: var(--red); }
@@ -314,9 +315,11 @@ sup { font-size: .7em; line-height: 0; }
 
   <section class="kpis" id="kpis" aria-label="Headline figures"></section>
 
-  <section class="slide" aria-labelledby="dataTitle">
+  <section class="slide" aria-labelledby="qbrTitle">
     <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
-    <h2 class="stitle" id="dataTitle">Update the data</h2>
+    <h2 class="stitle" id="qbrTitle">Quarter market outlook – QBR/SBR</h2>
+    <div class="qdata" aria-labelledby="dataTitle">
+    <h3 class="subhead" id="dataTitle">Update the data</h3>
     <div class="up-grid">
       <div class="up-card">
         <h3>Oxford Economics</h3>
@@ -363,12 +366,7 @@ sup { font-size: .7em; line-height: 0; }
       </details>
       </div>
     </details>
-  </section>
-
-  <section class="slide" aria-labelledby="qbrTitle">
-    <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
-    <h2 class="stitle" id="qbrTitle">Quarter market outlook – QBR/SBR</h2>
-    <div class="subhead" id="qbrScope"></div>
+    </div>
     <div class="qtabs" id="qbrTabs" role="tablist" aria-label="Quarterly report"></div>
     <div class="qbody" id="qbrBody"></div>
     <div class="source">
@@ -1666,7 +1664,6 @@ sup { font-size: .7em; line-height: 0; }
     document.getElementById("qbrTabs").innerHTML = list.map(x =>
       `<button type="button" class="qtab${x.available ? "" : " off"}" role="tab" data-q="${x.q}" aria-selected="${x.q === qTab}" aria-disabled="${!x.available}"${x.available ? "" : ' title="No data yet for this quarter"'}>${qLabel(x.q)}</button>`).join("");
     document.querySelectorAll("#qbrTabs .qtab").forEach(b => b.addEventListener("click", () => { qTab = b.dataset.q; store.set(LS_QTAB, qTab); renderQbr(); }));
-    document.getElementById("qbrScope").textContent = `${avail.length} of ${list.length} quarterly reports available: ${avail.length ? avail.map(x => qLabel(x.q)).join(", ") : "none yet"}. The others activate when their data is uploaded.`;
     const body = document.getElementById("qbrBody");
     const cur = list.find(x => x.q === qTab);
     if (!TPL) { body.innerHTML = '<div class="qlocked">The slide template (qbr_template.js) is missing.</div>'; return; }
