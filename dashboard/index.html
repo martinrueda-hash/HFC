@@ -1488,7 +1488,7 @@ sup { font-size: .7em; line-height: 0; }
     [1, 2, 3, 4, "priority"].forEach(i => { V["kt:" + i] = { text: manVal(q, "kt:" + i, "xxx"), kind: "comment", id: "kt:" + i }; });
     Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2),
       src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + non-residential commercial).`,
-      notes: `Note: HFC figures to be completed (yellow). 1_ HFC YTD = end of ${MONTH_NAMES[qn * 3 - 1]} ${Y}. Nordics = Sweden, Norway, Denmark, Finland.` });
+      notes: "Note: Nordics = Sweden, Norway, Denmark, Finland." });
     return { q, oe, dodge, prevQ, prevOe, V, T, chips, arrows };
   }
 

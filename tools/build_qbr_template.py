@@ -356,6 +356,8 @@ for nm, tok in (("TextBox 12", "y1"), ("TextBox 79", "y2")):
     for rr in runs:
         rpr = re.search(r"<a:rPr(?:[^>]*/>|[^>]*>.*?</a:rPr>)", rr, re.S).group(0)
         t = "".join(re.findall(r"<a:t>([^<]*)</a:t>", rr))
+        if re.fullmatch(r"\d", t.strip()):
+            continue    # footnote superscripts (¹ ²) are dropped
         new_runs.append((("{{t:" + tok + "}}") if re.fullmatch(r"\d{4}", t.strip()) else t, rpr))
     sp2 = set_paragraphs(sp, [make_para(p, new_runs)])
     anchor, ins = body_ins(sp)
