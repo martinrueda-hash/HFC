@@ -18,6 +18,17 @@ A self-contained dashboard for HFC's country portfolio, styled after the EU WT s
 
 Three filters, end market (Total / Residential / Commercial), application (All / Heating / Cooling / Sanitary) and geography (All / Europe / US), drive SAM, HFC figures, the matrix and the table. The total construction market always shows the full scope and does not follow the filters; TAM, SAM and HFC figures do. The United States rows are dummy data; the Oxford Economics export has no US series, so US market growth and total construction market are empty until US data is added. Clicking a bubble or a country chip highlights that country in the table.
 
+## Quarter market outlook (QBR/SBR)
+
+Between the funnel and the country prioritization, one report per quarter (Q1 2025 onwards) rebuilds the two QBR market slides:
+
+- **market outlook | growth outlook**: Oxford Economics work done by sector (residential and non-residential, each split into new build and renovation) for the USA, Germany, France, the Netherlands, Europe and China, as ’Y-1 actual, ’Y estimate and the 5-year CAGR; Dodge total construction and non-residential growth for the US; and the variation vs. the previous quarter's report.
+- **Market environment EMEA | HFC performance in key countries**: Oxford Economics market growth (residential + non-residential commercial) for Germany, France, the Netherlands, the UK, Belgium, Poland and the Nordics, next to HFC figures.
+
+Each report uses the latest Oxford Economics release and Dodge export dated up to the end of its quarter (or the earliest one available, flagged). A quarter unlocks once a release reaches it. HFC figures are yellow and editable on the page (saved in the browser); data not available yet (US and China in Oxford Economics) and comments are underlined.
+
+The built-in releases are generated from `data/oxford-economics/` and `data/dodge/` with `python3 tools/build_market_releases.py` (writes `dashboard/releases.js`). On the page, **Upload last Oxford Economics data** and **Upload Dodge data** add releases in the browser; an Oxford Economics upload also refreshes the dashboard's market growth. Dodge figures leave out the subtotal rows of the export, so totals are not double counted.
+
 ## How the matrix is scored
 
 Both axes run from 1 to 5. A country's zone is set by attractiveness + ability to win (2 to 10): 7 or more is leadership position, 5.5 or more is priority growth, below that is selective investment. The thresholds are in `HFC_CONFIG.zones`.
@@ -44,7 +55,7 @@ Use the Excel template `templates/HFC_market_intelligence_template.xlsx`:
 1. **Oxford Economics** sheet: paste the latest download (level values, header row in cell A6). Market growth for every country updates automatically. Residential = Residential total − Multi family; Commercial = Commercial + Healthcare + Multi family, each for New and Renovation. Commercial already includes offices, retail and hotels; the healthcare series are optional in Settings (the current export has none).
 2. **Raw data** sheet: one row per country, end market and application (heating, cooling, sanitary). Fill in the SAM (EUR m), HFC sales and growth and the four qualitative scores (1–5). Market growth and the renovation / new build split are calculated.
 3. **Settings**: company name, current year and the six Oxford Economics series names (New / Renovation for Residential total, Multi family and Commercial).
-4. Save, then click **Upload Excel** in the dashboard's "Update the figures" section. The dashboard reads the calculated **Dashboard data** sheet and the Settings sheet. Uploaded data is kept in that browser only.
+4. Save, then click **Upload Excel** under "SAM and HFC data: Excel template" in the dashboard's "Update the data" section. The dashboard reads the calculated **Dashboard data** sheet and the Settings sheet. Uploaded data is kept in that browser only.
 
 Matrix weights and zone lines are not in the workbook: set them in the dashboard under "Scoring method and weights".
 

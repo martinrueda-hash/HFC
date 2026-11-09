@@ -1,0 +1,117 @@
+"""Build dashboard/releases.js: the built-in Oxford Economics and Dodge releases used by the
+quarterly market outlook (QBR/SBR) reports.
+
+Usage:  python3 tools/build_market_releases.py
+Reads every Oxford Economics download (.xlsx or .csv) in data/oxford-economics/ and every Dodge
+vertical forecast (.xlsx) in data/dodge/. The dashboard parses uploads the same way in the browser.
+"""
+import csv
+import datetime as dt
+import json
+import re
+from pathlib import Path
+
+from openpyxl import load_workbook
+
+ROOT = Path(__file__).resolve().parent.parent
+OUT = ROOT / "dashboard" / "releases.js"
+MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august",
+                                         "september", "october", "november", "december"], 1)}
+
+
+def parse_oe_date(text):
+    m = re.match(r"\s*(\d{1,2})-([A-Za-z]+)-(\d{4})", str(text or ""))
+    if not m or m.group(2).lower() not in MONTHS:
+        return None
+    return dt.date(int(m.group(3)), MONTHS[m.group(2).lower()], int(m.group(1)))
+
+
+def read_oe(path):
+    if path.suffix.lower() == ".csv":
+        with open(path, encoding="utf-8-sig", newline="") as fh:
+            rows = list(csv.reader(fh))
+    else:
+        wb = load_workbook(path, data_only=True)
+        ws = next(w for w in wb.worksheets if w.cell(row=1, column=1).value == "Location")
+        rows = [["" if v is None else v for v in r] for r in ws.iter_rows(values_only=True)]
+    head = [str(h).strip() for h in rows[0]]
+    years = [h for h in head if re.fullmatch(r"\d{4}", h)]
+    yi = [head.index(y) for y in years]
+    di = head.index("Date of last update") if "Date of last update" in head else None
+    dates, out = set(), []
+    for r in rows[1:]:
+        if not r or not str(r[0]).strip():
+            continue
+        vals = []
+        for i in yi:
+            try:
+                vals.append(round(float(r[i]), 2))
+            except (TypeError, ValueError):
+                vals.append(None)
+        out.append([str(r[0]).strip(), str(r[1]).strip(), vals])
+        if di is not None:
+            d = parse_oe_date(r[di])
+            if d:
+                dates.add(d)
+    date = max(dates) if dates else dt.date.fromtimestamp(path.stat().st_mtime)
+    return {"id": f"oe-{date.isoformat()}", "date": date.isoformat(), "file": path.name,
+            "units": "US$ m, 2023 prices", "years": [int(y) for y in years], "rows": out}
+
+
+def dodge_group(key):
+    if key in (18, 19):
+        return "res"          # single family, multifamily
+    if key >= 24:
+        return "nonbuilding"  # streets, bridges, water, power, ...
+    return "nonres"
+
+
+def read_dodge(path):
+    wb = load_workbook(path, data_only=True)
+    best = None
+    for ws in wb.worksheets:
+        rows = list(ws.iter_rows(values_only=True))
+        if not rows:
+            continue
+        head = [str(h).strip() if h is not None else "" for h in rows[0]]
+        years = [h for h in head if re.fullmatch(r"\d{4}", h)]
+        if not years:
+            continue
+        verts = []
+        for r in rows[1:]:
+            key = str(r[0]).strip() if r[0] is not None else ""
+            if not key.isdigit() or not r[1]:
+                continue        # skip subtotal rows (no numeric key)
+            vals = [float(r[head.index(y)]) if isinstance(r[head.index(y)], (int, float)) else None for y in years]
+            verts.append([int(key), str(r[1]).strip(), dodge_group(int(key)), vals])
+        if best is None or len(verts) > len(best[1]):
+            best = (years, verts)
+    m = re.search(r"actuals[ _-]+to[ _-]+([1-4])Q(\d{4})", path.name, re.I)
+    e = re.search(r"exported[ _-]+(\d{2})(\d{2})(\d{2})", path.name, re.I)
+    exported = dt.date(2000 + int(e.group(1)), int(e.group(2)), int(e.group(3))) if e else None
+    if m:
+        quarter = f"{m.group(2)}Q{m.group(1)}"
+    else:
+        d = exported or dt.date.fromtimestamp(path.stat().st_mtime)
+        quarter = f"{d.year}Q{(d.month - 1) // 3 + 1}"
+    return {"id": f"dodge-{quarter}", "quarter": quarter, "exported": exported.isoformat() if exported else None,
+            "file": path.name, "units": "US$ thousands", "years": [int(y) for y in best[0]],
+            "rows": [[k, n, g, [round(v, 1) if v is not None else None for v in vals]] for k, n, g, vals in best[1]]}
+
+
+oe = [read_oe(p) for p in sorted((ROOT / "data" / "oxford-economics").glob("*")) if p.suffix.lower() in (".xlsx", ".csv")]
+# keep one release per date: prefer the export with the most series (the New / Renovation split)
+by_date = {}
+for r in oe:
+    if r["date"] not in by_date or len(r["rows"]) > len(by_date[r["date"]]["rows"]):
+        by_date[r["date"]] = r
+oe = sorted(by_date.values(), key=lambda r: r["date"])
+dodge = sorted((read_dodge(p) for p in sorted((ROOT / "data" / "dodge").glob("*.xlsx"))), key=lambda r: r["quarter"])
+
+OUT.write_text(
+    "/* Built-in market data releases for the quarterly market outlook (QBR/SBR).\n"
+    " * Generated by tools/build_market_releases.py from data/oxford-economics/ and data/dodge/.\n"
+    " * Uploads on the page are added to these in the viewer's browser. */\n"
+    "window.HFC_RELEASES = " + json.dumps({"oe": oe, "dodge": dodge}, separators=(",", ":")) + ";\n")
+print(f"{OUT}: {len(oe)} Oxford Economics release(s) {[r['date'] for r in oe]}, "
+      f"{len(dodge)} Dodge release(s) {[r['quarter'] for r in dodge]}, {OUT.stat().st_size // 1024} KB")

@@ -230,6 +230,79 @@ sup { font-size: .7em; line-height: 0; }
 .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .msg { font-size: 12px; color: var(--ink); }
 .msg.err { color: var(--bad); font-weight: 600; }
+
+/* Update the data: two upload cards */
+.up-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.up-card { border: 1px solid var(--blush); background: var(--tint); border-radius: 6px; padding: 12px 14px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.up-card h3 { font-size: 13px; font-weight: 700; color: var(--red); }
+.rel-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; font-size: 11.5px; color: var(--ink-strong); }
+.rel-list li { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.rel-list .tag { font-size: 10px; color: var(--muted); }
+.rel-list .q { font-weight: 700; color: var(--red); }
+
+/* Quarter market outlook (QBR/SBR) */
+.qtabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.qtab { font: inherit; font-size: 12px; border: 1px solid var(--red); background: var(--bg); color: var(--red); padding: 5px 12px; border-radius: 3px; cursor: pointer; }
+.qtab[aria-selected="true"] { background: var(--red); color: #fff; font-weight: 700; }
+.qtab:disabled { border-color: var(--line); color: var(--axis); cursor: not-allowed; }
+.qtab .lk { font-size: 10px; margin-left: 4px; }
+.qbody { display: grid; gap: 16px; }
+.qmeta { font-size: 11.5px; color: var(--ink); display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.qmeta b { color: var(--ink-strong); }
+.qmeta .flag { color: var(--red); font-weight: 600; }
+.qslide { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; display: grid; background: var(--bg); min-width: 0; }
+.qslide-hd { display: flex; justify-content: space-between; gap: 12px; background: #ececec; color: var(--red); font-size: 12px; padding: 6px 14px; }
+.qslide-bd { padding: 14px 18px 16px; display: grid; gap: 10px; min-width: 0; }
+.qslide-t { font-size: 19px; color: var(--red); line-height: 1.25; border-bottom: 1px solid var(--red); padding-bottom: 4px; }
+.qslide-t b { font-weight: 700; }
+.qslide-sub { font-size: 12px; font-weight: 700; color: var(--ink-strong); }
+.qslide-ft { background: #ececec; font-size: 10.5px; color: var(--ink); padding: 6px 14px; display: grid; gap: 1px; }
+.qscroll { overflow-x: auto; }
+.pos { color: #1e8c4e; } .neg { color: var(--red); } .neu { color: var(--muted); }
+.ph { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; color: var(--ink); }
+.man { background: #fff176; color: var(--ink-strong); padding: 0 4px; border-radius: 2px; outline: none; min-width: 1.6em; display: inline-block; cursor: text; }
+.man:focus { box-shadow: 0 0 0 2px var(--red); }
+.man.ph { background: transparent; }
+.man.ph:focus { background: #fffbe0; }
+/* growth outlook table */
+table.go { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1000px; font-size: 12px; font-variant-numeric: tabular-nums; }
+.go th, .go td { padding: 5px 5px; text-align: center; white-space: nowrap; }
+.go .reg th { font-size: 16px; font-weight: 700; color: var(--ink); padding-top: 2px; }
+.go .regtag th { padding-bottom: 8px; }
+.go .regtag span.t { display: inline-block; background: var(--red); color: #fff; font-weight: 700; font-size: 11px; padding: 3px 12px; border-radius: 3px 10px 3px 10px; }
+.go .regtag .man { background: #fff176; color: var(--ink-strong); }
+.go .ctry th { font-weight: 700; color: var(--ink); font-size: 12.5px; padding-bottom: 0; }
+.go .yrs th { font-size: 11px; color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--line); }
+.go td.l { text-align: left; font-weight: 700; color: var(--ink-strong); padding-right: 12px; }
+.go tr.main td { background: #f4f4f4; font-weight: 600; font-size: 12.5px; }
+.go tr.sub td.l { font-weight: 600; padding-left: 26px; }
+.go tr.gap td { padding: 3px; }
+.go tr.var td { background: #f4f4f4; }
+.go tr.var td.l { color: var(--red); }
+.go tr.dodge td { border-top: 1px solid var(--line); }
+.go .sep { border-left: 1px dashed var(--axis); }
+.vchip { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 700; color: #fff; }
+.vchip.sp { background: #1e6b45; } .vchip.p { background: #8fcf9f; } .vchip.n { background: #9a9a9a; } .vchip.ng { background: #e6979b; } .vchip.sn { background: #8f1a2c; }
+.vlegend { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; justify-content: flex-end; font-size: 11px; color: var(--ink); }
+.vlegend span { display: inline-flex; align-items: center; gap: 6px; }
+/* EMEA performance table */
+.emea-grid { display: grid; grid-template-columns: minmax(0, 2.6fr) minmax(220px, 1fr); gap: 18px; }
+@media (max-width: 980px) { .emea-grid { grid-template-columns: minmax(0, 1fr); } }
+table.emea { border-collapse: separate; border-spacing: 4px; width: 100%; min-width: 760px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.emea th { font-size: 12px; font-weight: 700; color: var(--ink); text-align: center; padding: 2px 6px; vertical-align: bottom; }
+.emea th.yr { text-align: left; font-size: 16px; color: var(--ink-strong); border-bottom: 1px solid var(--ink); }
+.emea td { background: #f2f2f2; text-align: center; padding: 8px 6px; white-space: nowrap; }
+.emea td.cty { background: transparent; text-align: left; font-weight: 700; color: var(--ink-strong); white-space: nowrap; }
+.emea td.cty small { display: block; font-weight: 500; color: var(--muted); font-size: 10.5px; }
+.emea td.cm { text-align: left; font-size: 11px; white-space: normal; min-width: 150px; }
+.emea .vsep { border-left: 1px solid var(--ink); }
+.arr { font-size: 14px; margin-left: 6px; }
+.arr.up { color: #1fa84f; } .arr.dn { color: var(--red); } .arr.fl { color: #f2a900; }
+.kt { border-left: 1px solid var(--ink); padding-left: 16px; display: grid; gap: 10px; align-content: start; }
+.kt h4 { margin: 0; font-size: 17px; text-align: center; color: var(--ink-strong); }
+.kt ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 12.5px; }
+.qbanner { margin-top: 2px; }
+.qlocked { padding: 18px; border: 1px dashed var(--axis); border-radius: 6px; font-size: 13px; color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
@@ -276,6 +349,68 @@ sup { font-size: .7em; line-height: 0; }
   </div>
 
   <section class="kpis" id="kpis" aria-label="Headline figures"></section>
+
+  <section class="slide" aria-labelledby="dataTitle">
+    <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
+    <h2 class="stitle" id="dataTitle">Update the data</h2>
+    <div class="up-grid">
+      <div class="up-card">
+        <h3>Oxford Economics</h3>
+        <p class="note">Construction work done, level values: the .xlsx (or .csv) download with Residential total, Multi family and Commercial, each New and Renovation. Updates the quarterly reports and the market growth in this dashboard.</p>
+        <div class="row"><label class="btn primary" for="oeFile">Upload last Oxford Economics data…</label><input type="file" id="oeFile" accept=".xlsx,.csv,text/csv" hidden></div>
+        <ul class="rel-list" id="oeList"></ul>
+      </div>
+      <div class="up-card">
+        <h3>Dodge (US only)</h3>
+        <p class="note">Dodge vertical forecast export (.xlsx, verticals by year). The quarter comes from the file name, e.g. "Actuals to 4Q2025". Updates the US rows of the quarterly reports.</p>
+        <div class="row"><label class="btn primary" for="dodgeFile">Upload Dodge data…</label><input type="file" id="dodgeFile" accept=".xlsx" hidden></div>
+        <ul class="rel-list" id="dodgeList"></ul>
+      </div>
+    </div>
+    <div class="row"><span class="msg" id="relMsg" role="status"></span><span class="spacer"></span><button type="button" class="btn" id="resetRel">Remove uploaded releases</button></div>
+    <p class="note">A new release unlocks the report of its quarter. Uploads stay in this browser only; to share them, add the files to <code>data/oxford-economics/</code> or <code>data/dodge/</code> in the repository and run <code>tools/build_market_releases.py</code>.</p>
+    <details class="method">
+      <summary>SAM and HFC data: Excel template</summary>
+      <div class="data-panel" style="margin-top:10px">
+      <ol class="steps">
+        <li>Fill in the <b>HFC market intelligence Excel template</b>: paste Oxford Economics in <i>Oxford Economics</i>, your figures and 1–5 scores in <i>Raw data</i>, the year in <i>Settings</i>.</li>
+        <li>Save it as .xlsx.</li>
+        <li>Upload it here. The dashboard reads the <i>Dashboard data</i> sheet, which the template calculates for you.</li>
+      </ol>
+      <div class="row">
+        <label class="btn primary" for="xlsxFile">Upload Excel…</label>
+        <input type="file" id="xlsxFile" accept=".xlsx,.xlsm,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+        <button type="button" class="btn" id="resetData">Restore default data</button>
+        <span class="msg" id="dataMsg" role="status"></span>
+      </div>
+      <p class="note">Uploaded data stays in this browser only. To change the figures for everyone, update <code>data.js</code> in the repository.</p>
+      <details class="method">
+        <summary>CSV option</summary>
+        <div class="data-panel" style="margin-top:10px">
+          <p class="note">Paste or load a CSV with one row per country and end market. The first line must be the header below; percentages are plain numbers (3.2 = 3.2%).</p>
+          <textarea id="csvBox" spellcheck="false" aria-label="CSV data"></textarea>
+          <div class="row">
+            <button type="button" class="btn" id="applyCsv">Apply CSV</button>
+            <label class="btn" for="csvFile">Load CSV file…</label>
+            <input type="file" id="csvFile" accept=".csv,text/csv,text/plain" hidden>
+            <button type="button" class="btn" id="copyCsv">Copy current data as CSV</button>
+          </div>
+        </div>
+      </details>
+      </div>
+    </details>
+  </section>
+
+  <section class="slide" aria-labelledby="qbrTitle">
+    <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
+    <h2 class="stitle" id="qbrTitle">Quarter market outlook – QBR/SBR</h2>
+    <div class="subhead" id="qbrScope"></div>
+    <div class="qtabs" id="qbrTabs" role="tablist" aria-label="Quarterly report"></div>
+    <div class="qbody" id="qbrBody"></div>
+    <div class="source">
+      <span>Yellow = HFC figures, to be completed manually: click to edit (saved in this browser). Underlined = data not available yet (US and China in Oxford Economics, comments).</span>
+    </div>
+  </section>
 
   <section class="slide" aria-labelledby="mxTitle">
     <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
@@ -327,42 +462,11 @@ sup { font-size: .7em; line-height: 0; }
     </div>
   </section>
 
-  <section class="slide" aria-labelledby="dataTitle">
-    <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
-    <h2 class="stitle" id="dataTitle">Update the figures</h2>
-    <div class="data-panel">
-      <ol class="steps">
-        <li>Fill in the <b>HFC market intelligence Excel template</b>: paste Oxford Economics in <i>Oxford Economics</i>, your figures and 1–5 scores in <i>Raw data</i>, the year in <i>Settings</i>.</li>
-        <li>Save it as .xlsx.</li>
-        <li>Upload it here. The dashboard reads the <i>Dashboard data</i> sheet, which the template calculates for you.</li>
-      </ol>
-      <div class="row">
-        <label class="btn primary" for="xlsxFile">Upload Excel…</label>
-        <input type="file" id="xlsxFile" accept=".xlsx,.xlsm,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
-        <button type="button" class="btn" id="resetData">Restore default data</button>
-        <span class="msg" id="dataMsg" role="status"></span>
-      </div>
-      <p class="note">Uploaded data stays in this browser only. To change the figures for everyone, update <code>data.js</code> in the repository.</p>
-      <details class="method">
-        <summary>CSV option</summary>
-        <div class="data-panel" style="margin-top:10px">
-          <p class="note">Paste or load a CSV with one row per country and end market. The first line must be the header below; percentages are plain numbers (3.2 = 3.2%).</p>
-          <textarea id="csvBox" spellcheck="false" aria-label="CSV data"></textarea>
-          <div class="row">
-            <button type="button" class="btn" id="applyCsv">Apply CSV</button>
-            <label class="btn" for="csvFile">Load CSV file…</label>
-            <input type="file" id="csvFile" accept=".csv,text/csv,text/plain" hidden>
-            <button type="button" class="btn" id="copyCsv">Copy current data as CSV</button>
-          </div>
-        </div>
-      </details>
-    </div>
-  </section>
-
   <div class="slide-foot"><span id="footDate"></span><span class="mid">confidential | HFC market intelligence</span><span id="ccyLbl"></span></div>
 </div>
 
 <script src="data.js"></script>
+<script src="releases.js"></script>
 <script>
 (function () {
   "use strict";
@@ -1053,7 +1157,7 @@ sup { font-size: .7em; line-height: 0; }
       const target = rels[rid] || "";
       sheets[sh.getAttribute("name")] = target.startsWith("/") ? target.slice(1) : "xl/" + target.replace(/^\.\//, "");
     });
-    return async name => {
+    const getSheet = async name => {
       if (!sheets[name]) return null;
       const doc = xml(await file(sheets[name]) || "<r/>");
       const grid = []; let uncalculated = false;
@@ -1072,6 +1176,8 @@ sup { font-size: .7em; line-height: 0; }
       for (let i = 0; i < grid.length; i++) grid[i] = grid[i] || [];
       return { grid, uncalculated };
     };
+    getSheet.names = Object.keys(sheets);
+    return getSheet;
   }
   function readSettings(grid) {
     if (!grid) return null;
@@ -1130,6 +1236,370 @@ sup { font-size: .7em; line-height: 0; }
     ev.target.value = "";
   });
 
+  // ---------- market data releases (Oxford Economics, Dodge) ----------
+  const LS_REL = "hfc-mi-releases-v1", LS_QBR = "hfc-mi-qbr-manual-v1", LS_QTAB = "hfc-mi-qbr-tab";
+  const BASE_REL = window.HFC_RELEASES || { oe: [], dodge: [] };
+  let UP_REL = { oe: [], dodge: [] };
+  try { const p = JSON.parse(store.get(LS_REL) || "null"); if (p && Array.isArray(p.oe) && Array.isArray(p.dodge)) UP_REL = p; } catch (e) { /* ignore */ }
+  const OE = {
+    res: "Work Done - Residential - Total",
+    mf: "Work Done - Residential - Multi Family",
+    com: "Work Done - Non-Residential Building - Commercial",
+  };
+  const NON_EUROPE = ["United States", "USA", "US", "China", "Japan", "Canada", "Mexico", "Brazil", "India", "Australia", "Russia", "Turkey", "Ukraine"];
+  const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  function releases() {
+    const merge = (a, b, key) => { const m = new Map(); a.concat(b).forEach(r => m.set(r[key], r)); return [...m.values()]; };
+    return {
+      oe: merge(BASE_REL.oe, UP_REL.oe, "date").sort((a, b) => a.date < b.date ? -1 : 1),
+      dodge: merge(BASE_REL.dodge, UP_REL.dodge, "quarter").sort((a, b) => qKey(a.quarter) - qKey(b.quarter)),
+    };
+  }
+  const qOfDate = iso => { const [y, m] = iso.split("-").map(Number); return y + "Q" + (Math.floor((m - 1) / 3) + 1); };
+  const qKey = q => Number(q.slice(0, 4)) * 4 + Number(q.slice(5)) - 1;
+  const qFromKey = k => Math.floor(k / 4) + "Q" + (k % 4 + 1);
+  const qLabel = q => "Q" + q.slice(5) + " " + q.slice(0, 4);
+  const fmtDate = iso => { const [y, m, d] = iso.split("-").map(Number); return d + " " + MONTH_NAMES[m - 1].slice(0, 3) + " " + y; };
+  const relQ = (kind, r) => kind === "oe" ? qOfDate(r.date) : r.quarter;
+
+  // ---- Oxford Economics accessors
+  function oeIdx(rel) {
+    if (!rel._idx) { rel._idx = new Map(); rel.rows.forEach(([loc, ind, vals]) => rel._idx.set(loc + "|" + ind, vals)); }
+    return rel._idx;
+  }
+  // level of a series for a set of locations; kind "" = total (or New + Renovation), "New", "Renovation"
+  function oeVal(rel, locs, base, kind, year) {
+    const yi = rel.years.indexOf(year);
+    if (yi < 0) return null;
+    const idx = oeIdx(rel);
+    let sum = 0, found = false;
+    locs.forEach(loc => {
+      const one = name => { const v = idx.get(loc + "|" + name); return v && v[yi] !== null && v[yi] !== undefined ? v[yi] : null; };
+      let v;
+      if (kind) v = one(base + " - " + kind);
+      else { v = one(base); if (v === null) { const n = one(base + " - New"), r = one(base + " - Renovation"); v = n !== null && r !== null ? n + r : null; } }
+      if (v !== null) { sum += v; found = true; }
+    });
+    return found ? sum : null;
+  }
+  const oeLocs = rel => [...new Set(rel.rows.map(r => r[0]))];
+  const growth = (a, b) => a !== null && b !== null && b ? (a / b - 1) * 100 : null;
+  const cagr = (a, b, n) => a !== null && b !== null && b > 0 && a > 0 ? (Math.pow(a / b, 1 / n) - 1) * 100 : null;
+  // [growth Y-1, growth Y, CAGR Y-1 → Y+4] for a level getter
+  const trio = (get, Y) => [growth(get(Y - 1), get(Y - 2)), growth(get(Y), get(Y - 1)), cagr(get(Y + 4), get(Y - 1), 5)];
+
+  // ---- Dodge accessors
+  function dodgeVal(rel, group, year) {
+    const yi = rel.years.indexOf(year);
+    if (yi < 0) return null;
+    let sum = 0, found = false;
+    rel.rows.forEach(([key, name, grp, vals]) => { if ((!group || grp === group) && vals[yi] !== null) { sum += vals[yi]; found = true; } });
+    return found ? sum : null;
+  }
+
+  // ---- parsing uploads (same rules as tools/build_market_releases.py)
+  function parseOeDate(t) {
+    const m = String(t || "").match(/(\d{1,2})-([A-Za-z]+)-(\d{4})/);
+    if (!m) return null;
+    const mi = MONTH_NAMES.findIndex(n => n.toLowerCase() === m[2].toLowerCase());
+    return mi < 0 ? null : `${m[3]}-${String(mi + 1).padStart(2, "0")}-${String(m[1]).padStart(2, "0")}`;
+  }
+  async function parseOeFile(file) {
+    let grid;
+    if (/\.csv$/i.test(file.name)) grid = parseCsv(await file.text());
+    else {
+      const sheet = await readXlsx(new Uint8Array(await file.arrayBuffer()));
+      for (const n of sheet.names) { const g = (await sheet(n)).grid; if (g[0] && String(g[0][0]).trim() === "Location") { grid = g; break; } }
+    }
+    if (!grid || !grid.length) throw new Error('No sheet starting with a "Location" column. Use the Oxford Economics download as it comes.');
+    const head = Array.from(grid[0], h => h == null ? "" : String(h).trim());
+    const yearCols = head.map((h, i) => /^\d{4}$/.test(h) ? i : -1).filter(i => i >= 0);
+    if (head[1] !== "Indicator" || yearCols.length < 3) throw new Error('Expected the columns Location, Indicator and one column per year.');
+    const di = head.indexOf("Date of last update");
+    const dates = [];
+    const rows = grid.slice(1).filter(r => r && r[0] != null && String(r[0]).trim()).map(r => {
+      if (di >= 0) { const d = parseOeDate(r[di]); if (d) dates.push(d); }
+      return [String(r[0]).trim(), String(r[1]).trim(), yearCols.map(i => { const v = toNum(r[i]); return v === null ? null : Math.round(v * 100) / 100; })];
+    });
+    if (!rows.length) throw new Error("No data rows found.");
+    const date = dates.length ? dates.sort().pop() : new Date(file.lastModified || Date.now()).toISOString().slice(0, 10);
+    return { id: "oe-" + date, date, file: file.name, units: "US$ m, 2023 prices", years: yearCols.map(i => Number(head[i])), rows };
+  }
+  async function parseDodgeFile(file) {
+    const sheet = await readXlsx(new Uint8Array(await file.arrayBuffer()));
+    let best = null;
+    for (const n of sheet.names) {
+      const g = (await sheet(n)).grid;
+      if (!g[0]) continue;
+      const head = Array.from(g[0], h => h == null ? "" : String(h).trim());
+      const yearCols = head.map((h, i) => /^\d{4}$/.test(h) ? i : -1).filter(i => i >= 0);
+      if (yearCols.length < 3) continue;
+      const rows = [];
+      g.slice(1).forEach(r => {
+        const key = r && r[0] != null ? String(r[0]).trim() : "";
+        if (!/^\d+$/.test(key) || !r[1]) return;      // subtotal rows have no numeric key
+        const k = Number(key);
+        rows.push([k, String(r[1]).trim(), k === 18 || k === 19 ? "res" : k >= 24 ? "nonbuilding" : "nonres", yearCols.map(i => toNum(r[i]))]);
+      });
+      if (!best || rows.length > best.rows.length) best = { years: yearCols.map(i => Number(head[i])), rows };
+    }
+    if (!best || !best.rows.length) throw new Error("No Dodge verticals found (rows with a numeric key and one column per year).");
+    const mq = file.name.match(/actuals[ _-]+to[ _-]+([1-4])Q(\d{4})/i);
+    const me = file.name.match(/exported[ _-]+(\d{2})(\d{2})(\d{2})/i);
+    const exported = me ? `20${me[1]}-${me[2]}-${me[3]}` : null;
+    const quarter = mq ? mq[2] + "Q" + mq[1] : qOfDate(exported || new Date(file.lastModified || Date.now()).toISOString().slice(0, 10));
+    return { id: "dodge-" + quarter, quarter, exported, file: file.name, units: "US$ thousands", years: best.years, rows: best.rows };
+  }
+
+  // ---- an Oxford Economics release also refreshes the dashboard's market growth
+  function applyOeToRows(rel) {
+    const locs = new Set(oeLocs(rel));
+    let n = 0;
+    const seg = (loc, segment, kind, y) => {
+      const t = oeVal(rel, [loc], OE.res, kind, y), mf = oeVal(rel, [loc], OE.mf, kind, y), com = oeVal(rel, [loc], OE.com, kind, y);
+      return segment === "Residential" ? (t !== null && mf !== null ? t - mf : null) : (mf !== null && com !== null ? mf + com : null);
+    };
+    ROWS = ROWS.map(r => {
+      if (!locs.has(r.country)) return r;
+      const R = y => seg(r.country, r.segment, "Renovation", y), N = y => seg(r.country, r.segment, "New", y);
+      const T = y => { const a = R(y), b = N(y); return a !== null && b !== null ? a + b : seg(r.country, r.segment, "", y); };
+      const py = CY - 1, hy = CY - 6, fy = CY + 5;
+      const o = Object.assign({}, r);
+      const put = (k, v) => { if (v !== null && Number.isFinite(v)) o[k] = Math.round(v * 100) / 100; };
+      put("total_market", T(py));
+      put("mkt_cagr_hist", cagr(T(py), T(hy), 5)); put("mkt_growth_cy", growth(T(CY), T(py))); put("mkt_cagr_fwd", cagr(T(fy), T(CY), 5));
+      put("mkt_reno_cagr_hist", cagr(R(py), R(hy), 5)); put("mkt_reno_growth_cy", growth(R(CY), R(py))); put("mkt_reno_cagr_fwd", cagr(R(fy), R(CY), 5));
+      put("mkt_nb_cagr_hist", cagr(N(py), N(hy), 5)); put("mkt_nb_growth_cy", growth(N(CY), N(py))); put("mkt_nb_cagr_fwd", cagr(N(fy), N(CY), 5));
+      if (R(py) !== null && T(py)) put("reno_share", R(py) / T(py) * 100);
+      n++;
+      return o;
+    });
+    return n;
+  }
+
+  // ---- upload handling
+  const relMsg = (t, err) => { const m = document.getElementById("relMsg"); m.textContent = t; m.classList.toggle("err", !!err); };
+  function saveRel() { store.set(LS_REL, JSON.stringify({ oe: UP_REL.oe.map(r => Object.assign({}, r, { _idx: undefined })), dodge: UP_REL.dodge })); }
+  async function uploadRelease(kind, file) {
+    relMsg("Reading " + file.name + "…");
+    let rel;
+    try { rel = kind === "oe" ? await parseOeFile(file) : await parseDodgeFile(file); }
+    catch (e) { return relMsg((e && e.message) || "This file could not be read.", true); }
+    const key = kind === "oe" ? "date" : "quarter";
+    UP_REL[kind] = UP_REL[kind].filter(r => r[key] !== rel[key]).concat([rel]);
+    saveRel();
+    let extra = "";
+    if (kind === "oe") {
+      const latest = releases().oe.slice(-1)[0];
+      if (latest.id === rel.id) {
+        const n = applyOeToRows(rel);
+        if (n) {
+          usingImported = true; importSource = "Oxford Economics release " + fmtDate(rel.date);
+          store.set(LS_DATA, JSON.stringify(ROWS)); store.set(LS_SRC, importSource);
+          document.getElementById("csvBox").value = toCsv(ROWS);
+          extra = `; market growth updated for ${n} dashboard rows`;
+        }
+      }
+    }
+    const q = relQ(kind, rel);
+    qTab = q;
+    store.set(LS_QTAB, q);
+    renderReleases(); renderQbr(); render();
+    relMsg(`${kind === "oe" ? "Oxford Economics release of " + fmtDate(rel.date) : "Dodge data, actuals to " + qLabel(rel.quarter)} loaded: report ${qLabel(q)} is available${extra}.`);
+  }
+  document.getElementById("oeFile").addEventListener("change", ev => { const f = ev.target.files && ev.target.files[0]; if (f) uploadRelease("oe", f); ev.target.value = ""; });
+  document.getElementById("dodgeFile").addEventListener("change", ev => { const f = ev.target.files && ev.target.files[0]; if (f) uploadRelease("dodge", f); ev.target.value = ""; });
+  document.getElementById("resetRel").addEventListener("click", () => {
+    UP_REL = { oe: [], dodge: [] }; store.del(LS_REL);
+    renderReleases(); renderQbr(); relMsg("Uploaded releases removed; the built-in releases remain.");
+  });
+  function renderReleases() {
+    const r = releases(), up = k => new Set(UP_REL[k].map(x => x.id));
+    const li = (kind, x) => `<li><span class="q">${qLabel(relQ(kind, x))}</span><span>${kind === "oe" ? "release " + fmtDate(x.date) : "actuals to " + qLabel(x.quarter) + (x.exported ? ", exported " + fmtDate(x.exported) : "")}</span><span class="tag">${up(kind).has(x.id) ? "uploaded" : "built in"} · ${esc(x.file || "")}</span></li>`;
+    document.getElementById("oeList").innerHTML = r.oe.map(x => li("oe", x)).join("") || "<li>No release yet</li>";
+    document.getElementById("dodgeList").innerHTML = r.dodge.map(x => li("dodge", x)).join("") || "<li>No release yet</li>";
+  }
+
+  // ---------- quarterly reports ----------
+  let QMAN = {};
+  try { QMAN = JSON.parse(store.get(LS_QBR) || "{}") || {}; } catch (e) { QMAN = {}; }
+  // HFC figures from the QBR3 2026 deck as starting values (yellow cells, edit on the page)
+  const HFC_FY25 = { Germany: "106.8", France: "72.8", Netherlands: "44.2", "United Kingdom": "26.9", Belgium: "36.4", Poland: "22.1", Nordics: "12.6" };
+  const HFC_Q3_26 = { Germany: ["59", "-0.2%", "30%"], France: ["19.9", "+4.7%", "10%"], Netherlands: ["18", "-19.1%", "11%"], "United Kingdom": ["15.4", "-14%", "9%"],
+    Belgium: ["8.2", "-3.6%", "4%"], Poland: ["8.3", "+2.5%", "4%"], Nordics: ["7.3", "+7.7%", "3%"] };
+  function manDefault(q, id) {
+    const Y = Number(q.slice(0, 4));
+    const [kind, who] = id.split(":");
+    if (Y === 2026) {
+      if (kind === "rev") return { Americas: "10%", Europe: "89%", APAC: "1%" }[who] || null;
+      if (kind === "fy") return HFC_FY25[who] || null;
+      if (q === "2026Q3" && HFC_Q3_26[who]) return { ytd: HFC_Q3_26[who][0], ytdp: HFC_Q3_26[who][1], share: HFC_Q3_26[who][2] }[kind] || null;
+    }
+    return null;
+  }
+  // editable cell: yellow for HFC figures, underlined "xxx" for comments
+  function man(q, id, opts = {}) {
+    const saved = (QMAN[q] || {})[id];
+    const txt = saved !== undefined ? saved : (manDefault(q, id) ?? (opts.ph || "xx"));
+    return `<span class="man${opts.comment ? " ph" : ""}" contenteditable="true" spellcheck="false" data-q="${q}" data-id="${esc(id)}" role="textbox" aria-label="${esc(opts.label || id)}">${esc(txt)}</span>`;
+  }
+  const missing = (txt = "x.x") => `<span class="ph" title="Data not available yet">${txt}</span>`;
+  const one = v => v === null || !Number.isFinite(v) ? null : (Math.abs(v) < 0.05 ? 0 : v);
+  const gcls = v => v === null ? "neu" : v >= 1 ? "pos" : v < 0 ? "neg" : "neu";
+  const num1 = v => { const x = one(v); return x === null ? missing() : `<span class="${gcls(x)}">${x.toFixed(1)}</span>`; };
+  const pctTxt = v => { const x = one(v); return x === null ? null : (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(1) + "%"; };
+  const arrowFor = v => v === null || !Number.isFinite(v) ? "" : v > 0.5 ? '<span class="arr up">⬆</span>' : v < -0.5 ? '<span class="arr dn">⬇</span>' : '<span class="arr fl">➡</span>';
+  const vChip = d => {
+    if (d === null) return "";
+    const [c, g, t] = d >= 0.5 ? ["sp", "▲", "strongly positive"] : d >= 0.1 ? ["p", "▲", "positive"] : d <= -0.5 ? ["sn", "▼", "strongly negative"] : d <= -0.1 ? ["ng", "▼", "negative"] : ["n", "►", "neutral"];
+    return `<span class="vchip ${c}" title="${t}: ${pp(d)} vs. previous SBR">${g}</span>`;
+  };
+
+  function quarterList() {
+    const r = releases();
+    const qs = r.oe.map(x => qKey(qOfDate(x.date))).concat(r.dodge.map(x => qKey(x.quarter)));
+    const latest = qs.length ? Math.max(...qs) : -1;
+    const end = Math.max(latest, qKey("2026Q4"));
+    const out = [];
+    for (let k = qKey("2025Q1"); k <= end; k++) out.push({ q: qFromKey(k), unlocked: k <= latest });
+    return out;
+  }
+  // latest release up to the end of the quarter; else the earliest one, flagged as later than the quarter
+  function pickRel(list, kind, q) {
+    if (!list.length) return null;
+    const le = list.filter(x => qKey(relQ(kind, x)) <= qKey(q));
+    return le.length ? { rel: le[le.length - 1], later: false } : { rel: list[0], later: true };
+  }
+
+  const EU_COLS = [["Germany", ["Germany"]], ["France", ["France"]], ["Netherlands", ["Netherlands"]]];
+  const EMEA_ROWS = [["Germany", ["Germany"], "DE"], ["France", ["France"], "FR"], ["Netherlands", ["Netherlands"], "NL"], ["United Kingdom", ["United Kingdom"], "UK"],
+    ["Belgium", ["Belgium"], "BE"], ["Poland", ["Poland"], "PL"], ["Nordics", ["Sweden", "Norway", "Denmark", "Finland"], "SE · NO · DK · FI"]];
+
+  function slideGrowth(q, oe, dodge, prevOe) {
+    const Y = Number(q.slice(0, 4)), y2 = n => "’" + String(n).slice(2);
+    const relLocs = oe ? oeLocs(oe.rel) : [];
+    const europe = relLocs.filter(l => !NON_EUROPE.includes(l));
+    const has = locs => locs.some(l => relLocs.includes(l));
+    const cols = [
+      { name: "USA", locs: ["United States", "USA", "US"], reg: "Americas" },
+      ...EU_COLS.map(([n, l]) => ({ name: n, locs: l, reg: "Europe" })),
+      { name: "Europe", locs: europe, reg: "Europe" },
+      { name: "China", locs: ["China"], reg: "APAC" },
+    ];
+    const series = [
+      ["OE | residential", OE.res, "", true], ["OE | resi new build", OE.res, "New"], ["OE | resi renovation", OE.res, "Renovation"],
+      null,
+      ["OE | non-residential", OE.com, "", true], ["OE | non-resi new build", OE.com, "New"], ["OE | non-resi renovation", OE.com, "Renovation"],
+    ];
+    const cell = (c, base, kind) => {
+      if (!oe || !has(c.locs)) return [missing(), missing(), missing()];
+      return trio(y => oeVal(oe.rel, c.locs, base, kind, y), Y).map(num1);
+    };
+    const sepCls = i => i === 1 || i === cols.length - 1 ? " sep" : "";
+    const rows = series.map(s => s === null ? `<tr class="gap"><td colspan="${1 + cols.length * 3}"></td></tr>` :
+      `<tr class="${s[3] ? "main" : "sub"}"><td class="l">${s[0]}</td>${cols.map((c, i) => cell(c, s[1], s[2]).map((v, j) => `<td class="${j === 0 ? sepCls(i).trim() : ""}">${v}</td>`).join("")).join("")}</tr>`).join("");
+    // variation vs previous SBR: change in total construction (residential + non-residential) growth
+    const tot = (rel, locs, y) => { const a = oeVal(rel, locs, OE.res, "", y), b = oeVal(rel, locs, OE.com, "", y); return a !== null && b !== null ? a + b : null; };
+    const varRow = `<tr class="var"><td class="l">Variation vs. previous SBR</td>${cols.map((c, i) => {
+      let e = "", g = "";
+      if (oe && prevOe && has(c.locs) && oeLocs(prevOe.rel).some(l => c.locs.includes(l))) {
+        const cur = trio(y => tot(oe.rel, c.locs, y), Y), pre = trio(y => tot(prevOe.rel, c.locs, y), Y);
+        if (cur[1] !== null && pre[1] !== null) e = vChip(cur[1] - pre[1]);
+        if (cur[2] !== null && pre[2] !== null) g = vChip(cur[2] - pre[2]);
+      }
+      return `<td class="${sepCls(i).trim()}"></td><td>${e}</td><td>${g}</td>`;
+    }).join("")}</tr>`;
+    const dodgeRow = (label, group) => {
+      const v = dodge ? trio(y => dodgeVal(dodge.rel, group, y), Y).map(num1) : [missing(), missing(), missing()];
+      return `<tr class="dodge"><td class="l">${label}</td>${v.map(x => `<td>${x}</td>`).join("")}<td class="sep" colspan="${(cols.length - 1) * 3}"></td></tr>`;
+    };
+    const regs = [["Americas", 1], ["Europe", 4], ["APAC", 1]];
+    const head = `<thead>
+      <tr class="reg"><th></th>${regs.map(([r, n], i) => `<th colspan="${n * 3}" class="${i ? "sep" : ""}">${r}</th>`).join("")}</tr>
+      <tr class="regtag"><th></th>${regs.map(([r, n], i) => `<th colspan="${n * 3}" class="${i ? "sep" : ""}"><span class="t">${man(q, "rev:" + r, { label: r + " share of revenue" })} of ${Y - 1} revenue</span></th>`).join("")}</tr>
+      <tr class="ctry"><th></th>${cols.map((c, i) => `<th colspan="3" class="${sepCls(i).trim()}">${c.name}</th>`).join("")}</tr>
+      <tr class="yrs"><th></th>${cols.map((c, i) => `<th class="${sepCls(i).trim()}">${y2(Y - 1)}A</th><th>${y2(Y)}E</th><th>${y2(Y - 1)}-${y2(Y + 4)}</th>`).join("")}</tr></thead>`;
+    const relName = oe ? `${MONTH_NAMES[Number(oe.rel.date.slice(5, 7)) - 1]} ${oe.rel.date.slice(0, 4)}` : "–";
+    return `<div class="qslide">
+      <div class="qslide-hd"><span>market outlook</span><span>market outlook | growth outlook</span></div>
+      <div class="qslide-bd">
+        <div class="qslide-t"><b>market outlook | growth outlook</b> · ${qLabel(q)}</div>
+        <div class="qslide-sub">Work done by sector, annual % change, ${relName} release</div>
+        <div class="qscroll"><table class="go">${head}<tbody>${rows}${varRow}${dodgeRow("DODGE | total const.", null)}${dodgeRow("DODGE | non-res", "nonres")}</tbody></table></div>
+        <div class="vlegend"><b>legend</b>${[["sp", "▲", "strongly positive"], ["p", "▲", "positive"], ["n", "►", "neutral"], ["ng", "▼", "negative"], ["sn", "▼", "strongly negative"]].map(([c, g, t]) => `<span><span class="vchip ${c}">${g}</span>${t}</span>`).join("")}</div>
+        <div class="takeaway qbanner">${man(q, "banner:growth", { comment: true, ph: "xxx", label: "Key message" })}</div>
+      </div>
+      <div class="qslide-ft"><span>Source: Oxford Economics ${relName} release${oe && oe.later ? " (later than this quarter)" : ""}${dodge ? `; Dodge vertical forecast, actuals to ${qLabel(dodge.rel.quarter)}${dodge.later ? " (later than this quarter)" : ""}` : ""}; Group strategy and M&amp;A analysis</span>
+        <span>Notes: OE non-residential = non-residential building, commercial (offices, retail, hotels), the series in the current export. Europe = all European countries in the Oxford Economics release. Dodge: US construction spending, total and non-residential building; growth in %. Variation vs. previous SBR: change in total (residential + non-residential) growth vs. the previous quarter's release; ▲▼ at ±0.1 pp, strong at ±0.5 pp.</span></div>
+    </div>`;
+  }
+
+  function slideEmea(q, oe) {
+    const Y = Number(q.slice(0, 4)), qn = Number(q.slice(5));
+    const endMonth = MONTH_NAMES[qn * 3 - 1];
+    const has = locs => oe && locs.some(l => oeLocs(oe.rel).includes(l));
+    const tot = (locs, y) => { const a = oeVal(oe.rel, locs, OE.res, "", y), b = oeVal(oe.rel, locs, OE.com, "", y); return a !== null && b !== null ? a + b : null; };
+    const mk = (locs, y) => has(locs) ? growth(tot(locs, y), tot(locs, y - 1)) : null;
+    const mcell = v => v === null ? missing() : `${pctTxt(v)}${arrowFor(v)}`;
+    const rows = EMEA_ROWS.map(([name, locs, code]) => {
+      const m1 = mk(locs, Y - 1), m2 = mk(locs, Y);
+      const ytdp = (QMAN[q] || {})["ytdp:" + name] ?? manDefault(q, "ytdp:" + name);
+      return `<tr><td class="cty">${name}<small>${code}</small></td>
+        <td>${mcell(m1)}</td><td>${man(q, "fy:" + name, { label: name + " HFC FY" })}</td>
+        <td class="vsep">${mcell(m2)}</td><td>${man(q, "ytd:" + name, { label: name + " HFC YTD" })}</td>
+        <td>${man(q, "ytdp:" + name, { label: name + " HFC YTD %" })}<span class="arr-slot" data-for="${esc(name)}">${arrowFor(toNum(ytdp))}</span></td>
+        <td>${man(q, "share:" + name, { label: name + " share of revenue" })}</td>
+        <td class="cm">${man(q, "cm:" + name, { comment: true, ph: "xxx", label: name + " comment" })}</td></tr>`;
+    }).join("");
+    const relName = oe ? `${MONTH_NAMES[Number(oe.rel.date.slice(5, 7)) - 1]} ${oe.rel.date.slice(0, 4)}` : "–";
+    return `<div class="qslide">
+      <div class="qslide-hd"><span>business update</span><span>vertical update</span></div>
+      <div class="qslide-bd">
+        <div class="qslide-t">Market environment EMEA | HFC performance in key countries · ${qLabel(q)}</div>
+        <div class="emea-grid">
+          <div class="qscroll"><table class="emea">
+            <thead><tr><th></th><th colspan="2" class="yr">${Y - 1}</th><th colspan="5" class="yr">${Y}</th></tr>
+            <tr><th></th><th>Market</th><th>HFC FY</th><th class="vsep">Market fcst</th><th colspan="2">HFC YTD<sup>1</sup></th><th>% of total rev. YTD ’${String(Y).slice(2)}</th><th>comments</th></tr></thead>
+            <tbody>${rows}</tbody></table></div>
+          <div class="kt"><h4>Key takeaways</h4><ul>${[1, 2, 3, 4].map(i => `<li>${man(q, "kt:" + i, { comment: true, ph: "xxx", label: "Key takeaway " + i })}</li>`).join("")}</ul>
+            <p><b>Priority:</b> ${man(q, "kt:priority", { comment: true, ph: "xxx", label: "Priority" })}</p></div>
+        </div>
+      </div>
+      <div class="qslide-ft"><span>Source: Oxford Economics ${relName} release${oe && oe.later ? " (later than this quarter)" : ""}, construction work done (residential + non-residential commercial).</span>
+        <span>Note: HFC figures in € m, to be completed manually (yellow). 1_ YTD = end of ${endMonth} ${Y}. Nordics = Sweden, Norway, Denmark, Finland.</span></div>
+    </div>`;
+  }
+
+  let qTab = store.get(LS_QTAB);
+  function renderQbr() {
+    const list = quarterList(), r = releases();
+    const unlocked = list.filter(x => x.unlocked);
+    if (!list.some(x => x.q === qTab && x.unlocked)) qTab = unlocked.length ? unlocked[unlocked.length - 1].q : null;
+    document.getElementById("qbrTabs").innerHTML = list.map(x => `<button type="button" class="qtab" role="tab" data-q="${x.q}" aria-selected="${x.q === qTab}"${x.unlocked ? "" : ` disabled title="Unlocks when a release from ${qLabel(x.q)} or later is uploaded"`}>${qLabel(x.q)}${x.unlocked ? "" : '<span class="lk">locked</span>'}</button>`).join("");
+    document.querySelectorAll("#qbrTabs .qtab:not(:disabled)").forEach(b => b.addEventListener("click", () => { qTab = b.dataset.q; store.set(LS_QTAB, qTab); renderQbr(); }));
+    const body = document.getElementById("qbrBody");
+    document.getElementById("qbrScope").textContent = `Quarterly reports ${qLabel(list[0].q)} – ${qLabel(list[list.length - 1].q)}: ${unlocked.length} available, the others unlock with new data`;
+    if (!qTab) { body.innerHTML = '<div class="qlocked">No report yet: upload an Oxford Economics or Dodge release to unlock the first one.</div>'; return; }
+    const oe = pickRel(r.oe, "oe", qTab), dodge = pickRel(r.dodge, "dodge", qTab);
+    const prevQ = list.filter(x => x.unlocked && qKey(x.q) < qKey(qTab)).pop();
+    const prevOe = prevQ ? pickRel(r.oe, "oe", prevQ.q) : null;
+    const meta = `<div class="qmeta"><span>Report <b>${qLabel(qTab)}</b></span>
+      <span>Oxford Economics: <b>${oe ? "release " + fmtDate(oe.rel.date) : "none"}</b>${oe && oe.later ? ' <span class="flag">(no release up to this quarter yet: using a later one)</span>' : ""}</span>
+      <span>Dodge (US): <b>${dodge ? "actuals to " + qLabel(dodge.rel.quarter) : "none"}</b>${dodge && dodge.later ? ' <span class="flag">(later than this quarter)</span>' : ""}</span>
+      <span>Compared with: <b>${prevQ ? qLabel(prevQ.q) : "no previous report"}</b>${prevOe && oe && prevOe.rel.id === oe.rel.id ? " (same Oxford Economics release, so neutral)" : ""}</span></div>`;
+    body.innerHTML = meta + slideGrowth(qTab, oe, dodge, prevOe) + slideEmea(qTab, oe);
+    body.querySelectorAll(".man").forEach(el => {
+      el.addEventListener("input", () => {
+        const q = el.dataset.q, id = el.dataset.id;
+        (QMAN[q] = QMAN[q] || {})[id] = el.textContent.trim();
+        store.set(LS_QBR, JSON.stringify(QMAN));
+        if (id.startsWith("ytdp:")) { const slot = body.querySelector(`.arr-slot[data-for="${CSS.escape(id.slice(5))}"]`); if (slot) slot.innerHTML = arrowFor(toNum(el.textContent)); }
+      });
+      el.addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); el.blur(); } });
+    });
+  }
+
   // ---------- controls ----------
   document.querySelectorAll("#segCtl button").forEach(b => b.addEventListener("click", () => {
     seg = b.dataset.seg;
@@ -1165,6 +1635,8 @@ sup { font-size: .7em; line-height: 0; }
   document.getElementById("csvBox").value = toCsv(ROWS);
   renderWeights();
   render();
+  renderReleases();
+  renderQbr();
 })();
 </script>
 </body>
