@@ -249,12 +249,93 @@ for name_i, (reg) in zip(("579", "580", "581"), ("Americas", "Europe", "APAC")):
     boxes.append({"id": "rev:" + reg, **box(xfrm(sp), [para_spec(p) for p in paragraphs(sp2)], anchor, ins)})
     s = s[:a] + sp2 + s[b:]
 s = mark_text_shape(s, "Rectangle 626", [[("{{t:subtitle}}", None)]], "subtitle")
+# ---- row labels: OE | commercial; footnotes ¹ residential = single family, ² commercial = commercial buildings + multifamily
+def sup(rpr):
+    rpr = re.sub(r' baseline="-?\d+"', "", rpr)
+    return rpr.replace("<a:rPr", '<a:rPr baseline="30000"', 1)
+
+def relabel(s, name, parts):
+    a, b = find_shape(s, name)
+    sp = s[a:b]
+    p = paragraphs(sp)[0]
+    rpr = first_rpr(p)
+    return s[:a] + set_paragraphs(sp, [make_para(p, [(t, sup(rpr) if up else None) for t, up in parts])]) + s[b:]
+
+for name, parts in (("Rectangle: Rounded Corners 606", [("OE | residential", 0), ("1", 1)]),
+                    ("Rectangle: Rounded Corners 648", [("OE | commercial", 0), ("2", 1)]),
+                    ("Rectangle: Rounded Corners 628", [("OE | comm. new build", 0)]),
+                    ("Rectangle: Rounded Corners 638", [("OE | comm. renovation", 0)]),
+                    ("Rectangle: Rounded Corners 1069", [("DODGE | commercial", 0), ("2", 1)])):
+    s = relabel(s, name, parts)
+
+# ---- Dodge block: three rows (total const., residential, commercial); the legend moves down to make room
+def set_y(s, name, y, h=None):
+    a, b = find_shape(s, name)
+    sp = s[a:b]
+    m = re.search(r'<a:off x="(-?\d+)" y="(-?\d+)"/><a:ext cx="(\d+)" cy="(\d+)"/>', sp)
+    x0, y0, w0, h0 = map(int, m.groups())
+    sp = sp[:m.start()] + f'<a:off x="{x0}" y="{y}"/><a:ext cx="{w0}" cy="{h if h is not None else h0}"/>' + sp[m.end():]
+    return s[:a] + sp + s[b:]
+
+def find_id(s, i):
+    """(start, end) of the shape or group whose cNvPr has this id"""
+    j = s.index(f'<p:cNvPr id="{i}" ')
+    a_sp, a_gr = s.rfind("<p:sp>", 0, j), s.rfind("<p:grpSp>", 0, j)
+    tag, a = ("p:grpSp", a_gr) if a_gr > a_sp else ("p:sp", a_sp)
+    depth = 0
+    for m in re.finditer(rf"<{tag}>|</{tag}>", s[a:]):
+        depth += 1 if m.group(0) == f"<{tag}>" else -1
+        if depth == 0:
+            return a, a + m.end()
+
+def stripe(s, name, top, hs):
+    """the row stripes are trapezoids turned 90°: visual height = cx, visual centre = off + ext/2"""
+    a, b = find_shape(s, name)
+    sp = s[a:b]
+    m = re.search(r'<a:off x="(-?\d+)" y="(-?\d+)"/><a:ext cx="(\d+)" cy="(\d+)"/>', sp)
+    x0, y0, w0, h0 = map(int, m.groups())
+    cxm = x0 + w0 / 2
+    sp = sp[:m.start()] + f'<a:off x="{round(cxm - hs / 2)}" y="{round(top + hs / 2 - h0 / 2)}"/><a:ext cx="{hs}" cy="{h0}"/>' + sp[m.end():]
+    return s[:a] + sp + s[b:]
+
+def clone_after(s, name, new_name, new_id):
+    a, b = find_shape(s, name)
+    c = re.sub(r'<p:cNvPr id="\d+" name="[^"]*"', f'<p:cNvPr id="{new_id}" name="{new_name}"', s[a:b], count=1)
+    c = re.sub(r'<a16:creationId [^>]*/>', "", c)
+    return s[:b] + c + s[b:]
+
+DODGE_TOP, DODGE_H, DODGE_PITCH = 4900000, 230000, 255000
+nid = max(int(i) for i in re.findall(r'<p:cNvPr id="(\d+)"', s)) + 1
+s = clone_after(s, "Trapezoid 1066", "Trapezoid dodge res", nid)
+s = clone_after(s, "Rectangle: Rounded Corners 1067", "Label dodge res", nid + 1)
+s = clone_after(s, "TextBox 1071", "TextBox dodge res", nid + 2)
+s = relabel(s, "Label dodge res", [("DODGE | residential", 0), ("1", 1)])
+rows = [("Trapezoid 1066", "Rectangle: Rounded Corners 1067", "TextBox 1071"),
+        ("Trapezoid dodge res", "Label dodge res", "TextBox dodge res"),
+        ("Trapezoid 1068", "Rectangle: Rounded Corners 1069", "TextBox 1072")]
+for i, (tz, lab, val) in enumerate(rows):
+    top = DODGE_TOP + i * DODGE_PITCH
+    s = stripe(s, tz, top, DODGE_H)
+    s = set_y(s, lab, top, DODGE_H)
+    s = set_y(s, val, top + (DODGE_H - 261610) // 2, 261610)
+    for nm in (lab, val):     # values and labels centred on their stripe
+        a, b = find_shape(s, nm)
+        s = s[:a] + re.sub(r'<a:bodyPr([^>]*?) anchor="\w+"', r'<a:bodyPr\1', s[a:b]).replace("<a:bodyPr", '<a:bodyPr anchor="ctr"', 1) + s[b:]
+legend_dy = DODGE_TOP + 2 * DODGE_PITCH + DODGE_H + 40000 - 5544525
+for i in (983, 984, 985, 986, 987, 1009, 990, 991, 992, 1008, 995):
+    a, b = find_id(s, i)
+    sp = s[a:b]
+    m = re.search(r'<a:off x="(-?\d+)" y="(-?\d+)"/>', sp)
+    sp = sp[:m.start()] + f'<a:off x="{m.group(1)}" y="{int(m.group(2)) + legend_dy}"/>' + sp[m.end():]
+    s = s[:a] + sp + s[b:]
+
 s = mark_text_shape(s, "TextBox 1071", [[("{{v:go:us:dodge_total:1}}", None)]], "dodge_total")
+s = mark_text_shape(s, "TextBox dodge res", [[("{{v:go:us:dodge_res:1}}", None)]], "dodge_res")
 s = mark_text_shape(s, "TextBox 1072", [[("{{v:go:us:dodge_non:1}}", None)]], "dodge_non")
 # the deck shows Dodge for ’Y E only: add ’Y-1 A and the 5-year CAGR boxes, aligned with the USA columns above
 usx = {b["id"].split(":")[3]: b["x"] * EMU_W for b in boxes if b["id"].startswith("go:us:res:")}
 next_id = max(int(i) for i in re.findall(r'<p:cNvPr id="(\d+)"', s)) + 1
-for name, key in (("TextBox 1071", "dodge_total"), ("TextBox 1072", "dodge_non")):
+for name, key in (("TextBox 1071", "dodge_total"), ("TextBox dodge res", "dodge_res"), ("TextBox 1072", "dodge_non")):
     a, b = find_shape(s, name)
     sp = s[a:b]
     x, y, w, h = xfrm(sp)

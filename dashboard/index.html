@@ -1207,6 +1207,7 @@ sup { font-size: .7em; line-height: 0; }
   const OE = {
     res: "Work Done - Residential - Total",
     mf: "Work Done - Residential - Multi Family",
+    sf: "Work Done - Residential - Single Family",
     com: "Work Done - Non-Residential Building - Commercial",
     nonTot: "Work Done - Non-Residential Building - Total",
   };
@@ -1286,11 +1287,12 @@ sup { font-size: .7em; line-height: 0; }
   const trio = (get, Y) => [growth(get(Y - 1), get(Y - 2)), growth(get(Y), get(Y - 1)), cagr(get(Y + 4), get(Y - 1), 5)];
 
   // ---- Dodge accessors
-  function dodgeVal(rel, group, year) {
+  // sum of the Dodge verticals whose key passes `inSeg` (subtotal rows are never stored: they have no key)
+  function dodgeVal(rel, inSeg, year) {
     const yi = rel.years.indexOf(year);
     if (yi < 0) return null;
     let sum = 0, found = false;
-    rel.rows.forEach(([key, name, grp, vals]) => { if ((!group || grp === group) && vals[yi] !== null) { sum += vals[yi]; found = true; } });
+    rel.rows.forEach(([key, name, grp, vals]) => { if (inSeg(Number(key)) && vals[yi] !== null) { sum += vals[yi]; found = true; } });
     return found ? sum : null;
   }
 
@@ -1474,9 +1476,16 @@ sup { font-size: .7em; line-height: 0; }
   const EMEA_ROWS = [["Germany", ["Germany"]], ["France", ["France"]], ["Netherlands", ["Netherlands"]], ["United Kingdom", ["United Kingdom"]],
     ["Belgium", ["Belgium"]], ["Poland", ["Poland"]], ["Nordics", ["Sweden", "Norway", "Denmark", "Finland"]]];
   const GO_COLS = { us: ["United States", "USA", "US"], de: ["Germany"], fr: ["France"], nl: ["Netherlands"], cn: ["China"] };
-  const goRows = non => ({ res: [OE.res, ""], res_new: [OE.res, "New"], res_reno: [OE.res, "Renovation"], non: [non, ""], non_new: [non, "New"], non_reno: [non, "Renovation"] });
-  // "OE | non-residential" = non-residential building total when the release has it, else commercial
-  const nonBaseOf = rel => rel && rel.rows.some(r => r[1] === OE.nonTot || r[1] === OE.nonTot + " - New") ? OE.nonTot : OE.com;
+  // QBR segments (footnotes on the slide): residential¹ = single family; commercial² = commercial buildings + multifamily
+  // g(base, kind, year) reads one Oxford Economics series
+  const OE_SERIES = {
+    res: (g, k, y) => { const sf = g(OE.sf, k, y); if (sf !== null) return sf; const t = g(OE.res, k, y), m = g(OE.mf, k, y); return t !== null && m !== null ? t - m : null; },
+    com: (g, k, y) => { const c = g(OE.com, k, y), m = g(OE.mf, k, y); return c !== null && m !== null ? c + m : null; },
+  };
+  const GO_ROWS = { res: ["res", ""], res_new: ["res", "New"], res_reno: ["res", "Renovation"], non: ["com", ""], non_new: ["com", "New"], non_reno: ["com", "Renovation"] };
+  // Dodge verticals by key: residential = 18 single family; commercial = building verticals except 5 manufacturing and 18
+  // single family (so multifamily 19 is in); keys 24+ are non-building (streets, bridges, dams, sewers, water, power, other)
+  const DODGE_SEG = { total: () => true, res: k => k === 18, com: k => k < 24 && k !== 5 && k !== 18 };
   const nowQ = () => qKey(qOfDate(new Date().toISOString().slice(0, 10)));
 
   // a report is available when an Oxford Economics release dated in or before its quarter exists
@@ -1511,39 +1520,45 @@ sup { font-size: .7em; line-height: 0; }
     // a year or country missing from the selected release is taken from the other releases, newest first
     const others = oe ? r.oe.filter(x => x.id !== oe.id).reverse() : [];
     const fallbackUsed = new Set();
-    const oeGet = (l, base, kind, y) => {
+    // value + the release it came from (the Excel bridge lists both)
+    const oeSrc = (l, base, kind, y) => {
       const v = has(oe, l) ? oeVal(oe, l, base, kind, y) : null;
-      if (v !== null) return v;
+      if (v !== null) return { v, rel: oe };
       for (const rel of others) {
         if (!has(rel, l)) continue;
         const w = oeVal(rel, l, base, kind, y);
-        if (w !== null) { fallbackUsed.add(rel.id); return w; }
+        if (w !== null) return { v: w, rel };
       }
-      return null;
+      return { v: null, rel: null };
     };
+    const oeGet = (l, base, kind, y) => { const r = oeSrc(l, base, kind, y); if (r.rel && r.rel !== oe) fallbackUsed.add(r.rel.id); return r.v; };
     const hasAny = l => has(oe, l) || others.some(rel => has(rel, l));
     const V = {}, T = { growth: {}, emea: {} };
     const num = v => v === null || !Number.isFinite(v) ? { text: "x.x", kind: "missing" } :
       { text: (Math.abs(v) < 0.05 ? 0 : v).toFixed(1), kind: v < -0.05 ? "neg" : v >= 1 ? "pos" : "neu" };
     // growth outlook
-    const NON = nonBaseOf(oe);
-    Object.entries(cols).forEach(([c, l]) => Object.entries(goRows(NON)).forEach(([row, [base, kind]]) => {
-      const t = hasAny(l) ? trio(y => oeGet(l, base, kind, y), Y) : [null, null, null];
+    const seg = (name, g, kind, y) => OE_SERIES[name](g, kind, y);
+    const getAny = l => (base, kind, y) => oeGet(l, base, kind, y);
+    Object.entries(cols).forEach(([c, l]) => Object.entries(GO_ROWS).forEach(([row, [name, kind]]) => {
+      const t = hasAny(l) ? trio(y => seg(name, getAny(l), kind, y), Y) : [null, null, null];
       t.forEach((v, k) => { V[`go:${c}:${row}:${k}`] = num(v); });
     }));
-    const dt = dodge ? trio(y => dodgeVal(dodge, null, y), Y) : [null, null, null];
-    const dn = dodge ? trio(y => dodgeVal(dodge, "nonres", y), Y) : [null, null, null];
-    [0, 1, 2].forEach(k => { V["go:us:dodge_total:" + k] = num(dt[k]); V["go:us:dodge_non:" + k] = num(dn[k]); });
+    [["dodge_total", "total"], ["dodge_res", "res"], ["dodge_non", "com"]].forEach(([id, sg]) => {
+      const t = dodge ? trio(y => dodgeVal(dodge, DODGE_SEG[sg], y), Y) : [null, null, null];
+      t.forEach((v, k) => { V[`go:us:${id}:${k}`] = num(v); });
+    });
     ["Americas", "Europe", "APAC"].forEach(g => { V["rev:" + g] = { text: manVal(q, "rev:" + g, "xx%"), kind: "man", id: "rev:" + g }; });
     V["banner:growth"] = { text: manVal(q, "banner:growth", "xxx"), kind: "comment", id: "banner:growth" };
     const relMonth = rel => rel ? `${MONTH_NAMES[Number(rel.date.slice(5, 7)) - 1]} ${rel.date.slice(0, 4)}` : "";
     Object.assign(T.growth, { yA: y2(Y - 1) + "A", yE: y2(Y) + "E", yC: y2(Y - 1) + "-" + y2(Y + 4), yP: String(Y - 1),
       subtitle: `Work done by sector, annual % change, ${relMonth(oe)} release`,
       src: `Source: Oxford Economics ${relMonth(oe)} release${dodge ? `; Dodge, actuals to ${qLabel(dodge.quarter)}` : ""}; Group strategy and M&A analysis`,
-      notes: `Notes: OE non-residential = ${NON === OE.nonTot ? "non-residential building, total" : "commercial (offices, retail, hotels)"}. Europe = European countries in the release. Dodge: US construction spending.` });
+      notes: "Notes: (1) Single family only. (2) Commercial buildings + multifamily; Dodge: all building verticals except single family and manufacturing. Europe = countries in the release." });
     // variation vs. previous SBR (total = residential + non-residential), per column
-    const tot = (rel, l, y) => { const a = oeVal(rel, l, OE.res, "", y), b = oeVal(rel, l, NON, "", y); return a !== null && b !== null ? a + b : null; };
-    const totAny = (l, y) => { const a = oeGet(l, OE.res, "", y), b = oeGet(l, NON, "", y); return a !== null && b !== null ? a + b : null; };
+    // market total = residential + commercial (as defined above)
+    const sum2 = g => y => { const a = seg("res", g, "", y), b = seg("com", g, "", y); return a !== null && b !== null ? a + b : null; };
+    const tot = (rel, l, y) => sum2((base, kind, yy) => oeVal(rel, l, base, kind, yy))(y);
+    const totAny = (l, y) => sum2(getAny(l))(y);
     const chipType = d => d >= 0.5 ? "sp" : d >= 0.1 ? "p" : d <= -0.5 ? "sn" : d <= -0.1 ? "ng" : "n";
     const chips = {};
     Object.entries(cols).forEach(([c, l]) => {
@@ -1568,16 +1583,16 @@ sup { font-size: .7em; line-height: 0; }
     });
     [1, 2, 3, 4, "priority"].forEach(i => { V["kt:" + i] = { text: manVal(q, "kt:" + i, "xxx"), kind: "comment", id: "kt:" + i }; });
     Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2),
-      src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + ${NON === OE.nonTot ? "non-residential building" : "non-residential commercial"}).`,
+      src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + commercial incl. multifamily).`,
       notes: "Note: Nordics = Sweden, Norway, Denmark, Finland." });
-    return { q, oe, dodge, prevQ, prevOe, V, T, chips, arrows, fallback: [...fallbackUsed].map(id => r.oe.find(x => x.id === id)) };
+    return { q, oe, dodge, prevQ, prevOe, V, T, chips, arrows, bridge: { oeSrc, cols, Y }, fallback: [...fallbackUsed].map(id => r.oe.find(x => x.id === id)) };
   }
 
   // ---- preview: slide background + figures at the template's positions
   const VAL_COLOR = { pos: "#04935E", neg: "#CE0E2D", neu: "#747474", missing: "#747474", man: "#191919" };
   const CHIP = { sp: ["#1a7f55", "M7 12l5-5 5 5"], p: ["#b9e2c4", "M9 8h6v6"], n: ["#bdbdbd", "M10 7l5 5-5 5"], ng: ["#efa3a8", "M9 16h6v-6"], sn: ["#8b1a2b", "M7 10l5 5 5-5"] };
   const ARROW = { up: ["#00B050", 180], down: ["#CE0E2D", 0], flat: ["#FFC000", 270] };
-  const BOX_ALIAS = { dodge_total: "go:us:dodge_total:1", dodge_non: "go:us:dodge_non:1" };
+  const BOX_ALIAS = { dodge_total: "go:us:dodge_total:1", dodge_res: "go:us:dodge_res:1", dodge_non: "go:us:dodge_non:1" };
   function valHtml(v, q, run) {
     if (!v) return "";
     const st = [];
@@ -1688,7 +1703,7 @@ sup { font-size: .7em; line-height: 0; }
   }
   const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
   const crc32 = d => { let c = 0xFFFFFFFF; for (let i = 0; i < d.length; i++) c = CRC[(c ^ d[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
-  function zipStore(files) {
+  function zipStore(files, mime) {
     const enc = new TextEncoder(), parts = [], central = [];
     let offset = 0;
     files.forEach(f => {
@@ -1704,7 +1719,7 @@ sup { font-size: .7em; line-height: 0; }
     });
     const csize = central.reduce((s, a) => s + a.length, 0), e = new DataView(new ArrayBuffer(22));
     e.setUint32(0, 0x06054b50, true); e.setUint16(8, files.length, true); e.setUint16(10, files.length, true); e.setUint32(12, csize, true); e.setUint32(16, offset, true);
-    return new Blob(parts.concat(central, [new Uint8Array(e.buffer)]), { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
+    return new Blob(parts.concat(central, [new Uint8Array(e.buffer)]), { type: mime || "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
   }
   async function buildPptx(data) {
     const bin = atob(TPL.pptx), buf = new Uint8Array(bin.length);
@@ -1723,7 +1738,9 @@ sup { font-size: .7em; line-height: 0; }
     msg.textContent = "Building the PowerPoint…"; msg.classList.remove("err");
     let blob;
     try { blob = await buildPptx(data); } catch (e) { msg.textContent = "The PowerPoint could not be built: " + ((e && e.message) || e); msg.classList.add("err"); return; }
-    const filename = `HFC_QBR_market_outlook_${qLabel(data.q).replace(" ", "_")}.pptx`;
+    await saveFile(blob, `HFC_QBR_market_outlook_${qLabel(data.q).replace(" ", "_")}.pptx`, msg);
+  }
+  async function saveFile(blob, filename, msg) {
     const dl = window.claude && window.claude.use ? await window.claude.use("downloads").catch(() => null) : null;
     if (dl) {
       try { await dl.save({ filename, data: blob }); msg.textContent = filename + " saved."; }
@@ -1735,6 +1752,222 @@ sup { font-size: .7em; line-height: 0; }
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 4000);
     msg.textContent = filename + " downloaded.";
+  }
+
+  // ---- Excel data bridge: every slide figure rebuilt from the Oxford Economics / Dodge data, with live formulas
+  const xlEsc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const colL = i => { let s = ""; i++; while (i) { const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; };
+  // cell: null | string | number | { v, f, s }   styles: see XS
+  const XS = { title: 1, head: 2, num: 3, pct: 4, bold: 5, note: 6, ppt: 7, sub: 8, numb: 9, pctb: 10, text: 0 };
+  function xlsxBlob(sheets) {
+    const enc = new TextEncoder();
+    const sheetXml = sh => {
+      const rows = sh.rows.map((r, ri) => `<row r="${ri + 1}">` + r.map((c, ci) => {
+        if (c === null || c === undefined || c === "") return "";
+        const ref = colL(ci) + (ri + 1);
+        const o = typeof c === "object" ? c : { v: c };
+        const st = o.s ? ` s="${o.s}"` : "";
+        if (o.f) {
+          const v = o.v === null || o.v === undefined || (typeof o.v === "number" && !Number.isFinite(o.v)) ? "" : o.v;
+          return typeof v === "number" ? `<c r="${ref}"${st}><f>${xlEsc(o.f)}</f><v>${v}</v></c>` : `<c r="${ref}"${st} t="str"><f>${xlEsc(o.f)}</f><v>${xlEsc(v)}</v></c>`;
+        }
+        if (typeof o.v === "number") return Number.isFinite(o.v) ? `<c r="${ref}"${st}><v>${o.v}</v></c>` : "";
+        return `<c r="${ref}"${st} t="inlineStr"><is><t xml:space="preserve">${xlEsc(o.v)}</t></is></c>`;
+      }).join("") + "</row>").join("");
+      const cols = sh.cols ? "<cols>" + sh.cols.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join("") + "</cols>" : "";
+      const pane = sh.freeze ? `<sheetViews><sheetView workbookViewId="0"><pane xSplit="${sh.freeze[0]}" ySplit="${sh.freeze[1]}" topLeftCell="${colL(sh.freeze[0])}${sh.freeze[1] + 1}" activePane="bottomRight" state="frozen"/></sheetView></sheetViews>`
+        : '<sheetViews><sheetView workbookViewId="0"/></sheetViews>';
+      return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">${pane}<sheetFormatPr defaultRowHeight="15"/>${cols}<sheetData>${rows}</sheetData></worksheet>`;
+    };
+    const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<numFmts count="2"><numFmt numFmtId="164" formatCode="#,##0.0"/><numFmt numFmtId="165" formatCode="0.0%"/></numFmts>
+<fonts count="6"><font><sz val="10"/><name val="Calibri"/></font><font><b/><sz val="14"/><color rgb="FFCE0E2D"/><name val="Calibri"/></font><font><b/><sz val="10"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="10"/><name val="Calibri"/></font><font><i/><sz val="10"/><color rgb="FF505050"/><name val="Calibri"/></font><font><b/><sz val="10"/><color rgb="FFCE0E2D"/><name val="Calibri"/></font></fonts>
+<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFCE0E2D"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF2F2F2"/></patternFill></fill></fills>
+<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+<cellXfs count="11"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+<xf numFmtId="0" fontId="2" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment wrapText="1" vertical="center"/></xf>
+<xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>
+<xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>
+<xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+<xf numFmtId="0" fontId="4" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf>
+<xf numFmtId="0" fontId="5" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment horizontal="right"/></xf>
+<xf numFmtId="0" fontId="3" fillId="3" borderId="0" xfId="0" applyFont="1" applyFill="1"/>
+<xf numFmtId="164" fontId="3" fillId="3" borderId="0" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1"/>
+<xf numFmtId="165" fontId="3" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyFont="1"/></cellXfs>
+<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+    const files = [
+      { name: "[Content_Types].xml", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((_, i) => `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>` },
+      { name: "_rels/.rels", data: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>' },
+      { name: "xl/workbook.xml", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((sh, i) => `<sheet name="${xlEsc(sh.name)}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join("")}</sheets><calcPr calcId="191029" fullCalcOnLoad="1"/></workbook>` },
+      { name: "xl/_rels/workbook.xml.rels", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>` },
+      { name: "xl/styles.xml", data: styles },
+    ].concat(sheets.map((sh, i) => ({ name: `xl/worksheets/sheet${i + 1}.xml`, data: sheetXml(sh) })));
+    return zipStore(files.map(f => ({ name: f.name, data: enc.encode(f.data) })), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+  }
+
+  function bridgeSheets(data) {
+    const { oeSrc, cols, Y } = data.bridge;
+    const years = [Y - 2, Y - 1, Y, Y + 1, Y + 2, Y + 3, Y + 4];
+    const y2 = n => "’" + String(n).slice(2);
+    const relName = rel => rel ? `${fmtDate(rel.date)} (${rel.file})` : "";
+    const COL_NAME = { us: "USA", de: "Germany", fr: "France", nl: "Netherlands", eu: "Europe", cn: "China" };
+    const ROW_NAME = { res: "OE | residential¹", res_new: "OE | resi new build", res_reno: "OE | resi renovation", non: "OE | commercial²", non_new: "OE | comm. new build", non_reno: "OE | comm. renovation" };
+    const BASES = [["sf", OE.sf], ["res", OE.res], ["mf", OE.mf], ["com", OE.com]];
+    const KINDS = [["", "Total"], ["New", "New build"], ["Renovation", "Renovation"]];
+    const Y0 = 4;   // first year column (E) in the data sheets
+    const yc = i => colL(Y0 + i);
+    const pptText = v => v ? v.text : "";
+    const pctOf = (a, b) => a !== null && b !== null && b ? a / b - 1 : null;
+    const cagrOf = (a, b) => a !== null && b !== null && a > 0 && b > 0 ? Math.pow(a / b, 1 / 5) - 1 : null;
+
+    // ---- sheet "OE data": every series used, per location, with the release it came from; Σ rows for multi-country columns
+    const groups = new Map();      // locations key → { label, locs }
+    Object.entries(cols).forEach(([c, l]) => { const k = l.join("|"); if (l.length && !groups.has(k)) groups.set(k, { label: COL_NAME[c], locs: l }); });
+    EMEA_ROWS.forEach(([name, l]) => { const k = l.join("|"); if (!groups.has(k)) groups.set(k, { label: name, locs: l }); });
+    const oeRows = [[{ v: "Oxford Economics data used in the report (construction work done, US$ m, 2023 prices)", s: XS.title }], [],
+      ["Column / row on the slides", "Location", "Oxford Economics series", "Type"].map(v => ({ v, s: XS.head }))
+        .concat(years.map(y => ({ v: String(y), s: XS.head })), [{ v: "Source release", s: XS.head }, { v: "Levels not printed in the release (calculated)", s: XS.head }])];
+    const hasLevel = (rel, loc, name, y) => {
+      const i = rel ? rel.years.indexOf(y) : -1;
+      return i >= 0 && rel.rows.some(r => r[0] === loc && r[1] === name && r[3] !== "pct" && r[2][i] !== null && r[2][i] !== undefined);
+    };
+    const ref = new Map();         // "group|base|kind" → row number (1-based) of the series (Σ row for several countries)
+    groups.forEach((g, gk) => BASES.forEach(([bk, base]) => KINDS.forEach(([kind, kindName]) => {
+      const src = years.map(y => oeSrc(g.locs, base, kind, y));
+      if (src.every(x => x.v === null)) return;
+      const rels = [...new Set(src.filter(x => x.rel).map(x => x.rel))];
+      const per = g.locs.map(loc => years.map((y, i) => src[i].rel ? oeVal(src[i].rel, [loc], base, kind, y) : null));
+      const first = oeRows.length + 1;
+      g.locs.forEach((loc, li) => {
+        if (per[li].every(v => v === null)) return;
+        // years whose level is not printed in the release: chained from % change y/y, or new build + renovation
+        const name = kind ? base + " - " + kind : base;
+        const derived = years.filter((y, i) => per[li][i] !== null && !hasLevel(src[i].rel, loc, name, y))
+          .map(y => `${y}: ${!kind && !hasLevel(src[years.indexOf(y)].rel, loc, base + " - New", y) ? "from % change y/y" : !kind && !hasLevel(src[years.indexOf(y)].rel, loc, base, y) && hasLevel(src[years.indexOf(y)].rel, loc, base + " - New", y) ? "new build + renovation" : "from % change y/y"}`);
+        oeRows.push([g.label, loc, base, kindName].concat(per[li].map(v => v === null ? null : { v, s: XS.num }), [rels.map(relName).join("; "), derived.join("; ")]));
+      });
+      const last = oeRows.length;
+      if (last - first + 1 > 1) {
+        oeRows.push([{ v: g.label, s: XS.sub }, { v: "Σ " + g.label, s: XS.sub }, { v: base, s: XS.sub }, { v: kindName, s: XS.sub }]
+          .concat(years.map((y, i) => ({ v: src[i].v, f: `SUM(${yc(i)}${first}:${yc(i)}${last})`, s: XS.numb })), [{ v: "sum of the countries above", s: XS.sub }]));
+      }
+      ref.set(`${gk}|${bk}|${kind}`, oeRows.length);
+    })));
+    const OED = "'OE data'!";
+
+    // segment level formulas (same rules as the slides): residential = single family, else total − multifamily; commercial = commercial + multifamily
+    const segCell = (gk, seg, kind, i, val) => {
+      const r = k => ref.has(`${gk}|${k}|${kind}`) ? OED + yc(i) + ref.get(`${gk}|${k}|${kind}`) : null;
+      let f;
+      if (seg === "res") {
+        const sf = r("sf"), t = r("res"), m = r("mf");
+        const alt = t && m ? `IF(AND(ISNUMBER(${t}),ISNUMBER(${m})),${t}-${m},"")` : '""';
+        f = sf ? `IF(ISNUMBER(${sf}),${sf},${alt})` : alt;
+      } else {
+        const c = r("com"), m = r("mf");
+        f = c && m ? `IF(AND(ISNUMBER(${c}),ISNUMBER(${m})),${c}+${m},"")` : '""';
+      }
+      return { v: val === null ? "" : val, f, s: XS.num };
+    };
+    const getter = l => (base, kind, y) => oeSrc(l, base, kind, y).v;
+    const growthCells = (row, vals) => [
+      { v: pctOf(vals[1], vals[0]) ?? "", f: `IFERROR(${yc(1)}${row}/${yc(0)}${row}-1,"")`, s: XS.pctb },
+      { v: pctOf(vals[2], vals[1]) ?? "", f: `IFERROR(${yc(2)}${row}/${yc(1)}${row}-1,"")`, s: XS.pctb },
+      { v: cagrOf(vals[6], vals[1]) ?? "", f: `IFERROR((${yc(6)}${row}/${yc(1)}${row})^(1/5)-1,"")`, s: XS.pctb }];
+
+    // ---- sheet "Growth outlook"
+    const goRows = [[{ v: `Growth outlook slide: from Oxford Economics levels to the figures shown (${qLabel(data.q)})`, s: XS.title }], [],
+      ["Column", "Row on the slide", "Definition", "Type"].map(v => ({ v, s: XS.head }))
+        .concat(years.map(y => ({ v: String(y) + " level", s: XS.head })),
+          [y2(Y - 1) + "A", y2(Y) + "E", y2(Y - 1) + "-" + y2(Y + 4) + " CAGR"].map(v => ({ v, s: XS.head })),
+          ["Slide " + y2(Y - 1) + "A", "Slide " + y2(Y) + "E", "Slide CAGR"].map(v => ({ v, s: XS.head })))];
+    Object.entries(cols).forEach(([c, l]) => {
+      const gk = l.join("|");
+      Object.entries(GO_ROWS).forEach(([row, [seg, kind]]) => {
+        const vals = years.map(y => l.length ? OE_SERIES[seg](getter(l), kind, y) : null);
+        const r = goRows.length + 1;
+        const def = seg === "res" ? "Single family (else residential total − multifamily)" : "Commercial + multifamily";
+        goRows.push([COL_NAME[c], ROW_NAME[row], def, KINDS.find(k => k[0] === kind)[1]]
+          .concat(years.map((y, i) => l.length ? segCell(gk, seg, kind, i, vals[i]) : null), growthCells(r, vals),
+            [0, 1, 2].map(k => ({ v: pptText(data.V[`go:${c}:${row}:${k}`]), s: XS.ppt }))));
+      });
+    });
+
+    // ---- sheet "Dodge"
+    const dRows = [[{ v: "Dodge (US) rows of the growth outlook slide" + (data.dodge ? ` — ${data.dodge.file}, US$ thousands` : " — no Dodge export for this quarter"), s: XS.title }], [],
+      ["Key", "Vertical", "Total const.", "Residential¹"].map(v => ({ v, s: XS.head })).concat(years.map(y => ({ v: String(y), s: XS.head })), [{ v: "Commercial²", s: XS.head }])];
+    // layout: A key, B vertical, C/D flags, E.. years, L commercial flag (kept after the years so year columns line up with the other sheets)
+    const dFirst = dRows.length + 1;
+    if (data.dodge) data.dodge.rows.forEach(([key, name, grp, vals]) => {
+      const k = Number(key);
+      dRows.push([k, name, DODGE_SEG.total(k) ? 1 : 0, DODGE_SEG.res(k) ? 1 : 0]
+        .concat(years.map(y => { const yi = data.dodge.years.indexOf(y); return yi < 0 || vals[yi] === null ? null : { v: vals[yi], s: XS.num }; }), [DODGE_SEG.com(k) ? 1 : 0]));
+    });
+    const dLast = dRows.length;
+    dRows.push([], [{ v: "Subtotal rows of the Dodge export (no numeric key) are not read, so nothing is counted twice. 1 = vertical included in the segment.", s: XS.note }], [],
+      ["", "Slide row", "", ""].map(v => ({ v, s: XS.head })).concat(years.map(y => ({ v: String(y), s: XS.head })),
+        [y2(Y - 1) + "A", y2(Y) + "E", y2(Y - 1) + "-" + y2(Y + 4) + " CAGR", "Slide " + y2(Y - 1) + "A", "Slide " + y2(Y) + "E", "Slide CAGR"].map(v => ({ v, s: XS.head }))));
+    [["DODGE | total const.", "total", "C", "dodge_total"], ["DODGE | residential¹", "res", "D", "dodge_res"], ["DODGE | commercial²", "com", colL(Y0 + years.length), "dodge_non"]].forEach(([label, sg, flag, id]) => {
+      const vals = years.map(y => data.dodge ? dodgeVal(data.dodge, DODGE_SEG[sg], y) : null);
+      const r = dRows.length + 1;
+      dRows.push(["", { v: label, s: XS.bold }, "", ""].concat(years.map((y, i) => ({ v: vals[i] ?? "", f: `SUMPRODUCT($${flag}$${dFirst}:$${flag}$${dLast},${yc(i)}$${dFirst}:${yc(i)}$${dLast})`, s: XS.numb })),
+        growthCells(r, vals), [0, 1, 2].map(k => ({ v: pptText(data.V[`go:us:${id}:${k}`]), s: XS.ppt }))));
+    });
+
+    // ---- sheet "EMEA market": market = residential + commercial, growth of the two years on the slide
+    const ey = [Y - 2, Y - 1, Y];
+    const emRows = [[{ v: "EMEA performance slide: market growth (construction work done, residential¹ + commercial²)", s: XS.title }], [],
+      ["Row on the slide", "Countries", "", "Segment"].map(v => ({ v, s: XS.head })).concat(ey.map(y => ({ v: String(y) + " level", s: XS.head })),
+        [String(Y - 1) + " growth", String(Y) + " growth", "Slide " + (Y - 1), "Slide " + Y].map(v => ({ v, s: XS.head })))];
+    EMEA_ROWS.forEach(([name, l]) => {
+      const gk = l.join("|"), g = getter(l);
+      const r0 = emRows.length + 1;
+      const lv = sg => ey.map(y => OE_SERIES[sg](g, "", y));
+      const res = lv("res"), com = lv("com");
+      // year index in the OE data sheet: Y-2 → 0
+      emRows.push([name, l.join(", "), "", "Residential¹"].concat(ey.map((y, i) => segCell(gk, "res", "", i, res[i]))));
+      emRows.push([name, "", "", "Commercial²"].concat(ey.map((y, i) => segCell(gk, "com", "", i, com[i]))));
+      const tot = ey.map((y, i) => res[i] !== null && com[i] !== null ? res[i] + com[i] : null);
+      const r = r0 + 2;
+      emRows.push([{ v: name, s: XS.sub }, { v: "", s: XS.sub }, { v: "", s: XS.sub }, { v: "Market", s: XS.sub }]
+        .concat(ey.map((y, i) => ({ v: tot[i] ?? "", f: `IFERROR(${yc(i)}${r0}+${yc(i)}${r0 + 1},"")`, s: XS.numb })),
+          [{ v: pctOf(tot[1], tot[0]) ?? "", f: `IFERROR(${yc(1)}${r}/${yc(0)}${r}-1,"")`, s: XS.pctb }, { v: pctOf(tot[2], tot[1]) ?? "", f: `IFERROR(${yc(2)}${r}/${yc(1)}${r}-1,"")`, s: XS.pctb },
+            { v: pptText(data.V[`em:${name}:m1`]), s: XS.ppt }, { v: pptText(data.V[`em:${name}:m2`]), s: XS.ppt }]));
+    });
+
+    // ---- sheet "Read me"
+    const note = v => [{ v, s: XS.note }];
+    const readme = [[{ v: `HFC quarterly market outlook ${qLabel(data.q)}: data bridge`, s: XS.title }], [],
+      [{ v: "Report", s: XS.bold }, qLabel(data.q)],
+      [{ v: "Oxford Economics release", s: XS.bold }, relName(data.oe)],
+      [{ v: "Older releases used for missing years", s: XS.bold }, data.fallback.length ? data.fallback.map(relName).join("; ") : "none"],
+      [{ v: "Dodge export", s: XS.bold }, data.dodge ? `actuals to ${qLabel(data.dodge.quarter)} (${data.dodge.file})` : "none"],
+      [{ v: "Variation chips compared with", s: XS.bold }, data.prevOe && data.prevOe.id !== data.oe.id ? relName(data.prevOe) : "no earlier release (all neutral)"], [],
+      [{ v: "How the figures are built", s: XS.bold }],
+      note("1. OE data: Oxford Economics construction work done, US$ m at 2023 prices, one row per country, series and type (total / new build / renovation). Where a release gives only % change y/y for a year, the level is chained from the year before: level(y) = level(y−1) × (1 + % change / 100). A year missing from the selected release is taken from the newest older release that has it (Source release column)."),
+      note("2. Segments: residential¹ = single family only (if a release lacks the single-family series: residential total − multifamily). Commercial² = commercial buildings + multifamily."),
+      note("3. Columns with several countries (Europe = all European countries in the release; Nordics = Sweden, Norway, Denmark, Finland) add up the country levels first (Σ rows), then compute growth."),
+      note(`4. Growth: ${y2(Y - 1)}A = level ${Y - 1} / level ${Y - 2} − 1; ${y2(Y)}E = level ${Y} / level ${Y - 1} − 1; CAGR ${y2(Y - 1)}-${y2(Y + 4)} = (level ${Y + 4} / level ${Y - 1})^(1/5) − 1.`),
+      note("5. Dodge: sum of the vertical rows (subtotal rows are not read). Total const. = all verticals; residential¹ = single family houses (key 18); commercial² = all building verticals except manufacturing (5) and single family (18), i.e. multifamily included and streets, bridges, dams, sewers, water supply, power utility and other non-building (24+) excluded."),
+      note("6. EMEA slide: market = residential¹ + commercial², growth of the two years shown."),
+      note("7. Slide colours: green ≥ 1.0, red below 0, grey in between; x.x = no data. Variation chips: change in market growth (residential + commercial) vs. the previous report's release: ≥ +0.5 pt strongly positive, ≥ +0.1 positive, ≤ −0.5 strongly negative, ≤ −0.1 negative, otherwise neutral."),
+      note("Cells with formulas recalculate when the workbook opens; the 'Slide' columns show the text printed on the slides, for checking.")];
+    return [
+      { name: "Read me", cols: [34, 110], rows: readme },
+      { name: "Growth outlook", cols: [12, 24, 40, 11].concat(years.map(() => 12), [10, 10, 14, 10, 10, 10]), rows: goRows, freeze: [4, 3] },
+      { name: "Dodge", cols: [8, 26, 12, 12].concat(years.map(() => 14), [12, 10, 14, 10, 10, 10]), rows: dRows, freeze: [2, 3] },
+      { name: "EMEA market", cols: [16, 36, 2, 14].concat(ey.map(() => 13), [12, 12, 12, 12]), rows: emRows, freeze: [4, 3] },
+      { name: "OE data", cols: [14, 18, 52, 11].concat(years.map(() => 12), [60, 40]), rows: oeRows, freeze: [4, 3] },
+    ];
+  }
+  async function exportBridge(data) {
+    const msg = document.getElementById("qbrMsg");
+    msg.textContent = "Building the Excel bridge…"; msg.classList.remove("err");
+    let blob;
+    try { blob = xlsxBlob(bridgeSheets(data)); } catch (e) { msg.textContent = "The Excel file could not be built: " + ((e && e.message) || e); msg.classList.add("err"); return; }
+    await saveFile(blob, `HFC_QBR_market_outlook_${qLabel(data.q).replace(" ", "_")}_data_bridge.xlsx`, msg);
   }
 
   let qTab = store.get(LS_QTAB);
@@ -1754,10 +1987,11 @@ sup { font-size: .7em; line-height: 0; }
       <span>Oxford Economics: <b>release ${fmtDate(data.oe.date)}</b>${data.fallback.length ? ` (missing years from ${data.fallback.map(x => fmtDate(x.date)).join(", ")})` : ""}</span>
       <span>Dodge (US): <b>${data.dodge ? "actuals to " + qLabel(data.dodge.quarter) : "no export up to this quarter"}</b></span>
       <span>Variation vs.: <b>${data.prevQ ? qLabel(data.prevQ.q) : "no previous report"}</b>${data.prevOe && data.prevOe.id === data.oe.id ? " (same release: neutral)" : ""}</span></div>`;
-    body.innerHTML = `<div class="qbar">${meta}<span class="spacer"></span><button type="button" class="btn primary" id="qbrExport">Export to PowerPoint (.pptx)</button></div>
+    body.innerHTML = `<div class="qbar">${meta}<span class="spacer"></span><button type="button" class="btn" id="qbrExcel" title="Workbook that rebuilds every figure of the two slides from the Oxford Economics and Dodge data, with formulas">Excel data bridge (.xlsx)</button><button type="button" class="btn primary" id="qbrExport">Export to PowerPoint (.pptx)</button></div>
       <span class="msg" id="qbrMsg" role="status"></span>
       <div class="qpreview"><span class="hdr-t">Preview</span>${slidePreview("growth", data)}${slidePreview("emea", data)}</div>`;
     document.getElementById("qbrExport").addEventListener("click", () => exportPptx(reportData(qTab, quarterList())));
+    document.getElementById("qbrExcel").addEventListener("click", () => exportBridge(reportData(qTab, quarterList())));
     body.querySelectorAll("[contenteditable][data-id]").forEach(el => {
       el.addEventListener("input", () => { (QMAN[el.dataset.q] = QMAN[el.dataset.q] || {})[el.dataset.id] = el.textContent.trim(); saveMan(); });
       el.addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); el.blur(); } });
