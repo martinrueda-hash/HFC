@@ -1941,10 +1941,20 @@ sup { font-size: .7em; line-height: 0; }
     const dRows = [[{ v: "Dodge (US)", s: XS.title }], [],
       ["Key", "Vertical", "Total const.", "Residential¹", "Commercial²"].map(H).concat(years.map(y => H(String(y))))];
     const dFirst = dRows.length + 1;
+    // raw Dodge export (sheet "Dodge data"): the verticals as read, every year of the file; the Dodge sheet links to it
+    const rawYears = data.dodge ? data.dodge.years : [];
+    const rawRows = [[{ v: "Dodge (US) raw data", s: XS.title }],
+      [{ v: data.dodge ? `${data.dodge.file} · vertical forecast, US$ thousands · actuals to ${qLabel(data.dodge.quarter)}` : "No Dodge export for this quarter", s: XS.small }],
+      ["Key", "Vertical"].map(H).concat(rawYears.map(y => H(String(y))))];
+    const rawRef = new Map();
+    if (data.dodge) data.dodge.rows.forEach(([key, name, grp, vals]) => {
+      rawRef.set(Number(key), rawRows.length + 1);
+      rawRows.push([Number(key), name].concat(vals.map(v => v === null ? null : { v, s: XS.int })));
+    });
     if (data.dodge) data.dodge.rows.forEach(([key, name, grp, vals]) => {
       const k = Number(key);
       dRows.push([k, name].concat(["total", "res", "com"].map(sg => ({ v: DODGE_SEG[sg](k) ? 1 : 0, s: XS.flag })),
-        years.map(y => { const yi = data.dodge.years.indexOf(y); return yi < 0 || vals[yi] === null ? null : { v: vals[yi], s: XS.int }; })));
+        years.map(y => { const yi = data.dodge.years.indexOf(y); return yi < 0 || vals[yi] === null ? null : { v: vals[yi], f: `'Dodge data'!${colL(2 + yi)}${rawRef.get(k)}`, s: XS.int }; })));
     });
     const dLast = dRows.length;
     dRows.push([], groupRow(["", "", "", "", ""], DY0, "Sum of the verticals (US$ thousands)"), headRow(["", "Row on the slide", "", "", ""], DY0));
@@ -1998,7 +2008,8 @@ sup { font-size: .7em; line-height: 0; }
       kv("Dodge", "Dodge (US) verticals and the three Dodge rows, with the variation vs. the previous version"),
       kv("EMEA market", "EMEA performance: market growth per country"),
       kv("Sources", "Releases and files behind the figures"),
-      kv("OE data", "Every Oxford Economics series used, per country"), [],
+      kv("OE data", "Every Oxford Economics series used, per country"),
+      kv("Dodge data", "Raw Dodge (US) export: every vertical and year"), [],
       ["", { v: "¹ Residential = single family only.   ² Commercial = commercial buildings (offices, retail, hotels) + multifamily; Dodge: all building verticals except single family and manufacturing.", s: XS.small }],
       ["", { v: "Aalberts hydronic flow control · Group strategy and M&A analysis", s: XS.small }]];
     const sources = [band(), band(), bandText("Sources", XS.bandTitle), bandText("Data behind the figures", XS.bandSub), band(), band(), [],
@@ -2025,6 +2036,7 @@ sup { font-size: .7em; line-height: 0; }
       { name: "EMEA market", cols: [16, 36, 2, 14].concat(ey.map(() => 13), [12, 12, 12, 12]), rows: emRows, freeze: [4, 3] },
       { name: "Sources", cols: coverCols, rows: sources, grid: false, tab: RED, logo, heights: { 1: 14, 2: 22, 3: 34, 4: 22, 5: 14, 6: 10 } },
       { name: "OE data", cols: [14, 18, 52, 11].concat(lev, [60, 40]), rows: oeRows, freeze: [4, 3] },
+      { name: "Dodge data", cols: [7, 26].concat(rawYears.map(() => 14)), rows: rawRows, freeze: [2, 3] },
     ];
   }
   async function exportBridge(data) {
