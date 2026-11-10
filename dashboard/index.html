@@ -1226,7 +1226,10 @@ sup { font-size: .7em; line-height: 0; }
   const qFromKey = k => Math.floor(k / 4) + "Q" + (k % 4 + 1);
   const qLabel = q => "Q" + q.slice(5) + " " + q.slice(0, 4);
   const fmtDate = iso => { const [y, m, d] = iso.split("-").map(Number); return d + " " + MONTH_NAMES[m - 1].slice(0, 3) + " " + y; };
-  const relQ = (kind, r) => kind === "oe" ? qOfDate(r.date) : r.quarter;
+  // an Oxford Economics release feeds the QBR of the quarter that ended before it: a release published in the month
+  // after a quarter end (e.g. 8 Oct 2026) belongs to that quarter (Q3 2026); otherwise to the quarter it falls in
+  const oeQ = iso => { const [y, m] = iso.split("-").map(Number); const k = y * 12 + (m - 1) - 1; return qOfDate(`${Math.floor(k / 12)}-${String(k % 12 + 1).padStart(2, "0")}-01`); };
+  const relQ = (kind, r) => kind === "oe" ? oeQ(r.date) : r.quarter;
 
   // ---- Oxford Economics accessors
   // series by "location|indicator" as {year: level}. Rows given as % change y/y (4th field "pct") are turned
@@ -1423,7 +1426,7 @@ sup { font-size: .7em; line-height: 0; }
     qTab = q;
     store.set(LS_QTAB, q);
     renderReleases(); renderQbr(); render();
-    relMsg(`${kind === "oe" ? "Oxford Economics release of " + fmtDate(rel.date) : "Dodge data, actuals to " + qLabel(rel.quarter)} loaded: report ${qLabel(q)} is available${extra}.`);
+    relMsg(`${kind === "oe" ? "Oxford Economics release of " + fmtDate(rel.date) : "Dodge data, actuals to " + qLabel(rel.quarter)} loaded: ${(quarterList().find(x => x.q === q) || {}).available ? `report ${qLabel(q)} is available` : `report ${qLabel(q)} still needs its Oxford Economics release`}${extra}.`);
   }
   document.getElementById("oeFile").addEventListener("change", ev => { const f = ev.target.files && ev.target.files[0]; if (f) uploadRelease("oe", f); ev.target.value = ""; });
   document.getElementById("dodgeFile").addEventListener("change", ev => { const f = ev.target.files && ev.target.files[0]; if (f) uploadRelease("dodge", f); ev.target.value = ""; });
@@ -1488,19 +1491,19 @@ sup { font-size: .7em; line-height: 0; }
   const DODGE_SEG = { total: () => true, res: k => k === 18, com: k => k < 24 && k !== 5 && k !== 18 };
   const nowQ = () => qKey(qOfDate(new Date().toISOString().slice(0, 10)));
 
-  // a report is available when an Oxford Economics release dated in or before its quarter exists
+  // a report is available when the Oxford Economics release of its quarter is loaded (see oeQ)
   function quarterList() {
     const r = releases();
-    const oeQs = r.oe.map(x => qKey(qOfDate(x.date)));
+    const oeQs = r.oe.map(x => qKey(oeQ(x.date)));
     const end = Math.max(qKey("2026Q4"), ...oeQs, ...r.dodge.map(x => qKey(x.quarter)));
     const out = [];
     for (let k = qKey("2025Q1"); k <= end; k++) {
       const q = qFromKey(k);
-      const ok = oeQs.some(x => x <= k);
+      const ok = oeQs.includes(k);     // each quarter has its own Oxford Economics release
       const dodgeOk = r.dodge.some(x => qKey(x.quarter) <= k);
       out.push({ q, available: ok, dodge: dodgeOk,
-        why: ok ? "" : `Report ${qLabel(q)} needs an Oxford Economics release dated ${qLabel(q)} or earlier (end of ${MONTH_NAMES[(Number(q.slice(5)) * 3) - 1]} ${q.slice(0, 4)}). ` +
-          (r.oe.length ? `The releases uploaded so far are later: ${r.oe.map(x => fmtDate(x.date)).join(", ")}. ` : "No Oxford Economics release has been uploaded yet. ") +
+        why: ok ? "" : `Report ${qLabel(q)} needs the Oxford Economics release of that quarter (published between ${MONTH_NAMES[(Number(q.slice(5)) - 1) * 3 + 1]} ${q.slice(0, 4)} and ${MONTH_NAMES[Number(q.slice(5)) % 4 * 3] || "January"} ${Number(q.slice(5)) === 4 ? Number(q.slice(0, 4)) + 1 : q.slice(0, 4)}). ` +
+          (r.oe.length ? `Releases loaded so far: ${r.oe.map(x => `${fmtDate(x.date)} (${qLabel(oeQ(x.date))})`).join(", ")}. ` : "No Oxford Economics release has been uploaded yet. ") +
           `Upload that release under "Update the data" to activate this report.` + (dodgeOk ? " Dodge data for this quarter is already available." : "") });
     }
     return out;
@@ -2050,11 +2053,12 @@ sup { font-size: .7em; line-height: 0; }
     await saveFile(blob, `HFC_QBR_market_outlook_${qLabel(data.q).replace(" ", "_")}_data_bridge.xlsx`, msg);
   }
 
-  let qTab = store.get(LS_QTAB);
+  let qTab = store.get(LS_QTAB), qTabChecked = false;
   function renderQbr() {
     const list = quarterList();
     const avail = list.filter(x => x.available);
-    if (!list.some(x => x.q === qTab)) qTab = avail.length ? avail[avail.length - 1].q : list[list.length - 1].q;
+    if (!list.some(x => x.q === qTab) || (!qTabChecked && !avail.some(x => x.q === qTab))) qTab = avail.length ? avail[avail.length - 1].q : list[list.length - 1].q;
+    qTabChecked = true;
     document.getElementById("qbrTabs").innerHTML = list.map(x =>
       `<button type="button" class="qtab${x.available ? "" : " off"}" role="tab" data-q="${x.q}" aria-selected="${x.q === qTab}" aria-disabled="${!x.available}"${x.available ? "" : ' title="No data yet for this quarter"'}>${qLabel(x.q)}</button>`).join("");
     document.querySelectorAll("#qbrTabs .qtab").forEach(b => b.addEventListener("click", () => { qTab = b.dataset.q; store.set(LS_QTAB, qTab); renderQbr(); }));
