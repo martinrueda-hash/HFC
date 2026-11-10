@@ -334,7 +334,7 @@ sup { font-size: .7em; line-height: 0; }
         <ul class="rel-list" id="dodgeList"></ul>
       </div>
     </div>
-    <div class="row"><span class="msg" id="relMsg" role="status"></span><span class="spacer"></span><button type="button" class="btn" id="resetRel">Remove uploaded releases</button></div>
+    <div class="row"><span class="msg" id="relMsg" role="status"></span><span class="spacer"></span><button type="button" class="btn primary" id="refreshQbr">Refresh reports</button><button type="button" class="btn" id="resetRel">Remove uploaded releases</button></div>
     <p class="note">A new release unlocks the report of its quarter. Uploads stay in this browser only; to share them, add the files to <code>data/oxford-economics/</code> or <code>data/dodge/</code> in the repository and run <code>tools/build_market_releases.py</code>.</p>
     <details class="method">
       <summary>SAM and HFC data: Excel template</summary>
@@ -1373,6 +1373,16 @@ sup { font-size: .7em; line-height: 0; }
   }
   document.getElementById("oeFile").addEventListener("change", ev => { const f = ev.target.files && ev.target.files[0]; if (f) uploadRelease("oe", f); ev.target.value = ""; });
   document.getElementById("dodgeFile").addEventListener("change", ev => { const f = ev.target.files && ev.target.files[0]; if (f) uploadRelease("dodge", f); ev.target.value = ""; });
+  // rebuild the quarterly reports from every release currently loaded (also picks up uploads made in another tab)
+  document.getElementById("refreshQbr").addEventListener("click", () => {
+    try { const p = JSON.parse(store.get(LS_REL) || "null"); if (p && Array.isArray(p.oe) && Array.isArray(p.dodge)) UP_REL = p; } catch (e) { /* keep current */ }
+    const list = quarterList(), avail = list.filter(x => x.available);
+    if (avail.length) { qTab = avail[avail.length - 1].q; store.set(LS_QTAB, qTab); }
+    renderReleases(); renderQbr();
+    const r = releases(), oe = r.oe.slice(-1)[0], dg = r.dodge.slice(-1)[0];
+    relMsg(`Reports refreshed: ${avail.length} available${avail.length ? ", showing " + qLabel(qTab) : ""}. Latest data: ${oe ? "Oxford Economics " + fmtDate(oe.date) : "no Oxford Economics release"}${dg ? ", Dodge actuals to " + qLabel(dg.quarter) : ""}.`);
+    document.getElementById("qbrTabs").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   document.getElementById("resetRel").addEventListener("click", () => {
     UP_REL = { oe: [], dodge: [] }; store.del(LS_REL);
     renderReleases(); renderQbr(); relMsg("Uploaded releases removed; the built-in releases remain.");
@@ -1443,17 +1453,31 @@ sup { font-size: .7em; line-height: 0; }
     const locs = oe ? oeLocs(oe) : [];
     const cols = Object.assign({}, GO_COLS, { eu: locs.filter(l => !NON_EUROPE.includes(l)) });
     const has = (rel, l) => rel && l.some(x => oeLocs(rel).includes(x));
+    // a year or country missing from the selected release is taken from the other releases, newest first
+    const others = oe ? r.oe.filter(x => x.id !== oe.id).reverse() : [];
+    const fallbackUsed = new Set();
+    const oeGet = (l, base, kind, y) => {
+      const v = has(oe, l) ? oeVal(oe, l, base, kind, y) : null;
+      if (v !== null) return v;
+      for (const rel of others) {
+        if (!has(rel, l)) continue;
+        const w = oeVal(rel, l, base, kind, y);
+        if (w !== null) { fallbackUsed.add(rel.id); return w; }
+      }
+      return null;
+    };
+    const hasAny = l => has(oe, l) || others.some(rel => has(rel, l));
     const V = {}, T = { growth: {}, emea: {} };
     const num = v => v === null || !Number.isFinite(v) ? { text: "x.x", kind: "missing" } :
       { text: (Math.abs(v) < 0.05 ? 0 : v).toFixed(1), kind: v < -0.05 ? "neg" : v >= 1 ? "pos" : "neu" };
     // growth outlook
     Object.entries(cols).forEach(([c, l]) => Object.entries(GO_ROWS).forEach(([row, [base, kind]]) => {
-      const t = has(oe, l) ? trio(y => oeVal(oe, l, base, kind, y), Y) : [null, null, null];
+      const t = hasAny(l) ? trio(y => oeGet(l, base, kind, y), Y) : [null, null, null];
       t.forEach((v, k) => { V[`go:${c}:${row}:${k}`] = num(v); });
     }));
     const dt = dodge ? trio(y => dodgeVal(dodge, null, y), Y) : [null, null, null];
     const dn = dodge ? trio(y => dodgeVal(dodge, "nonres", y), Y) : [null, null, null];
-    V["go:us:dodge_total:1"] = num(dt[1]); V["go:us:dodge_non:1"] = num(dn[1]);
+    [0, 1, 2].forEach(k => { V["go:us:dodge_total:" + k] = num(dt[k]); V["go:us:dodge_non:" + k] = num(dn[k]); });
     ["Americas", "Europe", "APAC"].forEach(g => { V["rev:" + g] = { text: manVal(q, "rev:" + g, "xx%"), kind: "man", id: "rev:" + g }; });
     V["banner:growth"] = { text: manVal(q, "banner:growth", "xxx"), kind: "comment", id: "banner:growth" };
     const relMonth = rel => rel ? `${MONTH_NAMES[Number(rel.date.slice(5, 7)) - 1]} ${rel.date.slice(0, 4)}` : "";
@@ -1463,6 +1487,7 @@ sup { font-size: .7em; line-height: 0; }
       notes: "Notes: OE non-residential = commercial (offices, retail, hotels). Europe = European countries in the release. Dodge: US construction spending." });
     // variation vs. previous SBR (total = residential + non-residential), per column
     const tot = (rel, l, y) => { const a = oeVal(rel, l, OE.res, "", y), b = oeVal(rel, l, OE.com, "", y); return a !== null && b !== null ? a + b : null; };
+    const totAny = (l, y) => { const a = oeGet(l, OE.res, "", y), b = oeGet(l, OE.com, "", y); return a !== null && b !== null ? a + b : null; };
     const chipType = d => d >= 0.5 ? "sp" : d >= 0.1 ? "p" : d <= -0.5 ? "sn" : d <= -0.1 ? "ng" : "n";
     const chips = {};
     Object.entries(cols).forEach(([c, l]) => {
@@ -1475,7 +1500,7 @@ sup { font-size: .7em; line-height: 0; }
     const arrows = {};
     const dirOf = v => v === null || !Number.isFinite(v) ? null : v > 0.5 ? "up" : v < -0.5 ? "down" : "flat";
     EMEA_ROWS.forEach(([name, l]) => {
-      const m = y => has(oe, l) ? growth(tot(oe, l, y), tot(oe, l, y - 1)) : null;
+      const m = y => hasAny(l) ? growth(totAny(l, y), totAny(l, y - 1)) : null;
       [["m1", m(Y - 1)], ["m2", m(Y)]].forEach(([k, v]) => {
         V[`em:${name}:${k}`] = v === null ? { text: "x.x%", kind: "missing" } : { text: (v > 0.05 ? "+" : "") + (Math.abs(v) < 0.05 ? "0.0" : v.toFixed(1)) + "%", kind: "plain" };
         arrows[`${name}:${k}`] = dirOf(v);
@@ -1489,7 +1514,7 @@ sup { font-size: .7em; line-height: 0; }
     Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2),
       src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + non-residential commercial).`,
       notes: "Note: Nordics = Sweden, Norway, Denmark, Finland." });
-    return { q, oe, dodge, prevQ, prevOe, V, T, chips, arrows };
+    return { q, oe, dodge, prevQ, prevOe, V, T, chips, arrows, fallback: [...fallbackUsed].map(id => r.oe.find(x => x.id === id)) };
   }
 
   // ---- preview: slide background + figures at the template's positions
@@ -1670,7 +1695,7 @@ sup { font-size: .7em; line-height: 0; }
     if (!cur.available) { body.innerHTML = `<div class="qlocked" role="status"><b>${qLabel(cur.q)} is not available yet.</b> ${esc(cur.why)}</div>`; return; }
     const data = reportData(qTab, list);
     const meta = `<div class="qmeta"><span>Report <b>${qLabel(qTab)}</b></span>
-      <span>Oxford Economics: <b>release ${fmtDate(data.oe.date)}</b></span>
+      <span>Oxford Economics: <b>release ${fmtDate(data.oe.date)}</b>${data.fallback.length ? ` (missing years from ${data.fallback.map(x => fmtDate(x.date)).join(", ")})` : ""}</span>
       <span>Dodge (US): <b>${data.dodge ? "actuals to " + qLabel(data.dodge.quarter) : "no export up to this quarter"}</b></span>
       <span>Variation vs.: <b>${data.prevQ ? qLabel(data.prevQ.q) : "no previous report"}</b>${data.prevOe && data.prevOe.id === data.oe.id ? " (same release: neutral)" : ""}</span></div>`;
     body.innerHTML = `<div class="qbar">${meta}<span class="spacer"></span><button type="button" class="btn primary" id="qbrExport">Export to PowerPoint (.pptx)</button></div>

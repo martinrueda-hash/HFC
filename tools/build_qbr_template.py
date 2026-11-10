@@ -251,6 +251,25 @@ for name_i, (reg) in zip(("579", "580", "581"), ("Americas", "Europe", "APAC")):
 s = mark_text_shape(s, "Rectangle 626", [[("{{t:subtitle}}", None)]], "subtitle")
 s = mark_text_shape(s, "TextBox 1071", [[("{{v:go:us:dodge_total:1}}", None)]], "dodge_total")
 s = mark_text_shape(s, "TextBox 1072", [[("{{v:go:us:dodge_non:1}}", None)]], "dodge_non")
+# the deck shows Dodge for ’Y E only: add ’Y-1 A and the 5-year CAGR boxes, aligned with the USA columns above
+usx = {b["id"].split(":")[3]: b["x"] * EMU_W for b in boxes if b["id"].startswith("go:us:res:")}
+next_id = max(int(i) for i in re.findall(r'<p:cNvPr id="(\d+)"', s)) + 1
+for name, key in (("TextBox 1071", "dodge_total"), ("TextBox 1072", "dodge_non")):
+    a, b = find_shape(s, name)
+    sp = s[a:b]
+    x, y, w, h = xfrm(sp)
+    shift = x - usx["1"]
+    clones = ""
+    for k in ("0", "2"):
+        nx = round(usx[k] + shift)
+        c = re.sub(r'<p:cNvPr id="\d+" name="[^"]*"', f'<p:cNvPr id="{next_id}" name="Dodge {key} {k}"', sp, count=1)
+        c = re.sub(r'<a16:creationId [^>]*/>', "", c)
+        c = c.replace(f'<a:off x="{x}" y="{y}"/>', f'<a:off x="{nx}" y="{y}"/>').replace("{{v:go:us:" + key + ":1}}", "{{v:go:us:" + key + ":" + k + "}}")
+        next_id += 1
+        clones += c
+        src = next(bx for bx in boxes if bx["id"] == key)
+        boxes.append(dict(src, id=f"go:us:{key}:{k}", x=nx / EMU_W))
+    s = s[:b] + clones + s[b:]
 banner = re.search(r'name="(red bar takeaway)"[^>]*>(?:(?!</p:sp>).)*Global positive', s, re.S)
 a = s.rfind("<p:sp>", 0, s.index("Global positive")); b = s.index("</p:sp>", a) + 7
 sp = s[a:b]; p = paragraphs(sp)[0]
