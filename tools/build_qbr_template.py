@@ -268,7 +268,9 @@ for name, key in (("TextBox 1071", "dodge_total"), ("TextBox 1072", "dodge_non")
         next_id += 1
         clones += c
         src = next(bx for bx in boxes if bx["id"] == key)
-        boxes.append(dict(src, id=f"go:us:{key}:{k}", x=nx / EMU_W))
+        tok_old, tok_new = "{{v:go:us:" + key + ":1}}", "{{v:go:us:" + key + ":" + k + "}}"
+        paras = [dict(pp, runs=[dict(r, t=r["t"].replace(tok_old, tok_new)) for r in pp["runs"]]) for pp in src["paras"]]
+        boxes.append(dict(src, id=f"go:us:{key}:{k}", x=nx / EMU_W, paras=paras))
     s = s[:b] + clones + s[b:]
 banner = re.search(r'name="(red bar takeaway)"[^>]*>(?:(?!</p:sp>).)*Global positive', s, re.S)
 a = s.rfind("<p:sp>", 0, s.index("Global positive")); b = s.index("</p:sp>", a) + 7

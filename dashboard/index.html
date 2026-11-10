@@ -1208,6 +1208,7 @@ sup { font-size: .7em; line-height: 0; }
     res: "Work Done - Residential - Total",
     mf: "Work Done - Residential - Multi Family",
     com: "Work Done - Non-Residential Building - Commercial",
+    nonTot: "Work Done - Non-Residential Building - Total",
   };
   const NON_EUROPE = ["United States", "USA", "US", "China", "Japan", "Canada", "Mexico", "Brazil", "India", "Australia", "Russia", "Turkey", "Ukraine"];
   const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -1237,7 +1238,15 @@ sup { font-size: .7em; line-height: 0; }
     rel.rows.forEach(([loc, ind, vals, meas]) => { if (meas !== "pct") idx.set(loc + "|" + ind, asObj(vals)); });
     rel.rows.forEach(([loc, ind, vals, meas]) => {
       const key = loc + "|" + ind;
-      if (meas !== "pct" || idx.has(key)) return;
+      if (meas !== "pct") return;
+      if (idx.has(key)) {
+        // the release has this series as levels too: % changes fill the years the levels lack (e.g. the year before the first)
+        const L = idx.get(key), g = asObj(vals);
+        const first = Math.min(...Object.keys(L).map(Number));
+        for (let y = first; g[y] !== undefined && L[y] !== undefined && L[y - 1] === undefined; y--) L[y - 1] = L[y] / (1 + g[y] / 100);
+        Object.keys(g).map(Number).sort((a, b) => a - b).forEach(y => { if (L[y] === undefined && L[y - 1] !== undefined) L[y] = L[y - 1] * (1 + g[y] / 100); });
+        return;
+      }
       const g = asObj(vals), ys = Object.keys(g).map(Number).sort((a, b) => a - b);
       if (!ys.length) return;
       // anchor: this series' level in another release, newest first, in a year the % changes cover (or the year before the first)
@@ -1316,6 +1325,18 @@ sup { font-size: .7em; line-height: 0; }
     const date = dates.length ? dates.sort().pop() : new Date(file.lastModified || Date.now()).toISOString().slice(0, 10);
     return { id: "oe-" + date, date, file: file.name, units: "US$ m, 2023 prices", years: yearCols.map(i => Number(head[i])), rows };
   }
+  function mergeOe(a, b) {
+    const years = [...new Set(a.years.concat(b.years))].sort((x, y) => x - y);
+    const rows = new Map();
+    [a, b].forEach(rel => rel.rows.forEach(([loc, ind, vals, meas]) => {
+      const k = loc + "|" + ind + "|" + (meas || "");
+      const prev = rows.get(k);
+      const out = prev ? prev[2].slice() : years.map(() => null);
+      rel.years.forEach((y, i) => { if (vals[i] !== null && vals[i] !== undefined) out[years.indexOf(y)] = vals[i]; });
+      rows.set(k, meas ? [loc, ind, out, meas] : [loc, ind, out]);
+    }));
+    return Object.assign({}, b, { years, rows: [...rows.values()], file: b.file + " + " + a.file, _idx: undefined });
+  }
   async function parseDodgeFile(file) {
     const sheet = await readXlsx(new Uint8Array(await file.arrayBuffer()));
     let best = null;
@@ -1377,6 +1398,9 @@ sup { font-size: .7em; line-height: 0; }
     try { rel = kind === "oe" ? await parseOeFile(file) : await parseDodgeFile(file); }
     catch (e) { return relMsg((e && e.message) || "This file could not be read.", true); }
     const key = kind === "oe" ? "date" : "quarter";
+    // same date as a release already loaded (built in or uploaded): merge row by row, the upload wins
+    const same = kind === "oe" ? releases().oe.find(x => x.date === rel.date) : null;
+    if (same) rel = mergeOe(same, rel);
     UP_REL[kind] = UP_REL[kind].filter(r => r[key] !== rel[key]).concat([rel]);
     releases().oe.forEach(x => { delete x._idx; });
     saveRel();
@@ -1450,7 +1474,9 @@ sup { font-size: .7em; line-height: 0; }
   const EMEA_ROWS = [["Germany", ["Germany"]], ["France", ["France"]], ["Netherlands", ["Netherlands"]], ["United Kingdom", ["United Kingdom"]],
     ["Belgium", ["Belgium"]], ["Poland", ["Poland"]], ["Nordics", ["Sweden", "Norway", "Denmark", "Finland"]]];
   const GO_COLS = { us: ["United States", "USA", "US"], de: ["Germany"], fr: ["France"], nl: ["Netherlands"], cn: ["China"] };
-  const GO_ROWS = { res: [OE.res, ""], res_new: [OE.res, "New"], res_reno: [OE.res, "Renovation"], non: [OE.com, ""], non_new: [OE.com, "New"], non_reno: [OE.com, "Renovation"] };
+  const goRows = non => ({ res: [OE.res, ""], res_new: [OE.res, "New"], res_reno: [OE.res, "Renovation"], non: [non, ""], non_new: [non, "New"], non_reno: [non, "Renovation"] });
+  // "OE | non-residential" = non-residential building total when the release has it, else commercial
+  const nonBaseOf = rel => rel && rel.rows.some(r => r[1] === OE.nonTot || r[1] === OE.nonTot + " - New") ? OE.nonTot : OE.com;
   const nowQ = () => qKey(qOfDate(new Date().toISOString().slice(0, 10)));
 
   // a report is available when an Oxford Economics release dated in or before its quarter exists
@@ -1500,7 +1526,8 @@ sup { font-size: .7em; line-height: 0; }
     const num = v => v === null || !Number.isFinite(v) ? { text: "x.x", kind: "missing" } :
       { text: (Math.abs(v) < 0.05 ? 0 : v).toFixed(1), kind: v < -0.05 ? "neg" : v >= 1 ? "pos" : "neu" };
     // growth outlook
-    Object.entries(cols).forEach(([c, l]) => Object.entries(GO_ROWS).forEach(([row, [base, kind]]) => {
+    const NON = nonBaseOf(oe);
+    Object.entries(cols).forEach(([c, l]) => Object.entries(goRows(NON)).forEach(([row, [base, kind]]) => {
       const t = hasAny(l) ? trio(y => oeGet(l, base, kind, y), Y) : [null, null, null];
       t.forEach((v, k) => { V[`go:${c}:${row}:${k}`] = num(v); });
     }));
@@ -1513,10 +1540,10 @@ sup { font-size: .7em; line-height: 0; }
     Object.assign(T.growth, { yA: y2(Y - 1) + "A", yE: y2(Y) + "E", yC: y2(Y - 1) + "-" + y2(Y + 4), yP: String(Y - 1),
       subtitle: `Work done by sector, annual % change, ${relMonth(oe)} release`,
       src: `Source: Oxford Economics ${relMonth(oe)} release${dodge ? `; Dodge, actuals to ${qLabel(dodge.quarter)}` : ""}; Group strategy and M&A analysis`,
-      notes: "Notes: OE non-residential = commercial (offices, retail, hotels). Europe = European countries in the release. Dodge: US construction spending." });
+      notes: `Notes: OE non-residential = ${NON === OE.nonTot ? "non-residential building, total" : "commercial (offices, retail, hotels)"}. Europe = European countries in the release. Dodge: US construction spending.` });
     // variation vs. previous SBR (total = residential + non-residential), per column
-    const tot = (rel, l, y) => { const a = oeVal(rel, l, OE.res, "", y), b = oeVal(rel, l, OE.com, "", y); return a !== null && b !== null ? a + b : null; };
-    const totAny = (l, y) => { const a = oeGet(l, OE.res, "", y), b = oeGet(l, OE.com, "", y); return a !== null && b !== null ? a + b : null; };
+    const tot = (rel, l, y) => { const a = oeVal(rel, l, OE.res, "", y), b = oeVal(rel, l, NON, "", y); return a !== null && b !== null ? a + b : null; };
+    const totAny = (l, y) => { const a = oeGet(l, OE.res, "", y), b = oeGet(l, NON, "", y); return a !== null && b !== null ? a + b : null; };
     const chipType = d => d >= 0.5 ? "sp" : d >= 0.1 ? "p" : d <= -0.5 ? "sn" : d <= -0.1 ? "ng" : "n";
     const chips = {};
     Object.entries(cols).forEach(([c, l]) => {
@@ -1541,7 +1568,7 @@ sup { font-size: .7em; line-height: 0; }
     });
     [1, 2, 3, 4, "priority"].forEach(i => { V["kt:" + i] = { text: manVal(q, "kt:" + i, "xxx"), kind: "comment", id: "kt:" + i }; });
     Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2),
-      src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + non-residential commercial).`,
+      src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + ${NON === OE.nonTot ? "non-residential building" : "non-residential commercial"}).`,
       notes: "Note: Nordics = Sweden, Norway, Denmark, Finland." });
     return { q, oe, dodge, prevQ, prevOe, V, T, chips, arrows, fallback: [...fallbackUsed].map(id => r.oe.find(x => x.id === id)) };
   }

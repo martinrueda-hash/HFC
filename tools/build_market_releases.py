@@ -105,11 +105,23 @@ def read_dodge(path):
 
 
 oe = [read_oe(p) for p in sorted((ROOT / "data" / "oxford-economics").glob("*")) if p.suffix.lower() in (".xlsx", ".csv")]
-# keep one release per date: prefer the export with the most series (the New / Renovation split)
+# one release per date: exports of the same date are merged row by row (the newer download wins)
+def merge(a, b):
+    years = sorted(set(a["years"]) | set(b["years"]))
+    rows = {}
+    for rel in (a, b):
+        for row in rel["rows"]:
+            k = (row[0], row[1], row[3] if len(row) > 3 else "")
+            out = list(rows[k][2]) if k in rows else [None] * len(years)
+            for y, v in zip(rel["years"], row[2]):
+                if v is not None:
+                    out[years.index(y)] = v
+            rows[k] = [row[0], row[1], out] + ([row[3]] if len(row) > 3 else [])
+    return dict(b, years=years, rows=list(rows.values()), file=b["file"] + " + " + a["file"])
+
 by_date = {}
-for r in oe:
-    if r["date"] not in by_date or len(r["rows"]) > len(by_date[r["date"]]["rows"]):
-        by_date[r["date"]] = r
+for r in sorted(oe, key=lambda r: r["file"]):
+    by_date[r["date"]] = merge(by_date[r["date"]], r) if r["date"] in by_date else r
 oe = sorted(by_date.values(), key=lambda r: r["date"])
 dodge = sorted((read_dodge(p) for p in sorted((ROOT / "data" / "dodge").glob("*.xlsx"))), key=lambda r: r["quarter"])
 
