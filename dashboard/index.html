@@ -1552,9 +1552,9 @@ sup { font-size: .7em; line-height: 0; }
     V["banner:growth"] = { text: manVal(q, "banner:growth", "xxx"), kind: "comment", id: "banner:growth" };
     const relMonth = rel => rel ? `${MONTH_NAMES[Number(rel.date.slice(5, 7)) - 1]} ${rel.date.slice(0, 4)}` : "";
     Object.assign(T.growth, { yA: y2(Y - 1) + "A", yE: y2(Y) + "E", yC: y2(Y - 1) + "-" + y2(Y + 4), yP: String(Y - 1),
-      subtitle: `Work done by sector, annual % change, ${relMonth(oe)} release`,
+      subtitle: "Work done by sector, annual % change",
       src: `Source: Oxford Economics ${relMonth(oe)} release${dodge ? `; Dodge, actuals to ${qLabel(dodge.quarter)}` : ""}; Group strategy and M&A analysis`,
-      notes: "Notes: (1) Single family only. (2) Commercial buildings + multifamily; Dodge: all building verticals except single family and manufacturing. Europe = countries in the release." });
+      notes: "Notes: (1) Single family only. (2) Commercial buildings + multifamily residential." });
     // variation vs. previous SBR (total = residential + non-residential), per column
     // market total = residential + commercial (as defined above)
     const sum2 = g => y => { const a = seg("res", g, "", y), b = seg("com", g, "", y); return a !== null && b !== null ? a + b : null; };
