@@ -559,6 +559,8 @@ shutil.copy(bgs[0], ASSETS / "qbr_bg_growth.png")
 shutil.copy(bgs[1], ASSETS / "qbr_bg_emea.png")
 spec["slides"]["growth"]["bg"] = "assets/qbr_bg_growth.png"
 spec["slides"]["emea"]["bg"] = "assets/qbr_bg_emea.png"
+# Aalberts logo (white, for red bands) for the Excel data bridge cover
+spec["logoWhitePng"] = base64.b64encode((ASSETS / "aalberts-logo-white.png").read_bytes()).decode()
 
 OUT_JS.write_text(
     "/* QBR/SBR slide template for the quarterly market outlook.\n"
