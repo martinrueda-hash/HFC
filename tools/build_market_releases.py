@@ -38,6 +38,7 @@ def read_oe(path):
     years = [h for h in head if re.fullmatch(r"\d{4}", h)]
     yi = [head.index(y) for y in years]
     di = head.index("Date of last update") if "Date of last update" in head else None
+    mi = head.index("Measurement") if "Measurement" in head else None
     dates, out = set(), []
     for r in rows[1:]:
         if not r or not str(r[0]).strip():
@@ -48,7 +49,11 @@ def read_oe(path):
                 vals.append(round(float(r[i]), 2))
             except (TypeError, ValueError):
                 vals.append(None)
-        out.append([str(r[0]).strip(), str(r[1]).strip(), vals])
+        row = [str(r[0]).strip(), str(r[1]).strip(), vals]
+        m = str(r[mi]) if mi is not None else ""
+        if ("%" in m or "percent" in m.lower()) and "level" not in m.lower():
+            row.append("pct")    # % change y/y instead of level values
+        out.append(row)
         if di is not None:
             d = parse_oe_date(r[di])
             if d:

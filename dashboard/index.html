@@ -1227,18 +1227,42 @@ sup { font-size: .7em; line-height: 0; }
   const relQ = (kind, r) => kind === "oe" ? qOfDate(r.date) : r.quarter;
 
   // ---- Oxford Economics accessors
+  // series by "location|indicator" as {year: level}. Rows given as % change y/y (4th field "pct") are turned
+  // into levels: chained from the same series' level in another loaded release (so countries and series still
+  // add up with the right weights), or from an index of 100 when no level is loaded for that series.
   function oeIdx(rel) {
-    if (!rel._idx) { rel._idx = new Map(); rel.rows.forEach(([loc, ind, vals]) => rel._idx.set(loc + "|" + ind, vals)); }
-    return rel._idx;
+    if (rel._idx) return rel._idx;
+    const idx = new Map();
+    const asObj = vals => { const o = {}; rel.years.forEach((y, i) => { if (vals[i] !== null && vals[i] !== undefined) o[y] = vals[i]; }); return o; };
+    rel.rows.forEach(([loc, ind, vals, meas]) => { if (meas !== "pct") idx.set(loc + "|" + ind, asObj(vals)); });
+    rel.rows.forEach(([loc, ind, vals, meas]) => {
+      const key = loc + "|" + ind;
+      if (meas !== "pct" || idx.has(key)) return;
+      const g = asObj(vals), ys = Object.keys(g).map(Number).sort((a, b) => a - b);
+      if (!ys.length) return;
+      // anchor: this series' level in another release, newest first, in a year the % changes cover (or the year before the first)
+      let ay = null, av = null;
+      for (const other of releases().oe.filter(x => x !== rel).reverse()) {
+        const row = other.rows.find(r => r[0] === loc && r[1] === ind && r[3] !== "pct");
+        if (!row) continue;
+        for (const y of [ys[0] - 1].concat(ys)) { const i = other.years.indexOf(y); if (i >= 0 && row[2][i] !== null && row[2][i] !== undefined) { ay = y; av = row[2][i]; break; } }
+        if (ay !== null) break;
+      }
+      if (ay === null) { ay = ys[0] - 1; av = 100; }
+      const L = { [ay]: av };
+      for (let y = ay + 1; y <= ys[ys.length - 1]; y++) if (L[y - 1] !== undefined && g[y] !== undefined) L[y] = L[y - 1] * (1 + g[y] / 100);
+      for (let y = ay - 1; y >= ys[0] - 1; y--) if (L[y + 1] !== undefined && g[y + 1] !== undefined) L[y] = L[y + 1] / (1 + g[y + 1] / 100);
+      idx.set(key, L);
+    });
+    rel._idx = idx;
+    return idx;
   }
   // level of a series for a set of locations; kind "" = total (or New + Renovation), "New", "Renovation"
   function oeVal(rel, locs, base, kind, year) {
-    const yi = rel.years.indexOf(year);
-    if (yi < 0) return null;
     const idx = oeIdx(rel);
     let sum = 0, found = false;
     locs.forEach(loc => {
-      const one = name => { const v = idx.get(loc + "|" + name); return v && v[yi] !== null && v[yi] !== undefined ? v[yi] : null; };
+      const one = name => { const v = idx.get(loc + "|" + name); return v && v[year] !== null && v[year] !== undefined ? v[year] : null; };
       let v;
       if (kind) v = one(base + " - " + kind);
       else { v = one(base); if (v === null) { const n = one(base + " - New"), r = one(base + " - Renovation"); v = n !== null && r !== null ? n + r : null; } }
@@ -1279,11 +1303,14 @@ sup { font-size: .7em; line-height: 0; }
     const head = Array.from(grid[0], h => h == null ? "" : String(h).trim());
     const yearCols = head.map((h, i) => /^\d{4}$/.test(h) ? i : -1).filter(i => i >= 0);
     if (head[1] !== "Indicator" || yearCols.length < 3) throw new Error('Expected the columns Location, Indicator and one column per year.');
-    const di = head.indexOf("Date of last update");
+    const di = head.indexOf("Date of last update"), mi = head.indexOf("Measurement");
+    const isPct = m => /%|percent/i.test(String(m || "")) && !/level/i.test(String(m || ""));
     const dates = [];
     const rows = grid.slice(1).filter(r => r && r[0] != null && String(r[0]).trim()).map(r => {
       if (di >= 0) { const d = parseOeDate(r[di]); if (d) dates.push(d); }
-      return [String(r[0]).trim(), String(r[1]).trim(), yearCols.map(i => { const v = toNum(r[i]); return v === null ? null : Math.round(v * 100) / 100; })];
+      const row = [String(r[0]).trim(), String(r[1]).trim(), yearCols.map(i => { const v = toNum(r[i]); return v === null ? null : Math.round(v * 1000) / 1000; })];
+      if (mi >= 0 && isPct(r[mi])) row.push("pct");      // % change y/y instead of level values
+      return row;
     });
     if (!rows.length) throw new Error("No data rows found.");
     const date = dates.length ? dates.sort().pop() : new Date(file.lastModified || Date.now()).toISOString().slice(0, 10);
@@ -1330,7 +1357,7 @@ sup { font-size: .7em; line-height: 0; }
       const py = CY - 1, hy = CY - 6, fy = CY + 5;
       const o = Object.assign({}, r);
       const put = (k, v) => { if (v !== null && Number.isFinite(v)) o[k] = Math.round(v * 100) / 100; };
-      put("total_market", T(py));
+      if (!rel.rows.some(x => x[3] === "pct")) put("total_market", T(py));   // a % change export carries no levels
       put("mkt_cagr_hist", cagr(T(py), T(hy), 5)); put("mkt_growth_cy", growth(T(CY), T(py))); put("mkt_cagr_fwd", cagr(T(fy), T(CY), 5));
       put("mkt_reno_cagr_hist", cagr(R(py), R(hy), 5)); put("mkt_reno_growth_cy", growth(R(CY), R(py))); put("mkt_reno_cagr_fwd", cagr(R(fy), R(CY), 5));
       put("mkt_nb_cagr_hist", cagr(N(py), N(hy), 5)); put("mkt_nb_growth_cy", growth(N(CY), N(py))); put("mkt_nb_cagr_fwd", cagr(N(fy), N(CY), 5));
@@ -1351,6 +1378,7 @@ sup { font-size: .7em; line-height: 0; }
     catch (e) { return relMsg((e && e.message) || "This file could not be read.", true); }
     const key = kind === "oe" ? "date" : "quarter";
     UP_REL[kind] = UP_REL[kind].filter(r => r[key] !== rel[key]).concat([rel]);
+    releases().oe.forEach(x => { delete x._idx; });
     saveRel();
     let extra = "";
     if (kind === "oe") {
@@ -1376,6 +1404,7 @@ sup { font-size: .7em; line-height: 0; }
   // rebuild the quarterly reports from every release currently loaded (also picks up uploads made in another tab)
   document.getElementById("refreshQbr").addEventListener("click", () => {
     try { const p = JSON.parse(store.get(LS_REL) || "null"); if (p && Array.isArray(p.oe) && Array.isArray(p.dodge)) UP_REL = p; } catch (e) { /* keep current */ }
+    releases().oe.forEach(x => { delete x._idx; });
     const list = quarterList(), avail = list.filter(x => x.available);
     if (avail.length) { qTab = avail[avail.length - 1].q; store.set(LS_QTAB, qTab); }
     renderReleases(); renderQbr();
