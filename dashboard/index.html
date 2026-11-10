@@ -285,36 +285,6 @@ sup { font-size: .7em; line-height: 0; }
     </div>
   </header>
 
-  <div class="controls" role="toolbar" aria-label="Filters">
-    <div class="ctl">End market
-      <div class="seg" id="segCtl">
-        <button type="button" data-seg="All" aria-pressed="true">Total</button>
-        <button type="button" data-seg="Residential" aria-pressed="false">Residential</button>
-        <button type="button" data-seg="Commercial" aria-pressed="false">Commercial<sup>2</sup></button>
-      </div>
-    </div>
-    <div class="ctl" id="appWrap">Application
-      <div class="seg" id="appCtl">
-        <button type="button" data-app="All" aria-pressed="true">All</button>
-        <button type="button" data-app="Heating" aria-pressed="false">Heating</button>
-        <button type="button" data-app="Cooling" aria-pressed="false">Cooling</button>
-        <button type="button" data-app="Sanitary" aria-pressed="false">Sanitary</button>
-      </div>
-      <span class="app-note" id="appNote" hidden>Not in the loaded data: upload the new Excel template or restore the default data</span>
-    </div>
-    <div class="ctl">Geography
-      <div class="seg" id="geoCtl">
-        <button type="button" data-geo="All" aria-pressed="true">All</button>
-        <button type="button" data-geo="Europe" aria-pressed="false">Europe</button>
-        <button type="button" data-geo="US" aria-pressed="false">US</button>
-      </div>
-    </div>
-    <span class="spacer"></span>
-    <button type="button" class="btn" id="clearHl" hidden>Clear selection</button>
-  </div>
-
-  <section class="kpis" id="kpis" aria-label="Headline figures"></section>
-
   <section class="slide" aria-labelledby="qbrTitle">
     <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
     <h2 class="stitle" id="qbrTitle">Quarter market outlook – QBR/SBR</h2>
@@ -373,6 +343,36 @@ sup { font-size: .7em; line-height: 0; }
       <span>Yellow = HFC figures to complete: click to edit (saved in this browser), click an HFC FY arrow to change it. Underlined = data not available yet (US and China in Oxford Economics) and comments. The export keeps the deck's layout, fonts and footers.</span>
     </div>
   </section>
+
+  <div class="controls" role="toolbar" aria-label="Filters">
+    <div class="ctl">End market
+      <div class="seg" id="segCtl">
+        <button type="button" data-seg="All" aria-pressed="true">Total</button>
+        <button type="button" data-seg="Residential" aria-pressed="false">Residential</button>
+        <button type="button" data-seg="Commercial" aria-pressed="false">Commercial<sup>2</sup></button>
+      </div>
+    </div>
+    <div class="ctl" id="appWrap">Application
+      <div class="seg" id="appCtl">
+        <button type="button" data-app="All" aria-pressed="true">All</button>
+        <button type="button" data-app="Heating" aria-pressed="false">Heating</button>
+        <button type="button" data-app="Cooling" aria-pressed="false">Cooling</button>
+        <button type="button" data-app="Sanitary" aria-pressed="false">Sanitary</button>
+      </div>
+      <span class="app-note" id="appNote" hidden>Not in the loaded data: upload the new Excel template or restore the default data</span>
+    </div>
+    <div class="ctl">Geography
+      <div class="seg" id="geoCtl">
+        <button type="button" data-geo="All" aria-pressed="true">All</button>
+        <button type="button" data-geo="Europe" aria-pressed="false">Europe</button>
+        <button type="button" data-geo="US" aria-pressed="false">US</button>
+      </div>
+    </div>
+    <span class="spacer"></span>
+    <button type="button" class="btn" id="clearHl" hidden>Clear selection</button>
+  </div>
+
+  <section class="kpis" id="kpis" aria-label="Headline figures"></section>
 
   <section class="slide" aria-labelledby="mxTitle">
     <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
