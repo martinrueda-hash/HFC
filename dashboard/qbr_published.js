@@ -55,3 +55,12 @@ window.HFC_QBR_PUBLISHED = {
     emNotes: "Note: 1_ including Comap 2_excluding Comap"
   }
 };
+
+/* Built-in figures for cells that are otherwise entered on the page (yellow), per report quarter.
+ * EHI heat pumps, Europe total: EHI Europe market statistics Q2 2026 (presented 31 Aug 2026; the briefing itself is not stored in the repository),
+ * "8 countries total" BE, FR, DE, IT, NL, PL, ES, UK: heat pumps total +24.2% (270,800 units); Spain not included yet.
+ * Latest EHI release for both reports until the Q3 2026 statistics are out. */
+window.HFC_QBR_INPUTS = {
+  "2026Q3": { "mi:hp": "+24.2%", "mi:hp:period": "Q2-’26", "mi:hp:5y": "n/a", "mi:ehiSrc": "European Heating Industry, heat pumps Q2-’26 vs. Q2-’25, excl. ES (Aug-’26)" },
+  "2026Q4": { "mi:hp": "+24.2%", "mi:hp:period": "Q2-’26", "mi:hp:5y": "n/a", "mi:ehiSrc": "European Heating Industry, heat pumps Q2-’26 vs. Q2-’25, excl. ES (Aug-’26)" }
+};
