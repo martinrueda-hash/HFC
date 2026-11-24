@@ -494,6 +494,8 @@ for p in ps:
 # compact: 9 pt text, 5 pt blank lines between bullets, so takeaways + priority stay above the footer
 new_ps = [re.sub(r'sz="\d+"', 'sz="500"', q) if not para_text(q).strip() else q.replace('sz="1000"', 'sz="900"') for q in new_ps]
 sp2 = set_paragraphs(sp, new_ps)
+# fixed box above the footer: PowerPoint shrinks the text to fit rather than growing the box into the footer
+sp2 = sp2.replace("<a:spAutoFit/>", "<a:normAutofit/>")
 anchor, ins = body_ins(sp)
 boxes.append({"id": "kt", **box(xfrm(sp), [para_spec(q) for q in paragraphs(sp2)], anchor, ins)})
 s = s[:a] + sp2 + s[b:]
