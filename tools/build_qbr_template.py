@@ -645,7 +645,7 @@ def build_macro_slide():
            f'<p:xfrm><a:off x="{X0}" y="{Y0}"/><a:ext cx="{sum(COLS)}" cy="{y - Y0}"/></p:xfrm><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/table">'
            f'<a:tbl><a:tblPr/><a:tblGrid>{"".join(f"<a:gridCol w=\"{w}\"/>" for w in COLS)}</a:tblGrid>{"".join(rows_xml)}</a:tbl></a:graphicData></a:graphic></p:graphicFrame>')
     # comments box
-    CX, CY, CW, CH = 7950000, 1250000, 2780000, 4480000
+    CX, CY, CW, CH = 7950000, 1250000, 2780000, 3450000
     bullet = f'<a:pPr marL="342900" indent="-342900"><a:spcBef><a:spcPts val="600"/></a:spcBef><a:buClr><a:srgbClr val="{RED}"/></a:buClr><a:buFont typeface="Arial"/><a:buChar char="»"/></a:pPr>'
     cpar = [f'<a:p><a:r>{rpr(1400, True, "505050")}<a:t>Comments</a:t></a:r></a:p>'] + \
            [f'<a:p>{bullet}<a:r>{rpr(1100, False, DARK)}<a:t>{{{{v:mi:cm:{i}}}}}</a:t></a:r></a:p>' for i in (1, 2, 3, 4)]
@@ -656,7 +656,19 @@ def build_macro_slide():
         [{"algn": "l", "runs": [{"t": "{{t:blank}}", "sz": 14, "b": True, "c": None, "base": False}]}] +
         [{"algn": "l", "runs": [{"t": "» ", "sz": 11, "b": False, "c": RED, "base": False}, {"t": "{{v:mi:cm:%d}}" % i, "sz": 11, "b": False, "c": None, "base": False}]} for i in (1, 2, 3, 4)],
         "t", (108000, 108000, 108000, 108000))})
-    chip_marks = "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
+    # legend of the "vs. last SBR" chips (same chips and wording as the growth outlook slide), under the comments
+    LX, LY, STEP, CW_ = CX + 108000, CY + CH + 170000, 230000, 203760
+    legend = (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Legend title"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>'
+              f'<a:xfrm><a:off x="{LX - 91440}" y="{LY}"/><a:ext cx="1500000" cy="230000"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
+              f'<p:txBody><a:bodyPr wrap="none" lIns="91440" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:r>{rpr(1100, True, "747474")}<a:t>legend</a:t></a:r></a:p></p:txBody></p:sp>')
+    for i, (k, label) in enumerate((("sp", "strongly positive"), ("p", "positive"), ("n", "neutral"), ("ng", "negative"), ("sn", "strongly negative"))):
+        yy = LY + 250000 + i * STEP
+        g = chip_xml[k].replace("{{X}}", str(LX)).replace("{{Y}}", str(yy))
+        g = re.sub(r"\{\{ID(\d+)\}\}", lambda m: str(next_id()), g)
+        legend += g + (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Legend {label}"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>'
+                       f'<a:xfrm><a:off x="{LX + CW_ + 60000}" y="{yy}"/><a:ext cx="1800000" cy="{CW_}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
+                       f'<p:txBody><a:bodyPr wrap="none" lIns="45720" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:r>{rpr(1100, False, "505050")}<a:t>{label}</a:t></a:r></a:p></p:txBody></p:sp>')
+    chip_marks = legend + "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
     body = title + keep["Text Placeholder 5"] + right + srcph + keep["Slide Number Placeholder 1"] + pill + tbl + comments + chip_marks
     xml = src[:tree_a] + body + src[tree_b:]
     xml = re.sub(r"<p:custDataLst>.*?</p:custDataLst>", "", xml, flags=re.S)
