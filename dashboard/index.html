@@ -1581,7 +1581,9 @@ sup { font-size: .7em; line-height: 0; }
     V["mi:notes"] = { text: manVal(q, "mi:notes", notes), kind: "text", id: "mi:notes" };
     // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries
     // Euroconstruct and EHI: no comparison with the last SBR (n/a)
-    ["ec_tot", "ec_res", "ec_non", "hp", "us_dtot", "us_val", "us_area"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
+    ["ec_tot", "ec_res", "ec_non", "hp", "us_area"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
+    // Dodge construction total and commercial value: 2026 compared with the previous report; no earlier CAGR, so '26-'30 is n/a
+    ["us_dtot", "us_val"].forEach(id => { chips["mi:" + id + ":5y"] = "na"; });
     // a previous report built on other definitions (published Q3 2026: residential / non-residential totals) is not compared
     // figures the previous report had on other definitions (published Q3 2026: USA totals only) are not compared
     if (prevM && prevM.oldDefs) prevM.oldDefs.forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
@@ -1592,7 +1594,7 @@ sup { font-size: .7em; line-height: 0; }
       const pre = CALC.includes(id) ? (prevM ? prevM[id] : null) : numOf(manVal(prevQ.q, "mi:" + id, null));
       if (cur !== null && cur !== undefined && Number.isFinite(cur) && pre !== null && pre !== undefined && Number.isFinite(pre)) chips["mi:" + id] = chipType(cur - pre);
     });
-    T.macro = { defs: (M && M.defsNote) || "¹ Residential = single family   ² Commercial = commercial buildings + multifamily", y: String(Y), y5: "’" + String(Y).slice(2) + "-’" + String(Y + 4).slice(2), titleTail: " | building", blank: "\u00a0", ehi: "EHI " };
+    T.macro = { defs: (M && M.defsNote) || "¹ Residential = single family   ² Commercial = commercial buildings + multifamily", y: String(Y), y5: "’" + String(Y).slice(2) + "-’" + String(Y + 4).slice(2), titleTail: " | building", blank: "\u00a0", ehi: "EHI ", dot: ". " };
   }
 
   // a published report (qbr_published.js): every figure as on the presented slides

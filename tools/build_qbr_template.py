@@ -553,7 +553,9 @@ def build_macro_slide():
     p0 = paragraphs(srcph)[0]
     # footer (grey band): "Sources: …" then "Notes: …" (definitions ¹ ² and the Euroconstruct CAGR note)
     tight = '<a:pPr><a:lnSpc><a:spcPts val="720"/></a:lnSpc><a:spcBef><a:spcPts val="0"/></a:spcBef><a:spcAft><a:spcPts val="0"/></a:spcAft></a:pPr>'
-    srcph = set_paragraphs(srcph, [f'<a:p>{tight}<a:r>{rpr(700, False, None)}<a:t>{{{{v:{t}}}}}</a:t></a:r></a:p>' for t in ("mi:src", "mi:notes")])
+    # Sources and Notes run on in one paragraph: no line break, no gap between them
+    fr = rpr(700, False, None)
+    srcph = set_paragraphs(srcph, [f'<a:p>{tight}<a:r>{fr}<a:t>{{{{v:mi:src}}}}</a:t></a:r><a:r>{fr}<a:t>{{{{t:dot}}}}</a:t></a:r><a:r>{fr}<a:t>{{{{v:mi:notes}}}}</a:t></a:r></a:p>'])
     # top-anchored, no inner margins, and shrink-on-overflow so PowerPoint never hides a line
     bp = re.search(r'<a:bodyPr\b[^>]*?(/>|>.*?</a:bodyPr>)', srcph, re.S)
     srcph = srcph[:bp.start()] + '<a:bodyPr lIns="0" tIns="0" rIns="0" bIns="0" anchor="t"><a:normAutofit/></a:bodyPr>' + srcph[bp.end():]
@@ -561,7 +563,7 @@ def build_macro_slide():
     sx, sy, sw, sh = xfrm(srcph)
     srcph = srcph.replace(f'<a:off x="{sx}" y="{sy}"/><a:ext cx="{sw}" cy="{sh}"/>', f'<a:off x="{sx}" y="{sy - 40000}"/><a:ext cx="11000000" cy="{sh + 40000}"/>', 1)
     anchor, ins = body_ins(srcph)
-    boxes.append({"id": "mi:src", **box(xfrm(srcph), [dict(para_spec(q), sz=7) for q in paragraphs(srcph)], "t", (0, 0, 0, 0)), "srcSz": 7, "tight": True})
+    boxes.append({"id": "mi:src", **box(xfrm(srcph), [{"algn": "l", "runs": [{"t": t, "sz": 7, "b": False, "c": None, "base": False} for t in ("{{v:mi:src}}", "{{t:dot}}", "{{v:mi:notes}}")]}], "t", (0, 0, 0, 0)), "srcSz": 7, "tight": True})
     right = keep["Text Placeholder 6"]
     right = set_paragraphs(right, [make_para(paragraphs(right)[0], [("market trends", None)])])
 
