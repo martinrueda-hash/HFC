@@ -260,6 +260,7 @@ sup { font-size: .7em; line-height: 0; }
 .qs-layer { position: absolute; inset: 0; font-family: var(--font); color: #191919; line-height: 1.2; }
 .qb { position: absolute; display: flex; flex-direction: column; box-sizing: border-box; }
 .qp { white-space: pre-wrap; }
+.qb.tight .qp { line-height: 1.12; }
 .qchip, .qarrow { position: absolute; height: auto; overflow: visible; }
 .qarrow.edit { cursor: pointer; }
 .qarrow.edit.empty { outline: 1px dashed #c9c9c9; }
@@ -1789,7 +1790,7 @@ sup { font-size: .7em; line-height: 0; }
         return `<div class="qp" style="text-align:${{ ctr: "center", r: "right", just: "justify" }[p.algn] || "left"}">${runs || "&nbsp;"}</div>`;
       }).join("");
       const just = { ctr: "center", b: "flex-end" }[b.anchor] || "flex-start";
-      return `<div class="qb" style="left:${b.x * 100}%;top:${b.y * 100}%;width:${b.w * 100}%;height:${b.h * 100}%;justify-content:${just};padding:${b.ins[1] * 56.25}cqw ${b.ins[2] * 100}cqw ${b.ins[3] * 56.25}cqw ${b.ins[0] * 100}cqw">${paras}</div>`;
+      return `<div class="qb${b.tight ? " tight" : ""}" style="left:${b.x * 100}%;top:${b.y * 100}%;width:${b.w * 100}%;height:${b.h * 100}%;justify-content:${just};padding:${b.ins[1] * 56.25}cqw ${b.ins[2] * 100}cqw ${b.ins[3] * 56.25}cqw ${b.ins[0] * 100}cqw">${paras}</div>`;
     }).join("");
     let extra = "";
     if (key === "growth" || key === "macro") extra = sl.chips.map(ch => {
