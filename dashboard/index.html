@@ -1213,10 +1213,19 @@ sup { font-size: .7em; line-height: 0; }
   const NON_EUROPE = ["United States", "USA", "US", "China", "Japan", "Canada", "Mexico", "Brazil", "India", "Australia", "Russia", "Turkey", "Ukraine"];
   const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+  // an uploaded Oxford Economics release of the same date as a built-in one is merged with it (built-in data the upload
+  // lacks, e.g. series added later, is kept; the upload wins where both have a value); cached per upload
+  const OE_MERGED = new WeakMap();
   function releases() {
     const merge = (a, b, key) => { const m = new Map(); a.concat(b).forEach(r => m.set(r[key], r)); return [...m.values()]; };
+    const oeUp = UP_REL.oe.map(u => {
+      const base = BASE_REL.oe.find(b => b.date === u.date);
+      if (!base) return u;
+      if (!OE_MERGED.has(u)) OE_MERGED.set(u, mergeOe(base, u));
+      return OE_MERGED.get(u);
+    });
     return {
-      oe: merge(BASE_REL.oe, UP_REL.oe, "date").sort((a, b) => a.date < b.date ? -1 : 1),
+      oe: merge(BASE_REL.oe, oeUp, "date").sort((a, b) => a.date < b.date ? -1 : 1),
       dodge: merge(BASE_REL.dodge, UP_REL.dodge, "quarter").sort((a, b) => qKey(a.quarter) - qKey(b.quarter)),
     };
   }
@@ -1565,8 +1574,8 @@ sup { font-size: .7em; line-height: 0; }
       `DODGE: Dodge Construction Network (${dodgeIso ? monYY(dodgeIso) : "as published"})`;
     const defs = (M && M.defsNote) || "¹ Residential = single family; ² Commercial = commercial buildings + multifamily";
     // OE and DODGE measure different things: work done (spending, real terms) vs. value of projects (current US$)
-    const notes = `Notes: year-over-year; OE = work done (real terms), construction total = all buildings incl. industrial (USA also civil; Europe excl. civil); DODGE = project value (current US$, incl. civil; ` +
-      `data centres in office; area excl. multifamily). Aalberts organic growth: estimates excl. acquisitions (Paulo, Geo-flo, GVT). Europe = EC-19. ${defs}${manVal(q, "mi:ecNote", "")}`;
+    const notes = `Notes: year-over-year; OE = work done (real terms); DODGE = project value. ` +
+      `Aalberts organic growth: estimates excl. acquisitions (Paulo, Geo-flo, GVT). Europe = EC-19. ${defs}${manVal(q, "mi:ecNote", "")}`;
     V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
     V["mi:notes"] = { text: manVal(q, "mi:notes", notes), kind: "text", id: "mi:notes" };
     // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries

@@ -554,7 +554,9 @@ def build_macro_slide():
     # footer (grey band): "Sources: …" then "Notes: …" (definitions ¹ ² and the Euroconstruct CAGR note)
     tight = '<a:pPr><a:lnSpc><a:spcPct val="100000"/></a:lnSpc><a:spcBef><a:spcPts val="0"/></a:spcBef><a:spcAft><a:spcPts val="0"/></a:spcAft></a:pPr>'
     srcph = set_paragraphs(srcph, [f'<a:p>{tight}<a:r>{rpr(800, False, None)}<a:t>{{{{v:{t}}}}}</a:t></a:r></a:p>' for t in ("mi:src", "mi:notes")])
-    srcph = re.sub(r'<a:bodyPr([^>]*?)(/?)>', lambda m: '<a:bodyPr' + re.sub(r' anchor="\w+"', "", m.group(1)) + ' anchor="t"' + m.group(2) + '>', srcph, count=1)
+    # top-anchored, no inner margins, and shrink-on-overflow so PowerPoint never hides a line
+    bp = re.search(r'<a:bodyPr\b[^>]*?(/>|>.*?</a:bodyPr>)', srcph, re.S)
+    srcph = srcph[:bp.start()] + '<a:bodyPr lIns="0" tIns="0" rIns="0" bIns="0" anchor="t"><a:normAutofit/></a:bodyPr>' + srcph[bp.end():]
     # wider than the deck's placeholder (up to the page number), so the two footnotes fit the grey band
     sx, sy, sw, sh = xfrm(srcph)
     srcph = srcph.replace(f'<a:off x="{sx}" y="{sy}"/><a:ext cx="{sw}" cy="{sh}"/>', f'<a:off x="{sx}" y="{sy - 40000}"/><a:ext cx="11000000" cy="{sh + 40000}"/>', 1)
