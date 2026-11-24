@@ -589,14 +589,14 @@ def build_macro_slide():
         ("renovation", "", 1, ["OE"], "mi:eu_reno", None, False),
         ("residential¹", "", 1, ["OE"], "mi:eu_res", None, False),
         ("commercial²", "", 1, ["OE"], "mi:eu_non", None, True),
-        ("construction total", "", 0, ["EC"], "mi:ec_tot", None, False),
+        ("construction total", "b", 0, ["EC"], "mi:ec_tot", None, False),
         ("residential", "", 1, ["EC"], "mi:ec_res", None, False),
         ("non-residential", "", 1, ["EC"], "mi:ec_non", None, True),
         ("heat pumps", "b", 0, ["{{t:ehi}}", "{{v:mi:hp:period}}"], "mi:hp", None, True),
         None,
         ("USA", "red", 0, [], None, None, False),
         ("construction total", "b", 0, ["OE"], "mi:us_tot", "mi:us_tot:aal", False),
-        ("construction total", "", 0, ["DODGE"], "mi:us_dtot", None, True),
+        ("construction total", "b", 0, ["DODGE"], "mi:us_dtot", None, True),
         ("commercial² - area", "", 0, ["DODGE"], "mi:us_area", None, False),
         ("commercial² - value", "", 0, ["DODGE"], "mi:us_val", None, True),
         ("commercial²", "", 0, ["OE"], "mi:us_oe", None, True),
@@ -693,15 +693,18 @@ def build_macro_slide():
         legend += g + tbox(x + cw + 70000, w, label, rpr(1100, False, "505050"))
         x += cw + 70000 + w + 150000
     # Aalberts organic growth forecast: horizontal ovals (building overall, construction total Europe and USA)
-    OW, OH = COLS[6] - 160000, RH + 50000
+    OW, OH = COLS[6] - 120000, RH + 110000
     oval_xml = ""
     for vid, oy in ovals:
         ox = xs[6] + (COLS[6] - OW) // 2
         oval_xml += (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Aalberts forecast {vid}"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr><p:spPr>'
                      f'<a:xfrm><a:off x="{ox}" y="{oy + (RH - OH) // 2}"/><a:ext cx="{OW}" cy="{OH}"/></a:xfrm><a:prstGeom prst="ellipse"><a:avLst/></a:prstGeom>'
-                     f'<a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:ln w="12700"><a:solidFill><a:srgbClr val="{RED}"/></a:solidFill></a:ln></p:spPr>'
+                     f'<a:solidFill><a:srgbClr val="EDEDED"/></a:solidFill><a:ln><a:noFill/></a:ln></p:spPr>'
                      f'<p:txBody><a:bodyPr wrap="none" lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/>'
-                     f'<a:r>{rpr(1100, False, DARK)}<a:t>{{{{v:{vid}}}}}</a:t></a:r></a:p></p:txBody></p:sp>')
+                     f'<a:r>{rpr(1400, True, "404040")}<a:t>{{{{v:{vid}}}}}</a:t></a:r></a:p></p:txBody></p:sp>')
+        # preview: the figure is drawn over the oval in the same bold style
+        boxes[:] = [bx for bx in boxes if bx["id"] != vid]
+        boxes.append({"id": vid, **box((ox, oy + (RH - OH) // 2, OW, OH), [{"algn": "ctr", "runs": [{"t": "{{v:" + vid + "}}", "sz": 14, "b": True, "c": "404040", "base": False}]}], "ctr", (0, 0, 0, 0))})
     chip_marks = oval_xml + legend + "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
     body = title + keep["Text Placeholder 5"] + right + srcph + keep["Slide Number Placeholder 1"] + pill + tbl + comments + chip_marks
     xml = src[:tree_a] + body + src[tree_b:]
