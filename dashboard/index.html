@@ -1538,19 +1538,27 @@ sup { font-size: .7em; line-height: 0; }
   function macroFill(q, Y, V, chips, T, M, prevM, prevQ, oeIso, dodgeIso) {
     const chipType = d => d >= 0.5 ? "sp" : d >= 0.1 ? "p" : d <= -0.5 ? "sn" : d <= -0.1 ? "ng" : "n";
     const CALC = MACRO_CALC.flatMap(id => [id, id + ":5y"]), MAN = MACRO_MAN.flatMap(id => [id, id + ":5y"]);
+    // market view figures: green when positive, red when negative
+    const signKind = v => v > 0.05 ? "pos" : v < -0.05 ? "neg" : "neu";
     CALC.forEach(id => { const v = M ? M[id] : null; V["mi:" + id] = v === null || v === undefined || !Number.isFinite(v)
-      ? (id.endsWith(":5y") ? { text: "n/a", kind: "neu" } : { text: "x%", kind: "missing" }) : { text: fmtEm(v), kind: "plain" }; });
+      ? (id.endsWith(":5y") ? { text: "n/a", kind: "neu" } : { text: "x%", kind: "missing" }) : { text: fmtEm(v), kind: signKind(v) }; });
     // built-in source figures (HFC_QBR_INPUTS) show as plain text; still editable, yellow once typed over or when still to enter
     const builtIn = id => (QMAN[q] || {})[id] === undefined && ((window.HFC_QBR_INPUTS || {})[q] || {})[id] !== undefined;
-    MAN.forEach(id => { V["mi:" + id] = { text: manVal(q, "mi:" + id, "x%"), kind: builtIn("mi:" + id) ? "text" : "man", id: "mi:" + id }; });
+    MAN.forEach(id => {
+      const t = manVal(q, "mi:" + id, "x%"), n = numOf(t);
+      V["mi:" + id] = { text: t, kind: builtIn("mi:" + id) ? (n === null ? "neu" : signKind(n)) : "man", id: "mi:" + id };
+    });
     MACRO_AAL.forEach(id => { V[`mi:${id}:aal`] = { text: manVal(q, `mi:${id}:aal`, "x%"), kind: "man", id: `mi:${id}:aal` }; });
     V["mi:hp:period"] = { text: manVal(q, "mi:hp:period", "9M-’25"), kind: builtIn("mi:hp:period") ? "text" : "man", id: "mi:hp:period" };
     [1, 2, 3, 4].forEach(i => { const t = manVal(q, "mi:cm:" + i, i === 1 ? "xxx" : ""); V["mi:cm:" + i] = { text: t, kind: t === "xxx" ? "comment" : "text", id: "mi:cm:" + i }; });
     const src = `all figures year over year comparisons, normalised for inflation, Aalberts organic growth figures are estimates (including volume, price, BD, SRC, ..), excluding acquisitions (Paulo, Geo-flo, GVT). ` +
-      `EC: Euroconstruct (Nov-’25), OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}, Europe = EC-19), EHI: ${manVal(q, "mi:ehiSrc", "European Heating Institute ’25 vs. LY (Dec-’25)")}, DODGE area (Sept-’25), DODGE value (${dodgeIso ? monYY(dodgeIso) : "as published"})`;
+      `EC: ${manVal(q, "mi:ecSrc", "Euroconstruct (Nov-’25)")}, OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}, Europe = EC-19), EHI: ${manVal(q, "mi:ehiSrc", "European Heating Institute ’25 vs. LY (Dec-’25)")}, DODGE area (Sept-’25), DODGE value (${dodgeIso ? monYY(dodgeIso) : "as published"})`;
     V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
     // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries
+    // Euroconstruct and EHI: no comparison with the last SBR (n/a)
+    ["ec_tot", "ec_res", "ec_non", "hp"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
     CALC.concat(MAN).forEach(id => {
+      if (chips["mi:" + id] === "na") return;
       if (!prevQ) return;
       const cur = CALC.includes(id) ? (M ? M[id] : null) : numOf(V["mi:" + id].text);
       const pre = CALC.includes(id) ? (prevM ? prevM[id] : null) : numOf(manVal(prevQ.q, "mi:" + id, null));
@@ -1759,6 +1767,7 @@ sup { font-size: .7em; line-height: 0; }
     if (key === "growth" || key === "macro") extra = sl.chips.map(ch => {
       const t = data.chips[ch.key || ch.col + ":" + ch.k];
       if (!t) return "";
+      if (t === "na") return `<div class="qb" style="left:${(ch.x - 150000) / TPL.slideW * 100}%;top:${(ch.py ?? ch.y) / TPL.slideH * 100}%;width:${(ch.w + 300000) / TPL.slideW * 100}%;height:${ch.h / TPL.slideH * 100}%;justify-content:center"><div class="qp" style="text-align:center"><span style="font-size:${(10 / 960 * 100).toFixed(3)}cqw;color:#747474">n/a</span></div></div>`;
       const [fill, path] = CHIP[t];
       return `<svg class="qchip" viewBox="0 0 24 24" style="left:${ch.x / TPL.slideW * 100}%;top:${(ch.py ?? ch.y) / TPL.slideH * 100}%;width:${ch.w / TPL.slideW * 100}%" aria-label="${t}"><circle cx="12" cy="12" r="12" fill="${fill}"/><path d="${path}" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
     }).join("");
@@ -1809,6 +1818,9 @@ sup { font-size: .7em; line-height: 0; }
       if (kind === "chip") {
         const ch = sl.chips[Number(id)], t = data.chips[ch.key || ch.col + ":" + ch.k];
         if (!t) return "";
+        if (t === "na") return `<p:sp><p:nvSpPr><p:cNvPr id="${ids.base + ids.next(0)}" name="vs last SBR n/a"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>` +
+          `<a:xfrm><a:off x="${ch.x - 150000}" y="${ch.y}"/><a:ext cx="${ch.w + 300000}" cy="${ch.h}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>` +
+          `<p:txBody><a:bodyPr wrap="none" lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/><a:r><a:rPr lang="en-GB" sz="1000" dirty="0"><a:solidFill><a:srgbClr val="747474"/></a:solidFill></a:rPr><a:t>n/a</a:t></a:r></a:p></p:txBody></p:sp>`;
         return sl.chipXml[t].replace("{{X}}", ch.x).replace("{{Y}}", ch.y).replace(/\{\{ID(\d+)\}\}/g, (mm, n) => ids.base + ids.next(Number(n)));
       }
       const [row, col] = id.split(":"), a = sl.arrows.find(x => x.row === row && x.col === col), d = data.arrows[id];
