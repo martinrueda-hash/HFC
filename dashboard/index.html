@@ -1556,10 +1556,11 @@ sup { font-size: .7em; line-height: 0; }
     MACRO_AAL.forEach(id => { V[`mi:${id}:aal`] = { text: manVal(q, `mi:${id}:aal`, "x%"), kind: "man", id: `mi:${id}:aal` }; });
     V["mi:hp:period"] = { text: manVal(q, "mi:hp:period", "9M-’25"), kind: builtIn("mi:hp:period") ? "text" : "man", id: "mi:hp:period" };
     [1, 2, 3, 4].forEach(i => { const t = manVal(q, "mi:cm:" + i, i === 1 ? "xxx" : ""); V["mi:cm:" + i] = { text: t, kind: t === "xxx" ? "comment" : "text", id: "mi:cm:" + i }; });
-    const src = `Sources: EC: ${manVal(q, "mi:ecSrc", "Euroconstruct (Nov-’25)")}, OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}, Europe = EC-19), EHI: ${manVal(q, "mi:ehiSrc", "European Heating Institute ’25 vs. LY (Dec-’25)")}, DODGE value and area (${dodgeIso ? monYY(dodgeIso) : "as published"}; area excl. multifamily)`;
+    const src = `Sources: EC: ${manVal(q, "mi:ecSrc", "Euroconstruct (Nov-’25)")}; OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}); EHI: ${manVal(q, "mi:ehiSrc", "European Heating Industry (Dec-’25)")}; ` +
+      `DODGE: Dodge Construction Network (${dodgeIso ? monYY(dodgeIso) : "as published"})`;
     const defs = (M && M.defsNote) || "¹ Residential = single family; ² Commercial = commercial buildings + multifamily";
-    const notes = `Notes: all figures year over year comparisons, normalised for inflation; Aalberts organic growth figures are estimates (including volume, price, BD, SRC, ..), ` +
-      `excluding acquisitions (Paulo, Geo-flo, GVT). ${defs}${manVal(q, "mi:ecNote", "")}`;
+    const notes = `Notes: year-over-year, normalised for inflation; Aalberts organic growth = estimates (volume, price, BD, SRC, ..), excl. acquisitions (Paulo, Geo-flo, GVT). ` +
+      `Europe = EC-19; DODGE area excl. multifamily. ${defs}${manVal(q, "mi:ecNote", "")}`;
     V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
     V["mi:notes"] = { text: manVal(q, "mi:notes", notes), kind: "text", id: "mi:notes" };
     // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries

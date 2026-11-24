@@ -552,7 +552,9 @@ def build_macro_slide():
     srcph = keep["Text Placeholder 29"]
     p0 = paragraphs(srcph)[0]
     # footer (grey band): "Sources: …" then "Notes: …" (definitions ¹ ² and the Euroconstruct CAGR note)
-    srcph = set_paragraphs(srcph, [make_para(p0, [("{{v:mi:src}}", rpr(800, False, None))]), make_para(p0, [("{{v:mi:notes}}", rpr(800, False, None))])])
+    tight = '<a:pPr><a:lnSpc><a:spcPct val="100000"/></a:lnSpc><a:spcBef><a:spcPts val="0"/></a:spcBef><a:spcAft><a:spcPts val="0"/></a:spcAft></a:pPr>'
+    srcph = set_paragraphs(srcph, [f'<a:p>{tight}<a:r>{rpr(800, False, None)}<a:t>{{{{v:{t}}}}}</a:t></a:r></a:p>' for t in ("mi:src", "mi:notes")])
+    srcph = re.sub(r'<a:bodyPr([^>]*?)(/?)>', lambda m: '<a:bodyPr' + re.sub(r' anchor="\w+"', "", m.group(1)) + ' anchor="t"' + m.group(2) + '>', srcph, count=1)
     # wider than the deck's placeholder (up to the page number), so the two footnotes fit the grey band
     sx, sy, sw, sh = xfrm(srcph)
     srcph = srcph.replace(f'<a:off x="{sx}" y="{sy}"/><a:ext cx="{sw}" cy="{sh}"/>', f'<a:off x="{sx}" y="{sy - 40000}"/><a:ext cx="11000000" cy="{sh + 40000}"/>', 1)
@@ -693,7 +695,7 @@ def build_macro_slide():
         legend += g + tbox(x + cw + 70000, w, label, rpr(1100, False, "505050"))
         x += cw + 70000 + w + 150000
     # Aalberts organic growth forecast: horizontal ovals (building overall, construction total Europe and USA)
-    OW, OH = COLS[6] - 120000, RH + 110000
+    OW, OH = COLS[6] - 360000, RH + 40000
     oval_xml = ""
     for vid, oy in ovals:
         ox = xs[6] + (COLS[6] - OW) // 2
@@ -701,10 +703,10 @@ def build_macro_slide():
                      f'<a:xfrm><a:off x="{ox}" y="{oy + (RH - OH) // 2}"/><a:ext cx="{OW}" cy="{OH}"/></a:xfrm><a:prstGeom prst="ellipse"><a:avLst/></a:prstGeom>'
                      f'<a:solidFill><a:srgbClr val="EDEDED"/></a:solidFill><a:ln><a:noFill/></a:ln></p:spPr>'
                      f'<p:txBody><a:bodyPr wrap="none" lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/>'
-                     f'<a:r>{rpr(1400, True, "404040")}<a:t>{{{{v:{vid}}}}}</a:t></a:r></a:p></p:txBody></p:sp>')
+                     f'<a:r>{rpr(1200, True, "404040")}<a:t>{{{{v:{vid}}}}}</a:t></a:r></a:p></p:txBody></p:sp>')
         # preview: the figure is drawn over the oval in the same bold style
         boxes[:] = [bx for bx in boxes if bx["id"] != vid]
-        boxes.append({"id": vid, **box((ox, oy + (RH - OH) // 2, OW, OH), [{"algn": "ctr", "runs": [{"t": "{{v:" + vid + "}}", "sz": 14, "b": True, "c": "404040", "base": False}]}], "ctr", (0, 0, 0, 0))})
+        boxes.append({"id": vid, **box((ox, oy + (RH - OH) // 2, OW, OH), [{"algn": "ctr", "runs": [{"t": "{{v:" + vid + "}}", "sz": 12, "b": True, "c": "404040", "base": False}]}], "ctr", (0, 0, 0, 0))})
     chip_marks = oval_xml + legend + "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
     body = title + keep["Text Placeholder 5"] + right + srcph + keep["Slide Number Placeholder 1"] + pill + tbl + comments + chip_marks
     xml = src[:tree_a] + body + src[tree_b:]

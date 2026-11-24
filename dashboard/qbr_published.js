@@ -65,6 +65,6 @@ window.HFC_QBR_PUBLISHED = {
  * CAGR (+2.1%, +2.4%, +1.5%), marked * and footnoted. Tables not stored here.
  * Latest EHI and Euroconstruct releases for both reports until newer ones are out. */
 window.HFC_QBR_INPUTS = {
-  "2026Q3": { "mi:ec_tot": "+2.0%", "mi:ec_tot:5y": "+2.1%*", "mi:ec_res": "+1.9%", "mi:ec_res:5y": "+2.4%*", "mi:ec_non": "+1.3%", "mi:ec_non:5y": "+1.5%*", "mi:ecNote": ". *EC: CAGR ’26-’28", "mi:ecSrc": "Euroconstruct (Jun-’26)", "mi:hp": "+24.2%", "mi:hp:period": "Q2-’26", "mi:hp:5y": "n/a", "mi:ehiSrc": "heat pumps Q2-’26 vs. Q2-’25, excl. ES (Aug-’26)" },
-  "2026Q4": { "mi:ec_tot": "+2.0%", "mi:ec_tot:5y": "+2.1%*", "mi:ec_res": "+1.9%", "mi:ec_res:5y": "+2.4%*", "mi:ec_non": "+1.3%", "mi:ec_non:5y": "+1.5%*", "mi:ecNote": ". *EC: CAGR ’26-’28", "mi:ecSrc": "Euroconstruct (Jun-’26)", "mi:hp": "+24.2%", "mi:hp:period": "Q2-’26", "mi:hp:5y": "n/a", "mi:ehiSrc": "heat pumps Q2-’26 vs. Q2-’25, excl. ES (Aug-’26)" }
+  "2026Q3": { "mi:ec_tot": "+2.0%", "mi:ec_tot:5y": "+2.1%*", "mi:ec_res": "+1.9%", "mi:ec_res:5y": "+2.4%*", "mi:ec_non": "+1.3%", "mi:ec_non:5y": "+1.5%*", "mi:ecNote": ". *EC: CAGR ’26-’28", "mi:ecSrc": "Euroconstruct (Jun-’26)", "mi:hp": "+24.2%", "mi:hp:period": "Q2-’26", "mi:hp:5y": "n/a", "mi:ehiSrc": "heat pumps Q2-’26 vs. Q2-’25 excl. ES (Aug-’26)" },
+  "2026Q4": { "mi:ec_tot": "+2.0%", "mi:ec_tot:5y": "+2.1%*", "mi:ec_res": "+1.9%", "mi:ec_res:5y": "+2.4%*", "mi:ec_non": "+1.3%", "mi:ec_non:5y": "+1.5%*", "mi:ecNote": ". *EC: CAGR ’26-’28", "mi:ecSrc": "Euroconstruct (Jun-’26)", "mi:hp": "+24.2%", "mi:hp:period": "Q2-’26", "mi:hp:5y": "n/a", "mi:ehiSrc": "heat pumps Q2-’26 vs. Q2-’25 excl. ES (Aug-’26)" }
 };
