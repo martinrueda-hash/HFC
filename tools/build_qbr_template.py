@@ -591,7 +591,7 @@ def build_macro_slide():
         ("heat pumps", "b", 0, ["{{t:ehi}}", "{{v:mi:hp:period}}"], "mi:hp", None, True),
         None,
         ("USA", "red", 0, [], None, None, False),
-        ("new build commercial²", "b", 0, [], "mi:us_nb", "mi:us_nb:aal", True),
+        ("construction total", "b", 0, ["OE"], "mi:us_tot", "mi:us_tot:aal", True),
         ("commercial² - area", "", 0, ["DODGE"], "mi:us_area", None, False),
         ("commercial² - value", "", 0, ["DODGE"], "mi:us_val", None, True),
         ("commercial²", "", 0, ["OE"], "mi:us_oe", None, True),

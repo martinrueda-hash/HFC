@@ -1513,9 +1513,9 @@ sup { font-size: .7em; line-height: 0; }
   const MACRO_EU = ["Austria", "Belgium", "Czech Republic", "Denmark", "Finland", "France", "Germany", "Hungary", "Ireland", "Italy", "Netherlands",
     "Norway", "Poland", "Portugal", "Slovak Republic", "Spain", "Sweden", "Switzerland", "United Kingdom"];
   // same segments as the growth outlook slide: residential¹ = single family, commercial² = commercial buildings + multifamily
-  const MACRO_CALC = ["eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_val", "us_area", "us_oe"];
-  const MACRO_MAN = ["ec_tot", "ec_res", "ec_non", "hp", "us_nb"];
-  const MACRO_AAL = ["overall", "eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_nb"];
+  const MACRO_CALC = ["eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_tot", "us_val", "us_area", "us_oe"];
+  const MACRO_MAN = ["ec_tot", "ec_res", "ec_non", "hp"];
+  const MACRO_AAL = ["overall", "eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_tot"];
   // 2026-on-2025 growth (%) of the computed rows; get(locs, base, kind, year) reads Oxford Economics levels
   function macroCompute(get, dodgeRel, Y) {
     const eu = (b, k, y) => get(MACRO_EU, b, k, y), us = (b, k, y) => get(GO_COLS.us, b, k, y);
@@ -1533,6 +1533,7 @@ sup { font-size: .7em; line-height: 0; }
     put("eu_res", y => res("", y));
     put("eu_non", y => com("", y));
     put("us_oe", y => OE_SERIES.com(us, "", y));
+    put("us_tot", y => { const a = OE_SERIES.res(us, "", y), b = OE_SERIES.com(us, "", y); return a !== null && b !== null ? a + b : null; });
     put("us_val", dv);
     put("us_area", da);
     return out;
