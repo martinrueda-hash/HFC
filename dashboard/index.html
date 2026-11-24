@@ -430,6 +430,7 @@ sup { font-size: .7em; line-height: 0; }
 <script src="data.js"></script>
 <script src="releases.js"></script>
 <script src="qbr_template.js"></script>
+<script src="qbr_published.js"></script>
 <script>
 (function () {
   "use strict";
@@ -1460,6 +1461,8 @@ sup { font-size: .7em; line-height: 0; }
   // figure replaced by a marker. The page previews them (slide background + figures at the same
   // positions) and exports a .pptx by filling the markers in the real template.
   const TPL = window.HFC_QBR_TEMPLATE || null;
+  // reports as published (dashboard/qbr_published.js): shown as is, and the base for the next report's comparison
+  const PUB = window.HFC_QBR_PUBLISHED || {};
   let QMAN = {};
   try { QMAN = JSON.parse(store.get(LS_QBR) || "{}") || {}; } catch (e) { QMAN = {}; }
   const saveMan = () => store.set(LS_QBR, JSON.stringify(QMAN));
@@ -1470,6 +1473,12 @@ sup { font-size: .7em; line-height: 0; }
     Belgium: ["8.2", "-3.6%", "4%"], Poland: ["8.3", "+2.5%", "4%"], Nordics: ["7.3", "+7.7%", "3%"] };
   function manDefault(q, id) {
     const Y = Number(q.slice(0, 4)), [kind, who] = id.split(":");
+    const pub = PUB[q];
+    if (pub) {
+      if (kind === "banner") return pub.banner ?? null;
+      if (kind === "cm") return pub.comments && pub.comments[who] !== undefined ? pub.comments[who] : null;
+      if (kind === "kt") return (who === "priority" ? pub.priority : (pub.takeaways || [])[Number(who) - 1]) ?? null;
+    }
     if (Y !== 2026) return null;
     if (kind === "rev") return { Americas: "10%", Europe: "89%", APAC: "1%" }[who] || null;
     if (kind === "fy") return HFC_FY25[who] || null;
@@ -1478,6 +1487,45 @@ sup { font-size: .7em; line-height: 0; }
     return null;
   }
   const manVal = (q, id, ph) => { const s = (QMAN[q] || {})[id]; return s !== undefined ? s : (manDefault(q, id) ?? ph); };
+  // comment / takeaway text: underlined "xxx" until written, then plain text (still editable)
+  const txtV = (q, id) => { const t = manVal(q, id, "xxx"); return { text: t, kind: t === "xxx" ? "comment" : "text", id }; };
+  const fmtEm = (v, approx) => (approx ? "~" : "") + (v > 0.05 ? "+" : "") + (Math.abs(v) < 0.05 ? "0.0" : v.toFixed(1)) + "%";
+  // HFC figures (yellow) of the EMEA slide, shared by computed and published reports
+  function emManual(q, V, arrows) {
+    EMEA_ROWS.forEach(([name]) => {
+      ["fy", "ytd", "ytdp", "share"].forEach(k => { V[`em:${name}:${k}`] = { text: manVal(q, `${k}:${name}`, "xx"), kind: "man", id: `${k}:${name}` }; });
+      V[`em:${name}:cm`] = txtV(q, `cm:${name}`);
+      const fa = manVal(q, "fyarrow:" + name, null);
+      arrows[`${name}:fy`] = fa === "none" ? null : fa;
+    });
+    [1, 2, 3, 4, "priority"].forEach(i => { V["kt:" + i] = txtV(q, "kt:" + i); });
+    ["Americas", "Europe", "APAC"].forEach(g => { V["rev:" + g] = { text: manVal(q, "rev:" + g, "xx%"), kind: "man", id: "rev:" + g }; });
+    V["banner:growth"] = txtV(q, "banner:growth");
+  }
+  // a published report (qbr_published.js): every figure as on the presented slides
+  function pubReport(q, pub, prevQ) {
+    const Y = Number(q.slice(0, 4)), y2 = n => "’" + String(n).slice(2);
+    const V = {}, T = { growth: {}, emea: {} }, chips = {}, arrows = {};
+    const numP = v => v === null || v === undefined ? { text: "", kind: "neu" } : { text: (Math.abs(v) < 0.05 ? 0 : v).toFixed(1), kind: v < -0.05 ? "neg" : v >= 1 ? "pos" : "neu" };
+    ["us", "de", "fr", "nl", "eu", "cn"].forEach(c => Object.keys(GO_ROWS).forEach(row => {
+      ((pub.go[c] || {})[row] || [null, null, null]).forEach((v, k) => { V[`go:${c}:${row}:${k}`] = numP(v); });
+    }));
+    ["dodge_total", "dodge_res", "dodge_non"].forEach(id => ((pub.dodge || {})[id] || [null, null, null]).forEach((v, k) => { V[`go:us:${id}:${k}`] = numP(v); }));
+    Object.entries(pub.chips || {}).forEach(([c, [a, b]]) => { chips[c + ":1"] = a; chips[c + ":2"] = b; });
+    EMEA_ROWS.forEach(([name]) => {
+      const e = (pub.em || {})[name];
+      [["m1", "a1"], ["m2", "a2"]].forEach(([k, a]) => {
+        V[`em:${name}:${k}`] = e && e[k] !== null && e[k] !== undefined ? { text: fmtEm(e[k], e.approx), kind: "plain" } : { text: "x.x%", kind: "missing" };
+        V[`em:${name}:${k}p`] = { text: "", kind: "prev" };
+        arrows[`${name}:${k}`] = e ? e[a] || null : null;
+      });
+    });
+    emManual(q, V, arrows);
+    Object.assign(T.growth, { yA: y2(Y - 1) + "A", yE: y2(Y) + "E", yC: y2(Y - 1) + "-" + y2(Y + 4), yP: String(Y - 1),
+      subtitle: "Work done by sector, annual % change", src: pub.goSrc || "", notes: pub.goNotes || "" });
+    Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2), src: pub.emSrc || "", notes: pub.emNotes || "" });
+    return { q, oe: null, dodge: null, pub, prevQ, prevOe: null, V, T, chips, arrows, bridge: null, fallback: [] };
+  }
 
   const EMEA_ROWS = [["Germany", ["Germany"]], ["France", ["France"]], ["Netherlands", ["Netherlands"]], ["United Kingdom", ["United Kingdom"]],
     ["Belgium", ["Belgium"]], ["Poland", ["Poland"]], ["Nordics", ["Sweden", "Norway", "Denmark", "Finland"]]];
@@ -1502,7 +1550,7 @@ sup { font-size: .7em; line-height: 0; }
     const out = [];
     for (let k = qKey("2025Q1"); k <= end; k++) {
       const q = qFromKey(k);
-      const ok = oeQs.includes(k);     // each report has its own Oxford Economics release (previous quarter's data)
+      const ok = oeQs.includes(k) || !!PUB[q];     // its own Oxford Economics release (previous quarter's data), or published figures
       const dodgeOk = r.dodge.some(x => qKey(x.quarter) <= k);
       out.push({ q, available: ok, dodge: dodgeOk,
         why: ok ? "" : (() => { const d = prevQOf(q), dn = Number(d.slice(5)), dy = Number(d.slice(0, 4));
@@ -1520,7 +1568,10 @@ sup { font-size: .7em; line-height: 0; }
     const Y = Number(q.slice(0, 4)), y2 = n => "’" + String(n).slice(2), qn = Number(q.slice(5));
     const oe = pickRel(r.oe, "oe", q), dodge = pickRel(r.dodge, "dodge", q);
     const prevQ = list.filter(x => x.available && qKey(x.q) < qKey(q)).pop();
+    if (PUB[q]) return pubReport(q, PUB[q], prevQ);
     const prevOe = prevQ ? pickRel(r.oe, "oe", prevQ.q) : null;
+    // previous report published as such (same report year): compared figure by figure
+    const prevPub = prevQ && PUB[prevQ.q] && Number(prevQ.q.slice(0, 4)) === Y ? PUB[prevQ.q] : null;
     const locs = oe ? oeLocs(oe) : [];
     const cols = Object.assign({}, GO_COLS, { eu: locs.filter(l => !NON_EUROPE.includes(l)) });
     const has = (rel, l) => rel && l.some(x => oeLocs(rel).includes(x));
@@ -1555,8 +1606,6 @@ sup { font-size: .7em; line-height: 0; }
       const t = dodge ? trio(y => dodgeVal(dodge, DODGE_SEG[sg], y), Y) : [null, null, null];
       t.forEach((v, k) => { V[`go:us:${id}:${k}`] = num(v); });
     });
-    ["Americas", "Europe", "APAC"].forEach(g => { V["rev:" + g] = { text: manVal(q, "rev:" + g, "xx%"), kind: "man", id: "rev:" + g }; });
-    V["banner:growth"] = { text: manVal(q, "banner:growth", "xxx"), kind: "comment", id: "banner:growth" };
     const relMonth = rel => rel ? `${MONTH_NAMES[Number(rel.date.slice(5, 7)) - 1]} ${rel.date.slice(0, 4)}` : "";
     Object.assign(T.growth, { yA: y2(Y - 1) + "A", yE: y2(Y) + "E", yC: y2(Y - 1) + "-" + y2(Y + 4), yP: String(Y - 1),
       subtitle: "Work done by sector, annual % change",
@@ -1572,7 +1621,14 @@ sup { font-size: .7em; line-height: 0; }
     Object.entries(cols).forEach(([c, l]) => {
       if (!has(oe, l)) return;
       const cur = trio(y => tot(oe, l, y), Y);
-      const pre = prevOe && prevOe.id !== oe.id && has(prevOe, l) ? trio(y => tot(prevOe, l, y), Y) : null;
+      let pre = prevOe && prevOe.id !== oe.id && has(prevOe, l) ? trio(y => tot(prevOe, l, y), Y) : null;
+      if (prevPub && prevPub.go[c]) {
+        // published residential / non-residential growth, combined with this release's segment weights (year ’Y-1)
+        const lr = seg("res", getAny(l), "", Y - 1), lc = seg("com", getAny(l), "", Y - 1);
+        const w = lr !== null && lc !== null && lr + lc > 0 ? lr / (lr + lc) : null, pg = prevPub.go[c];
+        pre = [0, 1, 2].map(k => { const a = (pg.res || [])[k], b = (pg.non || [])[k];
+          return w === null || a === null || a === undefined || b === null || b === undefined ? null : w * a + (1 - w) * b; });
+      }
       [1, 2].forEach(k => { chips[c + ":" + k] = pre && cur[k] !== null && pre[k] !== null ? chipType(cur[k] - pre[k]) : "n"; });
     });
     // EMEA performance
@@ -1581,23 +1637,24 @@ sup { font-size: .7em; line-height: 0; }
     EMEA_ROWS.forEach(([name, l]) => {
       const m = y => hasAny(l) ? growth(totAny(l, y), totAny(l, y - 1)) : null;
       [["m1", m(Y - 1)], ["m2", m(Y)]].forEach(([k, v]) => {
-        V[`em:${name}:${k}`] = v === null ? { text: "x.x%", kind: "missing" } : { text: (v > 0.05 ? "+" : "") + (Math.abs(v) < 0.05 ? "0.0" : v.toFixed(1)) + "%", kind: "plain" };
+        V[`em:${name}:${k}`] = v === null ? { text: "x.x%", kind: "missing" } : { text: fmtEm(v), kind: "plain" };
         arrows[`${name}:${k}`] = dirOf(v);
       });
-      ["fy", "ytd", "ytdp", "share"].forEach(k => { V[`em:${name}:${k}`] = { text: manVal(q, `${k}:${name}`, "xx"), kind: "man", id: `${k}:${name}` }; });
-      V[`em:${name}:cm`] = { text: manVal(q, `cm:${name}`, "xxx"), kind: "comment", id: `cm:${name}` };
-      const fa = manVal(q, "fyarrow:" + name, null);
-      arrows[`${name}:fy`] = fa === "none" ? null : fa;
+      // previous report's market figures, in brackets under this report's
+      let pv = null;
+      if (prevPub && prevPub.em && prevPub.em[name]) { const e = prevPub.em[name]; pv = [e.m1, e.m2, e.approx]; }
+      else if (prevOe && prevOe.id !== oe.id && has(prevOe, l)) { const g = y => growth(tot(prevOe, l, y), tot(prevOe, l, y - 1)); pv = [g(Y - 1), g(Y), false]; }
+      ["m1", "m2"].forEach((k, i) => { V[`em:${name}:${k}p`] = { text: pv && pv[i] !== null && pv[i] !== undefined ? "(" + fmtEm(pv[i], pv[2]) + ")" : "", kind: "prev" }; });
     });
-    [1, 2, 3, 4, "priority"].forEach(i => { V["kt:" + i] = { text: manVal(q, "kt:" + i, "xxx"), kind: "comment", id: "kt:" + i }; });
+    emManual(q, V, arrows);
     Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2),
       src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + commercial incl. multifamily).`,
       notes: "Note: Nordics = Sweden, Norway, Denmark, Finland." });
-    return { q, oe, dodge, prevQ, prevOe, V, T, chips, arrows, bridge: { oeSrc, cols, Y }, fallback: [...fallbackUsed].map(id => r.oe.find(x => x.id === id)) };
+    return { q, oe, dodge, pub: null, prevPub, prevQ, prevOe, V, T, chips, arrows, bridge: { oeSrc, cols, Y }, fallback: [...fallbackUsed].map(id => r.oe.find(x => x.id === id)) };
   }
 
   // ---- preview: slide background + figures at the template's positions
-  const VAL_COLOR = { pos: "#04935E", neg: "#CE0E2D", neu: "#747474", missing: "#747474", man: "#191919" };
+  const VAL_COLOR = { pos: "#04935E", neg: "#CE0E2D", neu: "#747474", missing: "#747474", man: "#191919", prev: "#747474" };
   const CHIP = { sp: ["#1a7f55", "M7 12l5-5 5 5"], p: ["#b9e2c4", "M9 8h6v6"], n: ["#bdbdbd", "M10 7l5 5-5 5"], ng: ["#efa3a8", "M9 16h6v-6"], sn: ["#8b1a2b", "M7 10l5 5 5-5"] };
   const ARROW = { up: ["#00B050", 180], down: ["#CE0E2D", 0], flat: ["#FFC000", 270] };
   const BOX_ALIAS = { dodge_total: "go:us:dodge_total:1", dodge_res: "go:us:dodge_res:1", dodge_non: "go:us:dodge_non:1" };
@@ -1617,7 +1674,8 @@ sup { font-size: .7em; line-height: 0; }
     const boxes = sl.boxes.map(b => {
       const hasTok = b.paras.some(p => p.runs.some(r => /\{\{/.test(r.t)));
       const vid = BOX_ALIAS[b.id] || b.id;
-      const paras = b.paras.map(p => {
+      const paras = b.paras.filter(p => !(p.runs.length && p.runs.every(r => { const m = r.t.match(/^\{\{v:([^}]+)\}\}$/);
+        return m && data.V[m[1]] && data.V[m[1]].kind === "prev" && data.V[m[1]].text === ""; }))).map(p => {
         // a value box shows its figure once, in the style of its first run
         const runList = hasTok ? p.runs : p.runs.slice(0, 1);
         const runs = runList.map(r => {
@@ -1656,7 +1714,7 @@ sup { font-size: .7em; line-height: 0; }
     const m = rPr.match(/^<a:rPr\b([^>]*?)(\/>|>([\s\S]*)<\/a:rPr>)$/);
     let attrs = m ? m[1] : ' lang="en-GB"';
     inner = m && m[3] ? m[3] : "";
-    const color = { pos: "04935E", neg: "CE0E2D", neu: "747474", missing: "747474", man: "191919" }[v.kind];
+    const color = { pos: "04935E", neg: "CE0E2D", neu: "747474", missing: "747474", man: "191919", prev: "747474" }[v.kind];
     if (color) {
       const fill = `<a:solidFill><a:srgbClr val="${color}"/></a:solidFill>`;
       if (/<a:solidFill>[\s\S]*?<\/a:solidFill>/.test(inner)) inner = inner.replace(/<a:solidFill>[\s\S]*?<\/a:solidFill>/, fill);
@@ -1674,6 +1732,9 @@ sup { font-size: .7em; line-height: 0; }
   }
   function fillXml(xml, key, data, ids) {
     const sl = TPL.slides[key];
+    // a paragraph holding only an empty previous-report figure is dropped
+    xml = xml.replace(/<a:p>(?:(?!<a:p>|<\/a:p>)[\s\S])*?\{\{v:([^}]+)\}\}(?:(?!<a:p>|<\/a:p>)[\s\S])*?<\/a:p>/g,
+      (m, id) => data.V[id] && data.V[id].kind === "prev" && data.V[id].text === "" ? "" : m);
     // a run whose text is a value marker; its rPr is either self-closing or closed within the same run
     xml = xml.replace(/<a:r>(<a:rPr\b[^>]*?\/>|<a:rPr\b[^>]*(?<!\/)>(?:(?!<\/a:rPr>)[\s\S])*<\/a:rPr>)<a:t>\{\{v:([^}]+)\}\}<\/a:t><\/a:r>/g,
       (m, rPr, id) => styledRun(rPr, data.V[id] || { text: "", kind: "plain" }));
@@ -1851,7 +1912,9 @@ sup { font-size: .7em; line-height: 0; }
     const trio3 = vals => [pctOf(vals[1], vals[0]), pctOf(vals[2], vals[1]), cagrOf(vals[6], vals[1])];
     const H = v => ({ v, s: XS.head }), G = v => ({ v, s: XS.group });
     const gLabels = [y2(Y - 1) + "A", y2(Y) + "E", y2(Y - 1) + "-" + y2(Y + 4) + " CAGR"];
-    const prevName = prev ? `${qLabel(prev.q)} report` : "no earlier report loaded";
+    const prevName = prev ? `${qLabel(prev.q)} report${prev.pub ? ", as published" : ""}` : "no earlier report loaded";
+    // published figures (in %) as growth fractions
+    const pubTrio = (g, key) => g && g[key] ? g[key].map(v => v === null || v === undefined ? null : v / 100) : null;
     // growth formulas on a row whose levels start at column y0; "previous version" inputs and the variation in points
     const growthBlock = (row, y0, vals, slide, prevVals) => {
       const c = i => colL(y0 + i) + row;
@@ -1933,7 +1996,8 @@ sup { font-size: .7em; line-height: 0; }
       const gk = l.join("|");
       Object.entries(GO_ROWS).forEach(([row, [seg, kind]]) => {
         const vals = years.map(y => l.length ? OE_SERIES[seg]((b, k, yy) => oeSrc(l, b, k, yy).v, kind, y) : null);
-        const pvals = prev && l.length ? trio3(years.map(y => OE_SERIES[seg]((b, k, yy) => prev.bridge.oeSrc(l, b, k, yy).v, kind, y))) : null;
+        const pvals = !prev ? null : prev.pub ? pubTrio(prev.pub.go[c], row)
+          : l.length ? trio3(years.map(y => OE_SERIES[seg]((b, k, yy) => prev.bridge.oeSrc(l, b, k, yy).v, kind, y))) : null;
         const r = goRows.length + 1;
         const def = seg === "res" ? "Single family (else residential total − multifamily)" : "Commercial (offices, retail, hotels) + multifamily";
         goRows.push([COL_NAME[c], ROW_NAME[row], def, KINDS.find(k => k[0] === kind)[1]]
@@ -1968,7 +2032,7 @@ sup { font-size: .7em; line-height: 0; }
     const prevDodge = prev ? prev.dodge : null;
     [["DODGE | total const.", "total", "C", "dodge_total"], ["DODGE | residential¹", "res", "D", "dodge_res"], ["DODGE | commercial²", "com", "E", "dodge_non"]].forEach(([label, sg, flag, id]) => {
       const vals = years.map(y => data.dodge ? dodgeVal(data.dodge, DODGE_SEG[sg], y) : null);
-      const pvals = prevDodge ? trio3(years.map(y => dodgeVal(prevDodge, DODGE_SEG[sg], y))) : null;
+      const pvals = prev && prev.pub ? pubTrio(prev.pub.dodge, id) : prevDodge ? trio3(years.map(y => dodgeVal(prevDodge, DODGE_SEG[sg], y))) : null;
       const r = dRows.length + 1;
       dRows.push(["", { v: label, s: XS.bold }, "", "", ""].concat(
         years.map((y, i) => ({ v: vals[i] ?? "", f: `SUMPRODUCT($${flag}$${dFirst}:$${flag}$${dLast},${dyc(i)}$${dFirst}:${dyc(i)}$${dLast})`, s: XS.intb })),
@@ -2008,7 +2072,8 @@ sup { font-size: .7em; line-height: 0; }
       kv("Quarter", qLabel(data.q)),
       kv("Oxford Economics", data.oe ? `Release of ${fmtDate(data.oe.date)} (${qLabel(oeQ(data.oe.date))} data)` : "—"),
       kv("Dodge (US)", data.dodge ? `Actuals to ${qLabel(data.dodge.quarter)}` : "No Dodge export for this quarter"),
-      kv("Compared with", prev ? `${qLabel(prev.q)} report (Oxford Economics ${fmtDate(prev.oe.date)}${prev.dodge ? ", Dodge to " + qLabel(prev.dodge.quarter) : ""})` : "No earlier report loaded"),
+      kv("Compared with", !prev ? "No earlier report loaded" : prev.pub ? `${qLabel(prev.q)} report, figures as published (${prev.pub.deck})`
+        : `${qLabel(prev.q)} report (Oxford Economics ${fmtDate(prev.oe.date)}${prev.dodge ? ", Dodge to " + qLabel(prev.dodge.quarter) : ""})`),
       kv("Prepared on", fmtDate(today)), [],
       section("Contents"),
       kv("OE", "Oxford Economics growth outlook figures, with the variation vs. the previous version"),
@@ -2032,8 +2097,8 @@ sup { font-size: .7em; line-height: 0; }
       kv("Measure", "Vertical forecast, US$ thousands"), [],
       section("Previous version"),
       kv("Report", prev ? qLabel(prev.q) : "No earlier report loaded"),
-      kv("Oxford Economics", prev ? relName(prev.oe) : "—"),
-      kv("Dodge (US)", prev && prev.dodge ? prev.dodge.file : "—")];
+      kv("Oxford Economics", !prev ? "—" : prev.pub ? `Figures as published in the ${prev.pub.deck} deck` : relName(prev.oe)),
+      kv("Dodge (US)", !prev ? "—" : prev.pub ? "As published" : prev.dodge ? prev.dodge.file : "—")];
     const coverCols = [3, 22, 100, 10, 10, 10, 10, 10, 10];
     const lev = years.map(() => 12), g3 = [10, 10, 13];
     return [
@@ -2072,10 +2137,10 @@ sup { font-size: .7em; line-height: 0; }
     if (!cur.available) { body.innerHTML = `<div class="qlocked" role="status"><b>${qLabel(cur.q)} is not available yet.</b> ${esc(cur.why)}</div>`; return; }
     const data = reportData(qTab, list);
     const meta = `<div class="qmeta"><span>Report <b>${qLabel(qTab)}</b></span>
-      <span>Oxford Economics: <b>release ${fmtDate(data.oe.date)}</b> (${qLabel(oeQ(data.oe.date))} data)${data.fallback.length ? ` (missing years from ${data.fallback.map(x => fmtDate(x.date)).join(", ")})` : ""}</span>
-      <span>Dodge (US): <b>${data.dodge ? "actuals to " + qLabel(data.dodge.quarter) : "no export up to this quarter"}</b></span>
-      <span>Variation vs.: <b>${data.prevQ ? qLabel(data.prevQ.q) : "no previous report"}</b>${data.prevOe && data.prevOe.id === data.oe.id ? " (same release: neutral)" : ""}</span></div>`;
-    body.innerHTML = `<div class="qbar">${meta}<span class="spacer"></span><button type="button" class="btn" id="qbrExcel" title="Workbook that rebuilds every figure of the two slides from the Oxford Economics and Dodge data, with formulas">Excel data bridge (.xlsx)</button><button type="button" class="btn primary" id="qbrExport">Export to PowerPoint (.pptx)</button></div>
+      <span>Oxford Economics: ${data.oe ? `<b>release ${fmtDate(data.oe.date)}</b> (${qLabel(oeQ(data.oe.date))} data)` : `<b>figures as published</b> (${esc(data.pub.deck)})`}${data.fallback.length ? ` (missing years from ${data.fallback.map(x => fmtDate(x.date)).join(", ")})` : ""}</span>
+      <span>Dodge (US): <b>${data.pub ? "as published" : data.dodge ? "actuals to " + qLabel(data.dodge.quarter) : "no export up to this quarter"}</b></span>
+      <span>Variation vs.: <b>${data.prevQ ? qLabel(data.prevQ.q) : "no previous report"}</b>${data.prevPub ? " (as published)" : data.prevOe && data.oe && data.prevOe.id === data.oe.id ? " (same release: neutral)" : ""}</span></div>`;
+    body.innerHTML = `<div class="qbar">${meta}<span class="spacer"></span><button type="button" class="btn" id="qbrExcel"${data.pub ? ' disabled title="This report shows the figures as published: there is no data to rebuild them from"' : ' title="Workbook that rebuilds every figure of the two slides from the Oxford Economics and Dodge data, with formulas"'}>Excel data bridge (.xlsx)</button><button type="button" class="btn primary" id="qbrExport">Export to PowerPoint (.pptx)</button></div>
       <span class="msg" id="qbrMsg" role="status"></span>
       <div class="qpreview"><span class="hdr-t">Preview</span>${slidePreview("growth", data)}${slidePreview("emea", data)}</div>`;
     document.getElementById("qbrExport").addEventListener("click", () => exportPptx(reportData(qTab, quarterList())));

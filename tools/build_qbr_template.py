@@ -438,10 +438,19 @@ for ri, r in enumerate(rows):
         cx2 = cx
         for p in ps[1:]:
             cx2 = cx2.replace(p, "")
-        cx2 = cx2.replace(ps[0], make_para(ps[0], [("{{v:" + vid + "}}", None)]))
+        p1 = make_para(ps[0], [("{{v:" + vid + "}}", None)])
+        paras_new = [p1]
+        if keys[ci] in ("m1", "m2"):
+            # second line: the previous report's market figure in brackets, small and grey (dropped when there is none)
+            small = first_rpr(ps[0])
+            small = re.sub(r' sz="\d+"', ' sz="1000"', small) if ' sz="' in small else small.replace("<a:rPr", '<a:rPr sz="1000"', 1)
+            small = re.sub(r' b="1"', ' b="0"', small)
+            paras_new.append(make_para(ps[0], [("{{v:" + vid + "p}}", small)]))
+        cx2 = cx2.replace(ps[0], "".join(paras_new))
         rect = (fx + sum(cols[:ci]), fy + sum(heights[:ri]), cols[ci], heights[ri])
         anchor = (re.search(r'<a:tcPr[^>]*anchor="(\w+)"', cx) or [None, "t"])[1]
-        boxes.append({"id": vid, **box(rect, [para_spec(ps[0])], anchor, (91440, 45720, 91440, 45720))})
+        specs = [para_spec(p1 if len(paras_new) > 1 else ps[0])] + [para_spec(x) for x in paras_new[1:]]
+        boxes.append({"id": vid, **box(rect, specs, anchor, (91440, 45720, 91440, 45720))})
         out = out[:c.start()] + cx2 + out[c.end():]
     new_rows.append((r, out))
 for r, out in reversed(new_rows):
