@@ -1206,6 +1206,7 @@ sup { font-size: .7em; line-height: 0; }
     res: "Work Done - Residential - Total",
     mf: "Work Done - Residential - Multi Family",
     sf: "Work Done - Residential - Single Family",
+    civ: "Work Done - Civil Engineering - Total",
     com: "Work Done - Non-Residential Building - Commercial",
     nonTot: "Work Done - Non-Residential Building - Total",
   };
@@ -1533,7 +1534,8 @@ sup { font-size: .7em; line-height: 0; }
     put("eu_res", y => res("", y));
     put("eu_non", y => com("", y));
     put("us_oe", y => OE_SERIES.com(us, "", y));
-    put("us_tot", y => allBld(us, "", y));
+    // USA: all-in like Dodge, buildings + civil engineering (Oxford Economics US civil download)
+    put("us_tot", y => { const b = allBld(us, "", y), c = us(OE.civ, "", y); return b !== null && c !== null ? b + c : null; });
     put("us_val", dv);
     // Dodge construction total: all verticals, as "DODGE | total const." on the growth outlook slide
     put("us_dtot", y => dodgeRel ? dodgeVal(dodgeRel, DODGE_SEG.total, y) : null);
@@ -1563,8 +1565,8 @@ sup { font-size: .7em; line-height: 0; }
       `DODGE: Dodge Construction Network (${dodgeIso ? monYY(dodgeIso) : "as published"})`;
     const defs = (M && M.defsNote) || "¹ Residential = single family; ² Commercial = commercial buildings + multifamily";
     // OE and DODGE measure different things: work done (spending, real terms) vs. value of projects (current US$)
-    const notes = `Notes: year-over-year; OE = work done (real terms), construction total = all buildings incl. industrial, excl. civil; DODGE = project value (current US$, incl. civil; ` +
-      `data centres in office; area excl. multifamily). Aalberts organic growth = estimates (volume, price, BD, SRC, ..), excl. acquisitions (Paulo, Geo-flo, GVT). Europe = EC-19. ${defs}${manVal(q, "mi:ecNote", "")}`;
+    const notes = `Notes: year-over-year; OE = work done (real terms), construction total = all buildings incl. industrial (USA also civil; Europe excl. civil); DODGE = project value (current US$, incl. civil; ` +
+      `data centres in office; area excl. multifamily). Aalberts organic growth: estimates excl. acquisitions (Paulo, Geo-flo, GVT). Europe = EC-19. ${defs}${manVal(q, "mi:ecNote", "")}`;
     V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
     V["mi:notes"] = { text: manVal(q, "mi:notes", notes), kind: "text", id: "mi:notes" };
     // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries
@@ -1572,7 +1574,7 @@ sup { font-size: .7em; line-height: 0; }
     ["ec_tot", "ec_res", "ec_non", "hp", "us_dtot", "us_val", "us_area"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
     // a previous report built on other definitions (published Q3 2026: residential / non-residential totals) is not compared
     // (construction totals and their new build / renovation split use the same all-buildings definition in both, so they are compared)
-    if (prevM && prevM.defs === "totals") MACRO_CALC.filter(id => !["eu_tot", "eu_new", "eu_reno", "us_tot"].includes(id))
+    if (prevM && prevM.defs === "totals") MACRO_CALC.filter(id => !["eu_tot", "eu_new", "eu_reno"].includes(id))
       .forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
     CALC.concat(MAN).forEach(id => {
       if (chips["mi:" + id] === "na") return;
