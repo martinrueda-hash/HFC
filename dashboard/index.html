@@ -1559,8 +1559,9 @@ sup { font-size: .7em; line-height: 0; }
     const src = `Sources: EC: ${manVal(q, "mi:ecSrc", "Euroconstruct (Nov-’25)")}; OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}); EHI: ${manVal(q, "mi:ehiSrc", "European Heating Industry (Dec-’25)")}; ` +
       `DODGE: Dodge Construction Network (${dodgeIso ? monYY(dodgeIso) : "as published"})`;
     const defs = (M && M.defsNote) || "¹ Residential = single family; ² Commercial = commercial buildings + multifamily";
-    const notes = `Notes: year-over-year, normalised for inflation; Aalberts organic growth = estimates (volume, price, BD, SRC, ..), excl. acquisitions (Paulo, Geo-flo, GVT). ` +
-      `Europe = EC-19; DODGE area excl. multifamily. ${defs}${manVal(q, "mi:ecNote", "")}`;
+    // OE and DODGE measure different things: work done (spending, real terms) vs. value of projects (current US$)
+    const notes = `Notes: year-over-year; OE = construction work done (spending, real terms); DODGE = value of projects (current US$, data centres in office). ` +
+      `Aalberts organic growth = estimates (volume, price, BD, SRC, ..), excl. acquisitions (Paulo, Geo-flo, GVT). Europe = EC-19; DODGE area excl. multifamily. ${defs}${manVal(q, "mi:ecNote", "")}`;
     V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
     V["mi:notes"] = { text: manVal(q, "mi:notes", notes), kind: "text", id: "mi:notes" };
     // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries
