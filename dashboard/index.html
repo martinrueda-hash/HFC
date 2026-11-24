@@ -1788,7 +1788,7 @@ sup { font-size: .7em; line-height: 0; }
       const emptyTok = r => { const m = r.t.match(/^\{\{v:([^}]+)\}\}$/); const v = m && data.V[m[1]]; return v && v.text === "" && (v.kind === "prev" || v.kind === "text"); };
       const paras = b.paras.filter(p => !(p.runs.length && p.runs.some(emptyTok) && p.runs.every(r => emptyTok(r) || !/\{\{/.test(r.t)))).map(p => {
         // a value box shows its figure once, in the style of its first run
-        const runList = hasTok ? p.runs : p.runs.slice(0, 1);
+        const runList = hasTok ? p.runs : p.runs.length ? p.runs.slice(0, 1) : data.V[vid] ? [{ t: "", sz: b.paras.find(pp => pp.runs.length)?.runs[0].sz || 8 }] : [];
         const runs = runList.map(r => {
           const sz = r.sz || b.srcSz || 10;
           const style = `font-size:${(sz / 960 * 100).toFixed(3)}cqw;${r.b ? "font-weight:700;" : ""}${r.c ? "color:#" + r.c + ";" : ""}${r.base ? "vertical-align:super;font-size:" + (sz * 0.6 / 960 * 100).toFixed(3) + "cqw;" : ""}`;
