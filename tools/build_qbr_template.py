@@ -556,18 +556,18 @@ def build_macro_slide():
     srcph = keep["Text Placeholder 29"]
     p0 = paragraphs(srcph)[0]
     # footer (grey band): "Sources: …" then "Notes: …" (definitions ¹ ² and the Euroconstruct CAGR note)
-    tight = '<a:pPr><a:lnSpc><a:spcPts val="720"/></a:lnSpc><a:spcBef><a:spcPts val="0"/></a:spcBef><a:spcAft><a:spcPts val="0"/></a:spcAft></a:pPr>'
+    tight = '<a:pPr><a:lnSpc><a:spcPts val="860"/></a:lnSpc><a:spcBef><a:spcPts val="0"/></a:spcBef><a:spcAft><a:spcPts val="0"/></a:spcAft></a:pPr>'
     # Sources and Notes run on in one paragraph: no line break, no gap between them
-    fr = rpr(700, False, None)
+    fr = rpr(800, False, None)
     srcph = set_paragraphs(srcph, [f'<a:p>{tight}<a:r>{fr}<a:t>{{{{v:mi:src}}}}</a:t></a:r><a:r>{fr}<a:t>{{{{t:dot}}}}</a:t></a:r><a:r>{fr}<a:t>{{{{v:mi:notes}}}}</a:t></a:r></a:p>'])
     # top-anchored, no inner margins, and shrink-on-overflow so PowerPoint never hides a line
     bp = re.search(r'<a:bodyPr\b[^>]*?(/>|>.*?</a:bodyPr>)', srcph, re.S)
     srcph = srcph[:bp.start()] + '<a:bodyPr lIns="0" tIns="0" rIns="0" bIns="0" anchor="t"><a:normAutofit/></a:bodyPr>' + srcph[bp.end():]
     # wider than the deck's placeholder (up to the page number), so the two footnotes fit the grey band
     sx, sy, sw, sh = xfrm(srcph)
-    srcph = srcph.replace(f'<a:off x="{sx}" y="{sy}"/><a:ext cx="{sw}" cy="{sh}"/>', f'<a:off x="{sx}" y="{sy - 40000}"/><a:ext cx="11000000" cy="{sh + 40000}"/>', 1)
+    srcph = srcph.replace(f'<a:off x="{sx}" y="{sy}"/><a:ext cx="{sw}" cy="{sh}"/>', f'<a:off x="{sx}" y="{sy - 40000}"/><a:ext cx="11380000" cy="{sh + 40000}"/>', 1)
     anchor, ins = body_ins(srcph)
-    boxes.append({"id": "mi:src", **box(xfrm(srcph), [{"algn": "l", "runs": [{"t": t, "sz": 7, "b": False, "c": None, "base": False} for t in ("{{v:mi:src}}", "{{t:dot}}", "{{v:mi:notes}}")]}], "t", (0, 0, 0, 0)), "srcSz": 7, "tight": True})
+    boxes.append({"id": "mi:src", **box(xfrm(srcph), [{"algn": "l", "runs": [{"t": t, "sz": 8, "b": False, "c": None, "base": False} for t in ("{{v:mi:src}}", "{{t:dot}}", "{{v:mi:notes}}")]}], "t", (0, 0, 0, 0)), "srcSz": 8, "tight": True})
     right = keep["Text Placeholder 6"]
     right = set_paragraphs(right, [make_para(paragraphs(right)[0], [("market trends", None)])])
 
@@ -676,17 +676,17 @@ def build_macro_slide():
            f'<a:tbl><a:tblPr/><a:tblGrid>{"".join(f"<a:gridCol w=\"{w}\"/>" for w in COLS)}</a:tblGrid>{"".join(rows_xml)}</a:tbl></a:graphicData></a:graphic></p:graphicFrame>')
     table_bottom = y + ypv
     # comments box, beside the table down to its bottom
-    CX, CY = 8100000, 1250000
-    CW, CH = 3800000, table_bottom - CY
+    CX, CY = 7900000, 1250000
+    CW, CH = 4100000, table_bottom - CY
     bullet = f'<a:pPr marL="342900" indent="-342900"><a:spcBef><a:spcPts val="600"/></a:spcBef><a:buClr><a:srgbClr val="{RED}"/></a:buClr><a:buFont typeface="Arial"/><a:buChar char="»"/></a:pPr>'
     cpar = [f'<a:p><a:r>{rpr(1400, True, "505050")}<a:t>Comments</a:t></a:r></a:p>'] + \
-           [f'<a:p>{bullet}<a:r>{rpr(1100, False, DARK)}<a:t>{{{{v:mi:cm:{i}}}}}</a:t></a:r></a:p>' for i in (1, 2, 3, 4)]
+           [f'<a:p>{bullet}<a:r>{rpr(1200, False, DARK)}<a:t>{{{{v:mi:cm:{i}}}}}</a:t></a:r></a:p>' for i in (1, 2, 3, 4)]
     comments = (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Comments"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>'
                 f'<a:xfrm><a:off x="{CX}" y="{CY}"/><a:ext cx="{CW}" cy="{CH}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom>{GREY}</p:spPr>'
                 f'<p:txBody><a:bodyPr wrap="square" lIns="108000" tIns="108000" rIns="108000" bIns="108000" anchor="t"/><a:lstStyle/>{"".join(cpar)}</p:txBody></p:sp>')
     boxes.append({"id": "mi:comments", **box((CX, CY, CW, CH),
         [{"algn": "l", "runs": [{"t": "{{t:blank}}", "sz": 14, "b": True, "c": None, "base": False}]}] +
-        [{"algn": "l", "runs": [{"t": "» ", "sz": 11, "b": False, "c": RED, "base": False}, {"t": "{{v:mi:cm:%d}}" % i, "sz": 11, "b": False, "c": None, "base": False}]} for i in (1, 2, 3, 4)],
+        [{"algn": "l", "runs": [{"t": "» ", "sz": 12, "b": False, "c": RED, "base": False}, {"t": "{{v:mi:cm:%d}}" % i, "sz": 12, "b": False, "c": None, "base": False}]} for i in (1, 2, 3, 4)],
         "t", (108000, 108000, 108000, 108000))})
     # legend of the "vs. last SBR" chips, in one line under the table (same chips and wording as the growth outlook slide)
     LY = table_bottom + 90000
