@@ -551,9 +551,13 @@ def build_macro_slide():
     boxes.append({"id": "title", **box(xfrm(title), [{"algn": "l", "runs": [{"t": t, "sz": 20, "b": i == 0, "c": RED, "base": False} for i, (t, _) in enumerate(t_runs)]}], "t", (91440, 45720, 0, 45720))})
     srcph = keep["Text Placeholder 29"]
     p0 = paragraphs(srcph)[0]
-    srcph = set_paragraphs(srcph, [make_para(p0, [("{{v:mi:src}}", None)])])
+    # footer (grey band): "Sources: …" then "Notes: …" (definitions ¹ ² and the Euroconstruct CAGR note)
+    srcph = set_paragraphs(srcph, [make_para(p0, [("{{v:mi:src}}", rpr(800, False, None))]), make_para(p0, [("{{v:mi:notes}}", rpr(800, False, None))])])
+    # wider than the deck's placeholder (up to the page number), so the two footnotes fit the grey band
+    sx, sy, sw, sh = xfrm(srcph)
+    srcph = srcph.replace(f'<a:off x="{sx}" y="{sy}"/><a:ext cx="{sw}" cy="{sh}"/>', f'<a:off x="{sx}" y="{sy - 40000}"/><a:ext cx="11000000" cy="{sh + 40000}"/>', 1)
     anchor, ins = body_ins(srcph)
-    boxes.append({"id": "mi:src", **box(xfrm(srcph), [dict(para_spec(paragraphs(srcph)[0]), sz=8)], anchor, ins), "srcSz": 8})
+    boxes.append({"id": "mi:src", **box(xfrm(srcph), [dict(para_spec(q), sz=8) for q in paragraphs(srcph)], anchor, ins), "srcSz": 8})
     right = keep["Text Placeholder 6"]
     right = set_paragraphs(right, [make_para(paragraphs(right)[0], [("market trends", None)])])
 
@@ -688,11 +692,6 @@ def build_macro_slide():
         g = re.sub(r"\{\{ID(\d+)\}\}", lambda m: str(next_id()), g)
         legend += g + tbox(x + cw + 70000, w, label, rpr(1100, False, "505050"))
         x += cw + 70000 + w + 150000
-    # definitions (footnotes ¹ ²), beside the legend under the comments box
-    defs = (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Definitions"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>'
-            f'<a:xfrm><a:off x="{CX}" y="{LY - 20000}"/><a:ext cx="{CW}" cy="{cw + 40000}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
-            f'<p:txBody><a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:r>{rpr(900, False, "505050")}<a:t>{{{{t:defs}}}}</a:t></a:r></a:p></p:txBody></p:sp>')
-    boxes.append({"id": "mi:defs", **box((CX, LY - 20000, CW, cw + 40000), [{"algn": "l", "runs": [{"t": "{{t:defs}}", "sz": 9, "b": False, "c": "505050", "base": False}]}], "ctr", (0, 0, 0, 0))})
     # Aalberts organic growth forecast: horizontal ovals (building overall, construction total Europe and USA)
     OW, OH = COLS[6] - 160000, RH + 50000
     oval_xml = ""
@@ -703,7 +702,7 @@ def build_macro_slide():
                      f'<a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:ln w="12700"><a:solidFill><a:srgbClr val="{RED}"/></a:solidFill></a:ln></p:spPr>'
                      f'<p:txBody><a:bodyPr wrap="none" lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/>'
                      f'<a:r>{rpr(1100, False, DARK)}<a:t>{{{{v:{vid}}}}}</a:t></a:r></a:p></p:txBody></p:sp>')
-    chip_marks = oval_xml + legend + defs + "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
+    chip_marks = oval_xml + legend + "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
     body = title + keep["Text Placeholder 5"] + right + srcph + keep["Slide Number Placeholder 1"] + pill + tbl + comments + chip_marks
     xml = src[:tree_a] + body + src[tree_b:]
     xml = re.sub(r"<p:custDataLst>.*?</p:custDataLst>", "", xml, flags=re.S)

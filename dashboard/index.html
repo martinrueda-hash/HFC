@@ -339,9 +339,6 @@ sup { font-size: .7em; line-height: 0; }
     </div>
     <div class="qtabs" id="qbrTabs" role="tablist" aria-label="Quarterly report"></div>
     <div class="qbody" id="qbrBody"></div>
-    <div class="source">
-      <span>Yellow = HFC figures to complete: click to edit (saved in this browser), click an HFC FY arrow to change it. Underlined = data not available yet (US and China in Oxford Economics) and comments. The export keeps the deck's layout, fonts and footers.</span>
-    </div>
   </section>
 
   <div class="controls" role="toolbar" aria-label="Filters">
@@ -1559,9 +1556,12 @@ sup { font-size: .7em; line-height: 0; }
     MACRO_AAL.forEach(id => { V[`mi:${id}:aal`] = { text: manVal(q, `mi:${id}:aal`, "x%"), kind: "man", id: `mi:${id}:aal` }; });
     V["mi:hp:period"] = { text: manVal(q, "mi:hp:period", "9M-’25"), kind: builtIn("mi:hp:period") ? "text" : "man", id: "mi:hp:period" };
     [1, 2, 3, 4].forEach(i => { const t = manVal(q, "mi:cm:" + i, i === 1 ? "xxx" : ""); V["mi:cm:" + i] = { text: t, kind: t === "xxx" ? "comment" : "text", id: "mi:cm:" + i }; });
-    const src = `all figures year over year comparisons, normalised for inflation, Aalberts organic growth figures are estimates (including volume, price, BD, SRC, ..), excluding acquisitions (Paulo, Geo-flo, GVT). ` +
-      `EC: ${manVal(q, "mi:ecSrc", "Euroconstruct (Nov-’25)")}, OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}, Europe = EC-19), EHI: ${manVal(q, "mi:ehiSrc", "European Heating Institute ’25 vs. LY (Dec-’25)")}, DODGE value and area (${dodgeIso ? monYY(dodgeIso) : "as published"}; area excl. multifamily)${manVal(q, "mi:ecNote", "")}`;
+    const src = `Sources: EC: ${manVal(q, "mi:ecSrc", "Euroconstruct (Nov-’25)")}, OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}, Europe = EC-19), EHI: ${manVal(q, "mi:ehiSrc", "European Heating Institute ’25 vs. LY (Dec-’25)")}, DODGE value and area (${dodgeIso ? monYY(dodgeIso) : "as published"}; area excl. multifamily)`;
+    const defs = (M && M.defsNote) || "¹ Residential = single family; ² Commercial = commercial buildings + multifamily";
+    const notes = `Notes: all figures year over year comparisons, normalised for inflation; Aalberts organic growth figures are estimates (including volume, price, BD, SRC, ..), ` +
+      `excluding acquisitions (Paulo, Geo-flo, GVT). ${defs}${manVal(q, "mi:ecNote", "")}`;
     V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
+    V["mi:notes"] = { text: manVal(q, "mi:notes", notes), kind: "text", id: "mi:notes" };
     // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries
     // Euroconstruct and EHI: no comparison with the last SBR (n/a)
     ["ec_tot", "ec_res", "ec_non", "hp", "us_dtot", "us_val", "us_area"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
