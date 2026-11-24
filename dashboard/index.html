@@ -1594,6 +1594,8 @@ sup { font-size: .7em; line-height: 0; }
       const pre = CALC.includes(id) ? (prevM ? prevM[id] : null) : numOf(manVal(prevQ.q, "mi:" + id, null));
       if (cur !== null && cur !== undefined && Number.isFinite(cur) && pre !== null && pre !== undefined && Number.isFinite(pre)) chips["mi:" + id] = chipType(cur - pre);
     });
+    // last: chips set by hand for a report (HFC_QBR_INPUTS "chip:<id>"), e.g. USA commercial vs. the Q3 -0.2%
+    Object.entries((window.HFC_QBR_INPUTS || {})[q] || {}).forEach(([k, v]) => { if (k.startsWith("chip:")) chips[k.slice(5)] = v; });
     T.macro = { defs: (M && M.defsNote) || "¹ Residential = single family   ² Commercial = commercial buildings + multifamily", y: String(Y), y5: "’" + String(Y).slice(2) + "-’" + String(Y + 4).slice(2), titleTail: " | building", blank: "\u00a0", ehi: "EHI ", dot: ". " };
   }
 
