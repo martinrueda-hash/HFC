@@ -60,9 +60,10 @@ window.HFC_QBR_PUBLISHED = {
  * EHI heat pumps, Europe total: EHI Europe market statistics Q2 2026 (presented 31 Aug 2026; the briefing itself is not stored in the repository),
  * "8 countries total" BE, FR, DE, IT, NL, PL, ES, UK: heat pumps total +24.2% (270,800 units); Spain not included yet.
  * Euroconstruct, 19 countries: 101st EUROCONSTRUCT summary tables (June 2026), 2026 vs. 2025 in real terms: total construction
- * output +2.0%, residential +1.9%, non-residential +1.3%; forecasts reach 2028, so ’26-’30 is n/a. Tables not stored here.
+ * output +2.0%, residential +1.9%, non-residential +1.3%; forecasts reach 2028, so the multi-year column holds the 2026-2028
+ * CAGR (+2.1%, +2.4%, +1.5%), marked * and footnoted. Tables not stored here.
  * Latest EHI and Euroconstruct releases for both reports until newer ones are out. */
 window.HFC_QBR_INPUTS = {
-  "2026Q3": { "mi:ec_tot": "+2.0%", "mi:ec_tot:5y": "n/a", "mi:ec_res": "+1.9%", "mi:ec_res:5y": "n/a", "mi:ec_non": "+1.3%", "mi:ec_non:5y": "n/a", "mi:ecSrc": "Euroconstruct (Jun-’26)", "mi:hp": "+24.2%", "mi:hp:period": "Q2-’26", "mi:hp:5y": "n/a", "mi:ehiSrc": "heat pumps Q2-’26 vs. Q2-’25, excl. ES (Aug-’26)" },
-  "2026Q4": { "mi:ec_tot": "+2.0%", "mi:ec_tot:5y": "n/a", "mi:ec_res": "+1.9%", "mi:ec_res:5y": "n/a", "mi:ec_non": "+1.3%", "mi:ec_non:5y": "n/a", "mi:ecSrc": "Euroconstruct (Jun-’26)", "mi:hp": "+24.2%", "mi:hp:period": "Q2-’26", "mi:hp:5y": "n/a", "mi:ehiSrc": "heat pumps Q2-’26 vs. Q2-’25, excl. ES (Aug-’26)" }
+  "2026Q3": { "mi:ec_tot": "+2.0%", "mi:ec_tot:5y": "+2.1%*", "mi:ec_res": "+1.9%", "mi:ec_res:5y": "+2.4%*", "mi:ec_non": "+1.3%", "mi:ec_non:5y": "+1.5%*", "mi:ecNote": ". *EC: CAGR ’26-’28 (forecasts end in 2028), not ’26-’30", "mi:ecSrc": "Euroconstruct (Jun-’26)", "mi:hp": "+24.2%", "mi:hp:period": "Q2-’26", "mi:hp:5y": "n/a", "mi:ehiSrc": "heat pumps Q2-’26 vs. Q2-’25, excl. ES (Aug-’26)" },
+  "2026Q4": { "mi:ec_tot": "+2.0%", "mi:ec_tot:5y": "+2.1%*", "mi:ec_res": "+1.9%", "mi:ec_res:5y": "+2.4%*", "mi:ec_non": "+1.3%", "mi:ec_non:5y": "+1.5%*", "mi:ecNote": ". *EC: CAGR ’26-’28 (forecasts end in 2028), not ’26-’30", "mi:ecSrc": "Euroconstruct (Jun-’26)", "mi:hp": "+24.2%", "mi:hp:period": "Q2-’26", "mi:hp:5y": "n/a", "mi:ehiSrc": "heat pumps Q2-’26 vs. Q2-’25, excl. ES (Aug-’26)" }
 };
