@@ -552,7 +552,7 @@ def build_macro_slide():
     srcph = keep["Text Placeholder 29"]
     p0 = paragraphs(srcph)[0]
     # footer (grey band): "Sources: …" then "Notes: …" (definitions ¹ ² and the Euroconstruct CAGR note)
-    tight = '<a:pPr><a:lnSpc><a:spcPct val="90000"/></a:lnSpc><a:spcBef><a:spcPts val="0"/></a:spcBef><a:spcAft><a:spcPts val="0"/></a:spcAft></a:pPr>'
+    tight = '<a:pPr><a:lnSpc><a:spcPts val="800"/></a:lnSpc><a:spcBef><a:spcPts val="0"/></a:spcBef><a:spcAft><a:spcPts val="0"/></a:spcAft></a:pPr>'
     srcph = set_paragraphs(srcph, [f'<a:p>{tight}<a:r>{rpr(750, False, None)}<a:t>{{{{v:{t}}}}}</a:t></a:r></a:p>' for t in ("mi:src", "mi:notes")])
     # top-anchored, no inner margins, and shrink-on-overflow so PowerPoint never hides a line
     bp = re.search(r'<a:bodyPr\b[^>]*?(/>|>.*?</a:bodyPr>)', srcph, re.S)
