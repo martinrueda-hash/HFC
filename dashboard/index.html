@@ -1514,23 +1514,30 @@ sup { font-size: .7em; line-height: 0; }
   function macroCompute(get, dodgeRel, Y) {
     const lv = (base, kind, y) => get(MACRO_EU, base, kind, y);
     const sum = (parts, y) => { let t = 0; for (const [b, k] of parts) { const v = lv(b, k, y); if (v === null) return null; t += v; } return t; };
-    const g = parts => growth(sum(parts, Y), sum(parts, Y - 1));
     const R = OE.res, N = OE.nonTot;
     const usg = (b, y) => get(GO_COLS.us, b, "", y);
-    return {
-      eu_tot: g([[R, ""], [N, ""]]), eu_new: g([[R, "New"], [N, "New"]]), eu_reno: g([[R, "Renovation"], [N, "Renovation"]]),
-      eu_res: g([[R, ""]]), eu_non: g([[N, ""]]),
-      us_oe: growth(usg(N, Y), usg(N, Y - 1)),
-      us_val: dodgeRel ? growth(dodgeVal(dodgeRel, DODGE_NONRES, Y), dodgeVal(dodgeRel, DODGE_NONRES, Y - 1)) : null,
-    };
+    const dv = y => dodgeRel ? dodgeVal(dodgeRel, DODGE_NONRES, y) : null;
+    const out = {};
+    // ’Y growth and the CAGR ’Y-’Y+4 (the releases reach 2030); kept under the ":5y" ids
+    const put = (id, f) => { out[id] = growth(f(Y), f(Y - 1)); out[id + ":5y"] = cagr(f(Y + 4), f(Y), 4); };
+    put("eu_tot", y => sum([[R, ""], [N, ""]], y));
+    put("eu_new", y => sum([[R, "New"], [N, "New"]], y));
+    put("eu_reno", y => sum([[R, "Renovation"], [N, "Renovation"]], y));
+    put("eu_res", y => sum([[R, ""]], y));
+    put("eu_non", y => sum([[N, ""]], y));
+    put("us_oe", y => usg(N, y));
+    put("us_val", dv);
+    return out;
   }
   const numOf = t => { const m = String(t ?? "").replace(/−/g, "-").replace(",", ".").match(/[-+]?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : null; };
   const monYY = iso => iso ? `${MONTH_NAMES[Number(iso.slice(5, 7)) - 1].slice(0, 3)}-’${iso.slice(2, 4)}` : "…";
   // fills V, chips and T.macro; M = computed figures of this report, prevM = the previous report's (or null)
   function macroFill(q, Y, V, chips, T, M, prevM, prevQ, oeIso, dodgeIso) {
     const chipType = d => d >= 0.5 ? "sp" : d >= 0.1 ? "p" : d <= -0.5 ? "sn" : d <= -0.1 ? "ng" : "n";
-    MACRO_CALC.forEach(id => { const v = M ? M[id] : null; V["mi:" + id] = v === null || v === undefined || !Number.isFinite(v) ? { text: "x%", kind: "missing" } : { text: fmtEm(v), kind: "plain" }; });
-    MACRO_MAN.forEach(id => { V["mi:" + id] = { text: manVal(q, "mi:" + id, "x%"), kind: "man", id: "mi:" + id }; });
+    const CALC = MACRO_CALC.flatMap(id => [id, id + ":5y"]), MAN = MACRO_MAN.flatMap(id => [id, id + ":5y"]);
+    CALC.forEach(id => { const v = M ? M[id] : null; V["mi:" + id] = v === null || v === undefined || !Number.isFinite(v)
+      ? (id.endsWith(":5y") ? { text: "n/a", kind: "neu" } : { text: "x%", kind: "missing" }) : { text: fmtEm(v), kind: "plain" }; });
+    MAN.forEach(id => { V["mi:" + id] = { text: manVal(q, "mi:" + id, "x%"), kind: "man", id: "mi:" + id }; });
     MACRO_AAL.forEach(id => { V[`mi:${id}:aal`] = { text: manVal(q, `mi:${id}:aal`, "x%"), kind: "man", id: `mi:${id}:aal` }; });
     V["mi:hp:period"] = { text: manVal(q, "mi:hp:period", "9M-’25"), kind: "man", id: "mi:hp:period" };
     [1, 2, 3, 4].forEach(i => { const t = manVal(q, "mi:cm:" + i, i === 1 ? "xxx" : ""); V["mi:cm:" + i] = { text: t, kind: t === "xxx" ? "comment" : "text", id: "mi:cm:" + i }; });
@@ -1538,13 +1545,13 @@ sup { font-size: .7em; line-height: 0; }
       `EC: Euroconstruct (Nov-’25), OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}, Europe = EC-19), EHI: European Heating Institute ’25 vs. LY (Dec-’25), DODGE area (Sept-’25), DODGE value (${dodgeIso ? monYY(dodgeIso) : "as published"})`;
     V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
     // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries
-    MACRO_CALC.concat(MACRO_MAN).forEach(id => {
+    CALC.concat(MAN).forEach(id => {
       if (!prevQ) return;
-      const cur = MACRO_CALC.includes(id) ? (M ? M[id] : null) : numOf(V["mi:" + id].text);
-      const pre = MACRO_CALC.includes(id) ? (prevM ? prevM[id] : null) : numOf(manVal(prevQ.q, "mi:" + id, null));
+      const cur = CALC.includes(id) ? (M ? M[id] : null) : numOf(V["mi:" + id].text);
+      const pre = CALC.includes(id) ? (prevM ? prevM[id] : null) : numOf(manVal(prevQ.q, "mi:" + id, null));
       if (cur !== null && cur !== undefined && Number.isFinite(cur) && pre !== null && pre !== undefined && Number.isFinite(pre)) chips["mi:" + id] = chipType(cur - pre);
     });
-    T.macro = { y: String(Y), titleTail: " | building", blank: "\u00a0" };
+    T.macro = { y: String(Y), y5: "’" + String(Y).slice(2) + "-’" + String(Y + 4).slice(2), titleTail: " | building", blank: "\u00a0", ehi: "EHI " };
   }
 
   // a published report (qbr_published.js): every figure as on the presented slides

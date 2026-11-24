@@ -567,85 +567,101 @@ def build_macro_slide():
             f'<a:solidFill><a:srgbClr val="{RED}"/></a:solidFill><a:ln><a:noFill/></a:ln></p:spPr>'
             f'<p:txBody><a:bodyPr lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/><a:r>{rpr(1600, False, "FFFFFF")}<a:t>building</a:t></a:r></a:p></p:txBody></p:sp>')
 
-    # table: label, source, period, market view, vs. last SBR (chips), Aalberts organic growth forecast
-    COLS = [2150000, 740000, 720000, 950000, 640000, 960000]
-    X0, Y0, HH, RH = 650000, 880000, 800000, 250000
+    # table: label, source, market view ’Y | vs. last SBR | ’Y-’Y+4 | vs. last SBR, Aalberts organic growth forecast ’Y
+    COLS = [2150000, 900000, 860000, 620000, 860000, 620000, 1100000]
+    X0, Y0, HH1, HH2, RH = 650000, 880000, 720000, 420000, 215000
     GREY = '<a:solidFill><a:srgbClr val="F2F2F2"/></a:solidFill>'
-    WHITE = '<a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill>'
     NONE = "<a:noFill/>"
     LINE_W = '<a:lnB w="38100"><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill></a:lnB>'
+    LINE_D = '<a:lnB w="9525"><a:solidFill><a:srgbClr val="191919"/></a:solidFill></a:lnB>'
     NOLN = lambda side: f'<a:ln{side} w="12700"><a:noFill/></a:ln{side}>'
-    # rows: (label, style, indent, source, period, market-view id, chip?, aalberts id, group-end?)
+    # rows: (label, style, indent, source runs, market-view id, aalberts id, group-end?)
     R = [
-        ("building overall", "b", 0, "", "{{t:y}}", None, False, "mi:overall:aal", True),
+        ("building overall", "b", 0, [], None, "mi:overall:aal", True),
         None,
-        ("Europe", "red", 0, "", "", None, False, None, False),
-        ("construction total", "b", 0, "OE", "{{t:y}}", "mi:eu_tot", True, "mi:eu_tot:aal", False),
-        ("new build", "", 1, "OE", "{{t:y}}", "mi:eu_new", True, "mi:eu_new:aal", False),
-        ("renovation", "", 1, "OE", "{{t:y}}", "mi:eu_reno", True, "mi:eu_reno:aal", False),
-        ("residential", "", 1, "OE", "{{t:y}}", "mi:eu_res", True, "mi:eu_res:aal", False),
-        ("non-residential", "", 1, "OE", "{{t:y}}", "mi:eu_non", True, "mi:eu_non:aal", True),
-        ("construction total", "", 0, "EC", "{{t:y}}", "mi:ec_tot", True, None, False),
-        ("residential", "", 1, "EC", "{{t:y}}", "mi:ec_res", True, None, False),
-        ("non-residential", "", 1, "EC", "{{t:y}}", "mi:ec_non", True, None, True),
-        ("heat pumps", "b", 0, "EHI", "{{v:mi:hp:period}}", "mi:hp", True, None, True),
+        ("Europe", "red", 0, [], None, None, False),
+        ("construction total", "b", 0, ["OE"], "mi:eu_tot", "mi:eu_tot:aal", False),
+        ("new build", "", 1, ["OE"], "mi:eu_new", "mi:eu_new:aal", False),
+        ("renovation", "", 1, ["OE"], "mi:eu_reno", "mi:eu_reno:aal", False),
+        ("residential", "", 1, ["OE"], "mi:eu_res", "mi:eu_res:aal", False),
+        ("non-residential", "", 1, ["OE"], "mi:eu_non", "mi:eu_non:aal", True),
+        ("construction total", "", 0, ["EC"], "mi:ec_tot", None, False),
+        ("residential", "", 1, ["EC"], "mi:ec_res", None, False),
+        ("non-residential", "", 1, ["EC"], "mi:ec_non", None, True),
+        ("heat pumps", "b", 0, ["{{t:ehi}}", "{{v:mi:hp:period}}"], "mi:hp", None, True),
         None,
-        ("USA", "red", 0, "", "", None, False, None, False),
-        ("new build non-residential", "b", 0, "", "", "mi:us_nb", True, "mi:us_nb:aal", True),
-        ("non-residential - area", "", 0, "DODGE", "{{t:y}}", "mi:us_area", True, None, False),
-        ("non-residential - value", "", 0, "DODGE", "{{t:y}}", "mi:us_val", True, None, True),
-        ("non-residential", "", 0, "OE", "{{t:y}}", "mi:us_oe", True, None, True),
+        ("USA", "red", 0, [], None, None, False),
+        ("new build non-residential", "b", 0, [], "mi:us_nb", "mi:us_nb:aal", True),
+        ("non-residential - area", "", 0, ["DODGE"], "mi:us_area", None, False),
+        ("non-residential - value", "", 0, ["DODGE"], "mi:us_val", None, True),
+        ("non-residential", "", 0, ["OE"], "mi:us_oe", None, True),
     ]
     xs = [X0 + sum(COLS[:i]) for i in range(len(COLS))]
 
-    def cell(text_runs, fill, algn="l", indent=0, line=False, anchor="ctr"):
+    def cell(text_runs, fill, algn="l", indent=0, line=None, anchor="ctr", span=1):
         ppr = (f'<a:pPr algn="{algn}"{f" marL=\"{indent}\"" if indent else ""}><a:lnSpc><a:spcPct val="100000"/></a:lnSpc>'
                '<a:spcBef><a:spcPts val="0"/></a:spcBef><a:spcAft><a:spcPts val="0"/></a:spcAft><a:buNone/></a:pPr>')
         body = "".join(f"<a:r>{r}<a:t>{t}</a:t></a:r>" for t, r in text_runs) or '<a:endParaRPr lang="en-GB" sz="1100" dirty="0"/>'
-        return (f'<a:tc><a:txBody><a:bodyPr/><a:lstStyle/><a:p>{ppr}{body}</a:p></a:txBody>'
-                f'<a:tcPr marL="91440" marR="45720" marT="0" marB="0" anchor="{anchor}">{NOLN("L")}{NOLN("R")}{NOLN("T")}{LINE_W if line else NOLN("B")}{fill}</a:tcPr></a:tc>')
-
+        lb = LINE_W if line == "w" else LINE_D if line == "d" else NOLN("B")
+        return (f'<a:tc{f" gridSpan=\"{span}\"" if span > 1 else ""}><a:txBody><a:bodyPr/><a:lstStyle/><a:p>{ppr}{body}</a:p></a:txBody>'
+                f'<a:tcPr marL="91440" marR="45720" marT="0" marB="0" anchor="{anchor}">{NOLN("L")}{NOLN("R")}{NOLN("T")}{lb}{fill}</a:tcPr></a:tc>')
+    merged = '<a:tc hMerge="1"><a:txBody><a:bodyPr/><a:lstStyle/><a:p><a:endParaRPr lang="en-GB" sz="1100" dirty="0"/></a:p></a:txBody><a:tcPr/></a:tc>'
+    hb = lambda t: [(t, rpr(1100, True, DARK))]
     rows_xml, y = [], Y0
     ypv = 0      # the background renderer draws each white group line a little taller: preview boxes follow it
-    hdr_runs = lambda t: [(t, rpr(1100, True, DARK))]
-    rows_xml.append(f'<a:tr h="{HH}">' + cell([], NONE) + cell(hdr_runs("source"), NONE, anchor="t") + cell(hdr_runs("period"), NONE, anchor="t")
-                    + cell(hdr_runs("market view"), NONE, "ctr", anchor="t") + cell(hdr_runs("vs. last SBR"), NONE, "ctr", anchor="t")
-                    + cell(hdr_runs("Aalberts organic growth forecast"), NONE, "ctr", anchor="t") + "</a:tr>")
-    y += HH
+    # header: "market view" across its four columns, then the years; Aalberts column titled with the year
+    rows_xml.append(f'<a:tr h="{HH1}">' + cell([], NONE) + cell(hb("source"), NONE, anchor="b")
+                    + cell(hb("market view"), NONE, "ctr", line="d", anchor="b", span=4) + merged * 3
+                    + cell(hb("Aalberts organic growth forecast"), NONE, "ctr", anchor="b") + "</a:tr>")
+    y += HH1
+    sub = lambda t: [(t, rpr(1000, True, DARK))]
+    # "vs. last SBR" on two lines, the years on one: row 2 is sized for two lines
+    rows_xml.append(f'<a:tr h="{HH2}">' + cell([], NONE) + cell([], NONE)
+                    + cell(sub("{{t:y}}"), NONE, "ctr") + cell(sub("vs. last SBR"), NONE, "ctr")
+                    + cell(sub("{{t:y5}}"), NONE, "ctr") + cell(sub("vs. last SBR"), NONE, "ctr")
+                    + cell(sub("{{t:y}}"), NONE, "ctr") + "</a:tr>")
+    for ci, tid in ((2, "y"), (4, "y5"), (6, "y")):
+        boxes.append({"id": f"hdr:{tid}:{ci}", **box((xs[ci], y, COLS[ci], HH2), [{"algn": "ctr", "runs": [{"t": "{{t:%s}}" % tid, "sz": 10, "b": True, "c": None, "base": False}]}], "ctr", (91440, 0, 45720, 0))})
+    y += HH2
+    cw = 203760
+    vbox = lambda ci, vid, yy: {"id": vid, **box((xs[ci], yy, COLS[ci], RH), [{"algn": "ctr", "runs": [{"t": "{{v:" + vid + "}}", "sz": 11, "b": False, "c": None, "base": False}]}], "ctr", (91440, 0, 45720, 0))}
     for row in R:
         if row is None:
             rows_xml.append(f'<a:tr h="{RH}">' + "".join(cell([], NONE) for _ in COLS) + "</a:tr>")
             y += RH
             continue
-        label, style, ind, srcl, period, mv, chip, aal, end = row
+        label, style, ind, srcl, mv, aal, end = row
         fill = NONE if style == "red" else GREY
+        ln = "w" if end else None
         lab = [(label, rpr(1100, style == "b", RED if style == "red" else DARK))]
         tok = lambda vid: [("{{v:" + vid + "}}", rpr(1100, False, DARK))]
-        per_runs = [(period, rpr(1100, False, DARK))] if period else []
-        cells = [cell(lab, fill, indent=457200 if ind else 0, line=end),
-                 cell([(srcl, rpr(1100, True, DARK))] if srcl else [], fill, line=end),
-                 cell(per_runs, fill, line=end),
-                 cell(tok(mv) if mv else [], fill, "ctr", line=end),
-                 cell([], fill, line=end),
-                 cell(tok(aal) if aal else [], fill if aal else NONE, "ctr", line=end and bool(aal))]
+        src_runs = [(t, rpr(1100, i == 0, DARK)) for i, t in enumerate(srcl)]
+        cells = [cell(lab, fill, indent=457200 if ind else 0, line=ln),
+                 cell(src_runs, fill, line=ln),
+                 cell(tok(mv) if mv else [], fill, "ctr", line=ln), cell([], fill, line=ln),
+                 cell(tok(mv + ":5y") if mv else [], fill, "ctr", line=ln), cell([], fill, line=ln),
+                 cell(tok(aal) if aal else [], fill if aal else NONE, "ctr", line=ln if aal else None)]
         rows_xml.append(f'<a:tr h="{RH}">' + "".join(cells) + "</a:tr>")
-        # preview boxes for the cells holding figures / tokens
-        for ci, vid in ((3, mv), (5, aal)):
-            if vid:
-                boxes.append({"id": vid, **box((xs[ci], y + ypv, COLS[ci], RH), [{"algn": "ctr", "runs": [{"t": "{{v:" + vid + "}}", "sz": 11, "b": False, "c": None, "base": False}]}], "ctr", (91440, 0, 45720, 0))})
-        if "{{" in period:
-            boxes.append({"id": "per:" + label + str(y), **box((xs[2], y + ypv, COLS[2], RH), [{"algn": "l", "runs": [{"t": period, "sz": 11, "b": False, "c": None, "base": False}]}], "ctr", (91440, 0, 45720, 0))})
-        if chip and mv:
-            cw = 203760
-            chips.append({"i": len(chips), "key": mv, "x": xs[4] + (COLS[4] - cw) // 2, "y": y + (RH - cw) // 2, "w": cw, "h": cw, "py": y + ypv + (RH - cw) // 2})
+        yy = y + ypv
+        if mv:
+            boxes.append(vbox(2, mv, yy))
+            boxes.append(vbox(4, mv + ":5y", yy))
+            for ci, key in ((3, mv), (5, mv + ":5y")):
+                chips.append({"i": len(chips), "key": key, "x": xs[ci] + (COLS[ci] - cw) // 2, "y": y + (RH - cw) // 2, "w": cw, "h": cw, "py": yy + (RH - cw) // 2})
+        if aal:
+            boxes.append(vbox(6, aal, yy))
+        if len(srcl) > 1:     # source with an editable period (heat pumps: "EHI 9M-’25")
+            boxes.append({"id": "src:" + label, **box((xs[1], yy, COLS[1], RH), [{"algn": "l", "runs": [
+                {"t": srcl[0], "sz": 11, "b": True, "c": None, "base": False}, {"t": srcl[1], "sz": 11, "b": False, "c": None, "base": False}]}], "ctr", (91440, 0, 45720, 0))})
         y += RH
-        if end:
-            ypv += 16000
+
     tbl = (f'<p:graphicFrame><p:nvGraphicFramePr><p:cNvPr id="{next_id()}" name="Indicators table"/><p:cNvGraphicFramePr><a:graphicFrameLocks noGrp="1"/></p:cNvGraphicFramePr><p:nvPr/></p:nvGraphicFramePr>'
            f'<p:xfrm><a:off x="{X0}" y="{Y0}"/><a:ext cx="{sum(COLS)}" cy="{y - Y0}"/></p:xfrm><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/table">'
            f'<a:tbl><a:tblPr/><a:tblGrid>{"".join(f"<a:gridCol w=\"{w}\"/>" for w in COLS)}</a:tblGrid>{"".join(rows_xml)}</a:tbl></a:graphicData></a:graphic></p:graphicFrame>')
-    # comments box
-    CX, CY, CW, CH = 7950000, 1250000, 2780000, 3450000
+    table_bottom = y + ypv
+    # comments box, beside the table down to its bottom
+    CX, CY = 8100000, 1250000
+    CW, CH = 3800000, table_bottom - CY
     bullet = f'<a:pPr marL="342900" indent="-342900"><a:spcBef><a:spcPts val="600"/></a:spcBef><a:buClr><a:srgbClr val="{RED}"/></a:buClr><a:buFont typeface="Arial"/><a:buChar char="»"/></a:pPr>'
     cpar = [f'<a:p><a:r>{rpr(1400, True, "505050")}<a:t>Comments</a:t></a:r></a:p>'] + \
            [f'<a:p>{bullet}<a:r>{rpr(1100, False, DARK)}<a:t>{{{{v:mi:cm:{i}}}}}</a:t></a:r></a:p>' for i in (1, 2, 3, 4)]
@@ -656,18 +672,20 @@ def build_macro_slide():
         [{"algn": "l", "runs": [{"t": "{{t:blank}}", "sz": 14, "b": True, "c": None, "base": False}]}] +
         [{"algn": "l", "runs": [{"t": "» ", "sz": 11, "b": False, "c": RED, "base": False}, {"t": "{{v:mi:cm:%d}}" % i, "sz": 11, "b": False, "c": None, "base": False}]} for i in (1, 2, 3, 4)],
         "t", (108000, 108000, 108000, 108000))})
-    # legend of the "vs. last SBR" chips (same chips and wording as the growth outlook slide), under the comments
-    LX, LY, STEP, CW_ = CX + 108000, CY + CH + 170000, 230000, 203760
-    legend = (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Legend title"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>'
-              f'<a:xfrm><a:off x="{LX - 91440}" y="{LY}"/><a:ext cx="1500000" cy="230000"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
-              f'<p:txBody><a:bodyPr wrap="none" lIns="91440" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:r>{rpr(1100, True, "747474")}<a:t>legend</a:t></a:r></a:p></p:txBody></p:sp>')
-    for i, (k, label) in enumerate((("sp", "strongly positive"), ("p", "positive"), ("n", "neutral"), ("ng", "negative"), ("sn", "strongly negative"))):
-        yy = LY + 250000 + i * STEP
-        g = chip_xml[k].replace("{{X}}", str(LX)).replace("{{Y}}", str(yy))
+    # legend of the "vs. last SBR" chips, in one line under the table (same chips and wording as the growth outlook slide)
+    LY = table_bottom + 90000
+    def tbox(x, w, text, r):
+        return (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Legend {text}"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>'
+                f'<a:xfrm><a:off x="{x}" y="{LY}"/><a:ext cx="{w}" cy="{cw}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
+                f'<p:txBody><a:bodyPr wrap="none" lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:r>{r}<a:t>{text}</a:t></a:r></a:p></p:txBody></p:sp>')
+    x = X0 + 91440
+    legend = tbox(x, 520000, "legend", rpr(1100, True, "747474"))
+    x += 640000
+    for k, label, w in (("sp", "strongly positive", 1250000), ("p", "positive", 700000), ("n", "neutral", 650000), ("ng", "negative", 760000), ("sn", "strongly negative", 1300000)):
+        g = chip_xml[k].replace("{{X}}", str(x)).replace("{{Y}}", str(LY))
         g = re.sub(r"\{\{ID(\d+)\}\}", lambda m: str(next_id()), g)
-        legend += g + (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Legend {label}"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>'
-                       f'<a:xfrm><a:off x="{LX + CW_ + 60000}" y="{yy}"/><a:ext cx="1800000" cy="{CW_}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
-                       f'<p:txBody><a:bodyPr wrap="none" lIns="45720" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:r>{rpr(1100, False, "505050")}<a:t>{label}</a:t></a:r></a:p></p:txBody></p:sp>')
+        legend += g + tbox(x + cw + 70000, w, label, rpr(1100, False, "505050"))
+        x += cw + 70000 + w + 150000
     chip_marks = legend + "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
     body = title + keep["Text Placeholder 5"] + right + srcph + keep["Slide Number Placeholder 1"] + pill + tbl + comments + chip_marks
     xml = src[:tree_a] + body + src[tree_b:]
@@ -713,6 +731,10 @@ for f, key in ((f_growth, "growth"), (f_emea, "emea"), (f_macro, "macro")):
     x = (blank / "ppt/slides" / f.name).read_text()
     # empty every text box the preview draws itself, and drop inserted shapes
     x = re.sub(r"\{\{x:[^}]+\}\}", "", x)
+    # in the macro table, emptied figures keep a no-break space so the rows keep their 11 pt height
+    if key == "macro":
+        a = x.index('name="Indicators table"'); b = x.index("</p:graphicFrame>", a)
+        x = x[:a] + re.sub(r"<a:t>[^<]*\{\{[vt]:[^}]+\}\}[^<]*</a:t>", "<a:t>\u00a0</a:t>", x[a:b]) + x[b:]
     x = re.sub(r"<a:t>[^<]*\{\{[vt]:[^}]+\}\}[^<]*</a:t>", "<a:t></a:t>", x)
     (blank / "ppt/slides" / f.name).write_text(x)
 # static text inside boxes the preview redraws (country names, "Priority:", " of ... revenue") also goes
