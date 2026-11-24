@@ -1513,9 +1513,9 @@ sup { font-size: .7em; line-height: 0; }
   const MACRO_EU = ["Austria", "Belgium", "Czech Republic", "Denmark", "Finland", "France", "Germany", "Hungary", "Ireland", "Italy", "Netherlands",
     "Norway", "Poland", "Portugal", "Slovak Republic", "Spain", "Sweden", "Switzerland", "United Kingdom"];
   // same segments as the growth outlook slide: residential¹ = single family, commercial² = commercial buildings + multifamily
-  const MACRO_CALC = ["eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_tot", "us_val", "us_area", "us_oe"];
+  const MACRO_CALC = ["eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_tot", "us_dtot", "us_val", "us_area", "us_oe"];
   const MACRO_MAN = ["ec_tot", "ec_res", "ec_non", "hp"];
-  const MACRO_AAL = ["overall", "eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_tot"];
+  const MACRO_AAL = ["overall", "eu_tot", "us_tot"];      // Aalberts organic growth forecast: one oval each
   // 2026-on-2025 growth (%) of the computed rows; get(locs, base, kind, year) reads Oxford Economics levels
   function macroCompute(get, dodgeRel, Y) {
     const eu = (b, k, y) => get(MACRO_EU, b, k, y), us = (b, k, y) => get(GO_COLS.us, b, k, y);
@@ -1535,6 +1535,8 @@ sup { font-size: .7em; line-height: 0; }
     put("us_oe", y => OE_SERIES.com(us, "", y));
     put("us_tot", y => { const a = OE_SERIES.res(us, "", y), b = OE_SERIES.com(us, "", y); return a !== null && b !== null ? a + b : null; });
     put("us_val", dv);
+    // Dodge construction total: all verticals, as "DODGE | total const." on the growth outlook slide
+    put("us_dtot", y => dodgeRel ? dodgeVal(dodgeRel, DODGE_SEG.total, y) : null);
     put("us_area", da);
     return out;
   }
@@ -1562,7 +1564,7 @@ sup { font-size: .7em; line-height: 0; }
     V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
     // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries
     // Euroconstruct and EHI: no comparison with the last SBR (n/a)
-    ["ec_tot", "ec_res", "ec_non", "hp", "us_val", "us_area"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
+    ["ec_tot", "ec_res", "ec_non", "hp", "us_dtot", "us_val", "us_area"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
     // a previous report built on other definitions (published Q3 2026: residential / non-residential totals) is not compared
     if (prevM && prevM.defs === "totals") MACRO_CALC.forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
     CALC.concat(MAN).forEach(id => {

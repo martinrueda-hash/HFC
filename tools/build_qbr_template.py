@@ -569,7 +569,7 @@ def build_macro_slide():
 
     # table: label, source, market view ’Y | vs. last SBR | ’Y-’Y+4 | vs. last SBR, Aalberts organic growth forecast ’Y
     COLS = [2150000, 900000, 860000, 620000, 860000, 620000, 1100000]
-    X0, Y0, HH1, HH2, RH = 650000, 880000, 720000, 420000, 215000
+    X0, Y0, HH1, HH2, RH = 650000, 880000, 720000, 420000, 205000
     GREY = '<a:solidFill><a:srgbClr val="F2F2F2"/></a:solidFill>'
     NONE = "<a:noFill/>"
     LINE_W = '<a:lnB w="38100"><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill></a:lnB>'
@@ -581,17 +581,18 @@ def build_macro_slide():
         None,
         ("Europe", "red", 0, [], None, None, False),
         ("construction total", "b", 0, ["OE"], "mi:eu_tot", "mi:eu_tot:aal", False),
-        ("new build", "", 1, ["OE"], "mi:eu_new", "mi:eu_new:aal", False),
-        ("renovation", "", 1, ["OE"], "mi:eu_reno", "mi:eu_reno:aal", False),
-        ("residential¹", "", 1, ["OE"], "mi:eu_res", "mi:eu_res:aal", False),
-        ("commercial²", "", 1, ["OE"], "mi:eu_non", "mi:eu_non:aal", True),
+        ("new build", "", 1, ["OE"], "mi:eu_new", None, False),
+        ("renovation", "", 1, ["OE"], "mi:eu_reno", None, False),
+        ("residential¹", "", 1, ["OE"], "mi:eu_res", None, False),
+        ("commercial²", "", 1, ["OE"], "mi:eu_non", None, True),
         ("construction total", "", 0, ["EC"], "mi:ec_tot", None, False),
         ("residential", "", 1, ["EC"], "mi:ec_res", None, False),
         ("non-residential", "", 1, ["EC"], "mi:ec_non", None, True),
         ("heat pumps", "b", 0, ["{{t:ehi}}", "{{v:mi:hp:period}}"], "mi:hp", None, True),
         None,
         ("USA", "red", 0, [], None, None, False),
-        ("construction total", "b", 0, ["OE"], "mi:us_tot", "mi:us_tot:aal", True),
+        ("construction total", "b", 0, ["OE"], "mi:us_tot", "mi:us_tot:aal", False),
+        ("construction total", "", 0, ["DODGE"], "mi:us_dtot", None, True),
         ("commercial² - area", "", 0, ["DODGE"], "mi:us_area", None, False),
         ("commercial² - value", "", 0, ["DODGE"], "mi:us_val", None, True),
         ("commercial²", "", 0, ["OE"], "mi:us_oe", None, True),
@@ -607,7 +608,7 @@ def build_macro_slide():
                 f'<a:tcPr marL="91440" marR="45720" marT="0" marB="0" anchor="{anchor}">{NOLN("L")}{NOLN("R")}{NOLN("T")}{lb}{fill}</a:tcPr></a:tc>')
     merged = '<a:tc hMerge="1"><a:txBody><a:bodyPr/><a:lstStyle/><a:p><a:endParaRPr lang="en-GB" sz="1100" dirty="0"/></a:p></a:txBody><a:tcPr/></a:tc>'
     hb = lambda t: [(t, rpr(1100, True, DARK))]
-    rows_xml, y = [], Y0
+    rows_xml, y, ovals = [], Y0, []
     ypv = 0      # the background renderer draws each white group line a little taller: preview boxes follow it
     # header: "market view" across its four columns, then the years; Aalberts column titled with the year
     rows_xml.append(f'<a:tr h="{HH1}">' + cell([], NONE) + cell(hb("source"), NONE, anchor="b")
@@ -640,7 +641,7 @@ def build_macro_slide():
                  cell(src_runs, fill, line=ln),
                  cell(tok(mv) if mv else [], fill, "ctr", line=ln), cell([], fill, line=ln),
                  cell(tok(mv + ":5y") if mv else [], fill, "ctr", line=ln), cell([], fill, line=ln),
-                 cell(tok(aal) if aal else [], fill if aal else NONE, "ctr", line=ln if aal else None)]
+                 cell([], NONE, "ctr")]
         rows_xml.append(f'<a:tr h="{RH}">' + "".join(cells) + "</a:tr>")
         yy = y + ypv
         if mv:
@@ -649,6 +650,7 @@ def build_macro_slide():
             for ci, key in ((3, mv), (5, mv + ":5y")):
                 chips.append({"i": len(chips), "key": key, "x": xs[ci] + (COLS[ci] - cw) // 2, "y": y + (RH - cw) // 2, "w": cw, "h": cw, "py": yy + (RH - cw) // 2})
         if aal:
+            ovals.append((aal, y))
             boxes.append(vbox(6, aal, yy))
         if len(srcl) > 1:     # source with an editable period (heat pumps: "EHI 9M-’25")
             boxes.append({"id": "src:" + label, **box((xs[1], yy, COLS[1], RH), [{"algn": "l", "runs": [
@@ -691,7 +693,17 @@ def build_macro_slide():
             f'<a:xfrm><a:off x="{CX}" y="{LY - 20000}"/><a:ext cx="{CW}" cy="{cw + 40000}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
             f'<p:txBody><a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:r>{rpr(900, False, "505050")}<a:t>{{{{t:defs}}}}</a:t></a:r></a:p></p:txBody></p:sp>')
     boxes.append({"id": "mi:defs", **box((CX, LY - 20000, CW, cw + 40000), [{"algn": "l", "runs": [{"t": "{{t:defs}}", "sz": 9, "b": False, "c": "505050", "base": False}]}], "ctr", (0, 0, 0, 0))})
-    chip_marks = legend + defs + "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
+    # Aalberts organic growth forecast: horizontal ovals (building overall, construction total Europe and USA)
+    OW, OH = COLS[6] - 160000, RH + 50000
+    oval_xml = ""
+    for vid, oy in ovals:
+        ox = xs[6] + (COLS[6] - OW) // 2
+        oval_xml += (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Aalberts forecast {vid}"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr><p:spPr>'
+                     f'<a:xfrm><a:off x="{ox}" y="{oy + (RH - OH) // 2}"/><a:ext cx="{OW}" cy="{OH}"/></a:xfrm><a:prstGeom prst="ellipse"><a:avLst/></a:prstGeom>'
+                     f'<a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:ln w="12700"><a:solidFill><a:srgbClr val="{RED}"/></a:solidFill></a:ln></p:spPr>'
+                     f'<p:txBody><a:bodyPr wrap="none" lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/>'
+                     f'<a:r>{rpr(1100, False, DARK)}<a:t>{{{{v:{vid}}}}}</a:t></a:r></a:p></p:txBody></p:sp>')
+    chip_marks = oval_xml + legend + defs + "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
     body = title + keep["Text Placeholder 5"] + right + srcph + keep["Slide Number Placeholder 1"] + pill + tbl + comments + chip_marks
     xml = src[:tree_a] + body + src[tree_b:]
     xml = re.sub(r"<p:custDataLst>.*?</p:custDataLst>", "", xml, flags=re.S)
