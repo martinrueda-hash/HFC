@@ -756,6 +756,24 @@ spec["slides"]["emea"]["boxes"].append({"id": "title", **box(xfrm(tsp), [{"algn"
     {"t": "macroeconomic indicators {{t:y}}", "sz": 20, "b": True, "c": RED_, "base": False},
     {"t": "{{t:titleTail}}", "sz": 20, "b": False, "c": RED_, "base": False}]}], "t", (91440, 45720, 0, 45720))})
 
+# ---------------------------------------------------------------- EMEA legend under the table: what the bracketed figures are
+eb = {bx["id"]: bx for bx in spec["slides"]["emea"]["boxes"]}
+SW_, SH_ = 12192000, 6858000
+lx = int(eb["em:Nordics:m1"]["x"] * SW_)
+ly = int((eb["em:Nordics:cm"]["y"] + eb["em:Nordics:cm"]["h"]) * SH_) + 60000
+lw, lh = int((eb["em:Nordics:cm"]["x"] + eb["em:Nordics:cm"]["w"]) * SW_) - lx, 220000
+x = f_emea.read_text()
+leg = (f'<p:sp><p:nvSpPr><p:cNvPr id="6901" name="Legend previous estimate"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>'
+       f'<a:xfrm><a:off x="{lx}" y="{ly}"/><a:ext cx="{lw}" cy="{lh}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
+       f'<p:txBody><a:bodyPr wrap="square" lIns="91440" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p>'
+       f'<a:r><a:rPr lang="en-GB" sz="1000" b="1" dirty="0"><a:solidFill><a:srgbClr val="747474"/></a:solidFill></a:rPr><a:t>{{{{t:legHead}}}}</a:t></a:r>'
+       f'<a:r><a:rPr lang="en-GB" sz="1000" b="0" dirty="0"><a:solidFill><a:srgbClr val="505050"/></a:solidFill></a:rPr><a:t>{{{{t:legText}}}}</a:t></a:r></a:p></p:txBody></p:sp>')
+x = x.replace("</p:spTree>", leg + "</p:spTree>", 1)
+f_emea.write_text(x)
+spec["slides"]["emea"]["boxes"].append({"id": "legend", **box((lx, ly, lw, lh), [{"algn": "l", "runs": [
+    {"t": "{{t:legHead}}", "sz": 10, "b": True, "c": "747474", "base": False},
+    {"t": "{{t:legText}}", "sz": 10, "b": False, "c": "505050", "base": False}]}], "ctr", (91440, 0, 0, 0))})
+
 # ---------------------------------------------------------------- the report: macroeconomic indicators, then EMEA (growth outlook dropped)
 pres = (un / "ppt/presentation.xml").read_text()
 prels = (un / "ppt/_rels/presentation.xml.rels").read_text()
