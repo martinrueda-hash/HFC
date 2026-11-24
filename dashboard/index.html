@@ -1759,7 +1759,8 @@ sup { font-size: .7em; line-height: 0; }
     macroFill(q, Y, V, chips, T, M, prevM, prevQ, oe ? oe.date : null, dodge ? dodge.exported : null);
     Object.assign(T.emea, { y: String(Y), titleTail: " | market environment EMEA", y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2),
       src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + commercial incl. multifamily).`,
-      notes: "Note: Nordics = Sweden, Norway, Denmark, Finland." });
+      notes: "Note: Nordics = Sweden, Norway, Denmark, Finland." +
+        (EMEA_ROWS.some(([n]) => (V[`em:${n}:m1p`] || {}).text || (V[`em:${n}:m2p`] || {}).text) ? ` (x.x%) = previous estimate from last SBR/QBR${prevQ ? " (" + qLabel(prevQ.q) + ")" : ""}.` : "") });
     return { q, oe, dodge, pub: null, prevPub, prevQ, prevOe, V, T, chips, arrows, bridge: { oeSrc, cols, Y }, fallback: [...fallbackUsed].map(id => r.oe.find(x => x.id === id)) };
   }
 
