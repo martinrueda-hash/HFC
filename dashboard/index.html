@@ -1348,7 +1348,7 @@ sup { font-size: .7em; line-height: 0; }
   }
   async function parseDodgeFile(file) {
     const sheet = await readXlsx(new Uint8Array(await file.arrayBuffer()));
-    let best = null;
+    let best = null, area = null;
     for (const n of sheet.names) {
       const g = (await sheet(n)).grid;
       if (!g[0]) continue;
@@ -1362,14 +1362,17 @@ sup { font-size: .7em; line-height: 0; }
         const k = Number(key);
         rows.push([k, String(r[1]).trim(), k === 18 || k === 19 ? "res" : k >= 24 ? "nonbuilding" : "nonres", yearCols.map(i => toNum(r[i]))]);
       });
+      if (/area/i.test(n)) { if (rows.length && (!area || rows.length > area.rows.length)) area = { years: yearCols.map(i => Number(head[i])), rows }; continue; }
       if (!best || rows.length > best.rows.length) best = { years: yearCols.map(i => Number(head[i])), rows };
     }
     if (!best || !best.rows.length) throw new Error("No Dodge verticals found (rows with a numeric key and one column per year).");
-    const mq = file.name.match(/actuals[ _-]+to[ _-]+([1-4])Q(\d{4})/i);
-    const me = file.name.match(/exported[ _-]+(\d{2})(\d{2})(\d{2})/i);
+    const mq = file.name.match(/actuals[ _-]+to[ _-]+([1-4])Q(\d{4})/i) || file.name.match(/Dodge[ _-]+([1-4])Q(\d{4})/i);
+    const me = file.name.match(/exported[ _-]+(\d{2})(\d{2})(\d{2})/i) || file.name.match(/[ _-](\d{2})(\d{2})(\d{2})\.xlsx$/i);
     const exported = me ? `20${me[1]}-${me[2]}-${me[3]}` : null;
     const quarter = mq ? mq[2] + "Q" + mq[1] : qOfDate(exported || new Date(file.lastModified || Date.now()).toISOString().slice(0, 10));
-    return { id: "dodge-" + quarter, quarter, exported, file: file.name, units: "US$ thousands", years: best.years, rows: best.rows };
+    const out = { id: "dodge-" + quarter, quarter, exported, file: file.name, units: "US$ thousands", years: best.years, rows: best.rows };
+    if (area) { out.areaYears = area.years; out.area = area.rows; }
+    return out;
   }
 
   // ---- an Oxford Economics release also refreshes the dashboard's market growth
@@ -1509,27 +1512,29 @@ sup { font-size: .7em; line-height: 0; }
   // Europe = the 19 Euroconstruct countries (same set in every release, so quarters compare like for like)
   const MACRO_EU = ["Austria", "Belgium", "Czech Republic", "Denmark", "Finland", "France", "Germany", "Hungary", "Ireland", "Italy", "Netherlands",
     "Norway", "Poland", "Portugal", "Slovak Republic", "Spain", "Sweden", "Switzerland", "United Kingdom"];
-  const DODGE_NONRES = k => k < 24 && k !== 18 && k !== 19;     // non-residential building verticals
-  const MACRO_CALC = ["eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_val", "us_oe"];
-  const MACRO_MAN = ["ec_tot", "ec_res", "ec_non", "hp", "us_nb", "us_area"];
+  // same segments as the growth outlook slide: residential¹ = single family, commercial² = commercial buildings + multifamily
+  const MACRO_CALC = ["eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_val", "us_area", "us_oe"];
+  const MACRO_MAN = ["ec_tot", "ec_res", "ec_non", "hp", "us_nb"];
   const MACRO_AAL = ["overall", "eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_nb"];
   // 2026-on-2025 growth (%) of the computed rows; get(locs, base, kind, year) reads Oxford Economics levels
   function macroCompute(get, dodgeRel, Y) {
-    const lv = (base, kind, y) => get(MACRO_EU, base, kind, y);
-    const sum = (parts, y) => { let t = 0; for (const [b, k] of parts) { const v = lv(b, k, y); if (v === null) return null; t += v; } return t; };
-    const R = OE.res, N = OE.nonTot;
-    const usg = (b, y) => get(GO_COLS.us, b, "", y);
-    const dv = y => dodgeRel ? dodgeVal(dodgeRel, DODGE_NONRES, y) : null;
+    const eu = (b, k, y) => get(MACRO_EU, b, k, y), us = (b, k, y) => get(GO_COLS.us, b, k, y);
+    const res = (k, y) => OE_SERIES.res(eu, k, y), com = (k, y) => OE_SERIES.com(eu, k, y);
+    const both = (k, y) => { const a = res(k, y), b = com(k, y); return a !== null && b !== null ? a + b : null; };
+    const dv = y => dodgeRel ? dodgeVal(dodgeRel, DODGE_SEG.com, y) : null;
+    // floor area: commercial building types of the area table (it has no multifamily row)
+    const da = y => dodgeRel && dodgeRel.area ? dodgeVal({ years: dodgeRel.areaYears, rows: dodgeRel.area }, DODGE_SEG.com, y) : null;
     const out = {};
     // ’Y growth and the CAGR ’Y-’Y+4 (the releases reach 2030); kept under the ":5y" ids
     const put = (id, f) => { out[id] = growth(f(Y), f(Y - 1)); out[id + ":5y"] = cagr(f(Y + 4), f(Y), 4); };
-    put("eu_tot", y => sum([[R, ""], [N, ""]], y));
-    put("eu_new", y => sum([[R, "New"], [N, "New"]], y));
-    put("eu_reno", y => sum([[R, "Renovation"], [N, "Renovation"]], y));
-    put("eu_res", y => sum([[R, ""]], y));
-    put("eu_non", y => sum([[N, ""]], y));
-    put("us_oe", y => usg(N, y));
+    put("eu_tot", y => both("", y));
+    put("eu_new", y => both("New", y));
+    put("eu_reno", y => both("Renovation", y));
+    put("eu_res", y => res("", y));
+    put("eu_non", y => com("", y));
+    put("us_oe", y => OE_SERIES.com(us, "", y));
     put("us_val", dv);
+    put("us_area", da);
     return out;
   }
   const numOf = t => { const m = String(t ?? "").replace(/−/g, "-").replace(",", ".").match(/[-+]?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : null; };
@@ -1552,11 +1557,13 @@ sup { font-size: .7em; line-height: 0; }
     V["mi:hp:period"] = { text: manVal(q, "mi:hp:period", "9M-’25"), kind: builtIn("mi:hp:period") ? "text" : "man", id: "mi:hp:period" };
     [1, 2, 3, 4].forEach(i => { const t = manVal(q, "mi:cm:" + i, i === 1 ? "xxx" : ""); V["mi:cm:" + i] = { text: t, kind: t === "xxx" ? "comment" : "text", id: "mi:cm:" + i }; });
     const src = `all figures year over year comparisons, normalised for inflation, Aalberts organic growth figures are estimates (including volume, price, BD, SRC, ..), excluding acquisitions (Paulo, Geo-flo, GVT). ` +
-      `EC: ${manVal(q, "mi:ecSrc", "Euroconstruct (Nov-’25)")}, OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}, Europe = EC-19), EHI: ${manVal(q, "mi:ehiSrc", "European Heating Institute ’25 vs. LY (Dec-’25)")}, DODGE area (Sept-’25), DODGE value (${dodgeIso ? monYY(dodgeIso) : "as published"})${manVal(q, "mi:ecNote", "")}`;
+      `EC: ${manVal(q, "mi:ecSrc", "Euroconstruct (Nov-’25)")}, OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}, Europe = EC-19), EHI: ${manVal(q, "mi:ehiSrc", "European Heating Institute ’25 vs. LY (Dec-’25)")}, DODGE value and area (${dodgeIso ? monYY(dodgeIso) : "as published"}; area excl. multifamily)${manVal(q, "mi:ecNote", "")}`;
     V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
     // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries
     // Euroconstruct and EHI: no comparison with the last SBR (n/a)
-    ["ec_tot", "ec_res", "ec_non", "hp"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
+    ["ec_tot", "ec_res", "ec_non", "hp", "us_val", "us_area"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
+    // a previous report built on other definitions (published Q3 2026: residential / non-residential totals) is not compared
+    if (prevM && prevM.defs === "totals") MACRO_CALC.forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
     CALC.concat(MAN).forEach(id => {
       if (chips["mi:" + id] === "na") return;
       if (!prevQ) return;
@@ -1564,7 +1571,7 @@ sup { font-size: .7em; line-height: 0; }
       const pre = CALC.includes(id) ? (prevM ? prevM[id] : null) : numOf(manVal(prevQ.q, "mi:" + id, null));
       if (cur !== null && cur !== undefined && Number.isFinite(cur) && pre !== null && pre !== undefined && Number.isFinite(pre)) chips["mi:" + id] = chipType(cur - pre);
     });
-    T.macro = { y: String(Y), y5: "’" + String(Y).slice(2) + "-’" + String(Y + 4).slice(2), titleTail: " | building", blank: "\u00a0", ehi: "EHI " };
+    T.macro = { defs: (M && M.defsNote) || "¹ Residential = single family   ² Commercial = commercial buildings + multifamily", y: String(Y), y5: "’" + String(Y).slice(2) + "-’" + String(Y + 4).slice(2), titleTail: " | building", blank: "\u00a0", ehi: "EHI " };
   }
 
   // a published report (qbr_published.js): every figure as on the presented slides

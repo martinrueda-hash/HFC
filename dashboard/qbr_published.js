@@ -49,7 +49,8 @@ window.HFC_QBR_PUBLISHED = {
     // countries (residential new build / renovation weighted with the October 2026 release's 2025 levels); us_val = Dodge non-res as on the growth slide
     macro: { eu_tot: 1.87, eu_new: 3.18, eu_reno: 0.82, eu_res: 1.98, eu_non: 1.7, us_oe: -0.2, us_val: 2.8,
       "eu_tot:5y": 2.68, "eu_new:5y": 2.73, "eu_reno:5y": 2.64, "eu_res:5y": 2.79, "eu_non:5y": 2.52, "us_oe:5y": 2.76, "us_val:5y": null,
-      oeDate: "2026-06-27", dodgeDate: null },
+      oeDate: "2026-06-27", dodgeDate: null, defs: "totals",
+      defsNote: "Q3 2026 OE: residential total and non-residential building total (no single-family / commercial split in the June data)" },
     priority: "restore execution while aligning portfolio and commercial focus with the fastest-growing technologies and markets",
     emSrc: "Source: Oxford Economics, June 2026 release (27 Jun 2026), construction work done (residential + non-residential building). External cross-checks: ING Research, ABN AMRO, Experian / UK Government, FFB",
     emNotes: "Note: 1_ including Comap 2_excluding Comap"

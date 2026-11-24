@@ -73,7 +73,7 @@ def dodge_group(key):
 
 def read_dodge(path):
     wb = load_workbook(path, data_only=True)
-    best = None
+    best, area = None, None
     for ws in wb.worksheets:
         rows = list(ws.iter_rows(values_only=True))
         if not rows:
@@ -89,19 +89,27 @@ def read_dodge(path):
                 continue        # skip subtotal rows (no numeric key)
             vals = [float(r[head.index(y)]) if isinstance(r[head.index(y)], (int, float)) else None for y in years]
             verts.append([int(key), str(r[1]).strip(), dodge_group(int(key)), vals])
+        if "area" in ws.title.lower():       # floor area by building type (forecast-by-building-type exports)
+            if verts and (area is None or len(verts) > len(area[1])):
+                area = (years, verts)
+            continue
         if best is None or len(verts) > len(best[1]):
             best = (years, verts)
-    m = re.search(r"actuals[ _-]+to[ _-]+([1-4])Q(\d{4})", path.name, re.I)
-    e = re.search(r"exported[ _-]+(\d{2})(\d{2})(\d{2})", path.name, re.I)
+    m = re.search(r"actuals[ _-]+to[ _-]+([1-4])Q(\d{4})", path.name, re.I) or re.search(r"Dodge[ _-]+([1-4])Q(\d{4})", path.name, re.I)
+    e = re.search(r"exported[ _-]+(\d{2})(\d{2})(\d{2})", path.name, re.I) or re.search(r"[ _-](\d{2})(\d{2})(\d{2})\.xlsx$", path.name, re.I)
     exported = dt.date(2000 + int(e.group(1)), int(e.group(2)), int(e.group(3))) if e else None
     if m:
         quarter = f"{m.group(2)}Q{m.group(1)}"
     else:
         d = exported or dt.date.fromtimestamp(path.stat().st_mtime)
         quarter = f"{d.year}Q{(d.month - 1) // 3 + 1}"
-    return {"id": f"dodge-{quarter}", "quarter": quarter, "exported": exported.isoformat() if exported else None,
-            "file": path.name, "units": "US$ thousands", "years": [int(y) for y in best[0]],
-            "rows": [[k, n, g, [round(v, 1) if v is not None else None for v in vals]] for k, n, g, vals in best[1]]}
+    out = {"id": f"dodge-{quarter}", "quarter": quarter, "exported": exported.isoformat() if exported else None,
+           "file": path.name, "units": "US$ thousands", "years": [int(y) for y in best[0]],
+           "rows": [[k, n, g, [round(v, 1) if v is not None else None for v in vals]] for k, n, g, vals in best[1]]}
+    if area:
+        out["areaYears"] = [int(y) for y in area[0]]
+        out["area"] = [[k, n, g, [round(v, 1) if v is not None else None for v in vals]] for k, n, g, vals in area[1]]
+    return out
 
 
 oe = [read_oe(p) for p in sorted((ROOT / "data" / "oxford-economics").glob("*")) if p.suffix.lower() in (".xlsx", ".csv")]

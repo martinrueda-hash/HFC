@@ -583,18 +583,18 @@ def build_macro_slide():
         ("construction total", "b", 0, ["OE"], "mi:eu_tot", "mi:eu_tot:aal", False),
         ("new build", "", 1, ["OE"], "mi:eu_new", "mi:eu_new:aal", False),
         ("renovation", "", 1, ["OE"], "mi:eu_reno", "mi:eu_reno:aal", False),
-        ("residential", "", 1, ["OE"], "mi:eu_res", "mi:eu_res:aal", False),
-        ("non-residential", "", 1, ["OE"], "mi:eu_non", "mi:eu_non:aal", True),
+        ("residential¹", "", 1, ["OE"], "mi:eu_res", "mi:eu_res:aal", False),
+        ("commercial²", "", 1, ["OE"], "mi:eu_non", "mi:eu_non:aal", True),
         ("construction total", "", 0, ["EC"], "mi:ec_tot", None, False),
         ("residential", "", 1, ["EC"], "mi:ec_res", None, False),
         ("non-residential", "", 1, ["EC"], "mi:ec_non", None, True),
         ("heat pumps", "b", 0, ["{{t:ehi}}", "{{v:mi:hp:period}}"], "mi:hp", None, True),
         None,
         ("USA", "red", 0, [], None, None, False),
-        ("new build non-residential", "b", 0, [], "mi:us_nb", "mi:us_nb:aal", True),
-        ("non-residential - area", "", 0, ["DODGE"], "mi:us_area", None, False),
-        ("non-residential - value", "", 0, ["DODGE"], "mi:us_val", None, True),
-        ("non-residential", "", 0, ["OE"], "mi:us_oe", None, True),
+        ("new build commercial²", "b", 0, [], "mi:us_nb", "mi:us_nb:aal", True),
+        ("commercial² - area", "", 0, ["DODGE"], "mi:us_area", None, False),
+        ("commercial² - value", "", 0, ["DODGE"], "mi:us_val", None, True),
+        ("commercial²", "", 0, ["OE"], "mi:us_oe", None, True),
     ]
     xs = [X0 + sum(COLS[:i]) for i in range(len(COLS))]
 
@@ -686,7 +686,12 @@ def build_macro_slide():
         g = re.sub(r"\{\{ID(\d+)\}\}", lambda m: str(next_id()), g)
         legend += g + tbox(x + cw + 70000, w, label, rpr(1100, False, "505050"))
         x += cw + 70000 + w + 150000
-    chip_marks = legend + "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
+    # definitions (footnotes ¹ ²), beside the legend under the comments box
+    defs = (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Definitions"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>'
+            f'<a:xfrm><a:off x="{CX}" y="{LY - 20000}"/><a:ext cx="{CW}" cy="{cw + 40000}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
+            f'<p:txBody><a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:r>{rpr(900, False, "505050")}<a:t>{{{{t:defs}}}}</a:t></a:r></a:p></p:txBody></p:sp>')
+    boxes.append({"id": "mi:defs", **box((CX, LY - 20000, CW, cw + 40000), [{"algn": "l", "runs": [{"t": "{{t:defs}}", "sz": 9, "b": False, "c": "505050", "base": False}]}], "ctr", (0, 0, 0, 0))})
+    chip_marks = legend + defs + "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
     body = title + keep["Text Placeholder 5"] + right + srcph + keep["Slide Number Placeholder 1"] + pill + tbl + comments + chip_marks
     xml = src[:tree_a] + body + src[tree_b:]
     xml = re.sub(r"<p:custDataLst>.*?</p:custDataLst>", "", xml, flags=re.S)
