@@ -1582,9 +1582,8 @@ sup { font-size: .7em; line-height: 0; }
     // Euroconstruct and EHI: no comparison with the last SBR (n/a)
     ["ec_tot", "ec_res", "ec_non", "hp", "us_dtot", "us_val", "us_area"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
     // a previous report built on other definitions (published Q3 2026: residential / non-residential totals) is not compared
-    // (construction totals and their new build / renovation split use the same all-buildings definition in both, so they are compared)
-    if (prevM && prevM.defs === "totals") MACRO_CALC.filter(id => !["eu_tot", "eu_new", "eu_reno"].includes(id))
-      .forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
+    // figures the previous report had on other definitions (published Q3 2026: USA totals only) are not compared
+    if (prevM && prevM.oldDefs) prevM.oldDefs.forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
     CALC.concat(MAN).forEach(id => {
       if (chips["mi:" + id] === "na") return;
       if (!prevQ) return;
@@ -1717,6 +1716,7 @@ sup { font-size: .7em; line-height: 0; }
       if (!has(oe, l)) return;
       const cur = trio(y => tot(oe, l, y), Y);
       let pre = prevOe && prevOe.id !== oe.id && has(prevOe, l) ? trio(y => tot(prevOe, l, y), Y) : null;
+      if (prevPub && (prevPub.oldDefs || []).includes(c)) { chips[c + ":1"] = chips[c + ":2"] = "na"; return; }
       if (prevPub && prevPub.go[c]) {
         // published residential / non-residential growth, combined with this release's segment weights (year ’Y-1)
         const lr = seg("res", getAny(l), "", Y - 1), lc = seg("com", getAny(l), "", Y - 1);
