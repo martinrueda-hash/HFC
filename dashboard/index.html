@@ -1560,6 +1560,9 @@ sup { font-size: .7em; line-height: 0; }
     const CALC = MACRO_CALC.flatMap(id => [id, id + ":5y"]), MAN = MACRO_MAN.flatMap(id => [id, id + ":5y"]);
     // market view figures: green when positive, red when negative
     const signKind = v => v > 0.05 ? "pos" : v < -0.05 ? "neg" : "neu";
+    // figures set by hand for a report (HFC_QBR_INPUTS "val:mi:<id>", e.g. USA commercial 2026 kept at -0.2%) replace the computed ones
+    const inpQ = (window.HFC_QBR_INPUTS || {})[q] || {};
+    if (M) Object.entries(inpQ).forEach(([k, v]) => { if (k.startsWith("val:mi:")) M = Object.assign({}, M, { [k.slice(7)]: v }); });
     CALC.forEach(id => { const v = M ? M[id] : null; V["mi:" + id] = v === null || v === undefined || !Number.isFinite(v)
       ? (id.endsWith(":5y") ? { text: "n/a", kind: "neu" } : { text: "x%", kind: "missing" }) : { text: fmtEm(v), kind: signKind(v) }; });
     // built-in source figures (HFC_QBR_INPUTS) show as plain text; still editable, yellow once typed over or when still to enter
