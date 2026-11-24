@@ -491,6 +491,8 @@ for p in ps:
     else:
         k += 1
         new_ps.append(make_para(p, [("{{v:kt:%d}}" % k, None)]))
+# compact: 9 pt text, 5 pt blank lines between bullets, so takeaways + priority stay above the footer
+new_ps = [re.sub(r'sz="\d+"', 'sz="500"', q) if not para_text(q).strip() else q.replace('sz="1000"', 'sz="900"') for q in new_ps]
 sp2 = set_paragraphs(sp, new_ps)
 anchor, ins = body_ins(sp)
 boxes.append({"id": "kt", **box(xfrm(sp), [para_spec(q) for q in paragraphs(sp2)], anchor, ins)})

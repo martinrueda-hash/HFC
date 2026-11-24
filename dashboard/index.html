@@ -1844,6 +1844,9 @@ sup { font-size: .7em; line-height: 0; }
   }
   function fillXml(xml, key, data, ids) {
     const sl = TPL.slides[key];
+    // an empty key takeaway is dropped with the blank line after it
+    xml = xml.replace(/<a:p>(?:(?!<a:p>|<\/a:p>|<a:t>)[\s\S])*<a:t>\{\{v:(kt:\d)\}\}<\/a:t>(?:(?!<a:p>|<\/a:p>|<a:t>)[\s\S])*<\/a:p>(?:<a:p>(?:(?!<a:p>|<\/a:p>|<a:t>)[\s\S])*<\/a:p>)?/g,
+      (m, id) => data.V[id] && data.V[id].kind === "text" && data.V[id].text === "" ? "" : m);
     // a paragraph holding only an empty previous-report figure is dropped
     xml = xml.replace(/<a:p>(?:(?!<a:p>|<\/a:p>)[\s\S])*?\{\{v:([^}]+)\}\}(?:(?!<a:p>|<\/a:p>)[\s\S])*?<\/a:p>/g,
       (m, id) => data.V[id] && data.V[id].kind === "prev" && data.V[id].text === "" ? "" : m);
