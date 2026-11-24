@@ -1623,7 +1623,8 @@ sup { font-size: .7em; line-height: 0; }
     emManual(q, V, arrows);
     Object.assign(T.growth, { yA: y2(Y - 1) + "A", yE: y2(Y) + "E", yC: y2(Y - 1) + "-" + y2(Y + 4), yP: String(Y - 1),
       subtitle: "Work done by sector, annual % change", src: pub.goSrc || "", notes: pub.goNotes || "" });
-    Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2), src: pub.emSrc || "", notes: pub.emNotes || "" });
+    Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2), src: pub.emSrc || "", notes: pub.emNotes || "",
+      y: String(Y), titleTail: " | market environment EMEA" });
     const pm = pub.macro || {};
     macroFill(q, Y, V, chips, T, pm, null, null, pm.oeDate || null, pm.dodgeDate || null);
     return { q, oe: null, dodge: null, pub, prevQ, prevOe: null, V, T, chips, arrows, bridge: null, fallback: [] };
@@ -1756,7 +1757,7 @@ sup { font-size: .7em; line-height: 0; }
     if (prevPub && prevPub.macro) prevM = prevPub.macro;
     else if (prevOe && prevOe.id !== oe.id) prevM = macroCompute((l, b, k, y) => oeVal(prevOe, l, b, k, y), pickRel(r.dodge, "dodge", prevQ.q), Y);
     macroFill(q, Y, V, chips, T, M, prevM, prevQ, oe ? oe.date : null, dodge ? dodge.exported : null);
-    Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2),
+    Object.assign(T.emea, { y: String(Y), titleTail: " | market environment EMEA", y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2),
       src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + commercial incl. multifamily).`,
       notes: "Note: Nordics = Sweden, Norway, Denmark, Finland." });
     return { q, oe, dodge, pub: null, prevPub, prevQ, prevOe, V, T, chips, arrows, bridge: { oeSrc, cols, Y }, fallback: [...fallbackUsed].map(id => r.oe.find(x => x.id === id)) };
@@ -1910,7 +1911,7 @@ sup { font-size: .7em; line-height: 0; }
     const files = await unzipAll(buf), dec = new TextDecoder(), enc = new TextEncoder();
     let counter = 0;
     const ids = { base: 90000, next: () => counter++ };
-    ["growth", "emea", "macro"].filter(k => TPL.slides[k]).forEach(key => {
+    ["macro", "emea", "growth"].filter(k => TPL.slides[k]).forEach(key => {
       const f = files.find(x => x.name === TPL.slides[key].file);
       f.data = enc.encode(fillXml(dec.decode(f.data), key, data, ids));
     });
@@ -2256,7 +2257,7 @@ sup { font-size: .7em; line-height: 0; }
       <span>Variation vs.: <b>${data.prevQ ? qLabel(data.prevQ.q) : "no previous report"}</b>${data.prevPub ? " (as published)" : data.prevOe && data.oe && data.prevOe.id === data.oe.id ? " (same release: neutral)" : ""}</span></div>`;
     body.innerHTML = `<div class="qbar">${meta}<span class="spacer"></span><button type="button" class="btn" id="qbrExcel"${data.pub ? ' disabled title="This report shows the figures as published: there is no data to rebuild them from"' : ' title="Workbook that rebuilds every figure of the two slides from the Oxford Economics and Dodge data, with formulas"'}>Excel data bridge (.xlsx)</button><button type="button" class="btn primary" id="qbrExport">Export to PowerPoint (.pptx)</button></div>
       <span class="msg" id="qbrMsg" role="status"></span>
-      <div class="qpreview"><span class="hdr-t">Preview</span>${slidePreview("growth", data)}${slidePreview("emea", data)}${TPL.slides.macro ? slidePreview("macro", data) : ""}</div>`;
+      <div class="qpreview"><span class="hdr-t">Preview</span>${["macro", "emea", "growth"].filter(k => TPL.slides[k]).map(k => slidePreview(k, data)).join("")}</div>`;
     document.getElementById("qbrExport").addEventListener("click", () => exportPptx(reportData(qTab, quarterList())));
     document.getElementById("qbrExcel").addEventListener("click", () => exportBridge(reportData(qTab, quarterList())));
     body.querySelectorAll("[contenteditable][data-id]").forEach(el => {

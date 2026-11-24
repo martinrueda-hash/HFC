@@ -739,6 +739,39 @@ pres = re.sub(r"(<p:sldId [^>]*/>)(?!.*<p:sldId )", lambda m: m.group(1) + f'<p:
 (un / "ppt/presentation.xml").write_text(pres)
 spec["slides"]["macro"] = {"file": f"ppt/slides/{f_macro.name}", "boxes": macro_boxes, "chips": macro_chips, "chipXml": chip_xml}
 
+# ---------------------------------------------------------------- EMEA slide title, in the macro slide's style
+x = f_emea.read_text()
+a, b = find_shape(x, "Title 3")
+tsp = x[a:b]
+RED_ = "CE0E2D"
+trun = lambda t, bold: f'<a:r><a:rPr lang="en-GB" sz="2000" b="{1 if bold else 0}" dirty="0"><a:solidFill><a:srgbClr val="{RED_}"/></a:solidFill></a:rPr><a:t>{t}</a:t></a:r>'
+tsp = set_paragraphs(tsp, ["<a:p>" + trun("macroeconomic indicators {{t:y}}", True) + trun("{{t:titleTail}}", False) + "</a:p>"])
+x = x[:a] + tsp + x[b:]
+f_emea.write_text(x)
+spec["slides"]["emea"]["boxes"].append({"id": "title", **box(xfrm(tsp), [{"algn": "l", "runs": [
+    {"t": "macroeconomic indicators {{t:y}}", "sz": 20, "b": True, "c": RED_, "base": False},
+    {"t": "{{t:titleTail}}", "sz": 20, "b": False, "c": RED_, "base": False}]}], "t", (91440, 45720, 0, 45720))})
+
+# ---------------------------------------------------------------- the report: macroeconomic indicators, then EMEA (growth outlook dropped)
+pres = (un / "ppt/presentation.xml").read_text()
+prels = (un / "ppt/_rels/presentation.xml.rels").read_text()
+rid_for = lambda f: re.search(rf'Id="(rId\d+)"[^>]*Target="slides/{f.name}"', prels).group(1)
+sid_for = lambda rid: re.search(rf'<p:sldId id="(\d+)" r:id="{rid}"/>', pres).group(1)
+r_m, r_e, r_g = rid_for(f_macro), rid_for(f_emea), rid_for(f_growth)
+lst = f'<p:sldIdLst><p:sldId id="{sid_for(r_m)}" r:id="{r_m}"/><p:sldId id="{sid_for(r_e)}" r:id="{r_e}"/></p:sldIdLst>'
+pres = re.sub(r"<p:sldIdLst>.*?</p:sldIdLst>", lst, pres, count=1, flags=re.S)
+(un / "ppt/presentation.xml").write_text(pres)
+prels = re.sub(rf'<Relationship Id="{r_g}"[^>]*/>', "", prels)
+(un / "ppt/_rels/presentation.xml.rels").write_text(prels)
+ct = (un / "[Content_Types].xml").read_text()
+ct = ct.replace(f'<Override PartName="/ppt/slides/{f_growth.name}" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/>', "")
+(un / "[Content_Types].xml").write_text(ct)
+f_growth.unlink()
+(un / f"ppt/slides/_rels/{f_growth.name}.rels").unlink()
+del spec["slides"]["growth"]
+# drop what only the removed slide used (notes, tags, embedded objects, images)
+subprocess.run([sys.executable, str(SKILL / "clean.py"), str(un)], check=True, capture_output=True)
+
 # ---------------------------------------------------------------- package the template
 tmpl = io.BytesIO()
 with zipfile.ZipFile(tmpl, "w", zipfile.ZIP_DEFLATED) as z:
@@ -752,7 +785,7 @@ tmpl_bytes = tmpl.getvalue()
 # ---------------------------------------------------------------- preview backgrounds (figures removed)
 blank = work / "blank"
 shutil.copytree(un, blank)
-for f, key in ((f_growth, "growth"), (f_emea, "emea"), (f_macro, "macro")):
+for f, key in ((f_emea, "emea"), (f_macro, "macro")):
     x = (blank / "ppt/slides" / f.name).read_text()
     # empty every text box the preview draws itself, and drop inserted shapes
     x = re.sub(r"\{\{x:[^}]+\}\}", "", x)
@@ -763,7 +796,7 @@ for f, key in ((f_growth, "growth"), (f_emea, "emea"), (f_macro, "macro")):
     x = re.sub(r"<a:t>[^<]*\{\{[vt]:[^}]+\}\}[^<]*</a:t>", "<a:t></a:t>", x)
     (blank / "ppt/slides" / f.name).write_text(x)
 # static text inside boxes the preview redraws (country names, "Priority:", " of ... revenue") also goes
-for f in (f_growth, f_emea):
+for f in (f_emea,):
     x = (blank / "ppt/slides" / f.name).read_text()
     for name in ("TextBox 574", "TextBox 684", "TextBox 703", "TextBox 722", "TextBox 741", "TextBox 760", "TextBox 120", "TextBox 12", "TextBox 79"):
         if f'name="{name}"' in x:
@@ -782,11 +815,10 @@ subprocess.run([sys.executable, str(SKILL / "office/soffice.py"), "--headless", 
 subprocess.run(["pdftoppm", "-png", "-scale-to-x", "1600", "-scale-to-y", "-1", str(work / "blank.pdf"), str(work / "bg")], check=True)
 bgs = sorted(work.glob("bg-*.png"))
 ASSETS.mkdir(parents=True, exist_ok=True)
-shutil.copy(bgs[0], ASSETS / "qbr_bg_growth.png")
+# deck order: macroeconomic indicators, then EMEA
+shutil.copy(bgs[0], ASSETS / "qbr_bg_macro.png")
 shutil.copy(bgs[1], ASSETS / "qbr_bg_emea.png")
-shutil.copy(bgs[2], ASSETS / "qbr_bg_macro.png")
 spec["slides"]["macro"]["bg"] = "assets/qbr_bg_macro.png"
-spec["slides"]["growth"]["bg"] = "assets/qbr_bg_growth.png"
 spec["slides"]["emea"]["bg"] = "assets/qbr_bg_emea.png"
 # Aalberts logo (white, for red bands) for the Excel data bridge cover
 spec["logoWhitePng"] = base64.b64encode((ASSETS / "aalberts-logo-white.png").read_bytes()).decode()
