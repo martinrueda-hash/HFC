@@ -1226,10 +1226,13 @@ sup { font-size: .7em; line-height: 0; }
   const qFromKey = k => Math.floor(k / 4) + "Q" + (k % 4 + 1);
   const qLabel = q => "Q" + q.slice(5) + " " + q.slice(0, 4);
   const fmtDate = iso => { const [y, m, d] = iso.split("-").map(Number); return d + " " + MONTH_NAMES[m - 1].slice(0, 3) + " " + y; };
-  // an Oxford Economics release feeds the QBR of the quarter that ended before it: a release published in the month
-  // after a quarter end (e.g. 8 Oct 2026) belongs to that quarter (Q3 2026); otherwise to the quarter it falls in
+  // data quarter of an Oxford Economics release: a release published in the month after a quarter end
+  // (e.g. 8 Oct 2026) is that quarter's data (Q3 2026); otherwise the quarter it is published in
   const oeQ = iso => { const [y, m] = iso.split("-").map(Number); const k = y * 12 + (m - 1) - 1; return qOfDate(`${Math.floor(k / 12)}-${String(k % 12 + 1).padStart(2, "0")}-01`); };
-  const relQ = (kind, r) => kind === "oe" ? oeQ(r.date) : r.quarter;
+  // each report uses the data of the quarter before it: Q3 2026 data -> Q4 2026 report
+  const repQ = iso => qFromKey(qKey(oeQ(iso)) + 1);
+  const prevQOf = q => qFromKey(qKey(q) - 1);
+  const relQ = (kind, r) => kind === "oe" ? repQ(r.date) : r.quarter;
 
   // ---- Oxford Economics accessors
   // series by "location|indicator" as {year: level}. Rows given as % change y/y (4th field "pct") are turned
@@ -1491,19 +1494,20 @@ sup { font-size: .7em; line-height: 0; }
   const DODGE_SEG = { total: () => true, res: k => k === 18, com: k => k < 24 && k !== 5 && k !== 18 };
   const nowQ = () => qKey(qOfDate(new Date().toISOString().slice(0, 10)));
 
-  // a report is available when the Oxford Economics release of its quarter is loaded (see oeQ)
+  // a report is available when the Oxford Economics release of the quarter before it is loaded (see oeQ / repQ)
   function quarterList() {
     const r = releases();
-    const oeQs = r.oe.map(x => qKey(oeQ(x.date)));
+    const oeQs = r.oe.map(x => qKey(repQ(x.date)));
     const end = Math.max(qKey("2026Q4"), ...oeQs, ...r.dodge.map(x => qKey(x.quarter)));
     const out = [];
     for (let k = qKey("2025Q1"); k <= end; k++) {
       const q = qFromKey(k);
-      const ok = oeQs.includes(k);     // each quarter has its own Oxford Economics release
+      const ok = oeQs.includes(k);     // each report has its own Oxford Economics release (previous quarter's data)
       const dodgeOk = r.dodge.some(x => qKey(x.quarter) <= k);
       out.push({ q, available: ok, dodge: dodgeOk,
-        why: ok ? "" : `Report ${qLabel(q)} needs the Oxford Economics release of that quarter (published between ${MONTH_NAMES[(Number(q.slice(5)) - 1) * 3 + 1]} ${q.slice(0, 4)} and ${MONTH_NAMES[Number(q.slice(5)) % 4 * 3] || "January"} ${Number(q.slice(5)) === 4 ? Number(q.slice(0, 4)) + 1 : q.slice(0, 4)}). ` +
-          (r.oe.length ? `Releases loaded so far: ${r.oe.map(x => `${fmtDate(x.date)} (${qLabel(oeQ(x.date))})`).join(", ")}. ` : "No Oxford Economics release has been uploaded yet. ") +
+        why: ok ? "" : (() => { const d = prevQOf(q), dn = Number(d.slice(5)), dy = Number(d.slice(0, 4));
+          return `Report ${qLabel(q)} uses ${qLabel(d)} data: it needs the Oxford Economics release of ${qLabel(d)} (published between ${MONTH_NAMES[(dn - 1) * 3 + 1]} ${dy} and ${MONTH_NAMES[dn % 4 * 3]} ${dn === 4 ? dy + 1 : dy}). `; })() +
+          (r.oe.length ? `Releases loaded so far: ${r.oe.map(x => `${fmtDate(x.date)} (${qLabel(oeQ(x.date))} data, ${qLabel(repQ(x.date))} report)`).join(", ")}. ` : "No Oxford Economics release has been uploaded yet. ") +
           `Upload that release under "Update the data" to activate this report.` + (dodgeOk ? " Dodge data for this quarter is already available." : "") });
     }
     return out;
@@ -2002,7 +2006,7 @@ sup { font-size: .7em; line-height: 0; }
     const cover = [band(), band(), bandText("Quarterly market outlook", XS.bandTitle), bandText(`QBR/SBR data book · ${qLabel(data.q)}`, XS.bandSub), band(), band(), [],
       section("Report"),
       kv("Quarter", qLabel(data.q)),
-      kv("Oxford Economics", data.oe ? `Release of ${fmtDate(data.oe.date)}` : "—"),
+      kv("Oxford Economics", data.oe ? `Release of ${fmtDate(data.oe.date)} (${qLabel(oeQ(data.oe.date))} data)` : "—"),
       kv("Dodge (US)", data.dodge ? `Actuals to ${qLabel(data.dodge.quarter)}` : "No Dodge export for this quarter"),
       kv("Compared with", prev ? `${qLabel(prev.q)} report (Oxford Economics ${fmtDate(prev.oe.date)}${prev.dodge ? ", Dodge to " + qLabel(prev.dodge.quarter) : ""})` : "No earlier report loaded"),
       kv("Prepared on", fmtDate(today)), [],
@@ -2068,7 +2072,7 @@ sup { font-size: .7em; line-height: 0; }
     if (!cur.available) { body.innerHTML = `<div class="qlocked" role="status"><b>${qLabel(cur.q)} is not available yet.</b> ${esc(cur.why)}</div>`; return; }
     const data = reportData(qTab, list);
     const meta = `<div class="qmeta"><span>Report <b>${qLabel(qTab)}</b></span>
-      <span>Oxford Economics: <b>release ${fmtDate(data.oe.date)}</b>${data.fallback.length ? ` (missing years from ${data.fallback.map(x => fmtDate(x.date)).join(", ")})` : ""}</span>
+      <span>Oxford Economics: <b>release ${fmtDate(data.oe.date)}</b> (${qLabel(oeQ(data.oe.date))} data)${data.fallback.length ? ` (missing years from ${data.fallback.map(x => fmtDate(x.date)).join(", ")})` : ""}</span>
       <span>Dodge (US): <b>${data.dodge ? "actuals to " + qLabel(data.dodge.quarter) : "no export up to this quarter"}</b></span>
       <span>Variation vs.: <b>${data.prevQ ? qLabel(data.prevQ.q) : "no previous report"}</b>${data.prevOe && data.prevOe.id === data.oe.id ? " (same release: neutral)" : ""}</span></div>`;
     body.innerHTML = `<div class="qbar">${meta}<span class="spacer"></span><button type="button" class="btn" id="qbrExcel" title="Workbook that rebuilds every figure of the two slides from the Oxford Economics and Dodge data, with formulas">Excel data bridge (.xlsx)</button><button type="button" class="btn primary" id="qbrExport">Export to PowerPoint (.pptx)</button></div>
