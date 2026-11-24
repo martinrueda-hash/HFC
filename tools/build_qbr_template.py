@@ -4,7 +4,8 @@ Usage:  python3 tools/build_qbr_template.py [path/to/QBR_deck.pptx]
 Default deck: templates/qbr/HFC_QBR3_Strategy_2.pptx
 
 From the deck it keeps the two market slides ("market outlook | growth outlook" and
-"Market environment EMEA | HFC performance in key countries") and replaces every figure with a
+"Market environment EMEA | HFC performance in key countries"), adds "macroeconomic indicators | building"
+(rebuilt on the EMEA slide's layout, as it is not in the deck) and replaces every figure with a
 marker, so the dashboard can fill them for any quarter and export a .pptx that keeps the deck's
 exact layout (world map, fonts, column widths, arrows, footers).
 
@@ -525,6 +526,164 @@ for nm in a_list:
 f_emea.write_text(s)
 spec["slides"]["emea"] = {"file": f"ppt/slides/{f_emea.name}", "boxes": boxes, "arrows": arrow_slots, "arrowXml": arrow_xml, "table": spec_table}
 
+# ---------------------------------------------------------------- slide: macroeconomic indicators | building
+# Not in the QBR3 deck: rebuilt in its style on the EMEA slide's layout (header, title, source and page placeholders)
+def build_macro_slide():
+    with zipfile.ZipFile(DECK) as z:
+        src = z.read(f"ppt/slides/slide{SLIDE_EMEA}.xml").decode()
+    tree_a = src.index("</p:grpSpPr>", src.index("<p:spTree>")) + len("</p:grpSpPr>")
+    tree_b = src.index("</p:spTree>")
+    keep = {}
+    for nm in ("Title 3", "Text Placeholder 29", "Text Placeholder 5", "Text Placeholder 6", "Slide Number Placeholder 1"):
+        a, b = find_shape(src, nm)
+        keep[nm] = re.sub(r"<a:extLst>.*?</a:extLst>", "", src[a:b], flags=re.S)
+    boxes, chips = [], []
+    RED, DARK = "CE0E2D", "191919"
+
+    def rpr(sz=1100, b=False, color=None, extra=""):
+        fill = f'<a:solidFill><a:srgbClr val="{color}"/></a:solidFill>' if color else ""
+        return f'<a:rPr lang="en-GB" sz="{sz}"{" b=\"1\"" if b else " b=\"0\""} dirty="0"{extra}>{fill}</a:rPr>'
+
+    # title: "macroeconomic indicators ’Y" bold + " | building"
+    t_runs = [("macroeconomic indicators {{t:y}}", rpr(2000, True, RED)), ("{{t:titleTail}}", rpr(2000, False, RED))]
+    title = keep["Title 3"]
+    title = set_paragraphs(title, ["<a:p>" + "".join(f"<a:r>{r}<a:t>{t}</a:t></a:r>" for t, r in t_runs) + "</a:p>"])
+    boxes.append({"id": "title", **box(xfrm(title), [{"algn": "l", "runs": [{"t": t, "sz": 20, "b": i == 0, "c": RED, "base": False} for i, (t, _) in enumerate(t_runs)]}], "t", (91440, 45720, 0, 45720))})
+    srcph = keep["Text Placeholder 29"]
+    p0 = paragraphs(srcph)[0]
+    srcph = set_paragraphs(srcph, [make_para(p0, [("{{v:mi:src}}", None)])])
+    anchor, ins = body_ins(srcph)
+    boxes.append({"id": "mi:src", **box(xfrm(srcph), [dict(para_spec(paragraphs(srcph)[0]), sz=8)], anchor, ins), "srcSz": 8})
+    right = keep["Text Placeholder 6"]
+    right = set_paragraphs(right, [make_para(paragraphs(right)[0], [("market trends", None)])])
+
+    nid = [5000]
+    def next_id():
+        nid[0] += 1
+        return nid[0]
+
+    pill = (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Section pill"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr><p:spPr>'
+            f'<a:xfrm><a:off x="9690000" y="45000"/><a:ext cx="1230000" cy="250000"/></a:xfrm><a:prstGeom prst="roundRect"><a:avLst><a:gd name="adj" fmla="val 50000"/></a:avLst></a:prstGeom>'
+            f'<a:solidFill><a:srgbClr val="{RED}"/></a:solidFill><a:ln><a:noFill/></a:ln></p:spPr>'
+            f'<p:txBody><a:bodyPr lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/><a:r>{rpr(1600, False, "FFFFFF")}<a:t>building</a:t></a:r></a:p></p:txBody></p:sp>')
+
+    # table: label, source, period, market view, vs. last SBR (chips), Aalberts organic growth forecast
+    COLS = [2150000, 740000, 720000, 950000, 640000, 960000]
+    X0, Y0, HH, RH = 650000, 880000, 800000, 250000
+    GREY = '<a:solidFill><a:srgbClr val="F2F2F2"/></a:solidFill>'
+    WHITE = '<a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill>'
+    NONE = "<a:noFill/>"
+    LINE_W = '<a:lnB w="38100"><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill></a:lnB>'
+    NOLN = lambda side: f'<a:ln{side} w="12700"><a:noFill/></a:ln{side}>'
+    # rows: (label, style, indent, source, period, market-view id, chip?, aalberts id, group-end?)
+    R = [
+        ("building overall", "b", 0, "", "{{t:y}}", None, False, "mi:overall:aal", True),
+        None,
+        ("Europe", "red", 0, "", "", None, False, None, False),
+        ("construction total", "b", 0, "OE", "{{t:y}}", "mi:eu_tot", True, "mi:eu_tot:aal", False),
+        ("new build", "", 1, "OE", "{{t:y}}", "mi:eu_new", True, "mi:eu_new:aal", False),
+        ("renovation", "", 1, "OE", "{{t:y}}", "mi:eu_reno", True, "mi:eu_reno:aal", False),
+        ("residential", "", 1, "OE", "{{t:y}}", "mi:eu_res", True, "mi:eu_res:aal", False),
+        ("non-residential", "", 1, "OE", "{{t:y}}", "mi:eu_non", True, "mi:eu_non:aal", True),
+        ("construction total", "", 0, "EC", "{{t:y}}", "mi:ec_tot", True, None, False),
+        ("residential", "", 1, "EC", "{{t:y}}", "mi:ec_res", True, None, False),
+        ("non-residential", "", 1, "EC", "{{t:y}}", "mi:ec_non", True, None, True),
+        ("heat pumps", "b", 0, "EHI", "{{v:mi:hp:period}}", "mi:hp", True, None, True),
+        None,
+        ("USA", "red", 0, "", "", None, False, None, False),
+        ("new build non-residential", "b", 0, "", "", "mi:us_nb", True, "mi:us_nb:aal", True),
+        ("non-residential - area", "", 0, "DODGE", "{{t:y}}", "mi:us_area", True, None, False),
+        ("non-residential - value", "", 0, "DODGE", "{{t:y}}", "mi:us_val", True, None, True),
+        ("non-residential", "", 0, "OE", "{{t:y}}", "mi:us_oe", True, None, True),
+    ]
+    xs = [X0 + sum(COLS[:i]) for i in range(len(COLS))]
+
+    def cell(text_runs, fill, algn="l", indent=0, line=False, anchor="ctr"):
+        ppr = (f'<a:pPr algn="{algn}"{f" marL=\"{indent}\"" if indent else ""}><a:lnSpc><a:spcPct val="100000"/></a:lnSpc>'
+               '<a:spcBef><a:spcPts val="0"/></a:spcBef><a:spcAft><a:spcPts val="0"/></a:spcAft><a:buNone/></a:pPr>')
+        body = "".join(f"<a:r>{r}<a:t>{t}</a:t></a:r>" for t, r in text_runs) or '<a:endParaRPr lang="en-GB" sz="1100" dirty="0"/>'
+        return (f'<a:tc><a:txBody><a:bodyPr/><a:lstStyle/><a:p>{ppr}{body}</a:p></a:txBody>'
+                f'<a:tcPr marL="91440" marR="45720" marT="0" marB="0" anchor="{anchor}">{NOLN("L")}{NOLN("R")}{NOLN("T")}{LINE_W if line else NOLN("B")}{fill}</a:tcPr></a:tc>')
+
+    rows_xml, y = [], Y0
+    ypv = 0      # the background renderer draws each white group line a little taller: preview boxes follow it
+    hdr_runs = lambda t: [(t, rpr(1100, True, DARK))]
+    rows_xml.append(f'<a:tr h="{HH}">' + cell([], NONE) + cell(hdr_runs("source"), NONE, anchor="t") + cell(hdr_runs("period"), NONE, anchor="t")
+                    + cell(hdr_runs("market view"), NONE, "ctr", anchor="t") + cell(hdr_runs("vs. last SBR"), NONE, "ctr", anchor="t")
+                    + cell(hdr_runs("Aalberts organic growth forecast"), NONE, "ctr", anchor="t") + "</a:tr>")
+    y += HH
+    for row in R:
+        if row is None:
+            rows_xml.append(f'<a:tr h="{RH}">' + "".join(cell([], NONE) for _ in COLS) + "</a:tr>")
+            y += RH
+            continue
+        label, style, ind, srcl, period, mv, chip, aal, end = row
+        fill = NONE if style == "red" else GREY
+        lab = [(label, rpr(1100, style == "b", RED if style == "red" else DARK))]
+        tok = lambda vid: [("{{v:" + vid + "}}", rpr(1100, False, DARK))]
+        per_runs = [(period, rpr(1100, False, DARK))] if period else []
+        cells = [cell(lab, fill, indent=457200 if ind else 0, line=end),
+                 cell([(srcl, rpr(1100, True, DARK))] if srcl else [], fill, line=end),
+                 cell(per_runs, fill, line=end),
+                 cell(tok(mv) if mv else [], fill, "ctr", line=end),
+                 cell([], fill, line=end),
+                 cell(tok(aal) if aal else [], fill if aal else NONE, "ctr", line=end and bool(aal))]
+        rows_xml.append(f'<a:tr h="{RH}">' + "".join(cells) + "</a:tr>")
+        # preview boxes for the cells holding figures / tokens
+        for ci, vid in ((3, mv), (5, aal)):
+            if vid:
+                boxes.append({"id": vid, **box((xs[ci], y + ypv, COLS[ci], RH), [{"algn": "ctr", "runs": [{"t": "{{v:" + vid + "}}", "sz": 11, "b": False, "c": None, "base": False}]}], "ctr", (91440, 0, 45720, 0))})
+        if "{{" in period:
+            boxes.append({"id": "per:" + label + str(y), **box((xs[2], y + ypv, COLS[2], RH), [{"algn": "l", "runs": [{"t": period, "sz": 11, "b": False, "c": None, "base": False}]}], "ctr", (91440, 0, 45720, 0))})
+        if chip and mv:
+            cw = 203760
+            chips.append({"i": len(chips), "key": mv, "x": xs[4] + (COLS[4] - cw) // 2, "y": y + (RH - cw) // 2, "w": cw, "h": cw, "py": y + ypv + (RH - cw) // 2})
+        y += RH
+        if end:
+            ypv += 16000
+    tbl = (f'<p:graphicFrame><p:nvGraphicFramePr><p:cNvPr id="{next_id()}" name="Indicators table"/><p:cNvGraphicFramePr><a:graphicFrameLocks noGrp="1"/></p:cNvGraphicFramePr><p:nvPr/></p:nvGraphicFramePr>'
+           f'<p:xfrm><a:off x="{X0}" y="{Y0}"/><a:ext cx="{sum(COLS)}" cy="{y - Y0}"/></p:xfrm><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/table">'
+           f'<a:tbl><a:tblPr/><a:tblGrid>{"".join(f"<a:gridCol w=\"{w}\"/>" for w in COLS)}</a:tblGrid>{"".join(rows_xml)}</a:tbl></a:graphicData></a:graphic></p:graphicFrame>')
+    # comments box
+    CX, CY, CW, CH = 7950000, 1250000, 2780000, 4480000
+    bullet = f'<a:pPr marL="342900" indent="-342900"><a:spcBef><a:spcPts val="600"/></a:spcBef><a:buClr><a:srgbClr val="{RED}"/></a:buClr><a:buFont typeface="Arial"/><a:buChar char="»"/></a:pPr>'
+    cpar = [f'<a:p><a:r>{rpr(1400, True, "505050")}<a:t>Comments</a:t></a:r></a:p>'] + \
+           [f'<a:p>{bullet}<a:r>{rpr(1100, False, DARK)}<a:t>{{{{v:mi:cm:{i}}}}}</a:t></a:r></a:p>' for i in (1, 2, 3, 4)]
+    comments = (f'<p:sp><p:nvSpPr><p:cNvPr id="{next_id()}" name="Comments"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>'
+                f'<a:xfrm><a:off x="{CX}" y="{CY}"/><a:ext cx="{CW}" cy="{CH}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom>{GREY}</p:spPr>'
+                f'<p:txBody><a:bodyPr wrap="square" lIns="108000" tIns="108000" rIns="108000" bIns="108000" anchor="t"/><a:lstStyle/>{"".join(cpar)}</p:txBody></p:sp>')
+    boxes.append({"id": "mi:comments", **box((CX, CY, CW, CH),
+        [{"algn": "l", "runs": [{"t": "{{t:blank}}", "sz": 14, "b": True, "c": None, "base": False}]}] +
+        [{"algn": "l", "runs": [{"t": "» ", "sz": 11, "b": False, "c": RED, "base": False}, {"t": "{{v:mi:cm:%d}}" % i, "sz": 11, "b": False, "c": None, "base": False}]} for i in (1, 2, 3, 4)],
+        "t", (108000, 108000, 108000, 108000))})
+    chip_marks = "".join("{{x:chip:%d}}" % ch["i"] for ch in chips)
+    body = title + keep["Text Placeholder 5"] + right + srcph + keep["Slide Number Placeholder 1"] + pill + tbl + comments + chip_marks
+    xml = src[:tree_a] + body + src[tree_b:]
+    xml = re.sub(r"<p:custDataLst>.*?</p:custDataLst>", "", xml, flags=re.S)
+    return xml, boxes, chips
+
+macro_xml, macro_boxes, macro_chips = build_macro_slide()
+slides_dir = un / "ppt/slides"
+n_new = max(int(re.search(r"\d+", p.stem).group()) for p in slides_dir.glob("slide*.xml")) + 1
+f_macro = slides_dir / f"slide{n_new}.xml"
+f_macro.write_text(macro_xml)
+lay = re.search(r'Target="(\.\./slideLayouts/slideLayout\d+\.xml)"', (un / f"ppt/slides/_rels/{f_emea.name}.rels").read_text()).group(1)
+(un / f"ppt/slides/_rels/{f_macro.name}.rels").write_text(
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+    f'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="{lay}"/></Relationships>')
+ct = (un / "[Content_Types].xml").read_text()
+ct = ct.replace("</Types>", f'<Override PartName="/ppt/slides/{f_macro.name}" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/></Types>')
+(un / "[Content_Types].xml").write_text(ct)
+prels = (un / "ppt/_rels/presentation.xml.rels").read_text()
+new_rid = "rId" + str(max(int(i) for i in re.findall(r'Id="rId(\d+)"', prels)) + 1)
+prels = prels.replace("</Relationships>", f'<Relationship Id="{new_rid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/{f_macro.name}"/></Relationships>')
+(un / "ppt/_rels/presentation.xml.rels").write_text(prels)
+pres = (un / "ppt/presentation.xml").read_text()
+new_sid = max(int(i) for i in re.findall(r'<p:sldId id="(\d+)"', pres)) + 1
+pres = re.sub(r"(<p:sldId [^>]*/>)(?!.*<p:sldId )", lambda m: m.group(1) + f'<p:sldId id="{new_sid}" r:id="{new_rid}"/>', pres, count=1, flags=re.S)
+(un / "ppt/presentation.xml").write_text(pres)
+spec["slides"]["macro"] = {"file": f"ppt/slides/{f_macro.name}", "boxes": macro_boxes, "chips": macro_chips, "chipXml": chip_xml}
+
 # ---------------------------------------------------------------- package the template
 tmpl = io.BytesIO()
 with zipfile.ZipFile(tmpl, "w", zipfile.ZIP_DEFLATED) as z:
@@ -538,7 +697,7 @@ tmpl_bytes = tmpl.getvalue()
 # ---------------------------------------------------------------- preview backgrounds (figures removed)
 blank = work / "blank"
 shutil.copytree(un, blank)
-for f, key in ((f_growth, "growth"), (f_emea, "emea")):
+for f, key in ((f_growth, "growth"), (f_emea, "emea"), (f_macro, "macro")):
     x = (blank / "ppt/slides" / f.name).read_text()
     # empty every text box the preview draws itself, and drop inserted shapes
     x = re.sub(r"\{\{x:[^}]+\}\}", "", x)
@@ -566,6 +725,8 @@ bgs = sorted(work.glob("bg-*.png"))
 ASSETS.mkdir(parents=True, exist_ok=True)
 shutil.copy(bgs[0], ASSETS / "qbr_bg_growth.png")
 shutil.copy(bgs[1], ASSETS / "qbr_bg_emea.png")
+shutil.copy(bgs[2], ASSETS / "qbr_bg_macro.png")
+spec["slides"]["macro"]["bg"] = "assets/qbr_bg_macro.png"
 spec["slides"]["growth"]["bg"] = "assets/qbr_bg_growth.png"
 spec["slides"]["emea"]["bg"] = "assets/qbr_bg_emea.png"
 # Aalberts logo (white, for red bands) for the Excel data bridge cover
@@ -573,7 +734,8 @@ spec["logoWhitePng"] = base64.b64encode((ASSETS / "aalberts-logo-white.png").rea
 
 OUT_JS.write_text(
     "/* QBR/SBR slide template for the quarterly market outlook.\n"
-    f" * Generated by tools/build_qbr_template.py from {DECK.name}: slides {SLIDE_GROWTH} and {SLIDE_EMEA} with figures replaced by markers. */\n"
+    f" * Generated by tools/build_qbr_template.py from {DECK.name}: slides {SLIDE_GROWTH} and {SLIDE_EMEA} with figures replaced by markers,\n"
+    " * plus the macroeconomic indicators slide rebuilt in the deck's style. */\n"
     "window.HFC_QBR_TEMPLATE = " + json.dumps(dict(spec, pptx=base64.b64encode(tmpl_bytes).decode()), separators=(",", ":")) + ";\n")
 print(f"{OUT_JS} ({OUT_JS.stat().st_size // 1024} KB; template {len(tmpl_bytes) // 1024} KB), backgrounds in {ASSETS}")
 shutil.rmtree(work, ignore_errors=True)

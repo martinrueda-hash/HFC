@@ -1502,6 +1502,51 @@ sup { font-size: .7em; line-height: 0; }
     ["Americas", "Europe", "APAC"].forEach(g => { V["rev:" + g] = { text: manVal(q, "rev:" + g, "xx%"), kind: "man", id: "rev:" + g }; });
     V["banner:growth"] = txtV(q, "banner:growth");
   }
+  // ---- macroeconomic indicators | building
+  // Europe = the 19 Euroconstruct countries (same set in every release, so quarters compare like for like)
+  const MACRO_EU = ["Austria", "Belgium", "Czech Republic", "Denmark", "Finland", "France", "Germany", "Hungary", "Ireland", "Italy", "Netherlands",
+    "Norway", "Poland", "Portugal", "Slovak Republic", "Spain", "Sweden", "Switzerland", "United Kingdom"];
+  const DODGE_NONRES = k => k < 24 && k !== 18 && k !== 19;     // non-residential building verticals
+  const MACRO_CALC = ["eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_val", "us_oe"];
+  const MACRO_MAN = ["ec_tot", "ec_res", "ec_non", "hp", "us_nb", "us_area"];
+  const MACRO_AAL = ["overall", "eu_tot", "eu_new", "eu_reno", "eu_res", "eu_non", "us_nb"];
+  // 2026-on-2025 growth (%) of the computed rows; get(locs, base, kind, year) reads Oxford Economics levels
+  function macroCompute(get, dodgeRel, Y) {
+    const lv = (base, kind, y) => get(MACRO_EU, base, kind, y);
+    const sum = (parts, y) => { let t = 0; for (const [b, k] of parts) { const v = lv(b, k, y); if (v === null) return null; t += v; } return t; };
+    const g = parts => growth(sum(parts, Y), sum(parts, Y - 1));
+    const R = OE.res, N = OE.nonTot;
+    const usg = (b, y) => get(GO_COLS.us, b, "", y);
+    return {
+      eu_tot: g([[R, ""], [N, ""]]), eu_new: g([[R, "New"], [N, "New"]]), eu_reno: g([[R, "Renovation"], [N, "Renovation"]]),
+      eu_res: g([[R, ""]]), eu_non: g([[N, ""]]),
+      us_oe: growth(usg(N, Y), usg(N, Y - 1)),
+      us_val: dodgeRel ? growth(dodgeVal(dodgeRel, DODGE_NONRES, Y), dodgeVal(dodgeRel, DODGE_NONRES, Y - 1)) : null,
+    };
+  }
+  const numOf = t => { const m = String(t ?? "").replace(/−/g, "-").replace(",", ".").match(/[-+]?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : null; };
+  const monYY = iso => iso ? `${MONTH_NAMES[Number(iso.slice(5, 7)) - 1].slice(0, 3)}-’${iso.slice(2, 4)}` : "…";
+  // fills V, chips and T.macro; M = computed figures of this report, prevM = the previous report's (or null)
+  function macroFill(q, Y, V, chips, T, M, prevM, prevQ, oeIso, dodgeIso) {
+    const chipType = d => d >= 0.5 ? "sp" : d >= 0.1 ? "p" : d <= -0.5 ? "sn" : d <= -0.1 ? "ng" : "n";
+    MACRO_CALC.forEach(id => { const v = M ? M[id] : null; V["mi:" + id] = v === null || v === undefined || !Number.isFinite(v) ? { text: "x%", kind: "missing" } : { text: fmtEm(v), kind: "plain" }; });
+    MACRO_MAN.forEach(id => { V["mi:" + id] = { text: manVal(q, "mi:" + id, "x%"), kind: "man", id: "mi:" + id }; });
+    MACRO_AAL.forEach(id => { V[`mi:${id}:aal`] = { text: manVal(q, `mi:${id}:aal`, "x%"), kind: "man", id: `mi:${id}:aal` }; });
+    V["mi:hp:period"] = { text: manVal(q, "mi:hp:period", "9M-’25"), kind: "man", id: "mi:hp:period" };
+    [1, 2, 3, 4].forEach(i => { const t = manVal(q, "mi:cm:" + i, i === 1 ? "xxx" : ""); V["mi:cm:" + i] = { text: t, kind: t === "xxx" ? "comment" : "text", id: "mi:cm:" + i }; });
+    const src = `all figures year over year comparisons, normalised for inflation, Aalberts organic growth figures are estimates (including volume, price, BD, SRC, ..), excluding acquisitions (Paulo, Geo-flo, GVT). ` +
+      `EC: Euroconstruct (Nov-’25), OE: Oxford Economics (${oeIso ? monYY(oeIso) : "…"}, Europe = EC-19), EHI: European Heating Institute ’25 vs. LY (Dec-’25), DODGE area (Sept-’25), DODGE value (${dodgeIso ? monYY(dodgeIso) : "as published"})`;
+    V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
+    // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries
+    MACRO_CALC.concat(MACRO_MAN).forEach(id => {
+      if (!prevQ) return;
+      const cur = MACRO_CALC.includes(id) ? (M ? M[id] : null) : numOf(V["mi:" + id].text);
+      const pre = MACRO_CALC.includes(id) ? (prevM ? prevM[id] : null) : numOf(manVal(prevQ.q, "mi:" + id, null));
+      if (cur !== null && cur !== undefined && Number.isFinite(cur) && pre !== null && pre !== undefined && Number.isFinite(pre)) chips["mi:" + id] = chipType(cur - pre);
+    });
+    T.macro = { y: String(Y), titleTail: " | building", blank: "\u00a0" };
+  }
+
   // a published report (qbr_published.js): every figure as on the presented slides
   function pubReport(q, pub, prevQ) {
     const Y = Number(q.slice(0, 4)), y2 = n => "’" + String(n).slice(2);
@@ -1524,6 +1569,8 @@ sup { font-size: .7em; line-height: 0; }
     Object.assign(T.growth, { yA: y2(Y - 1) + "A", yE: y2(Y) + "E", yC: y2(Y - 1) + "-" + y2(Y + 4), yP: String(Y - 1),
       subtitle: "Work done by sector, annual % change", src: pub.goSrc || "", notes: pub.goNotes || "" });
     Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2), src: pub.emSrc || "", notes: pub.emNotes || "" });
+    const pm = pub.macro || {};
+    macroFill(q, Y, V, chips, T, pm, null, null, pm.oeDate || null, pm.dodgeDate || null);
     return { q, oe: null, dodge: null, pub, prevQ, prevOe: null, V, T, chips, arrows, bridge: null, fallback: [] };
   }
 
@@ -1647,6 +1694,12 @@ sup { font-size: .7em; line-height: 0; }
       ["m1", "m2"].forEach((k, i) => { V[`em:${name}:${k}p`] = { text: pv && pv[i] !== null && pv[i] !== undefined ? "(" + fmtEm(pv[i], pv[2]) + ")" : "", kind: "prev" }; });
     });
     emManual(q, V, arrows);
+    // macroeconomic indicators
+    const M = macroCompute((l, b, k, y) => oeGet(l, b, k, y), dodge, Y);
+    let prevM = null;
+    if (prevPub && prevPub.macro) prevM = prevPub.macro;
+    else if (prevOe && prevOe.id !== oe.id) prevM = macroCompute((l, b, k, y) => oeVal(prevOe, l, b, k, y), pickRel(r.dodge, "dodge", prevQ.q), Y);
+    macroFill(q, Y, V, chips, T, M, prevM, prevQ, oe ? oe.date : null, dodge ? dodge.exported : null);
     Object.assign(T.emea, { y1: String(Y - 1), y2: String(Y), yS: String(Y).slice(2),
       src: `Source: Oxford Economics, ${relMonth(oe)} release, construction work done (residential + commercial incl. multifamily).`,
       notes: "Note: Nordics = Sweden, Norway, Denmark, Finland." });
@@ -1674,8 +1727,9 @@ sup { font-size: .7em; line-height: 0; }
     const boxes = sl.boxes.map(b => {
       const hasTok = b.paras.some(p => p.runs.some(r => /\{\{/.test(r.t)));
       const vid = BOX_ALIAS[b.id] || b.id;
-      const paras = b.paras.filter(p => !(p.runs.length && p.runs.every(r => { const m = r.t.match(/^\{\{v:([^}]+)\}\}$/);
-        return m && data.V[m[1]] && data.V[m[1]].kind === "prev" && data.V[m[1]].text === ""; }))).map(p => {
+      // a line whose figure or comment is empty is not drawn (as in the export, where an empty bullet does not show)
+      const emptyTok = r => { const m = r.t.match(/^\{\{v:([^}]+)\}\}$/); const v = m && data.V[m[1]]; return v && v.text === "" && (v.kind === "prev" || v.kind === "text"); };
+      const paras = b.paras.filter(p => !(p.runs.length && p.runs.some(emptyTok) && p.runs.every(r => emptyTok(r) || !/\{\{/.test(r.t)))).map(p => {
         // a value box shows its figure once, in the style of its first run
         const runList = hasTok ? p.runs : p.runs.slice(0, 1);
         const runs = runList.map(r => {
@@ -1690,11 +1744,11 @@ sup { font-size: .7em; line-height: 0; }
       return `<div class="qb" style="left:${b.x * 100}%;top:${b.y * 100}%;width:${b.w * 100}%;height:${b.h * 100}%;justify-content:${just};padding:${b.ins[1] * 56.25}cqw ${b.ins[2] * 100}cqw ${b.ins[3] * 56.25}cqw ${b.ins[0] * 100}cqw">${paras}</div>`;
     }).join("");
     let extra = "";
-    if (key === "growth") extra = sl.chips.map(ch => {
-      const t = data.chips[ch.col + ":" + ch.k];
+    if (key === "growth" || key === "macro") extra = sl.chips.map(ch => {
+      const t = data.chips[ch.key || ch.col + ":" + ch.k];
       if (!t) return "";
       const [fill, path] = CHIP[t];
-      return `<svg class="qchip" viewBox="0 0 24 24" style="left:${ch.x / TPL.slideW * 100}%;top:${ch.y / TPL.slideH * 100}%;width:${ch.w / TPL.slideW * 100}%" aria-label="${t}"><circle cx="12" cy="12" r="12" fill="${fill}"/><path d="${path}" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      return `<svg class="qchip" viewBox="0 0 24 24" style="left:${ch.x / TPL.slideW * 100}%;top:${(ch.py ?? ch.y) / TPL.slideH * 100}%;width:${ch.w / TPL.slideW * 100}%" aria-label="${t}"><circle cx="12" cy="12" r="12" fill="${fill}"/><path d="${path}" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
     }).join("");
     else extra = sl.arrows.map(a => {
       const d = data.arrows[a.row + ":" + a.col];
@@ -1741,7 +1795,7 @@ sup { font-size: .7em; line-height: 0; }
     xml = xml.replace(/\{\{t:([^}]+)\}\}/g, (m, id) => xmlEsc(data.T[key][id] ?? ""));
     xml = xml.replace(/\{\{x:(chip|arrow):([^}]+)\}\}/g, (m, kind, id) => {
       if (kind === "chip") {
-        const ch = sl.chips[Number(id)], t = data.chips[ch.col + ":" + ch.k];
+        const ch = sl.chips[Number(id)], t = data.chips[ch.key || ch.col + ":" + ch.k];
         if (!t) return "";
         return sl.chipXml[t].replace("{{X}}", ch.x).replace("{{Y}}", ch.y).replace(/\{\{ID(\d+)\}\}/g, (mm, n) => ids.base + ids.next(Number(n)));
       }
@@ -1796,7 +1850,7 @@ sup { font-size: .7em; line-height: 0; }
     const files = await unzipAll(buf), dec = new TextDecoder(), enc = new TextEncoder();
     let counter = 0;
     const ids = { base: 90000, next: () => counter++ };
-    ["growth", "emea"].forEach(key => {
+    ["growth", "emea", "macro"].filter(k => TPL.slides[k]).forEach(key => {
       const f = files.find(x => x.name === TPL.slides[key].file);
       f.data = enc.encode(fillXml(dec.decode(f.data), key, data, ids));
     });
@@ -2142,7 +2196,7 @@ sup { font-size: .7em; line-height: 0; }
       <span>Variation vs.: <b>${data.prevQ ? qLabel(data.prevQ.q) : "no previous report"}</b>${data.prevPub ? " (as published)" : data.prevOe && data.oe && data.prevOe.id === data.oe.id ? " (same release: neutral)" : ""}</span></div>`;
     body.innerHTML = `<div class="qbar">${meta}<span class="spacer"></span><button type="button" class="btn" id="qbrExcel"${data.pub ? ' disabled title="This report shows the figures as published: there is no data to rebuild them from"' : ' title="Workbook that rebuilds every figure of the two slides from the Oxford Economics and Dodge data, with formulas"'}>Excel data bridge (.xlsx)</button><button type="button" class="btn primary" id="qbrExport">Export to PowerPoint (.pptx)</button></div>
       <span class="msg" id="qbrMsg" role="status"></span>
-      <div class="qpreview"><span class="hdr-t">Preview</span>${slidePreview("growth", data)}${slidePreview("emea", data)}</div>`;
+      <div class="qpreview"><span class="hdr-t">Preview</span>${slidePreview("growth", data)}${slidePreview("emea", data)}${TPL.slides.macro ? slidePreview("macro", data) : ""}</div>`;
     document.getElementById("qbrExport").addEventListener("click", () => exportPptx(reportData(qTab, quarterList())));
     document.getElementById("qbrExcel").addEventListener("click", () => exportBridge(reportData(qTab, quarterList())));
     body.querySelectorAll("[contenteditable][data-id]").forEach(el => {

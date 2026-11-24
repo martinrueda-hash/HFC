@@ -45,6 +45,9 @@ window.HFC_QBR_PUBLISHED = {
       "Execution matters as much as market: delivery issues in H1 and HIU exposure have constrained conversion of market recovery into sales",
       "Structural shift accelerating: strong move from boilers towards heat pumps / air-to-air / VRV, reshaping product and channel demand"
     ],
+    // macroeconomic indicators | building: 2026 growth (%). Oxford Economics rows from the data of 27 Jun 2026, Europe = 19 Euroconstruct
+    // countries (residential new build / renovation weighted with the October 2026 release's 2025 levels); us_val = Dodge non-res as on the growth slide
+    macro: { eu_tot: 1.87, eu_new: 3.18, eu_reno: 0.82, eu_res: 1.98, eu_non: 1.7, us_oe: -0.2, us_val: 2.8, oeDate: "2026-06-27", dodgeDate: null },
     priority: "restore execution while aligning portfolio and commercial focus with the fastest-growing technologies and markets",
     emSrc: "Source: Oxford Economics, June 2026 release (27 Jun 2026), construction work done (residential + non-residential building). External cross-checks: ING Research, ABN AMRO, Experian / UK Government, FFB",
     emNotes: "Note: 1_ including Comap 2_excluding Comap"
