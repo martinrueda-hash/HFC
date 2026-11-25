@@ -6270,7 +6270,7 @@ window.CW = {
   {
    "id": "grundfos",
    "name": "Grundfos",
-   "rel": 4,
+   "rel": 2,
    "own": "Private (Poul Due Jensen Foundation)",
    "hq": "Bjerringbro, Denmark",
    "rev": "DKK 34.7bn / ~EUR 4.7bn (2025)",
@@ -6415,7 +6415,7 @@ window.CW = {
   {
    "id": "zilmet",
    "name": "Zilmet",
-   "rel": 3,
+   "rel": 4,
    "own": "Private",
    "hq": "Limena (Padova), Italy",
    "rev": "n/d",
@@ -6448,7 +6448,7 @@ window.CW = {
   {
    "id": "adey",
    "name": "ADEY",
-   "rel": 3,
+   "rel": 4,
    "own": "Genuit Group (LSE: GEN)",
    "hq": "Stonehouse, Gloucestershire, UK",
    "rev": "n/d (not split out by Genuit)",
@@ -6503,7 +6503,7 @@ window.CW = {
   {
    "id": "fernox",
    "name": "Fernox",
-   "rel": 3,
+   "rel": 4,
    "own": "Element Solutions (NYSE: ESI)",
    "hq": "Woking, UK",
    "rev": "n/d",
@@ -6813,7 +6813,7 @@ window.CW = {
   {
    "id": "armstrong",
    "name": "Armstrong Fluid Technology",
-   "rel": 3,
+   "rel": 2,
    "own": "Private (Armstrong family)",
    "hq": "Toronto, Canada",
    "rev": "n/d",
@@ -7006,7 +7006,7 @@ window.CW = {
   {
    "id": "siemens",
    "name": "Siemens Smart Infrastructure",
-   "rel": 3,
+   "rel": 2,
    "own": "Listed (Siemens AG), segment",
    "hq": "Zug, Switzerland",
    "rev": "~EUR 23bn run-rate (FY 2026 quarters)",
@@ -7117,7 +7117,7 @@ window.CW = {
   {
    "id": "frese",
    "name": "Frese",
-   "rel": 3,
+   "rel": 2,
    "own": "Vexve (Finland) since Feb 2025",
    "hq": "Slagelse, Denmark",
    "rev": "n/d (Vexve group ~EUR 200m combined)",
@@ -7237,7 +7237,7 @@ window.CW = {
   {
    "id": "wilo",
    "name": "Wilo",
-   "rel": 3,
+   "rel": 2,
    "own": "Private (Wilo-Foundation)",
    "hq": "Dortmund, Germany",
    "rev": "EUR 1,918.7m (2025)",
