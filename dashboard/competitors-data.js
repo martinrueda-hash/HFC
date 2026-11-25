@@ -6378,7 +6378,7 @@ window.CW = {
   {
    "id": "wessels",
    "name": "Wessels Company",
-   "rel": 3,
+   "rel": 4,
    "own": "Private (NM Group Global)",
    "hq": "Greenwood, Indiana, US",
    "rev": "n/d",
