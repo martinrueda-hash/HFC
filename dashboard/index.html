@@ -241,7 +241,7 @@ sup { font-size: .7em; line-height: 0; }
 .rel-list .tag { font-size: 10px; color: var(--muted); }
 .rel-list .q { font-weight: 700; color: var(--red); }
 
-/* Quarter market outlook (QBR/SBR) */
+/* Quarter market outlook (QBR) */
 .qtabs { display: flex; flex-wrap: wrap; gap: 6px; }
 .qtab { font: inherit; font-size: 12px; border: 1px solid var(--red); background: var(--bg); color: var(--red); padding: 5px 12px; border-radius: 3px; cursor: pointer; }
 .qtab[aria-selected="true"] { background: var(--red); color: #fff; font-weight: 700; }
@@ -288,7 +288,7 @@ sup { font-size: .7em; line-height: 0; }
 
   <section class="slide" aria-labelledby="qbrTitle">
     <img class="logo-slide" src="assets/aalberts-logo-red.png" alt="">
-    <h2 class="stitle" id="qbrTitle">Quarter market outlook – QBR/SBR</h2>
+    <h2 class="stitle" id="qbrTitle">Quarter market outlook – QBR</h2>
     <div class="qdata" aria-labelledby="dataTitle">
     <h3 class="subhead" id="dataTitle">Update the data</h3>
     <div class="up-grid">
@@ -1582,8 +1582,8 @@ sup { font-size: .7em; line-height: 0; }
       `Aalberts organic growth: estimates excl. acquisitions (Paulo, Geo-flo, GVT). Europe = EC-19. ${defs}${manVal(q, "mi:ecNote", "")}`;
     V["mi:src"] = { text: manVal(q, "mi:src", src), kind: "text", id: "mi:src" };
     V["mi:notes"] = { text: manVal(q, "mi:notes", notes), kind: "text", id: "mi:notes" };
-    // variation vs. last SBR: computed rows against the previous report's figures, entered rows against the previous report's entries
-    // Euroconstruct and EHI: no comparison with the last SBR (n/a)
+    // variation vs. last QBR: computed rows against the previous report's figures, entered rows against the previous report's entries
+    // Euroconstruct and EHI: no comparison with the last QBR (n/a)
     ["ec_tot", "ec_res", "ec_non", "hp", "us_area"].forEach(id => { chips["mi:" + id] = "na"; chips["mi:" + id + ":5y"] = "na"; });
     // Dodge construction total and commercial value: 2026 compared with the previous report; no earlier CAGR, so '26-'30 is n/a
     ["us_dtot", "us_val"].forEach(id => { chips["mi:" + id + ":5y"] = "na"; });
@@ -1714,7 +1714,7 @@ sup { font-size: .7em; line-height: 0; }
       subtitle: "Work done by sector, annual % change",
       src: `Source: Oxford Economics ${relMonth(oe)} release${dodge ? `; Dodge, actuals to ${qLabel(dodge.quarter)}` : ""}; Group strategy and M&A analysis`,
       notes: "Notes: (1) Single family only. (2) Commercial buildings + multifamily residential." });
-    // variation vs. previous SBR (total = residential + non-residential), per column
+    // variation vs. previous QBR (total = residential + non-residential), per column
     // market total = residential + commercial (as defined above)
     const sum2 = g => y => { const a = seg("res", g, "", y), b = seg("com", g, "", y); return a !== null && b !== null ? a + b : null; };
     const tot = (rel, l, y) => sum2((base, kind, yy) => oeVal(rel, l, base, kind, yy))(y);
@@ -1762,7 +1762,7 @@ sup { font-size: .7em; line-height: 0; }
       notes: "Note: Nordics = Sweden, Norway, Denmark, Finland." });
     // legend under the table, when the bracketed previous-report figures are shown
     const hasPrev = EMEA_ROWS.some(([n]) => (V[`em:${n}:m1p`] || {}).text || (V[`em:${n}:m2p`] || {}).text);
-    Object.assign(T.emea, { legHead: hasPrev ? "legend   " : "", legText: hasPrev ? `(x.x%) = previous estimate from last SBR/QBR${prevQ ? " (" + qLabel(prevQ.q) + ")" : ""}` : "" });
+    Object.assign(T.emea, { legHead: hasPrev ? "legend   " : "", legText: hasPrev ? `(x.x%) = previous estimate from last QBR${prevQ ? " (" + qLabel(prevQ.q) + ")" : ""}` : "" });
     return { q, oe, dodge, pub: null, prevPub, prevQ, prevOe, V, T, chips, arrows, bridge: { oeSrc, cols, Y }, fallback: [...fallbackUsed].map(id => r.oe.find(x => x.id === id)) };
   }
 
@@ -1861,7 +1861,7 @@ sup { font-size: .7em; line-height: 0; }
       if (kind === "chip") {
         const ch = sl.chips[Number(id)], t = data.chips[ch.key || ch.col + ":" + ch.k];
         if (!t) return "";
-        if (t === "na") return `<p:sp><p:nvSpPr><p:cNvPr id="${ids.base + ids.next(0)}" name="vs last SBR n/a"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>` +
+        if (t === "na") return `<p:sp><p:nvSpPr><p:cNvPr id="${ids.base + ids.next(0)}" name="vs last QBR n/a"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>` +
           `<a:xfrm><a:off x="${ch.x - 150000}" y="${ch.y}"/><a:ext cx="${ch.w + 300000}" cy="${ch.h}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>` +
           `<p:txBody><a:bodyPr wrap="none" lIns="0" tIns="0" rIns="0" bIns="0" anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/><a:r><a:rPr lang="en-GB" sz="1000" dirty="0"><a:solidFill><a:srgbClr val="747474"/></a:solidFill></a:rPr><a:t>n/a</a:t></a:r></a:p></p:txBody></p:sp>`;
         return sl.chipXml[t].replace("{{X}}", ch.x).replace("{{Y}}", ch.y).replace(/\{\{ID(\d+)\}\}/g, (mm, n) => ids.base + ids.next(Number(n)));
@@ -2188,7 +2188,7 @@ sup { font-size: .7em; line-height: 0; }
     const kv = (k, v) => ["", { v: k, s: XS.label }, { v, s: XS.value }];
     const today = new Date().toISOString().slice(0, 10);
     const logo = { col: 1, row: 1, dx: 60000, dy: 40000, cx: 520000, cy: 690000 };
-    const cover = [band(), band(), bandText("Quarterly market outlook", XS.bandTitle), bandText(`QBR/SBR data book · ${qLabel(data.q)}`, XS.bandSub), band(), band(), [],
+    const cover = [band(), band(), bandText("Quarterly market outlook", XS.bandTitle), bandText(`QBR data book · ${qLabel(data.q)}`, XS.bandSub), band(), band(), [],
       section("Report"),
       kv("Quarter", qLabel(data.q)),
       kv("Oxford Economics", data.oe ? `Release of ${fmtDate(data.oe.date)} (${qLabel(oeQ(data.oe.date))} data)` : "—"),
